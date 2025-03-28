@@ -178,6 +178,8 @@ The database shall support:
   
   - Borrower
 
+  - Public
+
 - Store username
 
 - Store password (initially raw text; hashed if time permits)
