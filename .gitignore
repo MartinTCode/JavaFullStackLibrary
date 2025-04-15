@@ -1,5 +1,9 @@
 # Maven target build directory
 /target/
+/javafullstacklibrary/
+dependency-reduced-pom.xml
+pom.xml.versionsBackup
+pom.xml.releaseBackup
 
 # Eclipse, VS Code, and IntelliJ config
 *.iml
