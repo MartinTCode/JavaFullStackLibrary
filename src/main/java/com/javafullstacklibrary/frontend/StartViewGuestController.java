@@ -6,11 +6,6 @@ import javafx.fxml.FXML;
 public class StartViewGuestController {
 
     @FXML
-    private void clickedHomeMenuGuest() {
-        System.out.println("Home menu clicked");
-    }
-
-    @FXML
     private void clickedSearchMenuGuest() {
         System.out.println("Search menu clicked");
     }

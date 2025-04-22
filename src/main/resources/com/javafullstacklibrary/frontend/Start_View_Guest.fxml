@@ -30,8 +30,8 @@
       <!-- Top Menu Background -->
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="0.0" layoutY="0.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="600.0" />
 
-      <!-- Home Button -->
-      <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0" onMouseClicked="#clickedHomeMenuGuest" pickOnBounds="true" preserveRatio="true">
+      <!-- Home Button (current scene)-->
+      <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@figma_icons/StartNavigationButton.png" />
          </image>
