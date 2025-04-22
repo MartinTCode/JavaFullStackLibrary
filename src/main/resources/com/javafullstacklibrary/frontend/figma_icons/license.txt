@@ -1,0 +1,24 @@
+LICENSE NOTICE FOR DESIGN ASSETS
+
+This application uses design assets from the Figma Community under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+Asset Source:
+Title: UI Components - Open Source
+Creator: Pavle Mihajlov
+Figma Community URL: https://www.figma.com/community/file/1380235722331273046
+
+License Summary:
+You are free to:
+- Share — copy and redistribute the material in any medium or format.
+- Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+
+Changes Made:
+This application may include modified versions of the original Figma design assets, adapted for use in a JavaFX frontend.
+
+Full License Text:
+https://creativecommons.org/licenses/by/4.0/
+
+This notice is provided in compliance with the above license.

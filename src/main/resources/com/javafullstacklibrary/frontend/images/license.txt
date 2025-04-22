@@ -1,0 +1,19 @@
+LICENSE NOTICE FOR IMAGE ASSETS
+
+This application includes an image provided by Unsplash under the Unsplash License.
+
+Image Source:
+Title: White book page on white textile
+Photographer: Olesia 🇺🇦 Buyar
+Unsplash URL: https://unsplash.com/photos/white-book-page-on-white-textile-plbb7pkEjkQ
+
+License Summary:
+- Free to use for commercial and non-commercial purposes.
+- No permission needed (though attribution is appreciated).
+- Cannot be sold without significant modification or used to create a competing service to Unsplash.
+
+Full License Terms:
+https://unsplash.com/license
+
+Attribution:
+Photo by Olesia 🇺🇦 Buyar on Unsplash — https://unsplash.com/@olesiabuyar
