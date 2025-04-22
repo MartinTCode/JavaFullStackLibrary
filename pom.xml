@@ -71,7 +71,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.javafullstacklibrary.frontend.MainApplication</mainClass>
+                    <mainClass>com.javafullstacklibrary.frontend.Launcher</mainClass>
                     <modules>
                         <module>javafx.controls</module>
                         <module>javafx.fxml</module>
