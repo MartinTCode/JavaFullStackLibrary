@@ -20,7 +20,6 @@ public class StartViewGuestController {
 
     @FXML
     private void clickedSignInMenuGuest() {
-        System.out.println("Sign-in menu button clicked");
         try {
             // Load Sign_In_User.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/Sign_In_User.fxml"));

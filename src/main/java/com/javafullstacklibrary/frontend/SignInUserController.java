@@ -23,7 +23,6 @@ public class SignInUserController {
 
     @FXML
     private void clickedHomeMenuGuest() {
-        System.out.println("Home menu clicked");
         try {
             // Load Start_View_Guest.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/Start_View_Guest.fxml"));
