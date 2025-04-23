@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafullstacklibrary.frontend.StartViewGuestController">
+   <children>
+      <!-- Background Image -->
+      <ImageView fitHeight="400.0" fitWidth="600.0" preserveRatio="false">
+         <image>
+            <Image url="@images/olga-tutunaru-plbb7pkEjkQ-unsplash.jpg" />
+         </image>
+      </ImageView>
+
+      <!-- Semi-transparent Rectangle -->
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="218.0" layoutX="85.0" layoutY="101.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="451.0" />
+
+      <!-- Welcome Text -->
+      <Text layoutX="161.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Library">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Text>
+      <Text layoutX="222.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navigate using the top menu" />
+
+      <!-- Top Menu Background -->
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="0.0" layoutY="0.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+
+      <!-- Home Button (current scene)-->
+      <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@figma_icons/StartNavigationButton.png" />
+         </image>
+      </ImageView>
+
+      <!-- Search Button -->
+      <ImageView fx:id="searchMenuGuest" fitHeight="49.0" fitWidth="60.0" layoutX="60.0" layoutY="0.0" onMouseClicked="#clickedSearchMenuGuest" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@figma_icons/SearchNavigationButtonClickable.png" />
+         </image>
+      </ImageView>
+
+      <!-- Sign In Button -->
+      <ImageView fx:id="signInMenuGuest" fitHeight="49.0" fitWidth="60.0" layoutX="120.0" layoutY="0.0" onMouseClicked="#clickedSignInMenuGuest" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@figma_icons/SignInNavigationButtonClickable.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
