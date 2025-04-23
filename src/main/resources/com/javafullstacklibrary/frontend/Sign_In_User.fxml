@@ -80,7 +80,7 @@
             <StackPane prefHeight="270.0" prefWidth="612.0" BorderPane.alignment="CENTER">
                <children>
                   <!-- Semi-transparent Rectangle -->
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="218.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" style="-fx-background-radius: 50;" width="451.0" />
+                  <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="218.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" style="-fx-background-radius: 50;" width="451.0" />
                   
                   <!-- Sign-in Form -->
                   <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="358.0" prefWidth="285.0" spacing="20.0">
