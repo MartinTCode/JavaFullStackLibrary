@@ -37,21 +37,21 @@
             <!-- Home Button -->
             <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@figma_icons/StartNavigationButton.png" />
+                  <Image url="@figma_icons/navBarButtons/StartNavigationButton.png" />
                </image>
             </ImageView>
 
             <!-- Search Button -->
             <ImageView fx:id="searchMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSearchMenuGuest" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@figma_icons/SearchNavigationButtonClickable.png" />
+                  <Image url="@figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
                </image>
             </ImageView>
 
             <!-- Sign In Button -->
             <ImageView fx:id="signInMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSignInMenuGuest" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@figma_icons/SignInNavigationButtonClickable.png" />
+                  <Image url="@figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
                </image>
             </ImageView>
          </children>
