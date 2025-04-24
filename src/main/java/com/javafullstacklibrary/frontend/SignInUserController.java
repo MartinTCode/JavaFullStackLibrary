@@ -40,7 +40,17 @@ public class SignInUserController {
 
     @FXML
     private void clickedSearchMenuGuest() {
-        System.out.println("Search menu clicked");
+        try {
+            // Load Start_View_Guest.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/Search_Menu_Guest.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from mainPane
+            Stage stage = (Stage) mainPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
