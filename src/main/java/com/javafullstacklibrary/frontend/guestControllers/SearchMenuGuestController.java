@@ -54,7 +54,7 @@ public class SearchMenuGuestController {
 
     @FXML
     private void clickedFilterButton() {
-        System.out.println("Filter button clicked");
+        // Functionality not implemented in current version. 
     }
 
     @FXML
@@ -63,4 +63,5 @@ public class SearchMenuGuestController {
         String query = searchField.getText();
         System.out.println("Search query: " + query);
     }
+    
 }

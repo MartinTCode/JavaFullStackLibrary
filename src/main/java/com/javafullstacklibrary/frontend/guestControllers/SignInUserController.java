@@ -66,6 +66,11 @@ public class SignInUserController {
     }
 
     @FXML
+    private void clickedfForgotPasswordText() {
+        // Functionality not implemented in current version. 
+    }
+
+    @FXML
     private void clickedStaffButton() {
         System.out.println("Staff button clicked");
     }
