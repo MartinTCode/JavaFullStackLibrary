@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController">
+   <children>
+      <!-- Background Image -->
+      <ImageView fitHeight="413.0" fitWidth="600.0" layoutY="-6.0">
+         <image>
+            <Image url="@/com/javafullstacklibrary/frontend/images/olga-tutunaru-plbb7pkEjkQ-unsplash.jpg" />
+         </image>
+      </ImageView>
+
+      <!-- Top Menu Background -->
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="0.0" layoutY="0.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+
+      <!-- Top Menu Buttons -->
+      <FlowPane layoutX="0.0" layoutY="0.0" prefHeight="49.0" prefWidth="600.0" hgap="0.0">
+         <children>
+            <!-- Home Button -->
+            <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButton.png" />
+               </image>
+            </ImageView>
+
+            <!-- Search Button -->
+            <ImageView fx:id="searchMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSearchMenuGuest" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
+               </image>
+            </ImageView>
+
+            <!-- Sign In Button -->
+            <ImageView fx:id="signInMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSignInMenuGuest" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
+               </image>
+            </ImageView>
+         </children>
+      </FlowPane>
+
+      <!-- Center Content -->
+      <BorderPane layoutX="0.0" layoutY="49.0" prefHeight="358.0" prefWidth="600.0">
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <!-- Semi-transparent Rectangle -->
+                  <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="218.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="451.0" />
+
+                  <!-- Welcome Text -->
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Library">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Navigate using the top menu" />
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</Pane>
