@@ -94,10 +94,16 @@
                         
                         <!-- Social Security Number Field -->
                         <TextField fx:id="ssnField" prefHeight="25.0" prefWidth="273.0" text="Social Security Number (YYYYMMDD-XXXX)" />
-                        
-                        <!-- Password Field -->
-                        <TextField fx:id="passwordField" prefHeight="25.0" prefWidth="273.0" text="Password" />
-                        
+                        <!-- Password Management-->
+                        <VBox prefHeight="38.0" prefWidth="285.0">
+                           <children>
+                              <!-- Password Field -->
+                              <TextField fx:id="passwordField" prefHeight="25.0" prefWidth="273.0" text="Password" />
+                              <!-- Forgot Password Link -->
+                              <Text fx:id="forgotPasswordText" fill="#648ab4" onMouseClicked="#clickedfForgotPasswordText" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password?" underline="true" />
+                           </children>
+                        </VBox>
+
                         <!-- Sign-in Button -->
                         <Button fx:id="signInButton" mnemonicParsing="false" onMouseClicked="#clickedSignInButton" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #648AB4;" text="Sign in" textFill="WHITE" />
                      </children>
