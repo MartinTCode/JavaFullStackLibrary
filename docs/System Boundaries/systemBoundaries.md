@@ -7,6 +7,7 @@ This document outlines the functional and non-functional boundaries of the curre
 ## Functional Boundaries
 
 ### User Management
+
 - **Account Creation**:
   - User accounts can only be created by librarians for ID control reasons. There is no independent user creation view.
   - Librarian accounts can only be created by superusers.
@@ -19,6 +20,7 @@ This document outlines the functional and non-functional boundaries of the curre
   - Email changes are permitted immediately upon modification. In the final version, this would only be allowed once the user confirms the change via a link sent to the new email address upon re-logging in.
 
 ### Permissions and Access
+
 - Librarians do not have access to search or modify existing loans or reservations. To assist customers, librarians must use the logged-in user view of the customer.
 - Librarians cannot see which user has which loans connected to them in the current version of the program.
 - There is no functionality for blocking users to keep the project scope within time bounds.
@@ -28,10 +30,12 @@ This document outlines the functional and non-functional boundaries of the curre
 ## Search and Filtering
 
 ### Search Functionality
+
 - The filter function in search fields will not be implemented in the current version of the system due to budget restraints. It is planned for implementation in a later project cycle.
 - A copy of an item cannot be deleted directly via its barcode, as barcodes are not searchable values. Librarians and admins must search for an item, locate the barcode in the list of barcodes, and then delete it. In future versions, a quick function for scanning or entering a barcode to delete a copy directly will be implemented.
 
 ### Categorization and Attributes
+
 - Fields for categorizing journals are limited in this version. Future expansions could include attributes like discipline, level of specialization, and article type. However, this would require remodeling the database and is beyond the current project scope.
 - Keywords, authors, actors, genres, and directors associated with an item are limited to five per type. This limitation ensures a user-friendly GUI and safe input fields.
 
@@ -40,9 +44,11 @@ This document outlines the functional and non-functional boundaries of the curre
 ## Reservations and Loans
 
 ### Reservations
+
 - Reservations functionality is not available in the current version.
 
 ### Loans
+
 - Overdue loans are only shown in a list. There is no fine management or functionality for blocking users with overdue loans.
 
 ---
@@ -50,14 +56,17 @@ This document outlines the functional and non-functional boundaries of the curre
 ## Security and Privacy
 
 ### Social Security Numbers
+
 - Librarians and admins do not have their Social Security Numbers stored in the system. This decision aligns with the database design, which enforces unique constraints on Social Security Numbers for borrowers and user IDs for admins and librarians. Only one of these identifiers is used for login, depending on the user's role. Since the library system is not intended to function as an HR system, this approach is acceptable for this version.
 
 ### UUID Usage
+
 - Social Security Numbers are used as UUIDs in the program but are not stored in the database for security reasons. In the database, they are only used as unique identifiers.
 
 ---
 
 ## Future Considerations
+
 - **Email Integration**: Future versions will include email functionality for secure password sharing and email change confirmations.
 - **Barcode Search**: A quick function for scanning or entering barcodes to delete copies of items directly will be implemented in later versions.
 - **Journal Categorization**: Expanded fields for journal categorization will be considered in future versions, requiring a less tightly coupled database design.
