@@ -10,7 +10,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/javafullstacklibrary/frontend/Start_View_Guest.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Start_View_Guest.fxml"));
             primaryStage.setTitle("JavaFX Library App");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
