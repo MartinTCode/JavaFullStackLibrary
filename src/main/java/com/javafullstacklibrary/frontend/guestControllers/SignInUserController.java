@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.frontend;
+package com.javafullstacklibrary.frontend.guestControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class SignInUserController {
     private void clickedHomeMenuGuest() {
         try {
             // Load Start_View_Guest.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/Start_View_Guest.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Start_View_Guest.fxml"));
             Parent root = loader.load();
 
 
@@ -42,7 +42,7 @@ public class SignInUserController {
     private void clickedSearchMenuGuest() {
         try {
             // Load Start_View_Guest.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/Search_Menu_Guest.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Search_Menu_Guest.fxml"));
             Parent root = loader.load();
 
             // Get the current stage from mainPane
