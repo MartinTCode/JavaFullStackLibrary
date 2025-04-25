@@ -11,6 +11,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SignInStaffController {
+    // Path to the FXML guest files
+    // This path is used to load the FXML files for the GUI
+    private static final String fxmlPathGuest = "/com/javafullstacklibrary/frontend/guestViews/";
+
     @FXML
     private Pane mainPane;
 
@@ -24,8 +28,8 @@ public class SignInStaffController {
     @FXML
     private void clickedHomeMenuGuest() {
         try {
-            // Load Start_View_Guest.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Start_View_Guest.fxml"));
+            // Load fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Start_View_Guest.fxml"));
             Parent root = loader.load();
 
 
@@ -41,8 +45,8 @@ public class SignInStaffController {
     @FXML
     private void clickedSearchMenuGuest() {
         try {
-            // Load Start_View_Guest.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Search_Menu_Guest.fxml"));
+            // Load fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Search_Menu_Guest.fxml"));
             Parent root = loader.load();
 
             // Get the current stage from mainPane
