@@ -1,6 +1,5 @@
 package com.javafullstacklibrary;
 
-import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 
 import javafx.application.Application;
