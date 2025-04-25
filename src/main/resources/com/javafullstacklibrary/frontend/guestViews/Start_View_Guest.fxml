@@ -21,7 +21,7 @@
       </ImageView>
 
       <!-- Top Menu Background -->
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="0.0" layoutY="0.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" layoutX="0.0" layoutY="0.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
 
       <!-- Top Menu Buttons -->
       <FlowPane layoutX="0.0" layoutY="0.0" prefHeight="49.0" prefWidth="600.0" hgap="0.0">
