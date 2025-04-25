@@ -20,7 +20,7 @@
       <!-- Background Image -->
       <ImageView fitHeight="413.0" fitWidth="600.0" layoutY="-6.0">
          <image>
-            <Image url="@/com/javafullstacklibrary/frontend/images/olga-tutunaru-plbb7pkEjkQ-unsplash.jpg" />
+            <Image url="@/com/javafullstacklibrary/frontend/images/background.jpg" />
          </image>
       </ImageView>
 
