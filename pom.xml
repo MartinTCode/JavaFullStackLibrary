@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.javafullstacklibrary</groupId>
-    <artifactId>my-project</artifactId>
+    <artifactId>javafullstacklibrary</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -37,13 +37,10 @@
         </dependency>
 
         <!-- Connection Pool -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-        </dependency>
+        <!-- not included due to project parameters, only running on localhost.
+        Should be included if project grows into a real-world application -->
 
-        <!-- Testing -->
+        <!-- Testing with JUnit Jupiter (most widely used Java testing framework)-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -79,7 +76,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Build executable JAR -->
+            <!-- Build executable JAR, points to main -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -101,7 +98,7 @@
                 </executions>
             </plugin>
 
-            <!-- Copy resources -->
+            <!-- Copy resources, e.g. documentation etc into build -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
