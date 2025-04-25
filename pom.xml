@@ -98,7 +98,7 @@
                 </executions>
             </plugin>
 
-            <!-- Copy resources, e.g. documentation etc into build -->
+            <!-- Copy resources, viz. documentation into build deliverable-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -111,10 +111,12 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <!-- Output directory for copied resources -->
                             <outputDirectory>${project.build.directory}/classes/docs</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/docs</directory>
+                                    <!-- Directory containing the resources to be copied -->
+                                    <directory>${project.basedir}/docs</directory>
                                 </resource>
                             </resources>
                         </configuration>
