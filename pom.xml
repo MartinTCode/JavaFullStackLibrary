@@ -80,7 +80,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
+                <!-- latest version is 3.5.0, latest LTS is 3.4.1, revert if needed--> 
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -89,10 +90,46 @@
                         </goals>
                         <configuration>
                             <transformers>
+                                <!-- Specifies the main class in the manifest file of the shaded JAR, enabling it to be executed with 'java -jar'. -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.javafullstacklibrary.frontend.Launcher</mainClass>
                                 </transformer>
+                                <!-- Merges the reflection configuration file for general use -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig.json</resource>
+                                </transformer>
+                                <!-- Merges the reflection configuration file for Android (aarch64) -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-aarch64-android.json</resource>
+                                </transformer>
+                                <!-- Merges the reflection configuration file for iOS (arm64) -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-arm64-ios.json</resource>
+                                </transformer>
+                                <!-- Merges the reflection configuration file for iOS (x86_64) -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/reflectionconfig-x86_64-ios.json</resource>
+                                </transformer>
+                                <!-- Merges the resource bundles configuration file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/substrate/config/resourcebundles</resource>
+                                </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <!-- Exclude all signature files from shaded JAR since shading will invalidate them. -->
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <!-- Exlude manifest from shaded JAR since they conflict.-->
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <!-- Exclude module-info.class since project is not using module system. -->
+                                        <exclude>module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
