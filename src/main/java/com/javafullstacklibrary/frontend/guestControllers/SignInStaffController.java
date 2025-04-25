@@ -30,6 +30,7 @@ public class SignInStaffController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Start_View_Guest.fxml"));
+            loader.setController(new StartViewGuestController());
             Parent root = loader.load();
 
 
@@ -47,6 +48,7 @@ public class SignInStaffController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Search_Menu_Guest.fxml"));
+            loader.setController(new SearchMenuGuestController());
             Parent root = loader.load();
 
             // Get the current stage from mainPane
@@ -91,6 +93,7 @@ public class SignInStaffController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Sign_In_User.fxml"));
+            loader.setController(new SignInUserController());
             Parent root = loader.load();
 
             // Get the current stage from mainPane

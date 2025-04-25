@@ -23,6 +23,7 @@ public class StartViewGuestController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Search_Menu_Guest.fxml"));
+            loader.setController(new SearchMenuGuestController());
             Parent root = loader.load();
 
 
@@ -39,6 +40,7 @@ public class StartViewGuestController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Sign_In_User.fxml"));
+            loader.setController(new SignInUserController());
             Parent root = loader.load();
     
             // Get the current stage from any node in the current scene

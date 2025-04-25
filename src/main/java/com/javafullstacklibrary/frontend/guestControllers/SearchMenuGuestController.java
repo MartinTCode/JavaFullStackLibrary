@@ -31,6 +31,7 @@ public class SearchMenuGuestController {
         try {
             // Load fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Start_View_Guest.fxml"));
+            loader.setController(new StartViewGuestController());
             Parent root = loader.load();
 
             // Get the current stage from mainPane
@@ -46,6 +47,7 @@ public class SearchMenuGuestController {
         try {
             // Load Sign_In_User.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Sign_In_User.fxml"));
+            loader.setController(new SignInUserController());
             Parent root = loader.load();
 
             // Get the current stage from mainPane
