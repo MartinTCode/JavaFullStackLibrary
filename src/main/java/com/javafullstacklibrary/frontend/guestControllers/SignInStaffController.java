@@ -88,6 +88,16 @@ public class SignInStaffController {
 
     @FXML
     private void clickedUserButton() {
-        System.out.println("User button clicked");
+        try {
+            // Load fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Sign_In_User.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage from mainPane
+            Stage stage = (Stage) mainPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
