@@ -26,8 +26,8 @@ stylesheets="@/com/javafullstacklibrary/frontend/styles/common.css">
       <FlowPane layoutX="0.0" layoutY="0.0" prefHeight="49.0" prefWidth="600.0" hgap="0.0">
          <children>
             <!-- Home Button -->
-            <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" pickOnBounds="true" 
-            preserveRatio="true" styleClass="image-view">
+            <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" 
+            styleClass="image-view">
                <image>
                   <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButton.png" />
                </image>
@@ -35,7 +35,7 @@ stylesheets="@/com/javafullstacklibrary/frontend/styles/common.css">
 
             <!-- Search Button -->
             <ImageView fx:id="searchMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSearchMenuGuest" 
-            pickOnBounds="true" preserveRatio="true" styleClass="image-view">
+            styleClass="image-view">
                <image>
                   <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
                </image>
@@ -43,7 +43,7 @@ stylesheets="@/com/javafullstacklibrary/frontend/styles/common.css">
 
             <!-- Sign In Button -->
             <ImageView fx:id="signInMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSignInMenuGuest" 
-            pickOnBounds="true" preserveRatio="true" styleClass="image-view">
+            styleClass="image-view">
                <image>
                   <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
                </image>
