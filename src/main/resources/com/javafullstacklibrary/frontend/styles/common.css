@@ -1,0 +1,122 @@
+/* General Styles */
+.root {
+    -fx-background-image: url("../images/background.jpg");
+    -fx-background-size: cover; /* Stretches the image, cropping if necessary */
+    -fx-background-position: center; /* Centers the image */
+    -fx-background-repeat: no-repeat; /* Ensures the image doesn't repeat */
+    font-family: "Arial"; /* Standard CSS property for compatibility */
+    -fx-font-family: "Arial"; /* JavaFX-specific property */
+}
+
+/* Rectangle Styles */
+
+/* Semi-transparent rectangle for center content */
+.rectangle-center {
+    fill: white; 
+    -fx-fill: white;
+    opacity: 0.8;
+    -fx-opacity: 0.8;
+    stroke: black;
+    -fx-stroke: black;
+    -fx-stroke-type: inside;
+    -fx-arc-height: 50;
+    -fx-arc-width: 50;
+}
+
+/* Top menu background rectangle */
+.rectangle-top-menu {
+    fill: white;
+    -fx-fill: white;
+    opacity: 0.8;
+    -fx-opacity: 0.8;
+    stroke: black;
+    -fx-stroke: black;
+    -fx-stroke-type: inside;
+    /*stroke-width: 0px;
+    -fx-stroke-width: 0;
+    -fx-arc-height: 0;
+    -fx-arc-width: 0; */
+}
+
+/* Button Styles */
+.button {
+    background-color: #648AB4;
+    -fx-background-color: #648AB4;
+    color: white;
+    -fx-text-fill: white;
+    -fx-pick-on-bounds: true;
+}
+
+/* Toggle Button Styles */
+.toggle-button {
+    background-color: #648AB4;
+    -fx-background-color: #648AB4;
+    color: white;
+    -fx-text-fill: white;
+}
+
+.toggle-button-selected {
+    background-color: white;
+    -fx-background-color: white;
+    color: black;
+    -fx-text-fill: black;
+}
+
+/* MenuButton Styles */
+.menu-button {
+    opacity: 0.8;
+    -fx-opacity: 0.8;
+}
+
+/* TextField Styles */
+.text-field {
+    height: 25px;
+    -fx-pref-height: 25;
+    width: 273px;
+    -fx-pref-width: 273;
+}
+
+/* Text Styles */
+.text-title {
+    font-size: 27px;
+    -fx-font-size: 27px;
+}
+
+.text-link {
+    color: #648AB4; /* Standard CSS property for text color */
+    fill: #648AB4; /* Standard CSS property for compatibility */
+    -fx-fill: #648AB4; /* JavaFX-specific property for text color */
+    text-decoration: underline;
+    -fx-underline: true;
+    cursor: pointer;
+    -fx-cursor: hand;
+}
+
+/* Label Styles */
+.label {
+    text-align: center;
+    -fx-alignment: center;
+    -fx-content-display: center;
+}
+
+/* ImageView Styles */
+.image-view {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+}
+
+/* FlowPane Padding */
+.flow-pane-padding {
+    padding: 5px 0 0 5px;
+    -fx-padding: 5 0 0 5;
+}
+
+/* Bottom Menu Padding */
+.bottom-menu-padding {
+    padding: 0 30px 0 0;
+    -fx-padding: 0 30 0 0;
+}
