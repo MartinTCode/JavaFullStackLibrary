@@ -47,6 +47,7 @@ public class SearchMenuGuestController {
         // Functionality not implemented in current version. 
     }
 
+    // FIXME: center "SEARCH" button acts currently as top menu SEARCH button, wrong fx:id?.
     @FXML
     private void clickedSearchButton() {
         // Print the search query
