@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -92,8 +93,8 @@
                            </font>
                         </Text>
                         
-                        <!-- Social Security Number Field -->
-                        <TextField fx:id="ssnField" prefHeight="25.0" prefWidth="273.0" text="Social Security Number (YYYYMMDD-XXXX)" />
+                        <!-- Username Field -->
+                        <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="273.0" text="Username" />
                         <!-- Password Management-->
                         <VBox prefHeight="38.0" prefWidth="285.0">
                            <children>
@@ -103,9 +104,14 @@
                               <Text fx:id="forgotPasswordText" fill="#648ab4" onMouseClicked="#clickedfForgotPasswordText" pickOnBounds="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password?" underline="true" />
                            </children>
                         </VBox>
-
-                        <!-- Sign-in Button -->
-                        <Button fx:id="signInButton" mnemonicParsing="false" onMouseClicked="#clickedSignInButton" prefHeight="25.0" prefWidth="81.0" style="-fx-background-color: #648AB4;" text="Sign in" textFill="WHITE" />
+                        <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="285.0" spacing="20.0">
+                           <children>
+      
+                              <!-- Sign-in Button -->
+                              <Button fx:id="signInButtonAdmin" mnemonicParsing="false" onMouseClicked="#clickedSignInButtonAdmin" prefHeight="25.0" prefWidth="106.0" style="-fx-background-color: #648AB4;" text="Sign in - Admin" textFill="WHITE" />
+                              <Button fx:id="signInButtonLibrarian" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#clickedSignInButtonLibrarian" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #648AB4;" text="Sign in - Librarian" textFill="WHITE" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
@@ -119,10 +125,10 @@
             <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="626.0" BorderPane.alignment="CENTER_RIGHT">
                <children>
                   <!-- User Toggle -->
-                  <ToggleButton fx:id="userButton" prefHeight="25.0" prefWidth="56.0" selected="true" text="User" />
+                  <ToggleButton fx:id="userButton" onMouseClicked="#clickedUserButton" prefHeight="25.0" prefWidth="56.0" style="-fx-background-color: #648AB4;" text="User" textFill="WHITE" />
                   
                   <!-- Staff Toggle -->
-                  <ToggleButton fx:id="staffButton" onMouseClicked="#clickedStaffButton" prefHeight="25.0" prefWidth="56.0" style="-fx-background-color: #648AB4;" text="Staff" textFill="WHITE" />
+                  <ToggleButton fx:id="staffButton" prefHeight="25.0" prefWidth="56.0" selected="true" text="Staff" />
                </children>
                <padding>
                   <Insets right="30.0" />

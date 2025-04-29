@@ -4,18 +4,19 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
+
 import java.io.IOException;
 
 import com.javafullstacklibrary.utils.ViewLoader;
 
-public class SignInUserController {
+public class SignInStaffController {
 
     @FXML
     private Pane mainPane;
 
     // access input fields
     @FXML
-    private TextField ssnField;
+    private TextField usernameField;
 
     @FXML
     private TextField passwordField;
@@ -43,14 +44,26 @@ public class SignInUserController {
     }
 
     @FXML
-    private void clickedSignInButton() {
+    private void clickedSignInButtonAdmin() {
         // Print a message indicating the button was clicked
-        System.out.println("Sign-in button clicked");
+        System.out.println("Admin Sign-in button clicked");
 
         // Print the values entered in the text fields
-        String ssn = ssnField.getText();
+        String username = usernameField.getText();
         String password = passwordField.getText();
-        System.out.println("SSN: " + ssn);
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+    }
+
+    @FXML
+    private void clickedSignInButtonLibrarian() {
+        // Print a message indicating the button was clicked
+        System.out.println("Librarian Sign-in button clicked");
+
+        // Print the values entered in the text fields
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        System.out.println("SSN: " + username);
         System.out.println("Password: " + password);
     }
 
@@ -60,11 +73,12 @@ public class SignInUserController {
     }
 
     @FXML
-    private void clickedStaffButton() {
+    private void clickedUserButton() {
         try {
+            System.out.println("User button clicked");
             // Load fxml to stage
-            SignInStaffController controller = new SignInStaffController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_Staff.fxml", controller);
+            SignInUserController controller = new SignInUserController();
+            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
         } catch (IOException e) {
             e.printStackTrace();
         }
