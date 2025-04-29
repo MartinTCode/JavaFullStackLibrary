@@ -15,18 +15,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" 
+minHeight="-Infinity" minWidth="-Infinity" 
+prefHeight="400.0" prefWidth="600.0" 
+xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+stylesheets="@../styles/common.css">
    <children>
-      <!-- Background Image -->
-      <ImageView fitHeight="413.0" fitWidth="600.0" layoutY="-6.0">
-         <image>
-            <Image url="@/com/javafullstacklibrary/frontend/images/background.jpg" />
-         </image>
-      </ImageView>
-
       <!-- Main Layout -->
       <BorderPane layoutX="-4.0" layoutY="-6.0" prefHeight="413.0" prefWidth="600.0">
          <center>
@@ -34,28 +30,27 @@
             <StackPane prefHeight="270.0" prefWidth="612.0" BorderPane.alignment="CENTER">
                <children>
                   <!-- Semi-transparent Rectangle -->
-                  <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="218.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" style="-fx-background-radius: 50;" width="451.0" />
+                  <Rectangle height="218.0" width="451.0" styleClass="rectangle-center" />
                   
                   <!-- Search Form -->
-                  <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="213.0" prefWidth="404.0" spacing="20.0">
+                  <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="213.0" prefWidth="404.0" 
+                  spacing="20.0">
                      <children>
                         <!-- Search Title -->
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Library">
-                           <font>
-                              <Font size="27.0" />
-                           </font>
-                        </Text>
+                        <Text text="Search Library" styleClass="text-title" />
                         
                         <!-- Search Input and Filters -->
                         <VBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="404.0">
                            <children>
-                              <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="404.0" spacing="10.0">
+                              <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="404.0" 
+                              spacing="10.0">
                                  <children>
                                     <!-- Search Field -->
-                                    <TextField fx:id="searchField" prefHeight="64.0" prefWidth="307.0" />
+                                    <TextField fx:id="searchField" styleClass="text-field" />
                                     
-                                    <!-- Filter Button -->
-                                    <MenuButton fx:id="filterButton" disable="true" mnemonicParsing="false" onMouseClicked="#clickedFilterButton" text="Filters">
+                                    <!-- Filter Button NOT IMPLEMENTED-->
+                                    <MenuButton fx:id="filterButton" disable="true" 
+                                    mnemonicParsing="false" text="Filters" styleClass="menu-button">
                                        <items>
                                           <MenuItem mnemonicParsing="false" text="Action 1" />
                                           <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -65,12 +60,17 @@
                               </HBox>
                               
                               <!-- Search Instructions -->
-                              <Label alignment="CENTER" contentDisplay="CENTER" text="Search using titles, keywords, author, director or actors " />
+                              <Label alignment="CENTER" contentDisplay="CENTER" 
+                              text="Search using titles, keywords, author, director or actors " 
+                              styleClass="label" />
                            </children>
                         </VBox>
                         
                         <!-- Search Button -->
-                        <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#clickedSearchButton" prefHeight="25.0" prefWidth="103.0" style="-fx-background-color: #648AB4;" text="Search" textFill="WHITE" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" 
+                        text="Search" 
+                        styleClass="button" 
+                        onMouseClicked="#clickedSignInMenuGuest" />
                      </children>
                   </VBox>
                </children>
@@ -82,42 +82,34 @@
             <StackPane prefHeight="45.0" prefWidth="612.0" BorderPane.alignment="CENTER">
                <children>
                   <!-- Top Menu Background -->
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="49.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0">
-                     <StackPane.margin>
-                        <Insets />
-                     </StackPane.margin>
-                  </Rectangle>
+                  <Rectangle height="49.0" width="600.0" styleClass="rectangle-top-menu" />
                   
                   <!-- Top Menu Buttons -->
-                  <FlowPane prefHeight="55.0" prefWidth="626.0">
+                  <FlowPane prefHeight="55.0" prefWidth="626.0" styleClass="flow-pane-padding">
                      <children>
                         <!-- Home Button -->
-                        <ImageView fx:id="homeMenuGuest" fitHeight="55.0" fitWidth="70.0" onMouseClicked="#clickedHomeMenuGuest" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="homeMenuGuest" styleClass="image-view" 
+                        onMouseClicked="#clickedHomeMenuGuest" >
                            <image>
                               <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
                            </image>
                         </ImageView>
 
                         <!-- Search Button -->
-                        <ImageView fx:id="searchMenuGuest" fitHeight="55.0" fitWidth="70.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="searchMenuGuest" styleClass="image-view">
                            <image>
                               <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButton.png" />
                            </image>
                         </ImageView>
 
                         <!-- Sign In Button -->
-                        <ImageView fx:id="signInMenuGuest" fitHeight="55.0" fitWidth="70.0" focusTraversable="true" onMouseClicked="#clickedSignInMenuGuest" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="signInMenuGuest" styleClass="image-view" 
+                        onMouseClicked="#clickedSignInMenuGuest">
                            <image>
                               <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
                            </image>
                         </ImageView>
                      </children>
-                     <padding>
-                        <Insets left="5.0" top="5.0" />
-                     </padding>
-                     <StackPane.margin>
-                        <Insets />
-                     </StackPane.margin>
                   </FlowPane>
                </children>
                <BorderPane.margin>
@@ -128,10 +120,11 @@
 
          <bottom>
             <!-- Bottom Menu -->
-            <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="626.0" BorderPane.alignment="CENTER_RIGHT">
-               <padding>
-                  <Insets right="30.0" />
-               </padding>
+            <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="626.0" 
+            BorderPane.alignment="CENTER_RIGHT" styleClass="bottom-menu-padding">
+               <children>
+                  <!-- Bottom Menu Content -->
+               </children>
             </FlowPane>
          </bottom>
       </BorderPane>
