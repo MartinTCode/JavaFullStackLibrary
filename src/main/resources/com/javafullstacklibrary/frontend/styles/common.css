@@ -44,6 +44,7 @@
     -fx-background-color: #648AB4;
     color: white;
     -fx-text-fill: white;
+    -fx-pick-on-bounds: true;
 }
 
 /* Toggle Button Styles */
