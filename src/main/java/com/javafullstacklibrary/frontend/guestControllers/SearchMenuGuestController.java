@@ -1,21 +1,15 @@
 package com.javafullstacklibrary.frontend.guestControllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SearchMenuGuestController {
+import com.javafullstacklibrary.utils.ViewLoader;
 
-    // Path to the FXML guest files
-    // This path is used to load the FXML files for the GUI
-    private static final String fxmlPathGuest = "/com/javafullstacklibrary/frontend/guestViews/";
+public class SearchMenuGuestController {
 
     @FXML
     private Pane mainPane;
@@ -29,14 +23,9 @@ public class SearchMenuGuestController {
     @FXML
     private void clickedHomeMenuGuest() {
         try {
-            // Load fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Start_View_Guest.fxml"));
-            loader.setController(new StartViewGuestController());
-            Parent root = loader.load();
-
-            // Get the current stage from mainPane
-            Stage stage = (Stage) mainPane.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            // Load fxml to stage
+            StartViewGuestController controller = new StartViewGuestController();
+            ViewLoader.loadToStage(mainPane, "guestViews", "Start_View_Guest.fxml", controller);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,14 +34,9 @@ public class SearchMenuGuestController {
     @FXML
     private void clickedSignInMenuGuest() {
         try {
-            // Load Sign_In_User.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPathGuest + "Sign_In_User.fxml"));
-            loader.setController(new SignInUserController());
-            Parent root = loader.load();
-
-            // Get the current stage from mainPane
-            Stage stage = (Stage) mainPane.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            // Load fxml to stage
+            SignInUserController controller = new SignInUserController();
+            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
         } catch (IOException e) {
             e.printStackTrace();
         }
