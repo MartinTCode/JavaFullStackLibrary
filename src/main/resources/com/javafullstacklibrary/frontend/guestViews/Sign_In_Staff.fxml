@@ -12,130 +12,176 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" 
-minHeight="-Infinity" minWidth="-Infinity" 
-prefHeight="400.0" prefWidth="600.0" 
-xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
-stylesheets="@../styles/common.css">
-   <children>
-      <!-- Background Image -->
-      <ImageView fitHeight="413.0" fitWidth="600.0" layoutY="-6.0">
-         <image>
-            <Image url="@/com/javafullstacklibrary/frontend/images/background.jpg" />
-         </image>
-      </ImageView>
+<BorderPane 
+    fx:id="mainPane" 
+    minHeight="400.0" 
+    minWidth="600.0" 
+    prefHeight="400.0" 
+    prefWidth="600.0" 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1" 
+    stylesheets="@../styles/common.css">
 
-      <!-- Main Layout -->
-      <BorderPane layoutX="-4.0" layoutY="-6.0" prefHeight="413.0" prefWidth="600.0">
-         <top>
-            <!-- Top Menu -->
-            <StackPane prefHeight="45.0" prefWidth="612.0" BorderPane.alignment="CENTER">
+   <!-- Main Layout uses .root in CSS for background etc. -->
+
+   <top>
+      <!-- Top Menu Background -->
+      <StackPane
+         prefHeight="55.0">
+         <Region 
+            styleClass="top-menu-region" />
+      <!-- Top Menu Buttons -->
+      <StackPane 
+            prefHeight="55.0"  
+            BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane 
+                  prefHeight="55.0" 
+                  styleClass="flow-pane-padding">
                <children>
-                  <!-- Top Menu Background -->
-                  <Rectangle height="49.0" width="600.0" styleClass="rectangle-top-menu" />
-                  
-                  <!-- Top Menu Buttons -->
-                  <FlowPane prefHeight="55.0" prefWidth="626.0" styleClass="flow-pane-padding">
-                     <children>
-                        <!-- Home Button -->
-                        <ImageView fx:id="homeMenuGuest" styleClass="image-view" 
+                  <!-- Home Button -->
+                  <ImageView 
+                        fx:id="homeMenuGuest" 
+                        styleClass="image-view" 
                         onMouseClicked="#clickedHomeMenuGuest">
-                           <image>
-                              <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
-                           </image>
-                        </ImageView>
+                     <image>
+                        <Image 
+                              url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
+                     </image>
+                  </ImageView>
 
-                        <!-- Search Button -->
-                        <ImageView fx:id="searchMenuGuest" styleClass="image-view" 
+                  <!-- Search Button -->
+                  <ImageView 
+                        fx:id="searchMenuGuest" 
+                        styleClass="image-view" 
                         onMouseClicked="#clickedSearchMenuGuest">
-                           <image>
-                              <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
-                           </image>
-                        </ImageView>
+                     <image>
+                        <Image 
+                              url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
+                     </image>
+                  </ImageView>
 
-                        <!-- Sign In Button -->
-                        <ImageView fx:id="signInMenuGuest" styleClass="image-view">
-                           <image>
-                              <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButton.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </FlowPane>
-               </children>
-               <BorderPane.margin>
-                  <Insets left="3.0" />
-               </BorderPane.margin>
-            </StackPane>
-         </top>
-
-         <center>
-            <!-- Center Content -->
-            <StackPane prefHeight="270.0" prefWidth="612.0" BorderPane.alignment="CENTER">
-               <children>
-                  <!-- Semi-transparent Rectangle -->
-                  <Rectangle height="218.0" width="451.0" styleClass="rectangle-center" />
-                  
-                  <!-- Sign-in Form -->
-                  <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="358.0" 
-                  prefWidth="285.0" spacing="20.0">
-                     <children>
-                        <!-- Sign-in Title -->
-                        <Text text="Sign in" styleClass="text-title" />
-                        
-                        <!-- Username Field -->
-                        <TextField fx:id="usernameField" styleClass="text-field" text="Username" />
-                        
-                        <!-- Password Management -->
-                        <VBox prefHeight="38.0" prefWidth="285.0">
-                           <children>
-                              <!-- Password Field -->
-                              <TextField fx:id="passwordField" styleClass="text-field" 
-                              text="Password" />
-                              
-                              <!-- Forgot Password Link -->
-                              <Text fx:id="forgotPasswordText" styleClass="text-link" 
-                              onMouseClicked="#clickedfForgotPasswordText" text="Forgot password?" />
-                           </children>
-                        </VBox>
-                        
-                        <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="285.0" 
-                        spacing="20.0">
-                           <children>
-                              <!-- Sign-in Button for Admin -->
-                              <Button fx:id="signInButtonAdmin" styleClass="button" 
-                              onMouseClicked="#clickedSignInButtonAdmin" 
-                              text="Sign in - Admin" />
-                              
-                              <!-- Sign-in Button for Librarian -->
-                              <Button fx:id="signInButtonLibrarian" styleClass="button" 
-                              onMouseClicked="#clickedSignInButtonLibrarian" 
-                              text="Sign in - Librarian" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-         </center>
-
-         <bottom>
-            <!-- Bottom Menu -->
-            <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="626.0" 
-            BorderPane.alignment="CENTER_RIGHT" styleClass="bottom-menu-padding">
-               <children>
-                  <!-- User Toggle -->
-                  <ToggleButton fx:id="userButton" styleClass="toggle-button" 
-                  onMouseClicked="#clickedUserButton" text="User" />
-                  
-                  <!-- Staff Toggle -->
-                  <ToggleButton fx:id="staffButton" styleClass="toggle-button-selected" 
-                  text="Staff" />
+                  <!-- Sign In Button -->
+                  <ImageView 
+                        fx:id="signInMenuGuest" 
+                        styleClass="image-view">
+                     <image>
+                        <Image 
+                              url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButton.png" />
+                     </image>
+                  </ImageView>
                </children>
             </FlowPane>
-         </bottom>
-      </BorderPane>
-   </children>
-</Pane>
+         </children>
+      </StackPane>
+      </StackPane>
+   </top>
+
+   <center>
+      <!-- Center Content -->
+      <StackPane 
+            prefHeight="270.0" 
+            prefWidth="612.0" 
+            BorderPane.alignment="CENTER">
+         <children>
+            <!-- Semi-transparent Rectangle -->
+            <Rectangle 
+                  height="218.0" 
+                  width="451.0" 
+                  styleClass="rectangle-center" />
+            
+            <!-- Sign-in Form -->
+            <VBox 
+                  alignment="CENTER" 
+                  maxWidth="-Infinity" 
+                  prefHeight="358.0" 
+                  prefWidth="285.0" 
+                  spacing="20.0">
+               <children>
+                  <!-- Sign-in Title -->
+                  <Text 
+                        text="Sign in" 
+                        styleClass="text-title" />
+                  
+                  <!-- Username Field -->
+                  <TextField 
+                        fx:id="usernameField" 
+                        styleClass="text-field" 
+                        text="Username" />
+                  
+                  <!-- Password Management -->
+                  <VBox 
+                        prefHeight="38.0" 
+                        prefWidth="285.0">
+                     <children>
+                        <!-- Password Field -->
+                        <TextField 
+                              fx:id="passwordField" 
+                              styleClass="text-field" 
+                              text="Password" />
+                        
+                        <!-- Forgot Password Link -->
+                        <Text 
+                              fx:id="forgotPasswordText" 
+                              styleClass="text-link" 
+                              onMouseClicked="#clickedfForgotPasswordText" 
+                              text="Forgot password?" />
+                     </children>
+                  </VBox>
+                  
+                  <HBox 
+                        alignment="TOP_CENTER" 
+                        prefHeight="28.0" 
+                        prefWidth="285.0" 
+                        spacing="20.0">
+                     <children>
+                        <!-- Sign-in Button for Admin -->
+                        <Button 
+                              fx:id="signInButtonAdmin" 
+                              styleClass="button" 
+                              onMouseClicked="#clickedSignInButtonAdmin" 
+                              text="Sign in - Admin" />
+                        
+                        <!-- Sign-in Button for Librarian -->
+                        <Button 
+                              fx:id="signInButtonLibrarian" 
+                              styleClass="button" 
+                              onMouseClicked="#clickedSignInButtonLibrarian" 
+                              text="Sign in - Librarian" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </center>
+
+   <bottom>
+      <!-- Bottom Menu -->
+      <FlowPane 
+            alignment="CENTER_RIGHT" 
+            prefHeight="55.0" 
+            BorderPane.alignment="CENTER_RIGHT" 
+            styleClass="bottom-menu-padding">
+         <children>
+            <!-- User Toggle -->
+            <ToggleButton 
+                  fx:id="userButton" 
+                  styleClass="toggle-button" 
+                  onMouseClicked="#clickedUserButton" 
+                  text="User" />
+            
+            <!-- Staff Toggle -->
+            <ToggleButton 
+                  fx:id="staffButton" 
+                  styleClass="toggle-button-selected" 
+                  text="Staff" />
+         </children>
+      </FlowPane>
+   </bottom>
+
+</BorderPane>
