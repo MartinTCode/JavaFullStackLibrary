@@ -1,8 +1,12 @@
 /* General Styles */
 .root {
+    background-image: url("../images/background.jpg");
     -fx-background-image: url("../images/background.jpg");
+    background-size: cover;
     -fx-background-size: cover; /* Stretches the image, cropping if necessary */
+    background-position: center; 
     -fx-background-position: center; /* Centers the image */
+    background-repeat: no-repeat;
     -fx-background-repeat: no-repeat; /* Ensures the image doesn't repeat */
     font-family: "Arial"; /* Standard CSS property for compatibility */
     -fx-font-family: "Arial"; /* JavaFX-specific property */
@@ -23,19 +27,17 @@
     -fx-arc-width: 50;
 }
 
-/* Top menu background rectangle */
-.rectangle-top-menu {
-    fill: white;
-    -fx-fill: white;
-    opacity: 0.8;
-    -fx-opacity: 0.8;
+/* Semi-transparent region for top content */
+.top-menu-region {
+    background-color: white;
+    -fx-background-color: white;
+    opacity: 0.5;
+    -fx-opacity: 0.5;
     stroke: black;
-    -fx-stroke: black;
-    -fx-stroke-type: inside;
-    /*stroke-width: 0px;
-    -fx-stroke-width: 0;
-    -fx-arc-height: 0;
-    -fx-arc-width: 0; */
+    border-color: black;
+    -fx-border-color: black; 
+    border-width: 1px;
+    -fx-border-width: 1px;
 }
 
 /* Button Styles */
