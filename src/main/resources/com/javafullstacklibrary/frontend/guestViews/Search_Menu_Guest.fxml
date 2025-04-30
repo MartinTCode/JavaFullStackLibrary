@@ -50,30 +50,21 @@
                   <!-- Home Button -->
                   <ImageView 
                      fx:id="homeMenuGuest" 
-                     styleClass="image-view" 
+                     styleClass="home-icon-active" 
                      onMouseClicked="#clickedHomeMenuGuest" >
-                     <image>
-                        <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
-                     </image>
                   </ImageView>
 
                   <!-- Search Button -->
                   <ImageView 
                      fx:id="searchMenuGuest" 
-                     styleClass="image-view">
-                     <image>
-                        <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButton.png" />
-                     </image>
+                     styleClass="search-icon-inactive">
                   </ImageView>
 
                   <!-- Sign In Button -->
                   <ImageView 
                      fx:id="signInMenuGuest" 
-                     styleClass="image-view" 
+                     styleClass="sign-in-icon-active" 
                      onMouseClicked="#clickedSignInMenuGuest">
-                     <image>
-                        <Image url="@/com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
-                     </image>
                   </ImageView>
 
                </children>

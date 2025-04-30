@@ -111,6 +111,61 @@
     -fx-pick-on-bounds: true;
 }
 
+.home-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/StartNavigationButtonClickable.png");
+}
+.home-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/StartNavigationButton.png");
+}
+.search-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SearchNavigationButtonClickable.png");
+}
+.search-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SearchNavigationButton.png");
+}
+.sign-in-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignInNavigationButtonClickable.png");
+}
+.sign-in-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignInNavigationButton.png");
+}
+
 /* FlowPane Padding */
 .flow-pane-padding {
     padding: 5px 0 0 5px;
