@@ -13,24 +13,6 @@ public class ViewLoader {
 
     private static final String BASE_PATH = "/com/javafullstacklibrary/frontend/";
 
-    /**
-     * Loads a view from a given subfolder and FXML file name.
-     *
-     * @param viewFolder The folder inside frontend, e.g., "adminViews"
-     * @param fxmlFile   The FXML file name, e.g., "Dashboard.fxml"
-     * @return Parent node of the loaded FXML
-     * @throws IOException if the FXML file is not found or cannot be loaded
-     */
-    public static Parent load(String viewFolder, String fxmlFile) throws IOException {
-        String path = BASE_PATH + viewFolder + "/" + fxmlFile;
-        URL fxmlUrl = ViewLoader.class.getResource(path);
-
-        if (fxmlUrl == null) {
-            throw new IOException("FXML file not found at path: " + path);
-        }
-
-        return FXMLLoader.load(fxmlUrl);
-    }
     
     /**
      * Loads a view and sets it to the current stage.
@@ -53,9 +35,21 @@ public class ViewLoader {
         loader.setController(controller);
         Parent root = loader.load();
     
-        // Get the stage from the sourcePane (e.g., a button or anchor pane in current scene)
+        // Get the stage from the sourcePane
         Stage stage = (Stage) sourcePane.getScene().getWindow();
-        stage.setScene(new Scene(root));
+
+        // Preserve the current window size
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+
+        // Set the new scene
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
+
+        // Restore the previous window size
+        stage.setWidth(currentWidth);
+        stage.setHeight(currentHeight);
+
         stage.show();
     }
     
