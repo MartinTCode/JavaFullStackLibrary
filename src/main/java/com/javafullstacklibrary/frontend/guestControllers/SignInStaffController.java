@@ -75,7 +75,6 @@ public class SignInStaffController {
     @FXML
     private void clickedUserButton() {
         try {
-            System.out.println("User button clicked");
             // Load fxml to stage
             SignInUserController controller = new SignInUserController();
             ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
