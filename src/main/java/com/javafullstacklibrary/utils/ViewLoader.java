@@ -12,9 +12,16 @@ import java.util.function.Consumer;
 
 public class ViewLoader {
 
+    // Debug flag for logging
+    private static final boolean DEBUG = true;
+
     private static final String BASE_PATH = "/com/javafullstacklibrary/frontend/";
 
-    
+    private static void debugPrintln(String message) {
+        if (DEBUG) {
+            System.out.println(message);
+        }
+    }
     /**
      * Loads a view and sets it to the current stage.
      *
@@ -63,15 +70,15 @@ public class ViewLoader {
      * @param controllerInitializer A lambda or consumer to initialize the controller
      * @throws IOException if the FXML file is not found or cannot be loaded
      */
-    public static void loadToStageWithInit
-        (
+    public static void loadToStageWithInit(
         Pane sourcePane, 
         String viewFolder, 
         String fxmlFile,
         Consumer<Object> controllerInitializer
-        ) 
-        throws IOException 
+    ) 
+    throws IOException 
     {
+        debugPrintln("Entered loadToStageWithInit method");
         String path = BASE_PATH + viewFolder + "/" + fxmlFile;
         URL fxmlUrl = ViewLoader.class.getResource(path);
 
@@ -79,14 +86,29 @@ public class ViewLoader {
             throw new IOException("FXML file not found at path: " + path);
         }
 
+        // Create an FXMLLoader instance
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
-        Parent root = loader.load();
 
-        // Initialize the controller
-        Object controller = loader.getController();
-        if (controllerInitializer != null) {
-            controllerInitializer.accept(controller);
-        }
+        // Dynamically set the controller using the controllerInitializer
+        loader.setControllerFactory(param -> {
+            try {
+                // Dynamically create the controller instance
+                Object controller = param.getDeclaredConstructor().newInstance();
+                debugPrintln("Controller created: " + controller.getClass().getName());
+                if (controllerInitializer != null) {
+                    controllerInitializer.accept(controller); // Initialize the controller
+                    debugPrintln("Controller initialized");
+                }
+                return controller;
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create controller instance", e);
+            }
+        });
+        debugPrintln("Controller factory set");
+
+        // Load the FXML file
+        Parent root = loader.load();
+        debugPrintln("FXML loaded");
 
         // Get the stage from the sourcePane
         Stage stage = (Stage) sourcePane.getScene().getWindow();
