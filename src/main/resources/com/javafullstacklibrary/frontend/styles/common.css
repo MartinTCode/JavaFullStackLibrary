@@ -40,6 +40,53 @@
     -fx-border-width: 1px;
 }
 
+/* VBox that wraps the results section */
+.results-box {
+    background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+    -fx-background-radius: 16;
+    padding: 15px;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+
+/* ScrollPane main style */
+.scroll-pane-custom {
+    background-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    padding: 0;
+    -fx-padding: 0;
+}
+
+/* The viewport (scroll content area) inside the ScrollPane */
+.scroll-pane-custom > .viewport {
+    background-color: transparent;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 16;
+}
+
+/* Customize scrollbars */
+.scroll-pane-custom .scroll-bar:vertical,
+.scroll-pane-custom .scroll-bar:horizontal {
+    background-color: transparent;
+    -fx-background-color: transparent;
+    padding: 2px;
+    -fx-padding: 2;
+}
+
+/* Scrollbar track and thumb styling */
+.scroll-pane-custom .thumb {
+    background-color: #999999;
+    -fx-background-color: #999999;
+    -fx-background-radius: 8;
+}
+
+.scroll-pane-custom .track {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
 /* Button Styles */
 .button {
     background-color: #648AB4;
