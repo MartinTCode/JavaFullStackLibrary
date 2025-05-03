@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.function.Consumer;
 
 public class ViewLoader {
 
@@ -53,5 +54,56 @@ public class ViewLoader {
         stage.show();
     }
     
+    /**
+     * Loads a view, sets it to the current stage, and allows passing arguments to the controller.
+     *
+     * @param sourcePane  The pane from which the stage is obtained
+     * @param viewFolder  The folder inside frontend, e.g., "adminViews"
+     * @param fxmlFile    The FXML file name, e.g., "Dashboard.fxml"
+     * @param controllerInitializer A lambda or consumer to initialize the controller
+     * @throws IOException if the FXML file is not found or cannot be loaded
+     */
+    public static void loadToStageWithInit
+        (
+        Pane sourcePane, 
+        String viewFolder, 
+        String fxmlFile,
+        Consumer<Object> controllerInitializer
+        ) 
+        throws IOException 
+    {
+        String path = BASE_PATH + viewFolder + "/" + fxmlFile;
+        URL fxmlUrl = ViewLoader.class.getResource(path);
+
+        if (fxmlUrl == null) {
+            throw new IOException("FXML file not found at path: " + path);
+        }
+
+        FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        Parent root = loader.load();
+
+        // Initialize the controller
+        Object controller = loader.getController();
+        if (controllerInitializer != null) {
+            controllerInitializer.accept(controller);
+        }
+
+        // Get the stage from the sourcePane
+        Stage stage = (Stage) sourcePane.getScene().getWindow();
+
+        // Preserve the current window size
+        double currentWidth = stage.getWidth();
+        double currentHeight = stage.getHeight();
+
+        // Set the new scene
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
+
+        // Restore the previous window size
+        stage.setWidth(currentWidth);
+        stage.setHeight(currentHeight);
+
+        stage.show();
+    }
 
 }
