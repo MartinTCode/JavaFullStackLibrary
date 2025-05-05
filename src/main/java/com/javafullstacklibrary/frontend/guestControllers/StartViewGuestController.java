@@ -3,9 +3,7 @@ package com.javafullstacklibrary.frontend.guestControllers;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
-
-import com.javafullstacklibrary.utils.ViewLoader;
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 
 public class StartViewGuestController {
@@ -15,23 +13,11 @@ public class StartViewGuestController {
 
     @FXML
     private void clickedSearchMenuGuest() {
-       try {
-            // Load fxml to stage
-            SearchMenuGuestController controller = new SearchMenuGuestController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Search_Menu_Guest.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane,"Search");
     }
 
     @FXML
     private void clickedSignInMenuGuest() {
-        try {
-            // Load fxml to stage
-            SignInUserController controller = new SignInUserController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane,"SignIn");
     }
 }

@@ -8,20 +8,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.function.Consumer;
 
 public class ViewLoader {
 
-    // Debug flag for logging
-    private static final boolean DEBUG = true;
-
+    /**
+     * Base path for the FXML files.
+     * This should be the path relative to the classpath.
+     */
     private static final String BASE_PATH = "/com/javafullstacklibrary/frontend/";
 
-    private static void debugPrintln(String message) {
-        if (DEBUG) {
-            System.out.println(message);
-        }
-    }
     /**
      * Loads a view and sets it to the current stage.
      *
@@ -32,100 +27,66 @@ public class ViewLoader {
      * @throws IOException if the FXML file is not found or cannot be loaded
      */
     public static void loadToStage(Pane sourcePane, String viewFolder, String fxmlFile, Object controller) throws IOException {
-        String path = BASE_PATH + viewFolder + "/" + fxmlFile;
-        URL fxmlUrl = ViewLoader.class.getResource(path);
-    
-        if (fxmlUrl == null) {
-            throw new IOException("FXML file not found at path: " + path);
-        }
-    
-        FXMLLoader loader = new FXMLLoader(fxmlUrl);
-        loader.setController(controller);
-        Parent root = loader.load();
-    
-        // Get the stage from the sourcePane
-        Stage stage = (Stage) sourcePane.getScene().getWindow();
-
-        // Preserve the current window size
-        double currentWidth = stage.getWidth();
-        double currentHeight = stage.getHeight();
-
-        // Set the new scene
-        Scene newScene = new Scene(root);
-        stage.setScene(newScene);
-
-        // Restore the previous window size
-        stage.setWidth(currentWidth);
-        stage.setHeight(currentHeight);
-
-        stage.show();
+        String path = buildFxmlPath(viewFolder, fxmlFile);
+        Parent root = loadFxml(path, controller);
+        Stage stage = getStageFromPane(sourcePane);
+        setSceneToStage(stage, root);
     }
-    
+
     /**
-     * Loads a view, sets it to the current stage, and allows passing arguments to the controller.
+     * Builds the full path to the FXML file.
      *
-     * @param sourcePane  The pane from which the stage is obtained
-     * @param viewFolder  The folder inside frontend, e.g., "adminViews"
-     * @param fxmlFile    The FXML file name, e.g., "Dashboard.fxml"
-     * @param controllerInitializer A lambda or consumer to initialize the controller
+     * @param viewFolder The folder inside frontend
+     * @param fxmlFile   The FXML file name
+     * @return The full path to the FXML file
+     */
+    private static String buildFxmlPath(String viewFolder, String fxmlFile) {
+        return BASE_PATH + viewFolder + "/" + fxmlFile;
+    }
+
+    /**
+     * Loads the FXML file and sets the controller.
+     *
+     * @param path       The path to the FXML file
+     * @param controller The controller instance
+     * @return The loaded Parent node
      * @throws IOException if the FXML file is not found or cannot be loaded
      */
-    public static void loadToStageWithInit(
-        Pane sourcePane, 
-        String viewFolder, 
-        String fxmlFile,
-        Consumer<Object> controllerInitializer
-    ) 
-    throws IOException 
-    {
-        debugPrintln("Entered loadToStageWithInit method");
-        String path = BASE_PATH + viewFolder + "/" + fxmlFile;
+    private static Parent loadFxml(String path, Object controller) throws IOException {
         URL fxmlUrl = ViewLoader.class.getResource(path);
-
         if (fxmlUrl == null) {
             throw new IOException("FXML file not found at path: " + path);
         }
-
-        // Create an FXMLLoader instance
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
+        loader.setController(controller);
+        return loader.load();
+    }
 
-        // Dynamically set the controller using the controllerInitializer
-        loader.setControllerFactory(param -> {
-            try {
-                // Dynamically create the controller instance
-                Object controller = param.getDeclaredConstructor().newInstance();
-                debugPrintln("Controller created: " + controller.getClass().getName());
-                if (controllerInitializer != null) {
-                    controllerInitializer.accept(controller); // Initialize the controller
-                    debugPrintln("Controller initialized");
-                }
-                return controller;
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to create controller instance", e);
-            }
-        });
-        debugPrintln("Controller factory set");
+    /**
+     * Retrieves the Stage from the given Pane.
+     *
+     * @param sourcePane The Pane from which the Stage is obtained
+     * @return The Stage instance
+     */
+    private static Stage getStageFromPane(Pane sourcePane) {
+        return (Stage) sourcePane.getScene().getWindow();
+    }
 
-        // Load the FXML file
-        Parent root = loader.load();
-        debugPrintln("FXML loaded");
-
-        // Get the stage from the sourcePane
-        Stage stage = (Stage) sourcePane.getScene().getWindow();
-
-        // Preserve the current window size
+    /**
+     * Sets a new scene to the stage while preserving its size.
+     *
+     * @param stage The Stage to update
+     * @param root  The root node for the new scene
+     */
+    private static void setSceneToStage(Stage stage, Parent root) {
         double currentWidth = stage.getWidth();
         double currentHeight = stage.getHeight();
 
-        // Set the new scene
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
 
-        // Restore the previous window size
         stage.setWidth(currentWidth);
         stage.setHeight(currentHeight);
-
         stage.show();
     }
-
 }

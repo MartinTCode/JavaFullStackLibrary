@@ -4,10 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-
-import java.io.IOException;
-
-import com.javafullstacklibrary.utils.ViewLoader;
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 public class SignInStaffController {
 
@@ -23,24 +20,12 @@ public class SignInStaffController {
 
     @FXML
     private void clickedHomeMenuGuest() {
-        try {
-            // Load fxml to stage
-            StartViewGuestController controller = new StartViewGuestController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Start_View_Guest.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuGuest() {
-        try {
-            // Load fxml to stage
-            SearchMenuGuestController controller = new SearchMenuGuestController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Search_Menu_Guest.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "Search");
     }
 
     @FXML
@@ -74,12 +59,6 @@ public class SignInStaffController {
 
     @FXML
     private void clickedUserButton() {
-        try {
-            // Load fxml to stage
-            SignInUserController controller = new SignInUserController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "SignInUser");
     }
 }

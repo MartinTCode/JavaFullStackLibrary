@@ -8,15 +8,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
+import javafx.fxml.Initializable;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-import com.javafullstacklibrary.utils.ViewLoader;
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.DataSingleton;
 
+public class SearchViewGuestController implements Initializable {
 
-public class SearchViewGuestController {
-    public SearchViewGuestController() {
-        // Default constructor
-    }
+    // Singleton instance to store and fetch search query
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
     @FXML
     private Pane mainPane;
@@ -39,37 +41,53 @@ public class SearchViewGuestController {
     @FXML
     private Button loadMoreButton;
 
+    /**
+     * Initializes the controller after the root element has been completely processed.
+     * Retrieves the search query from the DataSingleton and sets it in the search field.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if not known.
+     * @param resources The resources used to localize the root object, or null if not specified.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String searchQuery = DataSingleton.getInstance().getSearchQuery();
+        if (searchQuery != null) {
+            System.out.println("Retrieved search query: " + searchQuery);
+            setSearchQuery(searchQuery);
+        }
+    }
+
+    /**
+     * Handles the action when the "Home" menu button is clicked.
+     * Navigates the user to the home view.
+     */
     @FXML
     private void clickedHomeMenuGuest() {
-        try {
-            // Navigate to the home view
-            StartViewGuestController controller = new StartViewGuestController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Start_View_Guest.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "Home");
     }
 
+    /**
+     * Handles the action when the "Sign In" menu button is clicked.
+     * Navigates the user to the sign-in view.
+     */
     @FXML
     private void clickedSignInMenuGuest() {
-        try {
-            // Navigate to the sign-in view
-            SignInUserController controller = new SignInUserController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "SignIn");
     }
 
+    /**
+     * Handles the action when the search button is clicked.
+     * Retrieves the search query from the search field, simulates search results,
+     * and displays them in the results container.
+     */
     @FXML
     private void clickedSearchButton() {
-        // Handle the search button click
         String query = searchField.getText();
         System.out.println("Search query: " + query);
 
-        // Simulate search results
-        resultsCountLabel.setText("Search query resulted in X matches");
+        setResultsCountLabel(10); // Simulate setting the results count
         resultsContainer.getChildren().clear(); // Clear previous results
+
         // Add mock results (replace with actual search logic)
         for (int i = 1; i <= 5; i++) {
             Label result = new Label("Result " + i + " for query: " + query);
@@ -78,23 +96,34 @@ public class SearchViewGuestController {
         loadMoreButton.setVisible(true); // Show the load more button
     }
 
+    private void setResultsCountLabel(int count) {
+        resultsCountLabel.setText("Search query resulted in " + count + " matches");
+    }
+
+    /**
+     * Handles the action when the "Load More" button is clicked.
+     * Simulates loading additional search results and appends them to the results container.
+     */
     @FXML
     private void handleLoadMoreResults() {
-        // Handle the "Load More" button click
         System.out.println("Loading more results...");
+        
         // Add mock additional results (replace with actual logic)
         for (int i = 6; i <= 10; i++) {
-            Label result = new Label("Additional Result " + i);
+            Label result = new Label("Additional Result " + i + " for query: " + searchField.getText()
+            + ".\nShowing how it can hold more data in same box");
             resultsContainer.getChildren().add(result);
         }
         loadMoreButton.setVisible(false); // Hide the button after loading more results
     }
 
+    /**
+     * Sets the search query in the search field and triggers the search logic.
+     *
+     * @param query The search query to set in the search field.
+     */
     public void setSearchQuery(String query) {
-        // Set the query in the search field
         searchField.setText(query);
-
-        // Optionally, trigger the search logic
         clickedSearchButton();
     }
 }
