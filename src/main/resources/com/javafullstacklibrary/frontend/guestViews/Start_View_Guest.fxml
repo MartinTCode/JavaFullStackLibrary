@@ -4,71 +4,110 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" 
-minHeight="-Infinity" minWidth="-Infinity" 
-prefHeight="400.0" prefWidth="600.0" 
-xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" 
-stylesheets="@/com/javafullstacklibrary/frontend/styles/common.css">
-   <children>
-      
+<BorderPane 
+    fx:id="mainPane" 
+    minHeight="400.0" 
+    minWidth="600.0" 
+    prefHeight="400.0" 
+    prefWidth="600.0"  
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1" 
+    stylesheets="@../styles/common.css">
 
+   <!-- Top borderPane layer -->
+   <top>
+      <StackPane
+         prefHeight="55.0">
       <!-- Top Menu Background -->
-      <Rectangle layoutX="0.0" layoutY="0.0" height="49.0" width="600.0" styleClass="rectangle-top-menu" />
-
-      <!-- Top Menu Buttons -->
-      <FlowPane layoutX="0.0" layoutY="0.0" prefHeight="49.0" prefWidth="600.0" hgap="0.0">
+         <Region 
+            styleClass="top-menu-region" />
+            
+      <!-- Top Menu Buttons-->
+      <StackPane 
+         prefHeight="55.0" 
+         BorderPane.alignment="CENTER">
          <children>
-            <!-- Home Button -->
-            <ImageView fx:id="homeMenuGuest" fitHeight="49.0" fitWidth="60.0" 
-            styleClass="image-view">
-               <image>
-                  <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/StartNavigationButton.png" />
-               </image>
-            </ImageView>
+            <!-- Top Menu Buttons -->
+            <FlowPane 
+               prefHeight="55.0" 
+               styleClass="flow-pane-padding">
+               <children>
+                  <!-- Home Button -->
+                  <ImageView 
+                     fx:id="homeMenuGuest" 
+                     styleClass="home-icon-inactive">
+                  </ImageView>
 
-            <!-- Search Button -->
-            <ImageView fx:id="searchMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSearchMenuGuest" 
-            styleClass="image-view">
-               <image>
-                  <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SearchNavigationButtonClickable.png" />
-               </image>
-            </ImageView>
+                  <!-- Search Button -->
+                  <ImageView 
+                     fx:id="searchMenuGuest" 
+                     onMouseClicked="#clickedSearchMenuGuest" 
+                     styleClass="search-icon-active">
+                  </ImageView>
 
-            <!-- Sign In Button -->
-            <ImageView fx:id="signInMenuGuest" fitHeight="49.0" fitWidth="60.0" onMouseClicked="#clickedSignInMenuGuest" 
-            styleClass="image-view">
-               <image>
-                  <Image url="com/javafullstacklibrary/frontend/figma_icons/navBarButtons/SignInNavigationButtonClickable.png" />
-               </image>
-            </ImageView>
+                  <!-- Sign In Button -->
+                  <ImageView 
+                     fx:id="signInMenuGuest" 
+                     onMouseClicked="#clickedSignInMenuGuest" 
+                     styleClass="sign-in-icon-active">
+                  </ImageView>
+               </children>
+            </FlowPane>
+         </children>
+      </StackPane> <!-- Closing tag added here -->
+      </StackPane>
+   </top>
+
+   <!-- Center borderPane layer -->
+   <center>
+      <!-- Center Content -->
+      <StackPane 
+         prefHeight="270.0" 
+         prefWidth="612.0" 
+         BorderPane.alignment="CENTER">
+         <children>
+            <!-- Semi-transparent Rectangle -->
+            <Rectangle 
+               height="218.0" 
+               width="451.0" 
+               styleClass="rectangle-center" />
+
+            <!-- Welcome Text -->
+            <VBox 
+               alignment="CENTER" 
+               prefHeight="200.0" 
+               prefWidth="100.0">
+               <children>
+                  <Text 
+                     strokeType="OUTSIDE" 
+                     text="Welcome to the Library" 
+                     styleClass="text-title" />
+                  <Text 
+                     strokeType="OUTSIDE" 
+                     text="Navigate using the top menu" />
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </center>
+
+   <!-- Bottom borderPane layer -->
+   <bottom>
+      <!-- Bottom Menu -->
+      <FlowPane 
+         alignment="CENTER_RIGHT" 
+         prefHeight="55.0" 
+         BorderPane.alignment="CENTER_RIGHT" 
+         styleClass="bottom-menu-padding">
+         <children>
+            <!-- Bottom Menu Content -->
          </children>
       </FlowPane>
-
-      <!-- Center Content -->
-      <BorderPane layoutX="0.0" layoutY="49.0" prefHeight="358.0" prefWidth="600.0">
-         <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <!-- Semi-transparent Rectangle -->
-                  <Rectangle height="218.0" width="451.0" styleClass="rectangle-center" />
-
-                  <!-- Welcome Text -->
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the Library" styleClass="text-title" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Navigate using the top menu" />
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-         </center>
-      </BorderPane>
-   </children>
-</Pane>
+   </bottom>
+</BorderPane>

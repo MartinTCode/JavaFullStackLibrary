@@ -22,8 +22,12 @@ public class MainApp extends Application {
             Parent root = loader.load();
             
             // Set up the stage
-            primaryStage.setTitle("JavaFX Library App");
             primaryStage.setScene(new Scene(root));
+            // Set minimum width and height for the stage (window)
+            primaryStage.setMinWidth(600);
+            primaryStage.setMinHeight(400);
+            // set title of window.
+            primaryStage.setTitle("JavaFX Library App");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,12 @@
 /* General Styles */
 .root {
+    background-image: url("../images/background.jpg");
     -fx-background-image: url("../images/background.jpg");
+    background-size: cover;
     -fx-background-size: cover; /* Stretches the image, cropping if necessary */
+    background-position: center; 
     -fx-background-position: center; /* Centers the image */
+    background-repeat: no-repeat;
     -fx-background-repeat: no-repeat; /* Ensures the image doesn't repeat */
     font-family: "Arial"; /* Standard CSS property for compatibility */
     -fx-font-family: "Arial"; /* JavaFX-specific property */
@@ -23,19 +27,64 @@
     -fx-arc-width: 50;
 }
 
-/* Top menu background rectangle */
-.rectangle-top-menu {
-    fill: white;
-    -fx-fill: white;
-    opacity: 0.8;
-    -fx-opacity: 0.8;
+/* Semi-transparent region for top content */
+.top-menu-region {
+    background-color: white;
+    -fx-background-color: white;
+    opacity: 0.5;
+    -fx-opacity: 0.5;
     stroke: black;
-    -fx-stroke: black;
-    -fx-stroke-type: inside;
-    /*stroke-width: 0px;
-    -fx-stroke-width: 0;
-    -fx-arc-height: 0;
-    -fx-arc-width: 0; */
+    border-color: black;
+    -fx-border-color: black; 
+    border-width: 1px;
+    -fx-border-width: 1px;
+}
+
+/* VBox that wraps the results section */
+.results-box {
+    background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+    -fx-background-radius: 16;
+    padding: 15px;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+}
+
+/* ScrollPane main style */
+.scroll-pane-custom {
+    background-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-radius: 16;
+    padding: 0;
+    -fx-padding: 0;
+}
+
+/* The viewport (scroll content area) inside the ScrollPane */
+.scroll-pane-custom > .viewport {
+    background-color: transparent;
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 16;
+}
+
+/* Customize scrollbars */
+.scroll-pane-custom .scroll-bar:vertical,
+.scroll-pane-custom .scroll-bar:horizontal {
+    background-color: transparent;
+    -fx-background-color: transparent;
+    padding: 2px;
+    -fx-padding: 2;
+}
+
+/* Scrollbar track and thumb styling */
+.scroll-pane-custom .thumb {
+    background-color: #999999;
+    -fx-background-color: #999999;
+    -fx-background-radius: 8;
+}
+
+.scroll-pane-custom .track {
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 /* Button Styles */
@@ -107,6 +156,61 @@
     -fx-fit-height: 55;
     -fx-preserve-ratio: true;
     -fx-pick-on-bounds: true;
+}
+
+.home-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/StartNavigationButtonClickable.png");
+}
+.home-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/StartNavigationButton.png");
+}
+.search-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SearchNavigationButtonClickable.png");
+}
+.search-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SearchNavigationButton.png");
+}
+.sign-in-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignInNavigationButtonClickable.png");
+}
+.sign-in-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignInNavigationButton.png");
 }
 
 /* FlowPane Padding */

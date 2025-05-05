@@ -5,11 +5,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
-
-import com.javafullstacklibrary.utils.ViewLoader;
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.DataSingleton;
 
 public class SearchMenuGuestController {
+
+    // Singleton instance to store search query
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
     @FXML
     private Pane mainPane;
@@ -22,24 +24,12 @@ public class SearchMenuGuestController {
 
     @FXML
     private void clickedHomeMenuGuest() {
-        try {
-            // Load fxml to stage
-            StartViewGuestController controller = new StartViewGuestController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Start_View_Guest.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "Home");
     }
 
     @FXML
     private void clickedSignInMenuGuest() {
-        try {
-            // Load fxml to stage
-            SignInUserController controller = new SignInUserController();
-            ViewLoader.loadToStage(mainPane, "guestViews", "Sign_In_User.fxml", controller);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MenuNavigationHelper.menuClickGuest(mainPane, "SignIn");
     }
 
     @FXML
@@ -52,6 +42,9 @@ public class SearchMenuGuestController {
         // Print the search query
         String query = searchField.getText();
         System.out.println("Search query: " + query);
-    }
-    
+        // Set the search query in the singleton instance
+        dataSingleton.setSearchQuery(query);
+        // Load the search results view
+        MenuNavigationHelper.menuClickGuest(mainPane, "SearchResults");
+}
 }
