@@ -1,0 +1,22 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+    <persistence-unit name="libraryPU" transaction-type="RESOURCE_LOCAL">
+        <class>com.javafullstacklibrary.model.Item</class>
+        <!-- Add other entity classes here -->
+
+        <properties>
+            <!-- Database connection properties -->
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/library" />
+            <property name="jakarta.persistence.jdbc.user" value="library_user" />
+            <property name="jakarta.persistence.jdbc.password" value="library_pass" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+
+            <!-- Hibernate-specific properties -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>
