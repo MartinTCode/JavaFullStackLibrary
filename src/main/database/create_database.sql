@@ -2,7 +2,7 @@ CREATE DATABASE library;
 USE library;
 
 CREATE TABLE item (
-    item_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     identifier VARCHAR(17),       -- e.g., ISBN-10, ISSN, IMDBC
     identifier2 VARCHAR(13),      -- e.g., ISBN-13
@@ -13,7 +13,7 @@ CREATE TABLE item (
 );
 
 CREATE TABLE creator (
-    creator_id INT PRIMARY KEY AUTO_INCREMENT,
+    creator_id SERIAL PRIMARY KEY,
     f_name VARCHAR(50) NOT NULL,
     l_name VARCHAR(50) NOT NULL,
     dob DATE
