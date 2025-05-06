@@ -15,6 +15,7 @@
         <javafx.version>23.0.1</javafx.version>
         <postgresql.version>42.5.4</postgresql.version>
         <springBoot.version>3.4.5</springBoot.version>
+        <jUnit.version>5.9.2</jUnit.version>
     </properties>
 
     <dependencies>
@@ -52,7 +53,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
+            <version>${jUnit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
