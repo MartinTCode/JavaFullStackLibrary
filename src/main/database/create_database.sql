@@ -48,7 +48,11 @@ CREATE TABLE location (
     floor VARCHAR(10) NOT NULL,
     section VARCHAR(50) NOT NULL,
     shelf VARCHAR(50) NOT NULL,
-    position VARCHAR(50) NOT NULL
+    position VARCHAR(50) NOT NULL,
+    -- The location must be unique for each item copy
+    -- This means that no two item copies can be in the same location at the same time.
+    CONSTRAINT unique_location_attributes UNIQUE (
+        floor, section, shelf, position)
 );
 
 CREATE TABLE creator (
