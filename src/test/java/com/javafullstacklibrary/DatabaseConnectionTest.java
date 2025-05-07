@@ -52,28 +52,46 @@ public class DatabaseConnectionTest {
 
         // Variables to track persisted entities
         Location location = null;
-        // Check if the language already exists
-        Language language = em.createQuery("SELECT l FROM Language l WHERE l.language = :language", Language.class)
-                            .setParameter("language", (String) testParams.get("language"))
-                            .getResultStream()
-                            .findFirst()
-                            .orElse(null);
+        Language language = null;
         Item item = null;
 
         try {
             // Begin a transaction for the entire test
             em.getTransaction().begin();
 
-            // Create and persist Location
-            debugPrint("Creating new location.");
-            location = new Location();
-            location.setFloor((String) testParams.get("floor"));
-            location.setSection((String) testParams.get("section"));
-            location.setShelf((String) testParams.get("shelf"));
-            location.setPosition((String) testParams.get("position"));
-            em.persist(location);
+            // Check if the Location already exists
+            debugPrint("Checking if location already exists.");
+            location = em.createQuery(
+                    "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
+                    Location.class)
+                .setParameter("floor", (String) testParams.get("floor"))
+                .setParameter("section", (String) testParams.get("section"))
+                .setParameter("shelf", (String) testParams.get("shelf"))
+                .setParameter("position", (String) testParams.get("position"))
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
 
-            // Create and persist Language if not already exists
+            if (location == null) {
+                debugPrint("Location not found, creating new one.");
+                location = new Location();
+                location.setFloor((String) testParams.get("floor"));
+                location.setSection((String) testParams.get("section"));
+                location.setShelf((String) testParams.get("shelf"));
+                location.setPosition((String) testParams.get("position"));
+                em.persist(location);
+            } else {
+                debugPrint("Location already exists, using existing one.");
+            }
+
+            // Check if the Language already exists
+            debugPrint("Checking if language already exists.");
+            language = em.createQuery("SELECT l FROM Language l WHERE l.language = :language", Language.class)
+                    .setParameter("language", (String) testParams.get("language"))
+                    .getResultStream()
+                    .findFirst()
+                    .orElse(null);
+
             if (language == null) {
                 debugPrint("Language not found, creating new one.");
                 language = new Language();
