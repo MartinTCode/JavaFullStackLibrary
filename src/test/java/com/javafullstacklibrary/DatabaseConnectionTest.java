@@ -157,6 +157,7 @@ public class DatabaseConnectionTest {
         debugPrint("Verified item: " + retrievedItem.toString());
     }
 
+    // FIXME: CANNOT DELETE DUE TO FOREIGN KEY CONSTRAINTS AND MISSING CASCADE DELETE DATABASE CONSTRAINTS
     private void cleanupTestData(EntityManager em) {
         debugPrint("Cleaning up test data.");
         em.getTransaction().begin();
