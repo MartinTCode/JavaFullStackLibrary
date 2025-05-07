@@ -71,6 +71,7 @@ This document outlines the functional and non-functional boundaries of the curre
 - **Barcode Search**: A quick function for scanning or entering barcodes to delete copies of items directly will be implemented in later versions.
 - **Journal Categorization**: Expanded fields for journal categorization will be considered in future versions, requiring a less tightly coupled database design.
 - **Filter Functionality**: Search filters will be implemented in a later project cycle to enhance search capabilities.
+- **Database Indexing**: Indexing in the database will not be included in the current version due to time limitations. However, we recognize its importance for improving query performance and plan to implement it in a future version.
 
 ---
 
