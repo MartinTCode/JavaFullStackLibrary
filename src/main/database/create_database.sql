@@ -50,7 +50,7 @@ CREATE TABLE item (
     country_of_production VARCHAR(100)
 );
 
-CREATE TYPE copy_status AS ENUM ('available', 'borrowed', 'reserved', 'lost');
+CREATE TYPE copy_status AS ENUM ('available', 'borrowed');
 
 CREATE TABLE copy (
     barcode SERIAL PRIMARY KEY,

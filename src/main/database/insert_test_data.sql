@@ -50,19 +50,19 @@ INSERT INTO item (location_id, language_id, type, identifier, identifier2, title
 INSERT INTO copy (item_id, is_reference, date_added, status) VALUES
 (1, FALSE, '2023-01-01', 'available'),
 (2, TRUE, '2023-01-15', 'available'),
-(3, FALSE, '2023-02-10', 'borrowed'),
-(4, FALSE, '2023-03-05', 'reserved'),
-(5, FALSE, '2023-03-20', 'lost'),
+(3, FALSE, '2023-02-10', 'available'),
+(4, FALSE, '2023-03-05', 'available'),
+(5, FALSE, '2023-03-20', 'available'),
 (6, TRUE, '2023-04-10', 'available'),
-(7, FALSE, '2023-05-05', 'borrowed'),
-(8, FALSE, '2023-06-01', 'reserved'),
+(7, FALSE, '2023-05-05', 'available'),
+(8, FALSE, '2023-06-01', 'available'),
 (9, TRUE, '2023-06-15', 'available'),
-(10, FALSE, '2023-07-01', 'lost'),
+(10, FALSE, '2023-07-01', 'available'),
 (11, FALSE, '2024-01-01', 'available'),
-(12, FALSE, '2024-01-10', 'borrowed'),
+(12, FALSE, '2024-01-10', 'available'),
 (13, TRUE, '2024-02-01', 'available'),
-(14, FALSE, '2024-02-15', 'reserved'),
-(15, FALSE, '2024-03-01', 'lost');
+(14, FALSE, '2024-02-15', 'available'),
+(15, FALSE, '2024-03-01', 'available');
 
 INSERT INTO user_profile (borrower_type, f_name, l_name, phone, address) VALUES
 ('student', 'Alice', 'Johnson', '555-1234', '123 Main St'),
