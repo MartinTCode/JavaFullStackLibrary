@@ -50,135 +50,120 @@ public class DatabaseConnectionTest {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
         EntityManager em = emf.createEntityManager();
 
-        // Variables to track persisted entities
-        Location location = null;
-        Language language = null;
-        Item item = null;
-
         try {
             // Begin a transaction for the entire test
             em.getTransaction().begin();
 
-            // Check if the Location already exists
-            debugPrint("Checking if location already exists.");
-            location = em.createQuery(
-                    "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
-                    Location.class)
-                .setParameter("floor", (String) testParams.get("floor"))
-                .setParameter("section", (String) testParams.get("section"))
-                .setParameter("shelf", (String) testParams.get("shelf"))
-                .setParameter("position", (String) testParams.get("position"))
-                .getResultStream()
-                .findFirst()
-                .orElse(null);
+            // Check or create Location
+            Location location = findOrCreateLocation(em);
 
-            if (location == null) {
-                debugPrint("Location not found, creating new one.");
-                location = new Location();
-                location.setFloor((String) testParams.get("floor"));
-                location.setSection((String) testParams.get("section"));
-                location.setShelf((String) testParams.get("shelf"));
-                location.setPosition((String) testParams.get("position"));
-                em.persist(location);
-            } else {
-                debugPrint("Location already exists, using existing one.");
-            }
-
-            // Check if the Language already exists
-            debugPrint("Checking if language already exists.");
-            language = em.createQuery("SELECT l FROM Language l WHERE l.language = :language", Language.class)
-                    .setParameter("language", (String) testParams.get("language"))
-                    .getResultStream()
-                    .findFirst()
-                    .orElse(null);
-
-            if (language == null) {
-                debugPrint("Language not found, creating new one.");
-                language = new Language();
-                language.setLanguage((String) testParams.get("language"));
-                em.persist(language);
-            } else {
-                debugPrint("Language already exists, using existing one.");
-            }
+            // Check or create Language
+            Language language = findOrCreateLanguage(em);
 
             // Create and persist Item
-            item = new Item();
-            debugPrint("Creating new item.");
-            item.setType((String) testParams.get("itemType"));
-            item.setIdentifier((String) testParams.get("identifier"));
-            item.setIdentifier2((String) testParams.get("identifier2"));
-            debugPrint("Created new item with identifier: " + item.getIdentifier());
-            debugPrint("Created new item with identifier2: " + item.getIdentifier2());
-            debugPrint("Setting title for the item: " + testParams.get("title"));
-            item.setTitle((String) testParams.get("title"));
-            item.setPublisher((String) testParams.get("publisher"));
-            item.setAgeLimit((Short) testParams.get("ageLimit"));
-            item.setCountryOfProduction((String) testParams.get("countryOfProduction"));
-            debugPrint("Setting FK:s location and language for the item.");
-            item.setLocation(location); // Set foreign key
-            item.setLanguage(language); // Set foreign key
-            em.persist(item);
+            Item item = createAndPersistItem(em, location, language);
 
-            // Commit the transaction to persist the data
+            // Commit the transaction
             debugPrint("Committing transaction.");
             em.getTransaction().commit();
 
-            // Verify that the item was saved successfully
-            debugPrint("Verifying that the item was saved successfully.");
-            assertNotNull(item.getItemId()); // Check that the ID is not null (it was generated)
-
-            // Retrieve the item from the database
-            debugPrint("Retrieving the item from the database.");
-            Item retrievedItem = em.find(Item.class, item.getItemId());
-            debugPrint("Retrieved item: " + retrievedItem.toString());
-            assertNotNull(retrievedItem); // Ensure the item was retrieved
-            debugPrint("Retrieved item ID: " + retrievedItem.getTitle());
-            assertEquals(testParams.get("title"), retrievedItem.getTitle()); // Check that the title matches
+            // Verify the item was saved successfully
+            verifyItem(em, item);
 
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 debugPrint("Transaction failed, rolling back.");
-                em.getTransaction().rollback(); // Rollback the transaction if it is active
+                em.getTransaction().rollback();
             }
             fail("Transaction failed and was rolled back: " + e.getMessage());
         } finally {
-            // Rollback the test data
-            debugPrint("Cleaning up test data.");
-            // FIXME: cannot delete due to no ON DELETE CASCADE in DB. Needs to be fixed in DB.
-            // TODO: Modularize this code to a separate method
-            if (item != null || location != null || language != null) {
-                em.getTransaction().begin(); // Start a new transaction for cleanup
-        
-                // Remove the test data in reverse order of dependencies
-                if (item != null) {
-                    debugPrint("Removing item.");
-                    item = em.find(Item.class, item.getItemId()); // Fetch the managed entity
-                    if (item != null) {
-                        em.remove(item);
-                    }
-                }
-                if (location != null) {
-                    debugPrint("Removing location.");
-                    location = em.find(Location.class, location.getLocationId()); // Fetch the managed entity
-                    if (location != null) {
-                        em.remove(location);
-                    }
-                }
-                if (language != null) {
-                    debugPrint("Removing language.");
-                    language = em.find(Language.class, language.getLanguageId()); // Fetch the managed entity
-                    if (language != null) {
-                        em.remove(language);
-                    }
-                }
-        
-                em.getTransaction().commit(); // Commit the cleanup transaction
-            }
-            // Close the EntityManager and EntityManagerFactory
-            debugPrint("Closing EntityManager and EntityManagerFactory.");
+            cleanupTestData(em);
             em.close();
             emf.close();
         }
+    }
+
+    private Location findOrCreateLocation(EntityManager em) {
+        debugPrint("Checking if location already exists.");
+        Location location = em.createQuery(
+                "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
+                Location.class)
+            .setParameter("floor", (String) testParams.get("floor"))
+            .setParameter("section", (String) testParams.get("section"))
+            .setParameter("shelf", (String) testParams.get("shelf"))
+            .setParameter("position", (String) testParams.get("position"))
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+
+        if (location == null) {
+            debugPrint("Location not found, creating new one.");
+            location = new Location();
+            location.setFloor((String) testParams.get("floor"));
+            location.setSection((String) testParams.get("section"));
+            location.setShelf((String) testParams.get("shelf"));
+            location.setPosition((String) testParams.get("position"));
+            em.persist(location);
+        } else {
+            debugPrint("Location already exists, using existing one.");
+        }
+        return location;
+    }
+
+    private Language findOrCreateLanguage(EntityManager em) {
+        debugPrint("Checking if language already exists.");
+        Language language = em.createQuery(
+                "SELECT l FROM Language l WHERE l.language = :language",
+                Language.class)
+            .setParameter("language", (String) testParams.get("language"))
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+
+        if (language == null) {
+            debugPrint("Language not found, creating new one.");
+            language = new Language();
+            language.setLanguage((String) testParams.get("language"));
+            em.persist(language);
+        } else {
+            debugPrint("Language already exists, using existing one.");
+        }
+        return language;
+    }
+
+    private Item createAndPersistItem(EntityManager em, Location location, Language language) {
+        debugPrint("Creating new item.");
+        Item item = new Item();
+        item.setType((String) testParams.get("itemType"));
+        item.setIdentifier((String) testParams.get("identifier"));
+        item.setIdentifier2((String) testParams.get("identifier2"));
+        item.setTitle((String) testParams.get("title"));
+        item.setPublisher((String) testParams.get("publisher"));
+        item.setAgeLimit((Short) testParams.get("ageLimit"));
+        item.setCountryOfProduction((String) testParams.get("countryOfProduction"));
+        item.setLocation(location);
+        item.setLanguage(language);
+        em.persist(item);
+        debugPrint("Created new item with identifier: " + item.getIdentifier());
+        return item;
+    }
+
+    private void verifyItem(EntityManager em, Item item) {
+        debugPrint("Verifying that the item was saved successfully.");
+        assertNotNull(item.getItemId());
+        Item retrievedItem = em.find(Item.class, item.getItemId());
+        assertNotNull(retrievedItem);
+        assertEquals(testParams.get("title"), retrievedItem.getTitle());
+        debugPrint("Verified item: " + retrievedItem.toString());
+    }
+
+    private void cleanupTestData(EntityManager em) {
+        debugPrint("Cleaning up test data.");
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM Item").executeUpdate();
+        em.createQuery("DELETE FROM Location").executeUpdate();
+        em.createQuery("DELETE FROM Language").executeUpdate();
+        em.getTransaction().commit();
     }
 
     private void debugPrint(String message) {
