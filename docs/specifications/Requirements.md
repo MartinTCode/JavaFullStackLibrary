@@ -48,7 +48,7 @@ The system must support the following functions:
 
 ---
 
-# General Requirements
+## General Requirements
 
 The system shall:
 
@@ -62,11 +62,33 @@ The system shall:
 
 ---
 
-# Database Requirements
+### Database Requirements
 
 The database shall support:
 
-## Book Data
+#### Library Item Types and Attributes
+
+There are different types of item that are stored in the database. Each item type has a limit on it's loan time. This functionality is managed in the backend rather than directly in the database. Their limitations are however shown here.
+
+##### loan time limitations
+
+###### Course litterature
+
+Maximum 14 days.
+
+###### Books (excl. Course litterature)
+
+Maximum 30 days.
+
+###### DVD:s
+
+Maximum 7 days.
+
+###### Journals and Reference Copies
+
+Cannot be borrowed.
+
+#### Book Data
 
 - Title
 
@@ -86,9 +108,9 @@ The database shall support:
 
 - Publisher
 
-- Language (e.g., English → `eng`)
+- Language (e.g., English)
 
-## Movie Data
+#### Movie Data
 
 - Title
 
@@ -106,7 +128,7 @@ The database shall support:
 
 - Publisher
 
-## Journal Data
+#### Journal Data
 
 - Not borrowable
 
@@ -120,55 +142,61 @@ The database shall support:
 
 - Keywords
 
-## Other Database Requirements
+### Other Database Requirements
 
 - Keyword search support and optimization
 
 - Store identifier (e.g., barcode) for items
 
-### User Types (with distinct loan functionalities)
+## User Types (with distinct loan functionalities)
+
+Each user type defines the limit on number of concurrent loans that it can have. *The number of max loans is arbitrary, but to prove functionality we have imagined some feasible limitations.* This functionality is managed in the backend rather than directly in the database. Their limitations are however shown here.
 
 - Public User
+  - Max number of concurrent loans: 3
 
 - Student User
+  - Max number of concurrent loans: 5
 
 - Research User
+  - Max number of concurrent loans: 10
 
 - University Employee User
+  - Max number of concurrent loans: 15
 
 ## Entities in Library Database
 
-- borrower 
+- borrower
 
-- loan 
+- loan
 
-- reservation 
+- reservation
 
-- copy 
+- copy
 
-- item 
+- item
 
-- item_creator (junction) 
+- item_creator (junction)
 
-- creator 
+- creator
 
-- actor 
+- actor
 
-- item_actor (junction) 
+- item_actor (junction)
 
-- genre 
+- genre
 
-- item_genre (junction) 
+- item_genre (junction)
 
-- location 
+- location
 
-- keyword 
+- keyword
 
 - item_keyword (junction)
 
 ---
 
-# Sign-in Database Functionality
+## Sign-in Database Functionality
 
 - Distinguish user types:
   
