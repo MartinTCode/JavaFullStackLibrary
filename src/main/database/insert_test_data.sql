@@ -30,7 +30,7 @@ INSERT INTO keyword (keyword) VALUES
 ('magic'), ('war'), ('future'), ('detective'), ('space'),
 ('love'), ('family'), ('friendship'), ('revenge'), ('freedom');
 
-INSERT INTO item (location_id, language_id, type, identifier, identifier2, title, publisher, age_limit, country_of_production) VALUES
+INSERT INTO item (location_id, language_id, item_type, identifier, identifier2, title, publisher, age_limit, country_of_production) VALUES
 (1, 1, 'Book', '9780141439518', '9780141439518', 'Pride and Prejudice', 'Penguin', 12, 'UK'),
 (2, 1, 'Book', '9780451524935', '9780451524935', '1984', 'Signet', 14, 'UK'),
 (3, 1, 'Book', '9780142437179', '9780142437179', 'Adventures of Huckleberry Finn', 'Penguin', 12, 'USA'),
@@ -47,7 +47,7 @@ INSERT INTO item (location_id, language_id, type, identifier, identifier2, title
 (14, 3, 'Dvd', 'IMDB004', NULL, 'The Godfather', 'Paramount', 18, 'USA'),
 (15, 4, 'Dvd', 'IMDB005', NULL, 'Interstellar', 'Paramount', 13, 'USA');
 
-INSERT INTO copy (item_id, is_reference, date_added, status) VALUES
+INSERT INTO item_copy (item_id, is_reference, date_added, copy_status) VALUES
 (1, FALSE, '2023-01-01', 'available'),
 (2, TRUE, '2023-01-15', 'available'),
 (3, FALSE, '2023-02-10', 'available'),

@@ -41,7 +41,7 @@ CREATE TABLE item (
     item_id SERIAL PRIMARY KEY,
     location_id INT REFERENCES location(location_id),
     language_id INT REFERENCES language(language_id),
-    type VARCHAR(50) NOT NULL,
+    item_type VARCHAR(50) NOT NULL,
     identifier VARCHAR(17),       -- e.g., ISBN-10, ISSN, IMDBC
     identifier2 VARCHAR(13),      -- e.g., ISBN-13
     title VARCHAR(255) NOT NULL,
@@ -50,14 +50,12 @@ CREATE TABLE item (
     country_of_production VARCHAR(100)
 );
 
-CREATE TYPE copy_status AS ENUM ('available', 'borrowed');
-
-CREATE TABLE copy (
+CREATE TABLE item_copy (
     barcode SERIAL PRIMARY KEY,
     item_id INT REFERENCES item(item_id),
     is_reference BOOLEAN,
     date_added DATE,
-    status copy_status
+    copy_status VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE user_profile (
