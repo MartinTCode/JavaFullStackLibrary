@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Item {
@@ -15,7 +17,15 @@ public class Item {
     @Column(name = "item_id") // Maps to the SQL column name
     private Integer itemId;
 
-    @Column(nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id", nullable = false) // Foreign key to language table
+    private Language language;
+
+    @Column(name = "item_type", nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
     private String type;
 
     @Column(length = 17) // Matches SQL: VARCHAR(17)
@@ -99,5 +109,21 @@ public class Item {
 
     public void setCountryOfProduction(String countryOfProduction) {
         this.countryOfProduction = countryOfProduction;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }
