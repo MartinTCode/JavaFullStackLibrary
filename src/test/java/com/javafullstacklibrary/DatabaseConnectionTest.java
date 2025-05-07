@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 // Importing JUnit 5's assertion methods for testing
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Map;
+
 /**
  * This class is a test class for verifying the database connection.
  * It uses Spring Boot's testing framework to load the application context
@@ -24,12 +26,23 @@ public class DatabaseConnectionTest {
      * and perform basic CRUD operations.
      */
 
-     // testparameters:
-     static final boolean debug_flg = true; // Set to true to enable debug messages
-     static final String language_set = "English";
-     static final String item_title = "Test Item";
-
-
+    // testparameters:
+    static final boolean debug_flg = true; // Set to true to enable debug messages
+    // Global dictionary for test parameters
+    static final Map<String, Object> testParams = Map.ofEntries(
+        Map.entry("itemType", "book"),
+        Map.entry("identifier", "1234567890"),
+        Map.entry("identifier2", "1234567890123"),
+        Map.entry("title", "Test Item"),
+        Map.entry("publisher", "Test Publisher"),
+        Map.entry("ageLimit", (short) 18),
+        Map.entry("countryOfProduction", "Test Country"),
+        Map.entry("floor", "1"),
+        Map.entry("section", "A"),
+        Map.entry("shelf", "Shelf 1"),
+        Map.entry("position", "Position 1"),
+        Map.entry("language", "English")
+    );
 
     @Test // Marks this method as a test case
     public void testDatabaseConnection() {
@@ -41,7 +54,7 @@ public class DatabaseConnectionTest {
         Location location = null;
         // Check if the language already exists
         Language language = em.createQuery("SELECT l FROM Language l WHERE l.language = :language", Language.class)
-                            .setParameter("language", language_set)
+                            .setParameter("language", (String) testParams.get("language"))
                             .getResultStream()
                             .findFirst()
                             .orElse(null);
@@ -54,17 +67,17 @@ public class DatabaseConnectionTest {
             // Create and persist Location
             debugPrint("Creating new location.");
             location = new Location();
-            location.setFloor("1");
-            location.setSection("A");
-            location.setShelf("Shelf 1");
-            location.setPosition("Position 1");
+            location.setFloor((String) testParams.get("floor"));
+            location.setSection((String) testParams.get("section"));
+            location.setShelf((String) testParams.get("shelf"));
+            location.setPosition((String) testParams.get("position"));
             em.persist(location);
 
             // Create and persist Language if not already exists
             if (language == null) {
                 debugPrint("Language not found, creating new one.");
                 language = new Language();
-                language.setLanguage(language_set);
+                language.setLanguage((String) testParams.get("language"));
                 em.persist(language);
             } else {
                 debugPrint("Language already exists, using existing one.");
@@ -73,16 +86,16 @@ public class DatabaseConnectionTest {
             // Create and persist Item
             item = new Item();
             debugPrint("Creating new item.");
-            item.setType("book");
-            item.setIdentifier("1234567890");
-            item.setIdentifier2("1234567890123");
+            item.setType((String) testParams.get("itemType"));
+            item.setIdentifier((String) testParams.get("identifier"));
+            item.setIdentifier2((String) testParams.get("identifier2"));
             debugPrint("Created new item with identifier: " + item.getIdentifier());
             debugPrint("Created new item with identifier2: " + item.getIdentifier2());
-            debugPrint("Setting title for the item:" + item_title);
-            item.setTitle(item_title);
-            item.setPublisher("Test Publisher");
-            item.setAgeLimit((short) 18);
-            item.setCountryOfProduction("Test Country");
+            debugPrint("Setting title for the item: " + testParams.get("title"));
+            item.setTitle((String) testParams.get("title"));
+            item.setPublisher((String) testParams.get("publisher"));
+            item.setAgeLimit((Short) testParams.get("ageLimit"));
+            item.setCountryOfProduction((String) testParams.get("countryOfProduction"));
             debugPrint("Setting FK:s location and language for the item.");
             item.setLocation(location); // Set foreign key
             item.setLanguage(language); // Set foreign key
@@ -102,7 +115,7 @@ public class DatabaseConnectionTest {
             debugPrint("Retrieved item: " + retrievedItem.toString());
             assertNotNull(retrievedItem); // Ensure the item was retrieved
             debugPrint("Retrieved item ID: " + retrievedItem.getTitle());
-            assertEquals(item_title, retrievedItem.getTitle()); // Check that the title matches
+            assertEquals(testParams.get("title"), retrievedItem.getTitle()); // Check that the title matches
 
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
