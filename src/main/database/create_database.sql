@@ -31,7 +31,8 @@ BEGIN
     FOR r IN (
         SELECT schemaname, tablename 
         FROM pg_tables 
-        WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+        WHERE schemaname NOT IN 
+        ('pg_catalog', 'information_schema')
     ) LOOP
         EXECUTE format('DROP TABLE IF EXISTS %I.%I CASCADE', r.schemaname, r.tablename);
     END LOOP;
@@ -78,7 +79,9 @@ CREATE TABLE item (
     item_id SERIAL PRIMARY KEY,
     location_id INT REFERENCES location(location_id),
     language_id INT NOT NULL REFERENCES language(language_id),
-    item_type VARCHAR(20) NOT NULL CHECK (item_type IN ('book', 'course_litterature', 'dvd', 'journal')),
+    item_type VARCHAR(20) NOT NULL CHECK (
+        item_type IN ('book', 'course_litterature', 'dvd', 'journal')
+        ),
     identifier VARCHAR(17),       -- e.g., ISBN-10, ISSN, IMDBC
     identifier2 VARCHAR(13),      -- e.g., ISBN-13
     title VARCHAR(255) NOT NULL,
@@ -87,9 +90,19 @@ CREATE TABLE item (
     country_of_production VARCHAR(100),
     CONSTRAINT identifier_constraints CHECK (
         -- For 'book' or 'course_litterature', at least one of identifier or identifier2 must be NOT NULL
-        (item_type IN ('book', 'course_litterature') AND (identifier IS NOT NULL OR identifier2 IS NOT NULL)) OR
+        (
+            -- For 'book' or 'course_litterature', identifier or identifier2 must be NOT NULL
+            item_type IN ('book', 'course_litterature') 
+            AND 
+            (
+                identifier IS NOT NULL 
+                OR identifier2 IS NOT NULL
+            )
+        ) 
+        OR
         -- For 'journal', identifier must be NOT NULL
-        (item_type = 'journal' AND identifier IS NOT NULL) OR
+        (item_type = 'journal' AND identifier IS NOT NULL) 
+        OR
         -- For 'dvd', both identifier and identifier2 can be NULL
         (item_type = 'dvd')
     )
@@ -101,12 +114,17 @@ CREATE TABLE item_copy (
     item_id INT NOT NULL REFERENCES item(item_id),
     is_reference BOOLEAN NOT NULL,
     date_added DATE NOT NULL,
-    copy_status VARCHAR(10) NOT NULL DEFAULT 'available' CHECK (copy_status IN ('available', 'borrowed'))
+    copy_status VARCHAR(10) NOT NULL DEFAULT 'available' CHECK (
+        copy_status IN ('available', 'borrowed')
+        )
 );
 
 CREATE TABLE user_profile (
     profile_id SERIAL PRIMARY KEY,
-    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('public', 'student', 'researcher', 'university_employee')),
+    user_type VARCHAR(20) NOT NULL CHECK (
+        -- The user_type can be one of the following: public, student, researcher, university_employee
+        user_type IN ('public', 'student', 'researcher', 'university_employee')
+        ),
     f_name VARCHAR(50) NOT NULL,
     l_name VARCHAR(50) NOT NULL,
     phone VARCHAR(15),
@@ -120,10 +138,24 @@ CREATE TABLE library_user (
     u_name VARCHAR(50) UNIQUE, -- User name for every user_role except for borrower.
     p_hashed_bcrypt VARCHAR(255) NOT NULL, -- Password hashed with bcrypt
     email VARCHAR(100) NOT NULL UNIQUE,
-    user_role VARCHAR(20) NOT NULL CHECK (user_role IN ('admin', 'librarian', 'borrower')),
+    user_role VARCHAR(20) NOT NULL CHECK (
+        -- The user_role can be one of the following: admin, librarian, borrower
+        user_role IN ('admin', 'librarian', 'borrower')
+        ),
     CONSTRAINT borrower_constraints CHECK (
-        (user_role = 'borrower' AND ssn IS NOT NULL AND u_name IS NULL AND profile_id IS NOT NULL) OR
-        (user_role != 'borrower' AND u_name IS NOT NULL AND ssn IS NULL)
+        (
+            -- For 'borrower', ssn must be NOT NULL and u_name must be NULL
+            user_role = 'borrower' 
+            AND ssn IS NOT NULL 
+            AND u_name IS NULL 
+            AND profile_id IS NOT NULL
+        ) 
+        OR
+        (
+            -- For 'admin' or 'librarian', ssn must be NULL and u_name must be NOT NULL
+            user_role != 'borrower' 
+            AND u_name IS NOT NULL 
+            AND ssn IS NULL)
     )
 );
 
