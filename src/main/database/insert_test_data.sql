@@ -88,18 +88,6 @@ INSERT INTO user (profile_id, ssn, u_name, p_hashed_bcrypt, email, role) VALUES
 (9, '901-23-4567', 'ianm', 'hashed_pw9', 'ian@example.com', 'borrower'),
 (10, '012-34-5678', 'janed', 'hashed_pw10', 'jane@example.com', 'borrower');
 
-INSERT INTO loan (barcode, user_id, start_date, return_date, returned_date) VALUES
-(1, 1, '2024-01-01', '2024-01-15', '2024-01-14'),
-(2, 2, '2024-01-10', '2024-01-25', '2024-01-24'),
-(3, 3, '2024-02-01', '2024-02-16', NULL),
-(4, 4, '2024-02-15', '2024-03-01', NULL),
-(5, 5, '2024-03-01', '2024-03-15', NULL),
-(6, 6, '2024-03-10', '2024-03-25', '2024-03-23'),
-(7, 7, '2024-04-01', '2024-04-15', NULL),
-(8, 8, '2024-04-10', '2024-04-25', '2024-04-24'),
-(9, 9, '2024-05-01', '2024-05-16', NULL),
-(10, 10, '2024-05-10', '2024-05-25', NULL);
-
 INSERT INTO item_creator (item_id, creator_id) VALUES
 (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
 (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
