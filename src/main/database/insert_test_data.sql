@@ -89,9 +89,10 @@ INSERT INTO loan (item_copy_id, user_id, start_date, return_date, returned_date)
 (5, 4, '2025-04-01', '2025-04-07', NULL); -- DVD, max 7 days
 -- Add more loans ensuring constraints on loan durations and user limits...
 
--- TODO: add testdata for junction tables:
+-- JUNCTION TABLES
+-- These tables are used to create many-to-many relationships between items and other entities.
 
-- Link items to creators (e.g., authors for books, course literature)
+-- Link items to creators (e.g., authors for books, course literature)
 INSERT INTO item_creator (item_id, creator_id) VALUES
 (1, 1), -- Book Title 1 by John Doe
 (2, 2), -- Book Title 2 by Jane Smith
@@ -120,19 +121,3 @@ INSERT INTO item_keyword (item_id, keyword_id) VALUES
 (3, 3), -- Course Book 1 tagged with Thriller
 (4, 4), -- DVD Title 1 tagged with Biography
 (5, 6); -- Journal Title 1 tagged with MIT
-
--- Link items to locations
-INSERT INTO item_location (item_id, location_id) VALUES
-(1, 1), -- Book Title 1 located at location 1
-(2, 2), -- Book Title 2 located at location 2
-(3, 3), -- Course Book 1 located at location 3
-(4, 4), -- DVD Title 1 located at location 4
-(5, 5); -- Journal Title 1 located at location 5
-
--- Link items to languages (arbirtrary values)
-INSERT INTO item_language (item_id, language_id) VALUES
-(1, 1), -- Book Title 1 in English
-(2, 2), -- Book Title 2 in Swedish
-(3, 3), -- Course Book 1 in French
-(4, 4), -- DVD Title 1 in German
-(5, 5); -- Journal Title 1 in Spanish
