@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 // Importing JUnit 5's assertion methods for testing
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,9 +28,13 @@ public class DatabaseConnectionTest {
      * and perform basic CRUD operations.
      */
 
+
+    private List<Integer> createdItemIds = new ArrayList<>();
+    private List<Integer> createdLocationIds = new ArrayList<>();
+    private List<Integer> createdLanguageIds = new ArrayList<>();
+
     // testparameters:
     static final boolean debug_flg = true; // Set to true to enable debug messages
-    boolean languageCreated = false; // Flag to track if a new language was created
     // Global dictionary for test parameters
     static final Map<String, Object> testParams = Map.ofEntries(
         Map.entry("itemType", "book"),
@@ -108,6 +114,8 @@ public class DatabaseConnectionTest {
             location.setShelf((String) testParams.get("shelf"));
             location.setPosition((String) testParams.get("position"));
             em.persist(location);
+            createdLocationIds.add(location.getLocationId()); // Store the created location ID for cleanup
+            debugPrint("Created new item with identifier: " + location.getLocationId());
         } else {
             debugPrint("Location already exists, using existing one.");
         }
@@ -129,7 +137,7 @@ public class DatabaseConnectionTest {
             language = new Language();
             language.setLanguage((String) testParams.get("language"));
             em.persist(language);
-            languageCreated = true; // Set the flag to true since a new language was created
+            createdLanguageIds.add(language.getLanguageId()); // Store the created language ID for cleanup
         } else {
             debugPrint("Language already exists, using existing one.");
         }
@@ -149,6 +157,7 @@ public class DatabaseConnectionTest {
         item.setLocation(location);
         item.setLanguage(language);
         em.persist(item);
+        createdItemIds.add(item.getItemId()); // Store the created item ID for cleanup
         debugPrint("Created new item with identifier: " + item.getIdentifier());
         return item;
     }
@@ -159,20 +168,42 @@ public class DatabaseConnectionTest {
         Item retrievedItem = em.find(Item.class, item.getItemId());
         assertNotNull(retrievedItem);
         assertEquals(testParams.get("title"), retrievedItem.getTitle());
-        debugPrint("Verified item: " + retrievedItem.toString());
+        debugPrint("Verified item: " + retrievedItem.getTitle());
     }
 
     // FIXME: CANNOT DELETE DUE TO FOREIGN KEY CONSTRAINTS AND MISSING CASCADE DELETE DATABASE CONSTRAINTS
     private void cleanupTestData(EntityManager em) {
         debugPrint("Cleaning up test data.");
         em.getTransaction().begin();
-        em.createQuery("DELETE FROM Item").executeUpdate();
-        em.createQuery("DELETE FROM Location").executeUpdate();
-        if (languageCreated) {
-            em.createQuery("DELETE FROM Language").executeUpdate();
+
+        // Delete items created during the test
+        if (!createdItemIds.isEmpty()) {
+            debugPrint("Deleting items with IDs: " + createdItemIds);
+            int deletedItems = em.createQuery("DELETE FROM Item i WHERE i.itemId IN :ids")
+                .setParameter("ids", createdItemIds)
+                .executeUpdate();
+            debugPrint("Deleted " + deletedItems + " records from the Item table.");
         }
-        em.getTransaction().commit();
-        debugPrint("Test data cleaned up.");
+        
+        // Delete locations created during the test
+        if (!createdLocationIds.isEmpty()) {
+            debugPrint("Deleting locations with IDs: " + createdLocationIds);
+            int deletedLocations = em.createQuery("DELETE FROM Location l WHERE l.locationId IN :ids")
+                .setParameter("ids", createdLocationIds)
+                .executeUpdate();
+            debugPrint("Deleted " + deletedLocations + " records from the Location table.");
+        }
+
+        // Delete languages created during the test
+        if (!createdLanguageIds.isEmpty()) {
+            debugPrint("Deleting languages with IDs: " + createdLanguageIds);
+            int deletedLanguages = em.createQuery("DELETE FROM Language l WHERE l.languageId IN :ids")
+                .setParameter("ids", createdLanguageIds)
+                .executeUpdate();
+            debugPrint("Deleted " + deletedLanguages + " records from the Language table.");
+        }
+            em.getTransaction().commit();
+            debugPrint("Test data cleaned up.");
     } 
 
     private void debugPrint(String message) {
