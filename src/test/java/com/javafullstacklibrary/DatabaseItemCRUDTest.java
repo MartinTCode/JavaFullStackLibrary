@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * This class contains test cases for performing CRUD operations on items in the database.
  * It uses JUnit 5 for testing and Jakarta Persistence (JPA) for database interactions.
@@ -32,7 +33,7 @@ public class DatabaseItemCRUDTest {
     private List<Integer> createdLanguageIds = new ArrayList<>();
 
     static final boolean debug_flg = true; // Set to true to enable debug messages
-    
+
     // The test parameters for the item to be created
     static final ItemTestParams ItemTParams = new ItemTestParams(
         "book",
@@ -80,47 +81,68 @@ public class DatabaseItemCRUDTest {
         createdLanguageIds = new ArrayList<>();
 
         debugPrint("Test data cleaned up and EntityManager closed.");
-
     }
 
+    // Helper methods for shared setup
+    private Location setupLocation() {
+        Location location = findOrCreateLocation(em);
+        assertNotNull(location, "Location should not be null.");
+        debugPrint("Setup location with ID: " + location.getLocationId());
+        return location;
+    }
+
+    private Language setupLanguage() {
+        Language language = findOrCreateLanguage(em);
+        assertNotNull(language, "Language should not be null.");
+        debugPrint("Setup language with ID: " + language.getLanguageId());
+        return language;
+    }
+
+    // Test for creating a Location
     @Test
-    public void testDatabaseConnection() {
-        try {
-            // Check or create Location
-            Location location = findOrCreateLocation(em);
-            debugPrint(">>>>Created location with ID: " + location.getLocationId());
+    public void testCreateLocation() {
+        Location location = setupLocation();
+        assertNotNull(location.getLocationId(), "Location ID should not be null.");
+        debugPrint("Test for creating location passed.");
+    }
 
-            // Check or create Language
-            Language language = findOrCreateLanguage(em);
-            debugPrint(">>>>Created language with ID: " + language.getLanguageId());
+    // Test for creating a Language
+    @Test
+    public void testCreateLanguage() {
+        Language language = setupLanguage();
+        assertNotNull(language.getLanguageId(), "Language ID should not be null.");
+        debugPrint("Test for creating language passed.");
+    }
 
-            // Create and persist Item
-            Item item = createAndPersistItem(em, location, language);
-            debugPrint(">>>>Created item with ID: " + item.getItemId());
+    // Test for creating an Item
+    @Test
+    public void testCreateItem() {
+        Location location = setupLocation();
+        Language language = setupLanguage();
+        Item item = createAndPersistItem(em, location, language);
+        assertNotNull(item.getItemId(), "Item ID should not be null.");
+        verifyItem(em, item);
+        debugPrint("Test for creating item passed.");
+    }
 
-            // Commit the transaction
-            debugPrint("Committing transaction.");
-            em.getTransaction().commit();
+    // Test for updating an Item
+    @Test
+    public void testUpdateItemTitle() {
+        // Arrange
+        Location location = setupLocation();
+        Language language = setupLanguage();
+        Item item = createAndPersistItem(em, location, language);
+        // Commit the transaction to persist the Item
+        em.getTransaction().commit();
 
-            // TESTCASE GROUP 1: Verify the item was saved successfully
-            verifyItem(em, item);
+        // Act
+        em.getTransaction().begin();
+        updateItemTitle(em, item.getItemId(), ItemTParams.titleUpdated());
+        em.getTransaction().commit();
 
-            // Update the title of the item
-            em.getTransaction().begin();
-            updateItemTitle(em, item.getItemId(), ItemTParams.titleUpdated());
-            em.getTransaction().commit();
-
-            // TESTCASE GROUP 2: Fetch and verify the updated item
-            verifyUpdatedItem(em, item.getItemId());
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                debugPrint("Transaction failed, rolling back.");
-                em.getTransaction().rollback();
-            }
-            // test fails if any exception occurs
-            fail("Transaction failed and was rolled back: " + e.getMessage(), e);
-        }
+        // Assert
+        verifyUpdatedItem(em, item.getItemId());
+        debugPrint("Test for updating item title passed.");
     }
 
     /**
@@ -157,12 +179,7 @@ public class DatabaseItemCRUDTest {
         em.getTransaction().commit();
     }
 
-    /**
-     * This method prints debug messages if the debug flag is set.
-     * It is used to log messages during the test execution for debugging purposes.
-     *
-     * @param message The message to print
-     */
+    // Debug print helper
     private void debugPrint(String message) {
         if (debug_flg) {
             System.out.println(message);
@@ -198,8 +215,7 @@ public class DatabaseItemCRUDTest {
             location.setShelf(ItemTParams.shelf());
             location.setPosition(ItemTParams.position());
             em.persist(location);
-            createdLocationIds.add(location.getLocationId()); // Store the created location ID for cleanup
-            debugPrint("Created new item with identifier: " + location.getLocationId());
+            createdLocationIds.add(location.getLocationId());
         } else {
             debugPrint("Location already exists, using existing one.");
         }
@@ -229,7 +245,7 @@ public class DatabaseItemCRUDTest {
             language = new Language();
             language.setLanguage(ItemTParams.language());
             em.persist(language);
-            createdLanguageIds.add(language.getLanguageId()); // Store the created language ID for cleanup
+            createdLanguageIds.add(language.getLanguageId());
         } else {
             debugPrint("Language already exists, using existing one.");
         }
@@ -258,7 +274,7 @@ public class DatabaseItemCRUDTest {
         item.setLocation(location);
         item.setLanguage(language);
         em.persist(item);
-        createdItemIds.add(item.getItemId()); // Store the created item ID for cleanup
+        createdItemIds.add(item.getItemId());
         debugPrint("Created new item with identifier: " + item.getIdentifier());
         return item;
     }
@@ -272,13 +288,9 @@ public class DatabaseItemCRUDTest {
      */
     private void verifyItem(EntityManager em, Item item) {
         debugPrint("Verifying that the item was saved successfully.");
-        // Check if the item exists in the database
         assertNotNull(item.getItemId());
         Item updatedItem = em.find(Item.class, item.getItemId());
-        // Check if the item was saved successfully
         assertNotNull(updatedItem);
-
-        // Check if the title matches the expected value
         assertEquals(ItemTParams.title(), updatedItem.getTitle());
         debugPrint("Verified item: " + updatedItem.getTitle());
     }
@@ -310,10 +322,7 @@ public class DatabaseItemCRUDTest {
         debugPrint("Fetching updated item with ID: " + itemId);
         Item updatedItem = em.find(Item.class, itemId);
         assertNotNull(updatedItem, "Updated item should not be null.");
-
-        // Refresh the entity to ensure it has the latest state from the database (not cached value)
         em.refresh(updatedItem);
-
         assertEquals(ItemTParams.titleUpdated(), updatedItem.getTitle(), "The updated title does not match.");
         debugPrint("Verified updated item title: " + updatedItem.getTitle());
     }
