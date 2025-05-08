@@ -84,11 +84,11 @@ public class DatabaseItemCRUDTest {
         try {
             // Check or create Location
             Location location = findOrCreateLocation(em);
-            debugPrint(">>>>Created item with ID: " + location.getLocationId());
+            debugPrint(">>>>Created location with ID: " + location.getLocationId());
 
             // Check or create Language
             Language language = findOrCreateLanguage(em);
-            debugPrint(">>>>Created item with ID: " + language.getLanguageId());
+            debugPrint(">>>>Created language with ID: " + language.getLanguageId());
 
             // Create and persist Item
             Item item = createAndPersistItem(em, location, language);
