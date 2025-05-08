@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Demonstrates creation, retrieval, update, and cleanup processes in the library system.
  */
 public class DatabaseItemCRUDTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseItemCRUDTest.class);
 
     // Manages the persistence context and performs CRUD operations on database entities.
     private EntityManagerFactory emf;
@@ -51,7 +55,7 @@ public class DatabaseItemCRUDTest {
      */
     @BeforeEach
     public void setUp() {
-        debugPrint("Setting up EntityManager and starting a transaction.");
+        logger.debug("Setting up EntityManager and starting a transaction.");
         emf = Persistence.createEntityManagerFactory("libraryPU");
         em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -62,7 +66,7 @@ public class DatabaseItemCRUDTest {
      */
     @AfterEach
     public void tearDown() {
-        debugPrint("Cleaning up test data and closing EntityManager.");
+        logger.debug("Cleaning up test data and closing EntityManager.");
         // Rollback any uncommitted changes to maintain a clean database state.
         if (em.getTransaction().isActive()) {
             em.getTransaction().rollback();
@@ -71,21 +75,21 @@ public class DatabaseItemCRUDTest {
         em.close();
         emf.close();
 
-        debugPrint("Test data cleaned up and EntityManager closed.");
+        logger.debug("Test data cleaned up and EntityManager closed.");
     }
 
     // Helper methods for shared setup
     private Location initalizeOrFetchLocation() {
         Location location = findOrCreateLocation(em);
         assertNotNull(location, "Location should not be null.");
-        debugPrint("Setup location with ID: " + location.getId());
+        logger.debug("Setup location with ID: {}", location.getId());
         return location;
     }
 
     private Language initalizeOrFetchLanguage() {
         Language language = findOrCreateLanguage(em);
         assertNotNull(language, "Language should not be null.");
-        debugPrint("Setup language with ID: " + language.getId());
+        logger.debug("Setup language with ID: {}", language.getId());
         return language;
     }
 
@@ -98,7 +102,7 @@ public class DatabaseItemCRUDTest {
     public void testCreateLocation() {
         Location location = initalizeOrFetchLocation();
         assertNotNull(location.getId(), "Location ID should not be null.");
-        debugPrint("Test for creating location passed.");
+        logger.debug("Test for creating location passed.");
     }
 
     /**
@@ -110,7 +114,7 @@ public class DatabaseItemCRUDTest {
     public void testCreateLanguage() {
         Language language = initalizeOrFetchLanguage();
         assertNotNull(language.getId(), "Language ID should not be null.");
-        debugPrint("Test for creating language passed.");
+        logger.debug("Test for creating language passed.");
     }
 
     /**
@@ -125,7 +129,7 @@ public class DatabaseItemCRUDTest {
         Item item = createAndPersistItem(em, location, language);
         assertNotNull(item.getId(), "Item ID should not be null.");
         verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.title());
-        debugPrint("Test for creating item passed.");
+        logger.debug("Test for creating item passed.");
     }
 
     /**
@@ -148,7 +152,7 @@ public class DatabaseItemCRUDTest {
 
         // Assert
         verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.titleUpdated());
-        debugPrint("Test for updating item title passed.");
+        logger.debug("Test for updating item title passed.");
     }
 
     /** 
@@ -161,7 +165,7 @@ public class DatabaseItemCRUDTest {
      */
     private void cleanupEntities(EntityManager em, String entityName, List<Integer> ids) {
         if (!ids.isEmpty()) {
-            debugPrint("Deleting " + entityName + "s with IDs: " + ids);
+            logger.debug("Deleting {}s with IDs: {}", entityName, ids);
             em.createQuery("DELETE FROM " + entityName + " e WHERE e.id IN :ids")
                 .setParameter("ids", ids)
                 .executeUpdate();
@@ -175,19 +179,12 @@ public class DatabaseItemCRUDTest {
      * @param em The EntityManager to use for database operations
      */
     private void cleanupTestData(EntityManager em) {
-        debugPrint("Cleaning up test data.");
+        logger.debug("Cleaning up test data.");
         em.getTransaction().begin();
         cleanupEntities(em, "Item", createdItemIds);
         cleanupEntities(em, "Location", createdLocationIds);
         cleanupEntities(em, "Language", createdLanguageIds);
         em.getTransaction().commit();
-    }
-
-    // Debug print helper
-    private void debugPrint(String message) {
-        if (DEBUG_FLAG) {
-            System.out.println(message);
-        }
     }
 
     /**
@@ -199,7 +196,7 @@ public class DatabaseItemCRUDTest {
      * @return The found or created Location object
      */
     private Location findOrCreateLocation(EntityManager em) {
-        debugPrint("Checking if location already exists.");
+        logger.debug("Checking if location already exists.");
         Location location = em.createQuery(
                 "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
                 Location.class)
@@ -212,7 +209,7 @@ public class DatabaseItemCRUDTest {
             .orElse(null);
 
         if (location == null) {
-            debugPrint("Location not found, creating new one.");
+            logger.warn("Location not found, creating new one.");
             location = new Location();
             location.setFloor(ITEM_TEST_PARAMS.floor());
             location.setSection(ITEM_TEST_PARAMS.section());
@@ -221,7 +218,7 @@ public class DatabaseItemCRUDTest {
             em.persist(location);
             createdLocationIds.add(location.getId());
         } else {
-            debugPrint("Location already exists, using existing one.");
+            logger.debug("Location already exists, using existing one.");
         }
         return location;
     }
@@ -235,7 +232,7 @@ public class DatabaseItemCRUDTest {
      * @return The found or created Language object
      */
     private Language findOrCreateLanguage(EntityManager em) {
-        debugPrint("Checking if language already exists.");
+        logger.debug("Checking if language already exists.");
         Language language = em.createQuery(
                 "SELECT l FROM Language l WHERE l.language = :language",
                 Language.class)
@@ -245,13 +242,13 @@ public class DatabaseItemCRUDTest {
             .orElse(null);
 
         if (language == null) {
-            debugPrint("Language not found, creating new one.");
+            logger.warn("Language not found, creating new one.");
             language = new Language();
             language.setLanguage(ITEM_TEST_PARAMS.language());
             em.persist(language);
             createdLanguageIds.add(language.getId());
         } else {
-            debugPrint("Language already exists, using existing one.");
+            logger.debug("Language already exists, using existing one.");
         }
         return language;
     }
@@ -266,7 +263,7 @@ public class DatabaseItemCRUDTest {
      * @return The created Item object
      */
     private Item createAndPersistItem(EntityManager em, Location location, Language language) {
-        debugPrint("Creating new item.");
+        logger.debug("Creating new item.");
         Item item = new Item();
         item.setType(ITEM_TEST_PARAMS.itemType());
         item.setIdentifier(ITEM_TEST_PARAMS.identifier());
@@ -279,10 +276,9 @@ public class DatabaseItemCRUDTest {
         item.setLanguage(language);
         em.persist(item);
         createdItemIds.add(item.getId());
-        debugPrint("Created new item with identifier: " + item.getIdentifier());
+        logger.debug("Created new item with identifier: {}", item.getIdentifier());
         return item;
     }
-
 
     /**
      * Updates the title of an item in the database.
@@ -292,12 +288,12 @@ public class DatabaseItemCRUDTest {
      * @param newTitle The new title to set for the item
      */
     private void updateItemTitle(EntityManager em, Integer itemId, String newTitle) {
-        debugPrint("Updating title of item with ID: " + itemId + " to: " + newTitle);
+        logger.debug("Updating title of item with ID: {} to: {}", itemId, newTitle);
         int updatedCount = em.createQuery("UPDATE Item i SET i.title = :newTitle WHERE i.id = :itemId")
             .setParameter("newTitle", newTitle)
             .setParameter("itemId", itemId)
             .executeUpdate();
-        debugPrint("Updated " + updatedCount + " record(s) in the Item table.");
+        logger.debug("Updated {} record(s) in the Item table.", updatedCount);
     }
 
     /**
@@ -309,11 +305,11 @@ public class DatabaseItemCRUDTest {
      * @param expectedTitle The expected title of the item
      */
     private void verifyItemTitle(EntityManager em, Integer itemId, String expectedTitle) {
-        debugPrint("Fetching item with ID: " + itemId);
+        logger.debug("Fetching item with ID: {}", itemId);
         Item item = em.find(Item.class, itemId);
         assertNotNull(item, "Item should not be null.");
         em.refresh(item);
         assertEquals(expectedTitle, item.getTitle(), "The item's title does not match the expected value.");
-        debugPrint("Verified item title: " + item.getTitle());
+        logger.debug("Verified item title: {}", item.getTitle());
     }
 }
