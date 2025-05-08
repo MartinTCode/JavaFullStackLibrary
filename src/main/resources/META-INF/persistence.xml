@@ -1,3 +1,13 @@
+<!-- The persistence-unit defines the configuration for the JPA EntityManager.
+     - 'name' specifies the unique name for this persistence unit.
+     - 'transaction-type' is set to RESOURCE_LOCAL for local transactions (not JTA).
+     - Add all entity classes used in this persistence unit under the <class> tag.
+     - Database connection properties (URL, user, password, driver) are specified in the <properties> section.
+     - Hibernate-specific properties configure the ORM behavior:
+         - 'hibernate.dialect' specifies the SQL dialect for PostgreSQL.
+         - 'hibernate.hbm2ddl.auto' controls schema generation (e.g., 'update' keeps the schema in sync).
+         - 'hibernate.show_sql' enables SQL query logging for debugging purposes.
+-->
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
