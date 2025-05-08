@@ -22,7 +22,7 @@ import java.util.Map;
  * It uses Spring Boot's testing framework to load the application context
  * and perform database operations.
  */
-public class DatabaseConnectionTest {
+public class DatabaseItemCRUDTest {
     /**
      * This test method verifies that the application can connect to the database
      * and perform basic CRUD operations.
@@ -41,6 +41,7 @@ public class DatabaseConnectionTest {
         Map.entry("identifier", "1234567890"),
         Map.entry("identifier2", "1234567890123"),
         Map.entry("title", "Test Item"),
+        Map.entry("title_updated", "Test Item Updated"),
         Map.entry("publisher", "Test Publisher"),
         Map.entry("ageLimit", (short) 18),
         Map.entry("countryOfProduction", "Test Country"),
@@ -77,8 +78,16 @@ public class DatabaseConnectionTest {
             debugPrint("Committing transaction.");
             em.getTransaction().commit();
 
-            // Verify the item was saved successfully
+            // TESTCASE GROUP 1: Verify the item was saved successfully
             verifyItem(em, item);
+
+            // Update the title of the item
+            em.getTransaction().begin();
+            updateItemTitle(em, item.getItemId(), (String) testParams.get("title_updated"));
+            em.getTransaction().commit();
+
+            // TESTCASE GROUP 2: Fetch and verify the updated item
+            verifyUpdatedItem(em, item.getItemId());
 
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
@@ -93,6 +102,14 @@ public class DatabaseConnectionTest {
         }
     }
 
+    /**
+     * This method finds or creates a location in the database.
+     * It checks if a location with the specified parameters already exists,
+     * and if not, it creates a new one.
+     *
+     * @param em The EntityManager to use for database operations
+     * @return The found or created Location object
+     */
     private Location findOrCreateLocation(EntityManager em) {
         debugPrint("Checking if location already exists.");
         Location location = em.createQuery(
@@ -122,6 +139,14 @@ public class DatabaseConnectionTest {
         return location;
     }
 
+    /**
+     * This method finds or creates a language in the database.
+     * It checks if a language with the specified parameters already exists,
+     * and if not, it creates a new one.
+     *
+     * @param em The EntityManager to use for database operations
+     * @return The found or created Language object
+     */
     private Language findOrCreateLanguage(EntityManager em) {
         debugPrint("Checking if language already exists.");
         Language language = em.createQuery(
@@ -144,6 +169,15 @@ public class DatabaseConnectionTest {
         return language;
     }
 
+    /**
+     * This method creates and persists a new item in the database.
+     * It sets the properties of the item based on the provided parameters.
+     *
+     * @param em The EntityManager to use for database operations
+     * @param location The Location object associated with the item
+     * @param language The Language object associated with the item
+     * @return The created Item object
+     */
     private Item createAndPersistItem(EntityManager em, Location location, Language language) {
         debugPrint("Creating new item.");
         Item item = new Item();
@@ -162,16 +196,67 @@ public class DatabaseConnectionTest {
         return item;
     }
 
+    /**
+     * Verifies that the item was saved successfully in the database.
+     * It checks that the item exists and that its title matches the expected value.
+     *
+     * @param em The EntityManager to use for database operations
+     * @param item The Item object to verify
+     */
     private void verifyItem(EntityManager em, Item item) {
         debugPrint("Verifying that the item was saved successfully.");
+        // Check if the item exists in the database
         assertNotNull(item.getItemId());
-        Item retrievedItem = em.find(Item.class, item.getItemId());
-        assertNotNull(retrievedItem);
-        assertEquals(testParams.get("title"), retrievedItem.getTitle());
-        debugPrint("Verified item: " + retrievedItem.getTitle());
+        Item updatedItem = em.find(Item.class, item.getItemId());
+        // Check if the item was saved successfully
+        assertNotNull(updatedItem);
+
+        // Check if the title matches the expected value
+        assertEquals(testParams.get("title"), updatedItem.getTitle());
+        debugPrint("Verified item: " + updatedItem.getTitle());
     }
 
-    // FIXME: CANNOT DELETE DUE TO FOREIGN KEY CONSTRAINTS AND MISSING CASCADE DELETE DATABASE CONSTRAINTS
+    /**
+     * Updates the title of an item in the database.
+     *
+     * @param em The EntityManager to use for database operations
+     * @param itemId The ID of the item to update
+     * @param newTitle The new title to set for the item
+     */
+    private void updateItemTitle(EntityManager em, Integer itemId, String newTitle) {
+        debugPrint("Updating title of item with ID: " + itemId + " to: " + newTitle);
+        int updatedCount = em.createQuery("UPDATE Item i SET i.title = :newTitle WHERE i.itemId = :itemId")
+            .setParameter("newTitle", newTitle)
+            .setParameter("itemId", itemId)
+            .executeUpdate();
+        debugPrint("Updated " + updatedCount + " record(s) in the Item table.");
+    }
+
+    /**
+     * Verifies that the updated item has the correct title.
+     * It fetches the item from the database and checks that its title matches the updated value.
+     *
+     * @param em The EntityManager to use for database operations
+     * @param itemId The ID of the item to verify
+     */
+    private void verifyUpdatedItem(EntityManager em, Integer itemId) {
+        debugPrint("Fetching updated item with ID: " + itemId);
+        Item updatedItem = em.find(Item.class, itemId);
+        assertNotNull(updatedItem, "Updated item should not be null.");
+
+        // Refresh the entity to ensure it has the latest state from the database (not cached value)
+        em.refresh(updatedItem);
+
+        assertEquals(testParams.get("title_updated"), updatedItem.getTitle(), "The updated title does not match.");
+        debugPrint("Verified updated item title: " + updatedItem.getTitle());
+    }
+
+    /**
+     * Cleans up test data created during the test by deleting items, locations, and languages.
+     * It ensures that only the data created during the test is removed from the database.
+     *
+     * @param em The EntityManager to use for database operations
+     */
     private void cleanupTestData(EntityManager em) {
         debugPrint("Cleaning up test data.");
         em.getTransaction().begin();
@@ -202,10 +287,15 @@ public class DatabaseConnectionTest {
                 .executeUpdate();
             debugPrint("Deleted " + deletedLanguages + " records from the Language table.");
         }
-            em.getTransaction().commit();
-            debugPrint("Test data cleaned up.");
-    } 
+        em.getTransaction().commit();
+        debugPrint("Test data cleaned up.");
+    }
 
+    /**
+     * Prints debug messages to the console if debugging is enabled.
+     *
+     * @param message The message to print
+     */
     private void debugPrint(String message) {
         if (debug_flg) {
             System.out.println(message);
