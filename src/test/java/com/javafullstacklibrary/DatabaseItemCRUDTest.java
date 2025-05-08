@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * This class contains test cases for performing CRUD operations on items in the database.
+ * It uses JUnit 5 for testing and Jakarta Persistence (JPA) for database interactions.
+ * The tests include creating, updating, and verifying items in the library system.
+ */
 public class DatabaseItemCRUDTest {
 
     // EntityManager and EntityManagerFactory for database operations
@@ -30,7 +34,7 @@ public class DatabaseItemCRUDTest {
     static final boolean debug_flg = true; // Set to true to enable debug messages
     
     // The test parameters for the item to be created
-    static final ItemTParams ItemTParams = new ItemTParams(
+    static final ItemTestParams ItemTParams = new ItemTestParams(
         "book",
         "1234567890",
         "1234567890123",
@@ -55,14 +59,14 @@ public class DatabaseItemCRUDTest {
     }
 
     @AfterEach
+    /**
+     * This method is called after each test case.
+     * It rolls back any uncommitted changes to maintain a clean database state
+     * and closes the EntityManager and EntityManagerFactory.
+     */
     public void tearDown() {
         debugPrint("Cleaning up test data and closing EntityManager.");
-        // Rollback the transaction if it's still active
-        // This ensures that any changes made during the test are not committed to the database
-        // and the database remains in a clean state for the next test.
-        // This is important to avoid leaving test data in the database after the tests are run.
-        // If the transaction is active, rollback to undo any changes made during the test
-        // and ensure that the database is in a consistent state.
+        // Rollback any uncommitted changes to maintain a clean database state.
         if (em.getTransaction().isActive()) {
             em.getTransaction().rollback();
         }
@@ -114,7 +118,8 @@ public class DatabaseItemCRUDTest {
                 debugPrint("Transaction failed, rolling back.");
                 em.getTransaction().rollback();
             }
-            fail("Transaction failed and was rolled back: " + e.getMessage());
+            // test fails if any exception occurs
+            fail("Transaction failed and was rolled back: " + e.getMessage(), e);
         }
     }
 
