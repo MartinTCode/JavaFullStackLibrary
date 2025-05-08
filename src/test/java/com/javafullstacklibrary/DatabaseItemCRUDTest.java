@@ -57,12 +57,26 @@ public class DatabaseItemCRUDTest {
     @AfterEach
     public void tearDown() {
         debugPrint("Cleaning up test data and closing EntityManager.");
+        // Rollback the transaction if it's still active
+        // This ensures that any changes made during the test are not committed to the database
+        // and the database remains in a clean state for the next test.
+        // This is important to avoid leaving test data in the database after the tests are run.
+        // If the transaction is active, rollback to undo any changes made during the test
+        // and ensure that the database is in a consistent state.
         if (em.getTransaction().isActive()) {
             em.getTransaction().rollback();
         }
         cleanupTestData(em);
         em.close();
         emf.close();
+
+        // Reinitialize the ID lists to ensure a clean state for the next test
+        createdItemIds = new ArrayList<>();
+        createdLocationIds = new ArrayList<>();
+        createdLanguageIds = new ArrayList<>();
+
+        debugPrint("Test data cleaned up and EntityManager closed.");
+
     }
 
     @Test
@@ -104,6 +118,12 @@ public class DatabaseItemCRUDTest {
         }
     }
 
+    /**
+     * This method cleans up test data from the database.
+     * It deletes any items, locations, and languages that were created during the test.
+     *
+     * @param em The EntityManager to use for database operations
+     */
     private void cleanupTestData(EntityManager em) {
         debugPrint("Cleaning up test data.");
         em.getTransaction().begin();
@@ -132,6 +152,12 @@ public class DatabaseItemCRUDTest {
         em.getTransaction().commit();
     }
 
+    /**
+     * This method prints debug messages if the debug flag is set.
+     * It is used to log messages during the test execution for debugging purposes.
+     *
+     * @param message The message to print
+     */
     private void debugPrint(String message) {
         if (debug_flg) {
             System.out.println(message);
