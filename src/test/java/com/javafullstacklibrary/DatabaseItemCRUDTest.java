@@ -1,41 +1,28 @@
 package com.javafullstacklibrary;
 
-// Importing all model classes from the package
 import com.javafullstacklibrary.model.*;
-
-// Importing necessary packages for JPA annotations
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-
-// Importing JUnit 5's Test annotation for marking test methods
-import org.junit.jupiter.api.Test;
-// Importing JUnit 5's assertion methods for testing
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * This class is a test class for verifying the database connection.
- * It uses Spring Boot's testing framework to load the application context
- * and perform database operations.
- */
-public class DatabaseItemCRUDTest {
-    /**
-     * This test method verifies that the application can connect to the database
-     * and perform basic CRUD operations.
-     */
+import static org.junit.jupiter.api.Assertions.*;
 
+public class DatabaseItemCRUDTest {
+
+    private EntityManagerFactory emf;
+    private EntityManager em;
 
     private List<Integer> createdItemIds = new ArrayList<>();
     private List<Integer> createdLocationIds = new ArrayList<>();
     private List<Integer> createdLanguageIds = new ArrayList<>();
 
-    // testparameters:
     static final boolean debug_flg = true; // Set to true to enable debug messages
-    // Global dictionary for test parameters
+// Global dictionary for test parameters
     static final Map<String, Object> testParams = Map.ofEntries(
         Map.entry("itemType", "book"),
         Map.entry("identifier", "1234567890"),
@@ -52,16 +39,28 @@ public class DatabaseItemCRUDTest {
         Map.entry("language", "English")
     );
 
-    @Test // Marks this method as a test case
+    @BeforeEach
+    public void setUp() {
+        debugPrint("Setting up EntityManager and starting a transaction.");
+        emf = Persistence.createEntityManagerFactory("libraryPU");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        debugPrint("Cleaning up test data and closing EntityManager.");
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        cleanupTestData(em);
+        em.close();
+        emf.close();
+    }
+
+    @Test
     public void testDatabaseConnection() {
-        // Create EntityManagerFactory and EntityManager
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
-
         try {
-            // Begin a transaction for the entire test
-            em.getTransaction().begin();
-
             // Check or create Location
             Location location = findOrCreateLocation(em);
             debugPrint(">>>>Created item with ID: " + location.getLocationId());
@@ -95,10 +94,40 @@ public class DatabaseItemCRUDTest {
                 em.getTransaction().rollback();
             }
             fail("Transaction failed and was rolled back: " + e.getMessage());
-        } finally {
-            cleanupTestData(em);
-            em.close();
-            emf.close();
+        }
+    }
+
+    private void cleanupTestData(EntityManager em) {
+        debugPrint("Cleaning up test data.");
+        em.getTransaction().begin();
+
+        if (!createdItemIds.isEmpty()) {
+            debugPrint("Deleting items with IDs: " + createdItemIds);
+            em.createQuery("DELETE FROM Item i WHERE i.itemId IN :ids")
+                .setParameter("ids", createdItemIds)
+                .executeUpdate();
+        }
+
+        if (!createdLocationIds.isEmpty()) {
+            debugPrint("Deleting locations with IDs: " + createdLocationIds);
+            em.createQuery("DELETE FROM Location l WHERE l.locationId IN :ids")
+                .setParameter("ids", createdLocationIds)
+                .executeUpdate();
+        }
+
+        if (!createdLanguageIds.isEmpty()) {
+            debugPrint("Deleting languages with IDs: " + createdLanguageIds);
+            em.createQuery("DELETE FROM Language l WHERE l.languageId IN :ids")
+                .setParameter("ids", createdLanguageIds)
+                .executeUpdate();
+        }
+
+        em.getTransaction().commit();
+    }
+
+    private void debugPrint(String message) {
+        if (debug_flg) {
+            System.out.println(message);
         }
     }
 
@@ -249,56 +278,5 @@ public class DatabaseItemCRUDTest {
 
         assertEquals(testParams.get("title_updated"), updatedItem.getTitle(), "The updated title does not match.");
         debugPrint("Verified updated item title: " + updatedItem.getTitle());
-    }
-
-    /**
-     * Cleans up test data created during the test by deleting items, locations, and languages.
-     * It ensures that only the data created during the test is removed from the database.
-     *
-     * @param em The EntityManager to use for database operations
-     */
-    private void cleanupTestData(EntityManager em) {
-        debugPrint("Cleaning up test data.");
-        em.getTransaction().begin();
-
-        // Delete items created during the test
-        if (!createdItemIds.isEmpty()) {
-            debugPrint("Deleting items with IDs: " + createdItemIds);
-            int deletedItems = em.createQuery("DELETE FROM Item i WHERE i.itemId IN :ids")
-                .setParameter("ids", createdItemIds)
-                .executeUpdate();
-            debugPrint("Deleted " + deletedItems + " records from the Item table.");
-        }
-        
-        // Delete locations created during the test
-        if (!createdLocationIds.isEmpty()) {
-            debugPrint("Deleting locations with IDs: " + createdLocationIds);
-            int deletedLocations = em.createQuery("DELETE FROM Location l WHERE l.locationId IN :ids")
-                .setParameter("ids", createdLocationIds)
-                .executeUpdate();
-            debugPrint("Deleted " + deletedLocations + " records from the Location table.");
-        }
-
-        // Delete languages created during the test
-        if (!createdLanguageIds.isEmpty()) {
-            debugPrint("Deleting languages with IDs: " + createdLanguageIds);
-            int deletedLanguages = em.createQuery("DELETE FROM Language l WHERE l.languageId IN :ids")
-                .setParameter("ids", createdLanguageIds)
-                .executeUpdate();
-            debugPrint("Deleted " + deletedLanguages + " records from the Language table.");
-        }
-        em.getTransaction().commit();
-        debugPrint("Test data cleaned up.");
-    }
-
-    /**
-     * Prints debug messages to the console if debugging is enabled.
-     *
-     * @param message The message to print
-     */
-    private void debugPrint(String message) {
-        if (debug_flg) {
-            System.out.println(message);
-        }
     }
 }
