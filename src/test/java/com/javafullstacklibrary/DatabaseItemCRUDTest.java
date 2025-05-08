@@ -8,35 +8,42 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseItemCRUDTest {
 
+    // EntityManager and EntityManagerFactory for database operations
+    // These are used to manage the persistence context and perform CRUD operations
+    // on the database entities.
     private EntityManagerFactory emf;
     private EntityManager em;
 
+    // Lists to keep track of created item, location, and language IDs
+    // These lists are used to store the IDs of the entities created during the test
+    // so that they can be cleaned up after the test is completed.
+    // This is important to avoid leaving test data in the database after the tests are run.
     private List<Integer> createdItemIds = new ArrayList<>();
     private List<Integer> createdLocationIds = new ArrayList<>();
     private List<Integer> createdLanguageIds = new ArrayList<>();
 
     static final boolean debug_flg = true; // Set to true to enable debug messages
-// Global dictionary for test parameters
-    static final Map<String, Object> testParams = Map.ofEntries(
-        Map.entry("itemType", "book"),
-        Map.entry("identifier", "1234567890"),
-        Map.entry("identifier2", "1234567890123"),
-        Map.entry("title", "Test Item"),
-        Map.entry("title_updated", "Test Item Updated"),
-        Map.entry("publisher", "Test Publisher"),
-        Map.entry("ageLimit", (short) 18),
-        Map.entry("countryOfProduction", "Test Country"),
-        Map.entry("floor", "1"),
-        Map.entry("section", "A"),
-        Map.entry("shelf", "Shelf 1"),
-        Map.entry("position", "Position 1"),
-        Map.entry("language", "English")
+    
+    // The test parameters for the item to be created
+    static final ItemTParams ItemTParams = new ItemTParams(
+        "book",
+        "1234567890",
+        "1234567890123",
+        "Test Item",
+        "Test Item Updated",
+        "Test Publisher",
+        (short) 18,
+        "Test Country",
+        "1",
+        "A",
+        "Shelf 1",
+        "Position 1",
+        "English"
     );
 
     @BeforeEach
@@ -82,7 +89,7 @@ public class DatabaseItemCRUDTest {
 
             // Update the title of the item
             em.getTransaction().begin();
-            updateItemTitle(em, item.getItemId(), (String) testParams.get("title_updated"));
+            updateItemTitle(em, item.getItemId(), ItemTParams.titleUpdated());
             em.getTransaction().commit();
 
             // TESTCASE GROUP 2: Fetch and verify the updated item
@@ -144,10 +151,10 @@ public class DatabaseItemCRUDTest {
         Location location = em.createQuery(
                 "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
                 Location.class)
-            .setParameter("floor", (String) testParams.get("floor"))
-            .setParameter("section", (String) testParams.get("section"))
-            .setParameter("shelf", (String) testParams.get("shelf"))
-            .setParameter("position", (String) testParams.get("position"))
+            .setParameter("floor", ItemTParams.floor())
+            .setParameter("section", ItemTParams.section())
+            .setParameter("shelf", ItemTParams.shelf())
+            .setParameter("position", ItemTParams.position())
             .getResultStream()
             .findFirst()
             .orElse(null);
@@ -155,10 +162,10 @@ public class DatabaseItemCRUDTest {
         if (location == null) {
             debugPrint("Location not found, creating new one.");
             location = new Location();
-            location.setFloor((String) testParams.get("floor"));
-            location.setSection((String) testParams.get("section"));
-            location.setShelf((String) testParams.get("shelf"));
-            location.setPosition((String) testParams.get("position"));
+            location.setFloor(ItemTParams.floor());
+            location.setSection(ItemTParams.section());
+            location.setShelf(ItemTParams.shelf());
+            location.setPosition(ItemTParams.position());
             em.persist(location);
             createdLocationIds.add(location.getLocationId()); // Store the created location ID for cleanup
             debugPrint("Created new item with identifier: " + location.getLocationId());
@@ -181,7 +188,7 @@ public class DatabaseItemCRUDTest {
         Language language = em.createQuery(
                 "SELECT l FROM Language l WHERE l.language = :language",
                 Language.class)
-            .setParameter("language", (String) testParams.get("language"))
+            .setParameter("language", ItemTParams.language())
             .getResultStream()
             .findFirst()
             .orElse(null);
@@ -189,7 +196,7 @@ public class DatabaseItemCRUDTest {
         if (language == null) {
             debugPrint("Language not found, creating new one.");
             language = new Language();
-            language.setLanguage((String) testParams.get("language"));
+            language.setLanguage(ItemTParams.language());
             em.persist(language);
             createdLanguageIds.add(language.getLanguageId()); // Store the created language ID for cleanup
         } else {
@@ -210,13 +217,13 @@ public class DatabaseItemCRUDTest {
     private Item createAndPersistItem(EntityManager em, Location location, Language language) {
         debugPrint("Creating new item.");
         Item item = new Item();
-        item.setType((String) testParams.get("itemType"));
-        item.setIdentifier((String) testParams.get("identifier"));
-        item.setIdentifier2((String) testParams.get("identifier2"));
-        item.setTitle((String) testParams.get("title"));
-        item.setPublisher((String) testParams.get("publisher"));
-        item.setAgeLimit((Short) testParams.get("ageLimit"));
-        item.setCountryOfProduction((String) testParams.get("countryOfProduction"));
+        item.setType(ItemTParams.itemType());
+        item.setIdentifier(ItemTParams.identifier());
+        item.setIdentifier2(ItemTParams.identifier2());
+        item.setTitle(ItemTParams.title());
+        item.setPublisher(ItemTParams.publisher());
+        item.setAgeLimit(ItemTParams.ageLimit());
+        item.setCountryOfProduction(ItemTParams.countryOfProduction());
         item.setLocation(location);
         item.setLanguage(language);
         em.persist(item);
@@ -241,7 +248,7 @@ public class DatabaseItemCRUDTest {
         assertNotNull(updatedItem);
 
         // Check if the title matches the expected value
-        assertEquals(testParams.get("title"), updatedItem.getTitle());
+        assertEquals(ItemTParams.title(), updatedItem.getTitle());
         debugPrint("Verified item: " + updatedItem.getTitle());
     }
 
@@ -276,7 +283,7 @@ public class DatabaseItemCRUDTest {
         // Refresh the entity to ensure it has the latest state from the database (not cached value)
         em.refresh(updatedItem);
 
-        assertEquals(testParams.get("title_updated"), updatedItem.getTitle(), "The updated title does not match.");
+        assertEquals(ItemTParams.titleUpdated(), updatedItem.getTitle(), "The updated title does not match.");
         debugPrint("Verified updated item title: " + updatedItem.getTitle());
     }
 }
