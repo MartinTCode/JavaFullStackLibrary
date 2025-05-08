@@ -12,22 +12,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class contains test cases for performing CRUD operations on items in the database.
- * It uses JUnit 5 for testing and Jakarta Persistence (JPA) for database interactions.
- * The tests include creating, updating, and verifying items in the library system.
+ * Comprehensive CRUD test suite for verifying database connectivity and operations.
+ * Focused on the Item entity and its associated Location and Language entities.
+ * Demonstrates creation, retrieval, update, and cleanup processes in the library system.
  */
 public class DatabaseItemCRUDTest {
 
-    // EntityManager and EntityManagerFactory for database operations
-    // These are used to manage the persistence context and perform CRUD operations
-    // on the database entities.
+    // Manages the persistence context and performs CRUD operations on database entities.
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    // Lists to keep track of created item, location, and language IDs
-    // These lists are used to store the IDs of the entities created during the test
-    // so that they can be cleaned up after the test is completed.
-    // This is important to avoid leaving test data in the database after the tests are run.
+    // Lists to track IDs of created entities for cleanup after tests.
     private List<Integer> createdItemIds = new ArrayList<>();
     private List<Integer> createdLocationIds = new ArrayList<>();
     private List<Integer> createdLanguageIds = new ArrayList<>();
@@ -51,6 +46,9 @@ public class DatabaseItemCRUDTest {
         "English"
     );
 
+    /**
+     * Sets up the EntityManager and starts a transaction before each test.
+     */
     @BeforeEach
     public void setUp() {
         debugPrint("Setting up EntityManager and starting a transaction.");
@@ -59,12 +57,10 @@ public class DatabaseItemCRUDTest {
         em.getTransaction().begin();
     }
 
-    @AfterEach
     /**
-     * This method is called after each test case.
-     * It rolls back any uncommitted changes to maintain a clean database state
-     * and closes the EntityManager and EntityManagerFactory.
+     * Cleans up test data and closes the EntityManager and EntityManagerFactory after each test.
      */
+    @AfterEach
     public void tearDown() {
         debugPrint("Cleaning up test data and closing EntityManager.");
         // Rollback any uncommitted changes to maintain a clean database state.
@@ -93,7 +89,10 @@ public class DatabaseItemCRUDTest {
         return language;
     }
 
-    // Test for creating a Location
+    /**
+     * Tests creating a new Location or fetching an existing one.
+     * It verifies that the location is created successfully and has the expected ID.
+     */
     @Test
     @DisplayName("Test Creating New Location Or Fetching Existing Location")
     public void testCreateLocation() {
@@ -102,7 +101,10 @@ public class DatabaseItemCRUDTest {
         debugPrint("Test for creating location passed.");
     }
 
-    // Test for creating a Language
+    /**
+     * Tests creating a new Language or fetching an existing one.
+     * It verifies that the language is created successfully and has the expected ID.
+     */
     @Test
     @DisplayName("Test Creating New Language Or Fetching Existing Language")
     public void testCreateLanguage() {
@@ -111,7 +113,10 @@ public class DatabaseItemCRUDTest {
         debugPrint("Test for creating language passed.");
     }
 
-    // Test for creating an Item
+    /**
+     * Tests creating a new Item using the Location and Language.
+     * It verifies that the item is created successfully and has the expected title.
+     */
     @Test
     @DisplayName("Test Creating New Item using Location and Language")
     public void testCreateItem() {
@@ -123,7 +128,10 @@ public class DatabaseItemCRUDTest {
         debugPrint("Test for creating item passed.");
     }
 
-    // Test for updating an Item
+    /**
+     * Tests updating the title of an existing Item.
+     * It verifies that the item's title is updated successfully and matches the expected value.
+     */
     @Test
     public void testUpdateItemTitle() {
         // Arrange
