@@ -8,18 +8,18 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id")
-    private Integer languageId;
+    private Integer id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String language;
 
     // Getters and setters
-    public Integer getLanguageId() {
-        return languageId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLanguage() {

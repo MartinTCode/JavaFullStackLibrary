@@ -15,7 +15,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id") // Maps to the SQL column name
-    private Integer itemId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
@@ -47,12 +47,12 @@ public class Item {
     private String countryOfProduction;
 
     // Getters and setters
-    public Integer getItemId() {
-        return itemId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getType() {

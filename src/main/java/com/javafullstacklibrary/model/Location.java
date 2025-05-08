@@ -8,7 +8,7 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
-    private Integer locationId;
+    private Integer id;
 
     @Column(nullable = false, length = 10)
     private String floor;
@@ -23,12 +23,12 @@ public class Location {
     private String position;
 
     // Getters and setters
-    public Integer getLocationId() {
-        return locationId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLocationId(Integer locationId) {
-        this.locationId = locationId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFloor() {
