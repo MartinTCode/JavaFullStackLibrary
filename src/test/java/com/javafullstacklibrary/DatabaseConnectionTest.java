@@ -28,6 +28,7 @@ public class DatabaseConnectionTest {
 
     // testparameters:
     static final boolean debug_flg = true; // Set to true to enable debug messages
+    boolean languageCreated = false; // Flag to track if a new language was created
     // Global dictionary for test parameters
     static final Map<String, Object> testParams = Map.ofEntries(
         Map.entry("itemType", "book"),
@@ -125,6 +126,7 @@ public class DatabaseConnectionTest {
             language = new Language();
             language.setLanguage((String) testParams.get("language"));
             em.persist(language);
+            languageCreated = true; // Set the flag to true since a new language was created
         } else {
             debugPrint("Language already exists, using existing one.");
         }
@@ -163,9 +165,12 @@ public class DatabaseConnectionTest {
         em.getTransaction().begin();
         em.createQuery("DELETE FROM Item").executeUpdate();
         em.createQuery("DELETE FROM Location").executeUpdate();
-        em.createQuery("DELETE FROM Language").executeUpdate();
+        if (languageCreated) {
+            em.createQuery("DELETE FROM Language").executeUpdate();
+        }
         em.getTransaction().commit();
-    }
+        debugPrint("Test data cleaned up.");
+    } 
 
     private void debugPrint(String message) {
         if (debug_flg) {
