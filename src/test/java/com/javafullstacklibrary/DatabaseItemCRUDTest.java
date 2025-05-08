@@ -32,10 +32,10 @@ public class DatabaseItemCRUDTest {
     private List<Integer> createdLocationIds = new ArrayList<>();
     private List<Integer> createdLanguageIds = new ArrayList<>();
 
-    static final boolean debug_flg = true; // Set to true to enable debug messages
+    static final boolean DEBUG_FLAG = true; // Set to true to enable debug messages
 
     // The test parameters for the item to be created
-    static final ItemTestParams ItemTParams = new ItemTestParams(
+    static final ItemTestParams ITEM_TEST_PARAMS = new ItemTestParams(
         "book",
         "1234567890",
         "1234567890123",
@@ -75,53 +75,51 @@ public class DatabaseItemCRUDTest {
         em.close();
         emf.close();
 
-        // Reinitialize the ID lists to ensure a clean state for the next test
-        createdItemIds = new ArrayList<>();
-        createdLocationIds = new ArrayList<>();
-        createdLanguageIds = new ArrayList<>();
-
         debugPrint("Test data cleaned up and EntityManager closed.");
     }
 
     // Helper methods for shared setup
-    private Location setupLocation() {
+    private Location initalizeOrFetchLocation() {
         Location location = findOrCreateLocation(em);
         assertNotNull(location, "Location should not be null.");
-        debugPrint("Setup location with ID: " + location.getLocationId());
+        debugPrint("Setup location with ID: " + location.getId());
         return location;
     }
 
-    private Language setupLanguage() {
+    private Language initalizeOrFetchLanguage() {
         Language language = findOrCreateLanguage(em);
         assertNotNull(language, "Language should not be null.");
-        debugPrint("Setup language with ID: " + language.getLanguageId());
+        debugPrint("Setup language with ID: " + language.getId());
         return language;
     }
 
     // Test for creating a Location
     @Test
+    @DisplayName("Test Creating New Location Or Fetching Existing Location")
     public void testCreateLocation() {
-        Location location = setupLocation();
-        assertNotNull(location.getLocationId(), "Location ID should not be null.");
+        Location location = initalizeOrFetchLocation();
+        assertNotNull(location.getId(), "Location ID should not be null.");
         debugPrint("Test for creating location passed.");
     }
 
     // Test for creating a Language
     @Test
+    @DisplayName("Test Creating New Language Or Fetching Existing Language")
     public void testCreateLanguage() {
-        Language language = setupLanguage();
-        assertNotNull(language.getLanguageId(), "Language ID should not be null.");
+        Language language = initalizeOrFetchLanguage();
+        assertNotNull(language.getId(), "Language ID should not be null.");
         debugPrint("Test for creating language passed.");
     }
 
     // Test for creating an Item
     @Test
+    @DisplayName("Test Creating New Item using Location and Language")
     public void testCreateItem() {
-        Location location = setupLocation();
-        Language language = setupLanguage();
+        Location location = initalizeOrFetchLocation();
+        Language language = initalizeOrFetchLanguage();
         Item item = createAndPersistItem(em, location, language);
-        assertNotNull(item.getItemId(), "Item ID should not be null.");
-        verifyItem(em, item);
+        assertNotNull(item.getId(), "Item ID should not be null.");
+        verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.title());
         debugPrint("Test for creating item passed.");
     }
 
@@ -129,20 +127,37 @@ public class DatabaseItemCRUDTest {
     @Test
     public void testUpdateItemTitle() {
         // Arrange
-        Location location = setupLocation();
-        Language language = setupLanguage();
+        Location location = initalizeOrFetchLocation();
+        Language language = initalizeOrFetchLanguage();
         Item item = createAndPersistItem(em, location, language);
         // Commit the transaction to persist the Item
         em.getTransaction().commit();
 
         // Act
         em.getTransaction().begin();
-        updateItemTitle(em, item.getItemId(), ItemTParams.titleUpdated());
+        updateItemTitle(em, item.getId(), ITEM_TEST_PARAMS.titleUpdated());
         em.getTransaction().commit();
 
         // Assert
-        verifyUpdatedItem(em, item.getItemId());
+        verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.titleUpdated());
         debugPrint("Test for updating item title passed.");
+    }
+
+    /** 
+     * This helper method is used to clean up entities from the database.
+     * It deletes entities of the specified type based on their IDs.
+     * 
+     * @param em The EntityManager to use for database operations
+     * @param entityName The name of the entity type to delete
+     * @param ids The list of IDs of the entities to delete
+     */
+    private void cleanupEntities(EntityManager em, String entityName, List<Integer> ids) {
+        if (!ids.isEmpty()) {
+            debugPrint("Deleting " + entityName + "s with IDs: " + ids);
+            em.createQuery("DELETE FROM " + entityName + " e WHERE e.id IN :ids")
+                .setParameter("ids", ids)
+                .executeUpdate();
+        }
     }
 
     /**
@@ -154,34 +169,15 @@ public class DatabaseItemCRUDTest {
     private void cleanupTestData(EntityManager em) {
         debugPrint("Cleaning up test data.");
         em.getTransaction().begin();
-
-        if (!createdItemIds.isEmpty()) {
-            debugPrint("Deleting items with IDs: " + createdItemIds);
-            em.createQuery("DELETE FROM Item i WHERE i.itemId IN :ids")
-                .setParameter("ids", createdItemIds)
-                .executeUpdate();
-        }
-
-        if (!createdLocationIds.isEmpty()) {
-            debugPrint("Deleting locations with IDs: " + createdLocationIds);
-            em.createQuery("DELETE FROM Location l WHERE l.locationId IN :ids")
-                .setParameter("ids", createdLocationIds)
-                .executeUpdate();
-        }
-
-        if (!createdLanguageIds.isEmpty()) {
-            debugPrint("Deleting languages with IDs: " + createdLanguageIds);
-            em.createQuery("DELETE FROM Language l WHERE l.languageId IN :ids")
-                .setParameter("ids", createdLanguageIds)
-                .executeUpdate();
-        }
-
+        cleanupEntities(em, "Item", createdItemIds);
+        cleanupEntities(em, "Location", createdLocationIds);
+        cleanupEntities(em, "Language", createdLanguageIds);
         em.getTransaction().commit();
     }
 
     // Debug print helper
     private void debugPrint(String message) {
-        if (debug_flg) {
+        if (DEBUG_FLAG) {
             System.out.println(message);
         }
     }
@@ -199,10 +195,10 @@ public class DatabaseItemCRUDTest {
         Location location = em.createQuery(
                 "SELECT l FROM Location l WHERE l.floor = :floor AND l.section = :section AND l.shelf = :shelf AND l.position = :position",
                 Location.class)
-            .setParameter("floor", ItemTParams.floor())
-            .setParameter("section", ItemTParams.section())
-            .setParameter("shelf", ItemTParams.shelf())
-            .setParameter("position", ItemTParams.position())
+            .setParameter("floor", ITEM_TEST_PARAMS.floor())
+            .setParameter("section", ITEM_TEST_PARAMS.section())
+            .setParameter("shelf", ITEM_TEST_PARAMS.shelf())
+            .setParameter("position", ITEM_TEST_PARAMS.position())
             .getResultStream()
             .findFirst()
             .orElse(null);
@@ -210,12 +206,12 @@ public class DatabaseItemCRUDTest {
         if (location == null) {
             debugPrint("Location not found, creating new one.");
             location = new Location();
-            location.setFloor(ItemTParams.floor());
-            location.setSection(ItemTParams.section());
-            location.setShelf(ItemTParams.shelf());
-            location.setPosition(ItemTParams.position());
+            location.setFloor(ITEM_TEST_PARAMS.floor());
+            location.setSection(ITEM_TEST_PARAMS.section());
+            location.setShelf(ITEM_TEST_PARAMS.shelf());
+            location.setPosition(ITEM_TEST_PARAMS.position());
             em.persist(location);
-            createdLocationIds.add(location.getLocationId());
+            createdLocationIds.add(location.getId());
         } else {
             debugPrint("Location already exists, using existing one.");
         }
@@ -235,7 +231,7 @@ public class DatabaseItemCRUDTest {
         Language language = em.createQuery(
                 "SELECT l FROM Language l WHERE l.language = :language",
                 Language.class)
-            .setParameter("language", ItemTParams.language())
+            .setParameter("language", ITEM_TEST_PARAMS.language())
             .getResultStream()
             .findFirst()
             .orElse(null);
@@ -243,9 +239,9 @@ public class DatabaseItemCRUDTest {
         if (language == null) {
             debugPrint("Language not found, creating new one.");
             language = new Language();
-            language.setLanguage(ItemTParams.language());
+            language.setLanguage(ITEM_TEST_PARAMS.language());
             em.persist(language);
-            createdLanguageIds.add(language.getLanguageId());
+            createdLanguageIds.add(language.getId());
         } else {
             debugPrint("Language already exists, using existing one.");
         }
@@ -264,36 +260,21 @@ public class DatabaseItemCRUDTest {
     private Item createAndPersistItem(EntityManager em, Location location, Language language) {
         debugPrint("Creating new item.");
         Item item = new Item();
-        item.setType(ItemTParams.itemType());
-        item.setIdentifier(ItemTParams.identifier());
-        item.setIdentifier2(ItemTParams.identifier2());
-        item.setTitle(ItemTParams.title());
-        item.setPublisher(ItemTParams.publisher());
-        item.setAgeLimit(ItemTParams.ageLimit());
-        item.setCountryOfProduction(ItemTParams.countryOfProduction());
+        item.setType(ITEM_TEST_PARAMS.itemType());
+        item.setIdentifier(ITEM_TEST_PARAMS.identifier());
+        item.setIdentifier2(ITEM_TEST_PARAMS.identifier2());
+        item.setTitle(ITEM_TEST_PARAMS.title());
+        item.setPublisher(ITEM_TEST_PARAMS.publisher());
+        item.setAgeLimit(ITEM_TEST_PARAMS.ageLimit());
+        item.setCountryOfProduction(ITEM_TEST_PARAMS.countryOfProduction());
         item.setLocation(location);
         item.setLanguage(language);
         em.persist(item);
-        createdItemIds.add(item.getItemId());
+        createdItemIds.add(item.getId());
         debugPrint("Created new item with identifier: " + item.getIdentifier());
         return item;
     }
 
-    /**
-     * Verifies that the item was saved successfully in the database.
-     * It checks that the item exists and that its title matches the expected value.
-     *
-     * @param em The EntityManager to use for database operations
-     * @param item The Item object to verify
-     */
-    private void verifyItem(EntityManager em, Item item) {
-        debugPrint("Verifying that the item was saved successfully.");
-        assertNotNull(item.getItemId());
-        Item updatedItem = em.find(Item.class, item.getItemId());
-        assertNotNull(updatedItem);
-        assertEquals(ItemTParams.title(), updatedItem.getTitle());
-        debugPrint("Verified item: " + updatedItem.getTitle());
-    }
 
     /**
      * Updates the title of an item in the database.
@@ -304,7 +285,7 @@ public class DatabaseItemCRUDTest {
      */
     private void updateItemTitle(EntityManager em, Integer itemId, String newTitle) {
         debugPrint("Updating title of item with ID: " + itemId + " to: " + newTitle);
-        int updatedCount = em.createQuery("UPDATE Item i SET i.title = :newTitle WHERE i.itemId = :itemId")
+        int updatedCount = em.createQuery("UPDATE Item i SET i.title = :newTitle WHERE i.id = :itemId")
             .setParameter("newTitle", newTitle)
             .setParameter("itemId", itemId)
             .executeUpdate();
@@ -312,18 +293,19 @@ public class DatabaseItemCRUDTest {
     }
 
     /**
-     * Verifies that the updated item has the correct title.
-     * It fetches the item from the database and checks that its title matches the updated value.
+     * Verifies that the item has the correct title.
+     * It fetches the item from the database and checks that its title matches the expected value.
      *
      * @param em The EntityManager to use for database operations
      * @param itemId The ID of the item to verify
+     * @param expectedTitle The expected title of the item
      */
-    private void verifyUpdatedItem(EntityManager em, Integer itemId) {
-        debugPrint("Fetching updated item with ID: " + itemId);
-        Item updatedItem = em.find(Item.class, itemId);
-        assertNotNull(updatedItem, "Updated item should not be null.");
-        em.refresh(updatedItem);
-        assertEquals(ItemTParams.titleUpdated(), updatedItem.getTitle(), "The updated title does not match.");
-        debugPrint("Verified updated item title: " + updatedItem.getTitle());
+    private void verifyItemTitle(EntityManager em, Integer itemId, String expectedTitle) {
+        debugPrint("Fetching item with ID: " + itemId);
+        Item item = em.find(Item.class, itemId);
+        assertNotNull(item, "Item should not be null.");
+        em.refresh(item);
+        assertEquals(expectedTitle, item.getTitle(), "The item's title does not match the expected value.");
+        debugPrint("Verified item title: " + item.getTitle());
     }
 }
