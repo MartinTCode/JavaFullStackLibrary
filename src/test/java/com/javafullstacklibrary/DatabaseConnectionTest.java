@@ -57,12 +57,15 @@ public class DatabaseConnectionTest {
 
             // Check or create Location
             Location location = findOrCreateLocation(em);
+            debugPrint(">>>>Created item with ID: " + location.getLocationId());
 
             // Check or create Language
             Language language = findOrCreateLanguage(em);
+            debugPrint(">>>>Created item with ID: " + language.getLanguageId());
 
             // Create and persist Item
             Item item = createAndPersistItem(em, location, language);
+            debugPrint(">>>>Created item with ID: " + item.getItemId());
 
             // Commit the transaction
             debugPrint("Committing transaction.");
