@@ -11,8 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.javafullstacklibrary.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
+// Importing utility classes for entity cleanup and test utilities for Location, Language, and Item entities.
+import static com.javafullstacklibrary.utils.EntityCleanupUtils.*;
+import static com.javafullstacklibrary.utils.LocationTestUtils.*;
+import static com.javafullstacklibrary.utils.LanguageTestUtils.*;
+import static com.javafullstacklibrary.utils.ItemTestUtils.*;
 
 /**
  * Comprehensive CRUD test suite for verifying database connectivity and operations.
