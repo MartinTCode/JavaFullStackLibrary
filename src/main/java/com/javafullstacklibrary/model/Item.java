@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Item {
@@ -13,9 +15,17 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id") // Maps to the SQL column name
-    private Integer itemId;
+    private Integer id;
 
-    @Column(nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id", nullable = false) // Foreign key to language table
+    private Language language;
+
+    @Column(name = "item_type", nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
     private String type;
 
     @Column(length = 17) // Matches SQL: VARCHAR(17)
@@ -37,12 +47,12 @@ public class Item {
     private String countryOfProduction;
 
     // Getters and setters
-    public Integer getItemId() {
-        return itemId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -99,5 +109,21 @@ public class Item {
 
     public void setCountryOfProduction(String countryOfProduction) {
         this.countryOfProduction = countryOfProduction;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

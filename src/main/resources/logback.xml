@@ -1,0 +1,35 @@
+<!-- Logback configuration file:
+     - Defines how application logs are handled and formatted.
+     - The <appender> element specifies where logs are sent (e.g., console, file).
+         - 'CONSOLE' appender outputs logs to the console.
+         - The <pattern> inside <encoder> defines the log format:
+             - %d: Timestamp of the log entry.
+             - [%thread]: Thread name.
+             - %-5level: Log level (e.g., DEBUG, INFO).
+                - Uses %highlight to apply colors based on log level 
+             - %logger{36}: Logger name (up to 36 characters).
+             - %msg: The actual log message.
+             - %n: Newline character.
+     - The <root> element sets the default log level and attaches appenders.
+         - 'level="debug"' ensures all logs at DEBUG level or higher are captured.
+         - <appender-ref> links the root logger to the 'CONSOLE' appender.
+-->
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %highlight(%-5level) %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Hibernate SQL logging -->
+    <logger name="org.hibernate.SQL" level="INFO" /> <!-- Logs SQL queries -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" /> <!-- Logs parameter bindings -->
+
+    <!-- Reduce Hibernate logs -->
+    <logger name="org.hibernate" level="WARN" />
+    <logger name="org.hibernate.type.descriptor.sql" level="WARN" />
+
+    <root level="debug"> <!-- Set the default log level to DEBUG -->
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
