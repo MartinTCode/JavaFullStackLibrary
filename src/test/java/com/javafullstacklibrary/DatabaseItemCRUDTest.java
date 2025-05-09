@@ -32,8 +32,6 @@ public class DatabaseItemCRUDTest {
     private List<Integer> createdLocationIds = new ArrayList<>();
     private List<Integer> createdLanguageIds = new ArrayList<>();
 
-    static final boolean DEBUG_FLAG = true; // Set to true to enable debug messages
-
     // The test parameters for the item to be created
     static final ItemTestParams ITEM_TEST_PARAMS = new ItemTestParams(
         "book",
@@ -79,21 +77,6 @@ public class DatabaseItemCRUDTest {
         logger.debug("Test data cleaned up and EntityManager closed.");
     }
 
-    // Helper methods for shared setup
-    private Location initalizeOrFetchLocation() {
-        Location location = findOrCreateLocation(em, ITEM_TEST_PARAMS, createdLocationIds);
-        assertNotNull(location, "Location should not be null.");
-        logger.debug("Setup location with ID: {}", location.getId());
-        return location;
-    }
-
-    private Language initalizeOrFetchLanguage() {
-        Language language = findOrCreateLanguage(em, ITEM_TEST_PARAMS, createdLanguageIds);
-        assertNotNull(language, "Language should not be null.");
-        logger.debug("Setup language with ID: {}", language.getId());
-        return language;
-    }
-
     /**
      * Tests creating a new Location or fetching an existing one.
      * It verifies that the location is created successfully and has the expected ID.
@@ -101,7 +84,7 @@ public class DatabaseItemCRUDTest {
     @Test
     @DisplayName("Test Creating New Location Or Fetching Existing Location")
     public void testCreateLocation() {
-        Location location = initalizeOrFetchLocation();
+        Location location = initializeOrFetchLocation(em, ITEM_TEST_PARAMS, createdLocationIds);
         assertNotNull(location.getId(), "Location ID should not be null.");
         logger.debug("Test for creating location passed.");
     }
@@ -113,7 +96,7 @@ public class DatabaseItemCRUDTest {
     @Test
     @DisplayName("Test Creating New Language Or Fetching Existing Language")
     public void testCreateLanguage() {
-        Language language = initalizeOrFetchLanguage();
+        Language language = initializeOrFetchLanguage(em, ITEM_TEST_PARAMS, createdLanguageIds);
         assertNotNull(language.getId(), "Language ID should not be null.");
         logger.debug("Test for creating language passed.");
     }
@@ -125,9 +108,9 @@ public class DatabaseItemCRUDTest {
     @Test
     @DisplayName("Test Creating New Item using Location and Language")
     public void testCreateItem() {
-        Location location = initalizeOrFetchLocation();
-        Language language = initalizeOrFetchLanguage();
-        Item item = createAndPersistItem(em, location, language);
+        Location location = initializeOrFetchLocation(em, ITEM_TEST_PARAMS, createdLocationIds);
+        Language language = initializeOrFetchLanguage(em, ITEM_TEST_PARAMS, createdLanguageIds);
+        Item item = createAndPersistItem(em, ITEM_TEST_PARAMS, location, language, createdItemIds);
         assertNotNull(item.getId(), "Item ID should not be null.");
         verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.title());
         logger.debug("Test for creating item passed.");
@@ -140,9 +123,9 @@ public class DatabaseItemCRUDTest {
     @Test
     public void testUpdateItemTitle() {
         // Arrange
-        Location location = initalizeOrFetchLocation();
-        Language language = initalizeOrFetchLanguage();
-        Item item = createAndPersistItem(em, location, language);
+        Location location = initializeOrFetchLocation(em, ITEM_TEST_PARAMS, createdLocationIds);
+        Language language = initializeOrFetchLanguage(em, ITEM_TEST_PARAMS, createdLanguageIds);
+        Item item = createAndPersistItem(em, ITEM_TEST_PARAMS, location, language, createdItemIds);
         // Commit the transaction to persist the Item
         em.getTransaction().commit();
 
@@ -154,34 +137,5 @@ public class DatabaseItemCRUDTest {
         // Assert
         verifyItemTitle(em, item.getId(), ITEM_TEST_PARAMS.titleUpdated());
         logger.debug("Test for updating item title passed.");
-    }
-
-
-
-    /**
-     * This method creates and persists a new item in the database.
-     * It sets the properties of the item based on the provided parameters.
-     *
-     * @param em The EntityManager to use for database operations
-     * @param location The Location object associated with the item
-     * @param language The Language object associated with the item
-     * @return The created Item object
-     */
-    private Item createAndPersistItem(EntityManager em, Location location, Language language) {
-        logger.debug("Creating new item.");
-        Item item = new Item();
-        item.setType(ITEM_TEST_PARAMS.itemType());
-        item.setIdentifier(ITEM_TEST_PARAMS.identifier());
-        item.setIdentifier2(ITEM_TEST_PARAMS.identifier2());
-        item.setTitle(ITEM_TEST_PARAMS.title());
-        item.setPublisher(ITEM_TEST_PARAMS.publisher());
-        item.setAgeLimit(ITEM_TEST_PARAMS.ageLimit());
-        item.setCountryOfProduction(ITEM_TEST_PARAMS.countryOfProduction());
-        item.setLocation(location);
-        item.setLanguage(language);
-        em.persist(item);
-        createdItemIds.add(item.getId());
-        logger.debug("Created new item with identifier: {}", item.getIdentifier());
-        return item;
     }
 }

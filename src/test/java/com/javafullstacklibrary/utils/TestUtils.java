@@ -84,6 +84,43 @@ public class TestUtils {
         return language;
     }
 
+    public static Location initializeOrFetchLocation(EntityManager em, ItemTestParams params, List<Integer> createdLocationIds) {
+        Location location = findOrCreateLocation(em, params, createdLocationIds);
+        assertNotNull(location, "Location should not be null.");
+        return location;
+    }
+
+    public static Language initializeOrFetchLanguage(EntityManager em, ItemTestParams params, List<Integer> createdLanguageIds) {
+        Language language = findOrCreateLanguage(em, params, createdLanguageIds);
+        assertNotNull(language, "Language should not be null.");
+        return language;
+    }
+
+    /**
+     * This method creates and persists a new item in the database.
+     * It sets the properties of the item based on the provided parameters.
+     *
+     * @param em The EntityManager to use for database operations
+     * @param location The Location object associated with the item
+     * @param language The Language object associated with the item
+     * @return The created Item object
+     */
+    public static Item createAndPersistItem(EntityManager em, ItemTestParams params, Location location, Language language, List<Integer> createdItemIds) {
+        Item item = new Item();
+        item.setType(params.itemType());
+        item.setIdentifier(params.identifier());
+        item.setIdentifier2(params.identifier2());
+        item.setTitle(params.title());
+        item.setPublisher(params.publisher());
+        item.setAgeLimit(params.ageLimit());
+        item.setCountryOfProduction(params.countryOfProduction());
+        item.setLocation(location);
+        item.setLanguage(language);
+        em.persist(item);
+        createdItemIds.add(item.getId());
+        return item;
+    }
+
     /**
      * Verifies that the item has the correct title.
      * It fetches the item from the database and checks that its title matches the expected value.
