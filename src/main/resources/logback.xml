@@ -21,7 +21,15 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <!-- Hibernate SQL logging -->
+    <logger name="org.hibernate.SQL" level="INFO" /> <!-- Logs SQL queries -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" /> <!-- Logs parameter bindings -->
+
+    <!-- Reduce Hibernate logs -->
+    <logger name="org.hibernate" level="WARN" />
+    <logger name="org.hibernate.type.descriptor.sql" level="WARN" />
+
+    <root level="debug"> <!-- Set the default log level to DEBUG -->
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>
