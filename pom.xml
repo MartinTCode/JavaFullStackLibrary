@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>23.0.1</javafx.version>
         <jUnit.version>5.9.2</jUnit.version>
-        <postgresql.version>42.5.4</postgresql.version>
+        <postgresql.version>42.7.5</postgresql.version>
         <jkartaJPA.version>3.1.0</jkartaJPA.version>
         <hibernate.version>6.6.13.Final</hibernate.version>
         <slf4j.version>2.0.17</slf4j.version>
@@ -24,6 +24,7 @@
         <mResourceP.version>3.3.0</mResourceP.version>
         <mShadeP.version>3.5.0</mShadeP.version>
         <mCompilerP.version>3.10.1</mCompilerP.version>
+        <mSurefireP.version>3.5.3</mSurefireP.version>
         <mJavafxP.version>0.0.8</mJavafxP.version>
     </properties>
 
@@ -93,7 +94,17 @@
 
     <build>
         <plugins>
-            <!-- Compiler Plugin -->
+            <!-- Maven Surefire Plugin to execute tests sequentially -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${mSurefireP.version}</version>
+                <configuration>
+                    <!-- Set tests not to run in parallel. -->
+                    <parallel>none</parallel>
+                </configuration>
+            </plugin>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
