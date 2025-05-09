@@ -13,7 +13,10 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
              version="3.1">
     <persistence-unit name="libraryPU" transaction-type="RESOURCE_LOCAL">
+        <!-- Define the entity classes used in this persistence unit -->
         <class>com.javafullstacklibrary.model.Item</class>
+        <class>com.javafullstacklibrary.model.Language</class>
+        <class>com.javafullstacklibrary.model.Location</class>
         <!-- Add other entity classes here -->
 
         <properties>
@@ -24,9 +27,12 @@
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
             <!-- Hibernate-specific properties -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
+
+            <!-- Enable SQL logging (Development only)-->
             <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
         </properties>
     </persistence-unit>
 </persistence>
