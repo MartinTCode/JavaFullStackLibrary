@@ -96,6 +96,14 @@
     -fx-pick-on-bounds: true;
 }
 
+.button-selected {
+    background-color: #767676;
+    -fx-background-color: #767676;
+    color: white;
+    -fx-text-fill: white;
+    -fx-pick-on-bounds: true;
+}
+
 /* Toggle Button Styles */
 .toggle-button {
     background-color: #648AB4;
