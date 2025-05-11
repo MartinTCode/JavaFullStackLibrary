@@ -156,6 +156,15 @@
     -fx-content-display: center;
 }
 
+.label-title {
+    font-size: 20px;
+    -fx-font-size: 20px;
+    text-align: center;
+    -fx-alignment: center;
+    font-weight: bold; 
+    -fx-font-weight: bold;
+}
+
 /* ImageView Styles */
 .image-view {
     width: 70px;
