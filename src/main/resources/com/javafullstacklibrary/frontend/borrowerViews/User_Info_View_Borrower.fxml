@@ -27,32 +27,23 @@
             <children>
                <FlowPane prefHeight="55.0" styleClass="flow-pane-padding">
                   <children>
-                     <ImageView fx:id="startMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedStartMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
+                     <!-- Home Button -->
+                     <ImageView fx:id="startMenuBorrower" styleClass="home-icon-active" />
+
+                     <!-- Search Button -->
                      <ImageView fx:id="searchMenuBorrower" onMouseClicked="#clickedSearchMenuBorrower" styleClass="search-icon-active" />
-                     <ImageView fx:id="loanMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedLoanMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/LoanNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="returnMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedReturnMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/ReturnNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/AccountNavigationButton.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="signOutMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedSignOutMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/SignOutNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
+
+                     <!-- Loan Button -->
+                     <ImageView fx:id="loanMenuBorrower" onMouseClicked="#clickedLoanMenuBorrower" styleClass="loan-icon-active" />
+
+                     <!-- Return Button -->
+                     <ImageView fx:id="returnMenuBorrower" onMouseClicked="#clickedReturnMenuBorrower" styleClass="return-icon-active" />
+
+                     <!-- Account Button -->
+                     <ImageView fx:id="accountMenuBorrower" onMouseClicked="#clickedAccountMenuBorrower" styleClass="account-icon-active" />
+
+                     <!-- Sign Out Button -->
+                     <ImageView fx:id="signOutMenuBorrower" onMouseClicked="#clickedSignOutMenuBorrower" styleClass="sign-out-icon-active" />
                   </children>
                </FlowPane>
             </children>
