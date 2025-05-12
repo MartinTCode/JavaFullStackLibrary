@@ -15,46 +15,35 @@
    <!-- Top borderPane layer -->
    <top>
       <StackPane prefHeight="55.0">
-      <!-- Top Menu Background -->
+         <!-- Top Menu Background -->
          <Region styleClass="top-menu-region" />
             
-      <!-- Top Menu Buttons-->
-      <StackPane prefHeight="55.0" BorderPane.alignment="CENTER">
-         <children>
-            <!-- Top Menu Buttons -->
-            <FlowPane prefHeight="55.0" styleClass="flow-pane-padding">
-               <children>
-                  <!-- Home Button -->
-                  <ImageView fx:id="homeMenuBorrower" styleClass="home-icon-inactive">
-                  </ImageView>
+         <!-- Top Menu Buttons -->
+         <StackPane prefHeight="55.0" BorderPane.alignment="CENTER">
+            <children>
+               <FlowPane prefHeight="55.0" styleClass="flow-pane-padding">
+                  <children>
+                     <!-- Home Button -->
+                     <ImageView fx:id="homeMenuBorrower" styleClass="home-icon-inactive" />
 
-                  <!-- Search Button -->
-                  <ImageView fx:id="searchMenuBorrower" onMouseClicked="#clickedSearchMenuBorrower" styleClass="search-icon-active">
-                  </ImageView>
-                     <ImageView fx:id="loanMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedLoanMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/LoanNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="returnMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedReturnMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/ReturnNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="accountMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedAccountMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/AccountNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-                     <ImageView fx:id="signOutMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedSignOutMenuBorrower" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image url="@../figma_icons/navBarButtons/SignOutNavigationButtonClickable.png" />
-                        </image>
-                     </ImageView>
-               </children>
-            </FlowPane>
-         </children>
-      </StackPane> <!-- Closing tag added here -->
+                     <!-- Search Button -->
+                     <ImageView fx:id="searchMenuBorrower" onMouseClicked="#clickedSearchMenuBorrower" styleClass="search-icon-active" />
+
+                     <!-- Loan Button -->
+                     <ImageView fx:id="loanMenuBorrower" onMouseClicked="#clickedLoanMenuBorrower" styleClass="loan-icon-active" />
+
+                     <!-- Return Button -->
+                     <ImageView fx:id="returnMenuBorrower" onMouseClicked="#clickedReturnMenuBorrower" styleClass="return-icon-active" />
+
+                     <!-- Account Button -->
+                     <ImageView fx:id="accountMenuBorrower" onMouseClicked="#clickedAccountMenuBorrower" styleClass="account-icon-active" />
+
+                     <!-- Sign Out Button -->
+                     <ImageView fx:id="signOutMenuBorrower" onMouseClicked="#clickedSignOutMenuBorrower" styleClass="sign-out-icon-active" />
+                  </children>
+               </FlowPane>
+            </children>
+         </StackPane>
       </StackPane>
    </top>
 
