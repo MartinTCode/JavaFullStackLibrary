@@ -1,5 +1,5 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
-public class UserInfoController {
+public class SearchMenuBorrowerController {
     
 }
