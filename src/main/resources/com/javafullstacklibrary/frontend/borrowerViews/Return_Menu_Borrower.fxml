@@ -59,8 +59,7 @@
                      <!-- Return Button -->
                      <ImageView 
                          fx:id="returnMenuBorrower" 
-                         onMouseClicked="#clickedReturnMenuBorrower" 
-                         styleClass="return-icon-active" />
+                         styleClass="return-icon-inactive" />
 
                      <!-- Account Button -->
                      <ImageView 

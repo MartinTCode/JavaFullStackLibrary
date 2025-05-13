@@ -50,8 +50,7 @@
                      <!-- Search Button -->
                      <ImageView 
                          fx:id="searchMenuBorrower" 
-                         onMouseClicked="#clickedSearchMenuBorrower" 
-                         styleClass="search-icon-active" />
+                         styleClass="search-icon-inactive" />
 
                      <!-- Loan Button -->
                      <ImageView 

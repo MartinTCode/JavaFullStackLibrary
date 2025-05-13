@@ -63,8 +63,7 @@
                      <!-- Account Button -->
                      <ImageView 
                          fx:id="accountMenuBorrower" 
-                         onMouseClicked="#clickedAccountMenuBorrower" 
-                         styleClass="account-icon-active" />
+                         styleClass="account-icon-inactive" />
 
                      <!-- Sign Out Button -->
                      <ImageView 

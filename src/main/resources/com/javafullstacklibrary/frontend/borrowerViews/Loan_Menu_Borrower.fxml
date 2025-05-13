@@ -53,8 +53,7 @@
                      <!-- Loan Button -->
                      <ImageView 
                          fx:id="loanMenuBorrower" 
-                         onMouseClicked="#clickedLoanMenuBorrower" 
-                         styleClass="loan-icon-active" />
+                         styleClass="loan-icon-inactive" />
 
                      <!-- Return Button -->
                      <ImageView 
