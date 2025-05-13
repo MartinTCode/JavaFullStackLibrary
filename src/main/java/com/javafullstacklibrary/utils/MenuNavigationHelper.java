@@ -7,6 +7,13 @@ import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestControll
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
+import com.javafullstacklibrary.frontend.borrowerControllers.StartViewBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.SearchMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.SignOutBorrowerController;
+
 
 import javafx.scene.layout.Pane;
 
@@ -50,6 +57,38 @@ public class MenuNavigationHelper {
             case "SignInUser":
                 // Navigate to the Sign-In view for users
                 navigateToView(mainPane, "guestViews", "Sign_In_User.fxml", new SignInUserController());
+                break;
+            default:
+                // Throw an exception for invalid menu options
+                throw new IllegalArgumentException("Invalid menu type: " + menuChange);
+        }
+    }
+
+    public static void menuClickBorrower(Pane mainPane, String menuChange) {
+        switch (menuChange) {
+            case "Home":
+                // Navigate to the Home view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Start_View_Borrower.fxml", new StartViewBorrowerController());
+                break;
+            case "Search":
+                // Navigate to the Search view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Search_Menu_Borrower.fxml", new SearchMenuBorrowerController());
+                break;
+            case "Loan":
+                // Navigate to the Loan view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Loan_Menu_Borrower.fxml", new LoanMenuBorrowerController());
+                break;
+            case "Return":
+                // Navigate to the Return view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Return_Menu_Borrower.fxml", new ReturnMenuBorrowerController());
+                break;
+            case "Account":
+                // Navigate to the Account view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Account_Menu_Borrower.fxml", new AccountMenuBorrowerController());
+                break;
+            case "SignOut":
+                // Navigate to the Sign-Out view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new SignOutBorrowerController());
                 break;
             default:
                 // Throw an exception for invalid menu options
