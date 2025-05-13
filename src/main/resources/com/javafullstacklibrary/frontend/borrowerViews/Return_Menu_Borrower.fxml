@@ -104,7 +104,7 @@
                   <!-- Return Title -->
                   <Text 
                       styleClass="text-title" 
-                      text="Scan or enter barcode" />
+                      text="Scan or enter barcode to return" />
 
                   <!-- Barcode Input -->
                   <VBox 

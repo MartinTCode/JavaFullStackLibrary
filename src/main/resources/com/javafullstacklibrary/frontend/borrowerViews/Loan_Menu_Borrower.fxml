@@ -105,7 +105,7 @@
                   <!-- Search Title -->
                   <Text 
                       styleClass="text-title" 
-                      text="Scan or enter barcode" />
+                      text="Scan or enter barcode to borrow" />
 
                   <!-- Search Input -->
                   <VBox 
