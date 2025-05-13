@@ -11,6 +11,11 @@ public class StartViewBorrowerController {
     private Pane mainPane;
 
     @FXML
+    private void clickedHomeMenuBorrower() {
+        MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
+    }
+
+    @FXML
     private void clickedSearchMenuBorrower() {
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
