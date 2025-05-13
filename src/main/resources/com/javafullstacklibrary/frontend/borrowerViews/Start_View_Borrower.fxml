@@ -1,45 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/common.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane 
+    fx:id="mainPane" 
+    minHeight="400.0" 
+    minWidth="600.0" 
+    prefHeight="400.0" 
+    prefWidth="600.0" 
+    stylesheets="@../styles/common.css" 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1">
 
    <!-- Top borderPane layer -->
    <top>
-      <StackPane prefHeight="55.0">
+      <StackPane 
+          prefHeight="55.0">
          <!-- Top Menu Background -->
-         <Region styleClass="top-menu-region" />
-            
+         <Region 
+             styleClass="top-menu-region" />
+
          <!-- Top Menu Buttons -->
-         <StackPane prefHeight="55.0" BorderPane.alignment="CENTER">
+         <StackPane 
+             prefHeight="55.0" 
+             BorderPane.alignment="CENTER">
             <children>
-               <FlowPane prefHeight="55.0" styleClass="flow-pane-padding">
+               <FlowPane 
+                   prefHeight="55.0" 
+                   styleClass="flow-pane-padding">
                   <children>
                      <!-- Home Button -->
-                     <ImageView fx:id="homeMenuBorrower" styleClass="home-icon-inactive" />
+                     <ImageView 
+                         fx:id="startMenuBorrower" 
+                         styleClass="home-icon-active" />
 
                      <!-- Search Button -->
-                     <ImageView fx:id="searchMenuBorrower" onMouseClicked="#clickedSearchMenuBorrower" styleClass="search-icon-active" />
+                     <ImageView 
+                         fx:id="searchMenuBorrower" 
+                         onMouseClicked="#clickedSearchMenuBorrower" 
+                         styleClass="search-icon-active" />
 
                      <!-- Loan Button -->
-                     <ImageView fx:id="loanMenuBorrower" onMouseClicked="#clickedLoanMenuBorrower" styleClass="loan-icon-active" />
+                     <ImageView 
+                         fx:id="loanMenuBorrower" 
+                         onMouseClicked="#clickedLoanMenuBorrower" 
+                         styleClass="loan-icon-active" />
 
                      <!-- Return Button -->
-                     <ImageView fx:id="returnMenuBorrower" onMouseClicked="#clickedReturnMenuBorrower" styleClass="return-icon-active" />
+                     <ImageView 
+                         fx:id="returnMenuBorrower" 
+                         onMouseClicked="#clickedReturnMenuBorrower" 
+                         styleClass="return-icon-active" />
 
                      <!-- Account Button -->
-                     <ImageView fx:id="accountMenuBorrower" onMouseClicked="#clickedAccountMenuBorrower" styleClass="account-icon-active" />
+                     <ImageView 
+                         fx:id="accountMenuBorrower" 
+                         onMouseClicked="#clickedAccountMenuBorrower" 
+                         styleClass="account-icon-active" />
 
                      <!-- Sign Out Button -->
-                     <ImageView fx:id="signOutMenuBorrower" onMouseClicked="#clickedSignOutMenuBorrower" styleClass="sign-out-icon-active" />
+                     <ImageView 
+                         fx:id="signOutMenuBorrower" 
+                         onMouseClicked="#clickedSignOutMenuBorrower" 
+                         styleClass="sign-out-icon-active" />
                   </children>
                </FlowPane>
             </children>
@@ -49,17 +85,82 @@
 
    <!-- Center borderPane layer -->
    <center>
-      <!-- Center Content -->
-      <StackPane prefHeight="270.0" prefWidth="612.0" BorderPane.alignment="CENTER">
+      <StackPane 
+          prefHeight="270.0" 
+          prefWidth="612.0" 
+          BorderPane.alignment="CENTER">
          <children>
             <!-- Semi-transparent Rectangle -->
-            <Rectangle height="218.0" styleClass="rectangle-center" width="451.0" />
+            <Rectangle 
+                height="218.0" 
+                styleClass="rectangle-center" 
+                width="451.0" />
 
-            <!-- Welcome Text -->
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <!-- Search Form -->
+            <VBox 
+                alignment="CENTER" 
+                maxWidth="-Infinity" 
+                prefHeight="213.0" 
+                prefWidth="404.0" 
+                spacing="20.0">
                <children>
-                  <Text strokeType="OUTSIDE" styleClass="text-title" text="Welcome to the Library" />
-                  <Text strokeType="OUTSIDE" text="Navigate using the top menu" />
+                  <!-- Search Title -->
+                  <Text 
+                      styleClass="text-title" 
+                      text="Search Library" />
+
+                  <!-- Search Input and Filters -->
+                  <VBox 
+                      alignment="TOP_CENTER" 
+                      prefHeight="50.0" 
+                      prefWidth="404.0">
+                     <children>
+                        <HBox 
+                            alignment="TOP_CENTER" 
+                            prefHeight="28.0" 
+                            prefWidth="404.0" 
+                            spacing="10.0">
+                           <children>
+                              <!-- Search Field -->
+                              <TextField 
+                                  fx:id="searchField" 
+                                  styleClass="text-field" />
+
+                              <!-- Filter Button -->
+                              <MenuButton 
+                                  fx:id="filterButton" 
+                                  disable="true" 
+                                  mnemonicParsing="false" 
+                                  styleClass="menu-button" 
+                                  text="Filters">
+                                 <items>
+                                    <MenuItem 
+                                        mnemonicParsing="false" 
+                                        text="Action 1" />
+                                    <MenuItem 
+                                        mnemonicParsing="false" 
+                                        text="Action 2" />
+                                 </items>
+                              </MenuButton>
+                           </children>
+                        </HBox>
+
+                        <!-- Search Instructions -->
+                        <Label 
+                            alignment="CENTER" 
+                            contentDisplay="CENTER" 
+                            styleClass="label" 
+                            text="Search using titles, keywords, author, director or actors" />
+                     </children>
+                  </VBox>
+
+                  <!-- Search Button -->
+                  <Button 
+                      fx:id="searchButtonBorrower" 
+                      mnemonicParsing="false" 
+                      onMouseClicked="#clickedSearchButtonBorrower" 
+                      styleClass="button" 
+                      text="Search" />
                </children>
             </VBox>
          </children>
@@ -68,8 +169,11 @@
 
    <!-- Bottom borderPane layer -->
    <bottom>
-      <!-- Bottom Menu -->
-      <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" styleClass="bottom-menu-padding" BorderPane.alignment="CENTER_RIGHT">
+      <FlowPane 
+          alignment="CENTER_RIGHT" 
+          prefHeight="55.0" 
+          styleClass="bottom-menu-padding" 
+          BorderPane.alignment="CENTER_RIGHT">
          <children>
             <!-- Bottom Menu Content -->
          </children>

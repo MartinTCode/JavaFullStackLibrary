@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -13,36 +12,67 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/common.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane 
+    fx:id="mainPane" 
+    minHeight="400.0" 
+    minWidth="600.0" 
+    prefHeight="400.0" 
+    prefWidth="600.0" 
+    stylesheets="@../styles/common.css" 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1">
 
-   <!-- Top borderPane layer-->
+   <!-- Top borderPane layer -->
    <top>
-      <StackPane prefHeight="55.0">
+      <StackPane 
+          prefHeight="55.0">
          <!-- Top Menu Background -->
-         <Region styleClass="top-menu-region" />
+         <Region 
+             styleClass="top-menu-region" />
 
          <!-- Top Menu Buttons -->
-         <StackPane prefHeight="55.0" BorderPane.alignment="CENTER">
+         <StackPane 
+             prefHeight="55.0" 
+             BorderPane.alignment="CENTER">
             <children>
-               <FlowPane prefHeight="55.0" styleClass="flow-pane-padding">
+               <FlowPane 
+                   prefHeight="55.0" 
+                   styleClass="flow-pane-padding">
                   <children>
                      <!-- Home Button -->
-                     <ImageView fx:id="startMenuBorrower" styleClass="home-icon-active" />
+                     <ImageView 
+                         fx:id="startMenuBorrower" 
+                         styleClass="home-icon-active" />
 
                      <!-- Search Button -->
-                     <ImageView fx:id="searchMenuBorrower" onMouseClicked="#clickedSearchMenuBorrower" styleClass="search-icon-active" />
+                     <ImageView 
+                         fx:id="searchMenuBorrower" 
+                         onMouseClicked="#clickedSearchMenuBorrower" 
+                         styleClass="search-icon-active" />
 
                      <!-- Loan Button -->
-                     <ImageView fx:id="loanMenuBorrower" onMouseClicked="#clickedLoanMenuBorrower" styleClass="loan-icon-active" />
+                     <ImageView 
+                         fx:id="loanMenuBorrower" 
+                         onMouseClicked="#clickedLoanMenuBorrower" 
+                         styleClass="loan-icon-active" />
 
                      <!-- Return Button -->
-                     <ImageView fx:id="returnMenuBorrower" onMouseClicked="#clickedReturnMenuBorrower" styleClass="return-icon-active" />
+                     <ImageView 
+                         fx:id="returnMenuBorrower" 
+                         onMouseClicked="#clickedReturnMenuBorrower" 
+                         styleClass="return-icon-active" />
 
                      <!-- Account Button -->
-                     <ImageView fx:id="accountMenuBorrower" onMouseClicked="#clickedAccountMenuBorrower" styleClass="account-icon-active" />
+                     <ImageView 
+                         fx:id="accountMenuBorrower" 
+                         onMouseClicked="#clickedAccountMenuBorrower" 
+                         styleClass="account-icon-active" />
 
                      <!-- Sign Out Button -->
-                     <ImageView fx:id="signOutMenuBorrower" onMouseClicked="#clickedSignOutMenuBorrower" styleClass="sign-out-icon-active" />
+                     <ImageView 
+                         fx:id="signOutMenuBorrower" 
+                         onMouseClicked="#clickedSignOutMenuBorrower" 
+                         styleClass="sign-out-icon-active" />
                   </children>
                </FlowPane>
             </children>
@@ -50,44 +80,73 @@
       </StackPane>
    </top>
 
-   <!-- Center borderPane layer-->
+   <!-- Center borderPane layer -->
    <center>
-      <!-- Center Content -->
-      <StackPane prefHeight="270.0" prefWidth="612.0" BorderPane.alignment="CENTER">
+      <StackPane 
+          prefHeight="270.0" 
+          prefWidth="612.0" 
+          BorderPane.alignment="CENTER">
          <children>
             <!-- Semi-transparent Rectangle -->
-            <Rectangle height="218.0" styleClass="rectangle-center" width="451.0" />
-            
-            <!-- Search Form -->
-            <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="213.0" prefWidth="404.0" spacing="20.0">
+            <Rectangle 
+                height="218.0" 
+                styleClass="rectangle-center" 
+                width="451.0" />
+
+            <!-- Return Form -->
+            <VBox 
+                alignment="CENTER" 
+                maxWidth="-Infinity" 
+                prefHeight="213.0" 
+                prefWidth="404.0" 
+                spacing="20.0">
                <children>
-                  <!-- Search Title -->
-                  <Text styleClass="text-title" text="Scan or enter barcode" />
-                  
-                  <!-- Search Input and Filters -->
-                  <VBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="404.0">
+                  <!-- Return Title -->
+                  <Text 
+                      styleClass="text-title" 
+                      text="Scan or enter barcode" />
+
+                  <!-- Barcode Input -->
+                  <VBox 
+                      alignment="TOP_CENTER" 
+                      prefHeight="50.0" 
+                      prefWidth="404.0">
                      <children>
-                        <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="404.0" spacing="10.0">
+                        <HBox 
+                            alignment="TOP_CENTER" 
+                            prefHeight="28.0" 
+                            prefWidth="404.0" 
+                            spacing="10.0">
                            <children>
-                              <!-- Search Field -->
-                              <TextField fx:id="barcodeFieldBorrower" styleClass="text-field" />
+                              <!-- Barcode Field -->
+                              <TextField 
+                                  fx:id="barcodeFieldBorrower" 
+                                  styleClass="text-field" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  
-                  <!-- Search Button -->
-                  <Button fx:id="returnButtonBorrower" mnemonicParsing="false" onMouseClicked="#clickedReturnButtonBorrower" styleClass="button" text="Add" />
+
+                  <!-- Add Button -->
+                  <Button 
+                      fx:id="returnButtonBorrower" 
+                      mnemonicParsing="false" 
+                      onMouseClicked="#clickedReturnButtonBorrower" 
+                      styleClass="button" 
+                      text="Add" />
                </children>
             </VBox>
          </children>
       </StackPane>
    </center>
 
-   <!-- Bottom borderPane layer-->
+   <!-- Bottom borderPane layer -->
    <bottom>
-      <!-- Bottom Menu -->
-      <FlowPane alignment="CENTER_RIGHT" prefHeight="55.0" styleClass="bottom-menu-padding" BorderPane.alignment="CENTER_RIGHT">
+      <FlowPane 
+          alignment="CENTER_RIGHT" 
+          prefHeight="55.0" 
+          styleClass="bottom-menu-padding" 
+          BorderPane.alignment="CENTER_RIGHT">
          <children>
             <!-- Bottom Menu Content -->
          </children>
