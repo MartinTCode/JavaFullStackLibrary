@@ -38,6 +38,11 @@ public class SignInUserController {
         String password = passwordField.getText();
         System.out.println("SSN: " + ssn);
         System.out.println("Password: " + password);
+
+        // #TODO: Implement the sign-in logic here
+
+        //Switch to the Usser / borrower home page
+        MenuNavigationHelper.menuClickBorrower(mainPane,"Home");
     }
 
     @FXML
