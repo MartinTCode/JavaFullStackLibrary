@@ -100,7 +100,7 @@ public class MenuNavigationHelper {
                 break;
             case "ActiveLoans":
                 // Navigate to the Active Loans view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Active_Loans_View_Borrower.fxml", new AccountMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Active_Loans_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "ChangePassword":
                 // Navigate to the Change Password view for borrowers
