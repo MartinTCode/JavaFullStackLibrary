@@ -98,27 +98,27 @@
                      <VBox spacing="10.0" styleClass="results-box">
                         <children>
                            <Button
-                               fx:id="userInfoButton"
+                               fx:id="userInfoButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedUserInfoButton"
+                               onMouseClicked="#clickedUserInfoButtonBorrower"
                                text=" User Information  "
                            />
                            <Button
-                               fx:id="activeLoansButton"
+                               fx:id="activeLoansButtonBorrower"
                                mnemonicParsing="false"
                                styleClass="button-selected"
                                text="    Active Loans     "
                            />
                            <Button
-                               fx:id="changePasswordButton"
+                               fx:id="changePasswordButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedChangePasswordButton"
+                               onMouseClicked="#clickedChangePasswordButtonBorrower"
                                text="Change Password"
                            />
                            <Button
-                               fx:id="signOutButton"
+                               fx:id="signOutButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedSignOutButton"
+                               onMouseClicked="#clickedSignOutButtonBorrower"
                                text="        Sign Out       "
                            />
                         </children>
@@ -139,14 +139,14 @@
                                      text="Active Loans"
                                  />
                                  <ScrollPane
-                                     fx:id="resultsScrollPaneBorrower"
+                                     fx:id="loansScrollPaneBorrower"
                                      fitToWidth="true"
                                      hbarPolicy="NEVER"
                                      styleClass="scroll-pane-custom"
                                  >
                                     <content>
                                        <VBox
-                                           fx:id="resultsContainer"
+                                           fx:id="loansContainerBorrower"
                                            spacing="10.0"
                                            styleClass="results-box"
                                        />

@@ -64,13 +64,19 @@ public class AccountMenuBorrowerController {
     }
 
     @FXML
-    private void clickedChangeInfoButtonBorrower() {
+    private void clickedChangeUserInfoButtonBorrower() {
         MenuNavigationHelper.menuClickBorrower(mainPane, "ChangeInfo");
     }
 
     @FXML
-    private void clickedSaveInfoButtonBorrower() {
+    private void clickedSaveUserInfoButtonBorrower() {
         //Implementation for saving user info
         MenuNavigationHelper.menuClickBorrower(mainPane, "UserInfo");
+    }
+
+    @FXML
+    private void clickedConfirmNewPasswordButtonBorrower() {
+        //Implementation for changing password
+        System.out.println("Confirm New Password button clicked");
     }
 }
