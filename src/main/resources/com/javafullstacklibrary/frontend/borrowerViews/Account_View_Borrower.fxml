@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane 
+    fx:id="mainPane" 
+    minHeight="400.0" 
+    minWidth="600.0" 
+    prefHeight="400.0" 
+    prefWidth="600.0" 
+    stylesheets="@../styles/common.css" 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1">
+
+   <!-- Top Menu Section -->
+   <top>
+      <StackPane>
+         <!-- Background -->
+         <Region 
+             styleClass="top-menu-region" />
+
+         <!-- Top Menu Buttons -->
+         <StackPane 
+             BorderPane.alignment="CENTER">
+            <children>
+               <FlowPane 
+                   styleClass="flow-pane-padding">
+                  <children>
+                     <ImageView 
+                         fx:id="startMenuBorrower" 
+                         styleClass="home-icon-active" />
+                     <ImageView 
+                         fx:id="searchMenuBorrower" 
+                         onMouseClicked="#clickedSearchMenuBorrower" 
+                         styleClass="search-icon-active" />
+                     <ImageView 
+                         fx:id="loanMenuBorrower" 
+                         onMouseClicked="#clickedLoanMenuBorrower" 
+                         styleClass="loan-icon-active" />
+                     <ImageView 
+                         fx:id="returnMenuBorrower" 
+                         onMouseClicked="#clickedReturnMenuBorrower" 
+                         styleClass="return-icon-active" />
+                     <ImageView 
+                         fx:id="accountMenuBorrower" 
+                         onMouseClicked="#clickedAccountMenuBorrower" 
+                         styleClass="account-icon-inactive" />
+                     <ImageView 
+                         fx:id="signOutMenuBorrower" 
+                         onMouseClicked="#clickedSignOutMenuBorrower" 
+                         styleClass="sign-out-icon-active" />
+                  </children>
+               </FlowPane>
+            </children>
+         </StackPane>
+      </StackPane>
+   </top>
+
+   <!-- Main Content Section -->
+   <center>
+      <VBox 
+          alignment="TOP_CENTER" 
+          spacing="10.0" 
+          BorderPane.alignment="CENTER">
+
+         <!-- Search Box -->
+         <StackPane>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+         </StackPane>
+
+         <!-- Results Box -->
+         <StackPane 
+             VBox.vgrow="ALWAYS">
+            <children>
+               <HBox 
+                   prefHeight="100.0" 
+                   prefWidth="200.0" 
+                   spacing="10.0">
+                  <children>
+                     <VBox 
+                         spacing="10.0" 
+                         styleClass="results-box">
+                        <children>
+                           <Button 
+                               fx:id="userInfoButton" 
+                               mnemonicParsing="false" 
+                               onMouseClicked="#clickedUserInfoButton" 
+                               text=" User Information  " />
+                           <Button 
+                               fx:id="activeLoansButton" 
+                               mnemonicParsing="false" 
+                               onMouseClicked="#clickedActiveLoansButton" 
+                               text="    Active Loans     " />
+                           <Button 
+                               fx:id="changePasswordButton" 
+                               mnemonicParsing="false" 
+                               onMouseClicked="#clickedChangePasswordButton" 
+                               text="Change Password" />
+                           <Button 
+                               fx:id="signOutButton" 
+                               mnemonicParsing="false" 
+                               onMouseClicked="#clickedSignOutButton" 
+                               text="        Sign Out       " />
+                        </children>
+                     </VBox>
+                     <VBox 
+                         styleClass="results-box">
+                        <padding>
+                           <Insets 
+                               left="10.0" 
+                               right="10.0" />
+                        </padding>
+                        <children>
+                           <VBox 
+                               prefWidth="390.0" 
+                               spacing="10.0">
+                              <children>
+                                 <HBox 
+                                     alignment="CENTER_LEFT" 
+                                     layoutX="10.0" 
+                                     layoutY="113.0" />
+                                 <HBox 
+                                     alignment="CENTER_LEFT" 
+                                     layoutX="10.0" 
+                                     layoutY="148.0" />
+                                 <HBox 
+                                     alignment="CENTER_LEFT" 
+                                     layoutX="10.0" 
+                                     layoutY="183.0" />
+                                 <HBox 
+                                     alignment="CENTER" 
+                                     spacing="70.0">
+                                    <padding>
+                                       <Insets 
+                                           top="20.0" />
+                                    </padding>
+                                 </HBox>
+                              </children>
+                           </VBox>
+                        </children>
+                     </VBox>
+                  </children>
+                  <padding>
+                     <Insets 
+                         bottom="10.0" 
+                         left="10.0" 
+                         right="10.0" />
+                  </padding>
+               </HBox>
+            </children>
+         </StackPane>
+
+      </VBox>
+   </center>
+
+</BorderPane>
