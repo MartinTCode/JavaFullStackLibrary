@@ -101,27 +101,27 @@
                      >
                         <children>
                            <Button 
-                               fx:id="userInfoButton"
+                               fx:id="userInfoButtonBorrower"
                                mnemonicParsing="false"
                                styleClass="button-selected"
                                text=" User Information  "
                            />
                            <Button 
-                               fx:id="activeLoansButton"
+                               fx:id="activeLoansButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedActiveLoansButton"
+                               onMouseClicked="#clickedActiveLoansButtonBorrower"
                                text="    Active Loans     "
                            />
                            <Button 
-                               fx:id="changePasswordButton"
+                               fx:id="changePasswordButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedChangePasswordButton"
+                               onMouseClicked="#clickedChangePasswordButtonBorrower"
                                text="Change Password"
                            />
                            <Button 
-                               fx:id="signOutButton"
+                               fx:id="signOutButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedSignOutButton"
+                               onMouseClicked="#clickedSignOutButtonBorrower"
                                text="        Sign Out       "
                            />
                         </children>
@@ -177,7 +177,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField 
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="first name"
                                        />
@@ -195,7 +195,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField 
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="last name"
                                        />
@@ -213,7 +213,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField 
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="address 123"
                                        />
@@ -231,7 +231,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField 
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="email@mail.com"
                                        />
@@ -249,7 +249,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField 
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="+12344567890"
                                        />
@@ -261,15 +261,15 @@
                                  >
                                     <children>
                                        <Button 
-                                           fx:id="changeUserInfoButton"
+                                           fx:id="changeUserInfoButtonBorrower"
                                            mnemonicParsing="false"
                                            styleClass="button-selected"
                                            text="Change Info"
                                        />
                                        <Button 
-                                           fx:id="saveUserInfoButton"
+                                           fx:id="saveUserInfoButtonBorrower"
                                            mnemonicParsing="false"
-                                           onMouseClicked="#clickedSaveUserInfoButton"
+                                           onMouseClicked="#clickedSaveUserInfoButtonBorrower"
                                            text="Save Info"
                                        />
                                     </children>
