@@ -90,11 +90,17 @@ public class MenuNavigationHelper {
                 // Navigate to the Sign-Out view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new SignOutBorrowerController());
                 break;
+            case "UserInfo":
+                // Handle User Info button click for borrowers
+                navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
+                break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
         }
     }
+
+
 
     /**
      * Handles navigation to a specified view.

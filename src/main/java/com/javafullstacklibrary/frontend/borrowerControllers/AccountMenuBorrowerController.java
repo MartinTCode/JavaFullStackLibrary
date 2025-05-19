@@ -42,8 +42,7 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedUserInfoButtonBorrower() {
-        System.out.println("User Info button clicked");
-        // Add logic to display user information
+        MenuNavigationHelper.menuClickBorrower(mainPane, "UserInfo");
     }
 
     @FXML
