@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.layout.Pane;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
@@ -64,11 +65,12 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedChangeInfoButtonBorrower() {
-        System.out.println("Change Info button clicked");
+        MenuNavigationHelper.menuClickBorrower(mainPane, "ChangeInfo");
     }
 
     @FXML
     private void clickedSaveInfoButtonBorrower() {
-        System.out.println("Save Info button clicked");
+        //Implementation for saving user info
+        MenuNavigationHelper.menuClickBorrower(mainPane, "UserInfo");
     }
 }

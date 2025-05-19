@@ -94,6 +94,10 @@ public class MenuNavigationHelper {
                 // Handle User Info button click for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
+            case "ChangeInfo":
+                // Handle Change Info button click for borrowers
+                navigateToView(mainPane, "borrowerViews", "User_Info_Edit_Borrower.fxml", new AccountMenuBorrowerController());
+                break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
