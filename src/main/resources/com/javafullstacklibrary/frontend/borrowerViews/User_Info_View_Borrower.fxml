@@ -43,6 +43,7 @@
                      <!-- Home Button -->
                      <ImageView 
                          fx:id="startMenuBorrower" 
+                         onMouseClicked="#clickedHomeMenuBorrower" 
                          styleClass="home-icon-active" />
 
                      <!-- Search Button -->
