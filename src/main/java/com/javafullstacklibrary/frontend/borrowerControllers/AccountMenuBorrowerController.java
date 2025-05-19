@@ -63,4 +63,14 @@ public class AccountMenuBorrowerController {
         System.out.println("Sign Out button clicked");
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
+
+    @FXML
+    private void clickedChangeInfoButtonBorrower() {
+        System.out.println("Change Info button clicked");
+    }
+
+    @FXML
+    private void clickedSaveInfoButtonBorrower() {
+        System.out.println("Save Info button clicked");
+    }
 }
