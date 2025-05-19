@@ -248,12 +248,16 @@
                                      spacing="70.0">
                                     <children>
                                        <Button 
-                                           mnemonicParsing="false" 
-                                           text="Change Info" />
+                                          fx:id="changeInfoButtonBorrower"
+                                          mnemonicParsing="false" 
+                                          styleClass="button"
+                                          onMouseClicked="#clickedChangeInfoButtonBorrower" 
+                                          text="Change Info" />
                                        <Button 
-                                           mnemonicParsing="false" 
-                                           styleClass="button-selected" 
-                                           text="Save Info" />
+                                          fx:id="saveInfoButtonBorrower"
+                                          mnemonicParsing="false"
+                                          styleClass="button-selected" 
+                                          text="Save Info" />
                                     </children>
                                     <padding>
                                        <Insets 
