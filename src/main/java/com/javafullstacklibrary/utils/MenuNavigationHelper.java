@@ -91,12 +91,20 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new SignOutBorrowerController());
                 break;
             case "UserInfo":
-                // Handle User Info button click for borrowers
+                // Navigate to the User Info view for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "ChangeInfo":
-                // Handle Change Info button click for borrowers
+                // Navigate to the Change Info view for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_Edit_Borrower.fxml", new AccountMenuBorrowerController());
+                break;
+            case "ActiveLoans":
+                // Navigate to the Active Loans view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Active_Loans_View_Borrower.fxml", new AccountMenuBorrowerController());
+                break;
+            case "ChangePassword":
+                // Navigate to the Change Password view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             default:
                 // Throw an exception for invalid menu options
