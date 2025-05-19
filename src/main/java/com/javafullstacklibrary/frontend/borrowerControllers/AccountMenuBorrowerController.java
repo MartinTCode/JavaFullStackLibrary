@@ -48,14 +48,12 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedActiveLoansButtonBorrower() {
-        System.out.println("Active Loans button clicked");
-        // Add logic to display active loans
+        MenuNavigationHelper.menuClickBorrower(mainPane, "ActiveLoans");
     }
 
     @FXML
     private void clickedChangePasswordButtonBorrower() {
-        System.out.println("Change Password button clicked");
-        // Add logic to handle password change
+        MenuNavigationHelper.menuClickBorrower(mainPane, "ChangePassword");
     }
 
     @FXML
