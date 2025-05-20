@@ -13,6 +13,16 @@ public class Language {
     @Column(nullable = false, unique = true, length = 100)
     private String language;
 
+    // No-arg constructor required by JPA
+    public Language() {
+    }
+
+    // Optional: constructor for convenience
+    public Language(String language) {
+        this.language = language;
+    }
+
+
     // Getters and setters
     public Integer getId() {
         return id;
