@@ -46,5 +46,5 @@ public class SearchMenuGuestController {
         dataSingleton.setSearchQuery(query);
         // Load the search results view
         MenuNavigationHelper.menuClickGuest(mainPane, "SearchResults");
-}
+    }
 }

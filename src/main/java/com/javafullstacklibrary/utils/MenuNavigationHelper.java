@@ -90,6 +90,10 @@ public class MenuNavigationHelper {
                 // Navigate to the Sign-Out view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new SignOutBorrowerController());
                 break;
+            case "SearchResults":
+                // Navigate to the Search Results view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchMenuBorrowerController());
+                break;
             case "UserInfo":
                 // Navigate to the User Info view for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
