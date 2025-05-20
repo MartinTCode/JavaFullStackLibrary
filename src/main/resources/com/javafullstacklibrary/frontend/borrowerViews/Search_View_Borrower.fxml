@@ -84,6 +84,7 @@
    </top>
 
    <!-- Center borderPane layer -->
+   <!-- #TODO fix this part, it is not working as expected -->
    <center>
       <StackPane 
           prefHeight="270.0" 

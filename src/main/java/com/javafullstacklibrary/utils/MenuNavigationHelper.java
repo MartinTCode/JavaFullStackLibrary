@@ -9,6 +9,7 @@ import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
 import com.javafullstacklibrary.frontend.borrowerControllers.StartViewBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.SearchMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.SearchViewBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
@@ -92,7 +93,7 @@ public class MenuNavigationHelper {
                 break;
             case "SearchResults":
                 // Navigate to the Search Results view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchViewBorrowerController());
                 break;
             case "UserInfo":
                 // Navigate to the User Info view for borrowers
