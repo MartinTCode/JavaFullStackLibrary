@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/common.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+   <!-- Top Menu Section -->
+   <top>
+      <StackPane>
+         <!-- Background -->
+         <Region styleClass="top-menu-region" />
+
+         <!-- Top Menu Buttons -->
+         <StackPane BorderPane.alignment="CENTER">
+            <children>
+               <FlowPane styleClass="flow-pane-padding">
+                  <children>
+                     <ImageView fx:id="startMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedStartMenuBorrower" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/StartNavigationButtonClickable.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/SearchNavigationButton.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="loanMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedLoanMenuBorrower" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/LoanNavigationButtonClickable.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="returnMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedReturnMenuBorrower" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/ReturnNavigationButtonClickable.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="accountMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedAccountMenuBorrower" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/AccountNavigationButtonClickable.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="signOutMenuBorrower" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickedSignOutMenuBorrower" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../figma_icons/navBarButtons/SignOutNavigationButtonClickable.png" />
+                        </image>
+                     </ImageView>
+                  </children>
+               </FlowPane>
+            </children>
+         </StackPane>
+      </StackPane>
+   </top>
+
+   <!-- Main Content Section -->
+   <center>
+      <VBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+
+         <!-- Search Box -->
+         <StackPane>
+            <children>
+               <VBox alignment="CENTER" styleClass="results-box">
+                  <children>
+                     <HBox alignment="CENTER" spacing="10.0">
+                        <children>
+                           <TextField fx:id="searchFieldBorrower" styleClass="text-field" />
+                           <MenuButton fx:id="filterButton" disable="true" mnemonicParsing="false" styleClass="menu-button" text="Filters">
+                              <items>
+                                 <MenuItem mnemonicParsing="false" text="Action 1" />
+                                 <MenuItem mnemonicParsing="false" text="Action 2" />
+                              </items>
+                           </MenuButton>
+                           <Button fx:id="searchButtonBorrower" mnemonicParsing="false" onMouseClicked="#clickedSearchButton" styleClass="button" text="Search" />
+                        </children>
+                     </HBox>
+                     <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label" text="Search using titles, keywords, author, director or actors " />
+                  </children>
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+                  <StackPane.margin>
+                     <Insets left="10.0" right="10.0" top="5.0" />
+                  </StackPane.margin>
+               </VBox>
+            </children>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+         </StackPane>
+
+         <!-- Results Box -->
+         <StackPane VBox.vgrow="ALWAYS">
+            <children>
+               <VBox styleClass="results-box" VBox.vgrow="ALWAYS">
+                  <padding>
+                     <Insets left="10.0" right="10.0" />
+                  </padding>
+                  <children>
+
+                     <!-- Result count label -->
+                     <Label fx:id="resultsCountLabel" text="Search query resulted in X matches">
+                        <padding>
+                           <Insets left="10.0" />
+                        </padding>
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                     </Label>
+
+                     <!-- Scrollable results -->
+                     <ScrollPane fx:id="resultsScrollPaneBorrower" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane-custom" VBox.vgrow="ALWAYS">
+                        <content>
+                           <VBox fx:id="resultsContainer" spacing="10.0" styleClass="results-box" />
+                        </content>
+                     </ScrollPane>
+
+                     <!-- Load more button -->
+                     <HBox alignment="BOTTOM_CENTER">
+                        <children>
+                           <Button fx:id="loadMoreButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLoadMoreResults" text="Show more of the search results" visible="false">
+                              <HBox.margin>
+                                 <Insets />
+                              </HBox.margin>
+                           </Button>
+                        </children>
+                     </HBox>
+
+                  </children>
+                  <StackPane.margin>
+                     <Insets bottom="5.0" left="10.0" right="10.0" />
+                  </StackPane.margin>
+               </VBox>
+            </children>
+         </StackPane>
+
+      </VBox>
+   </center>
+
+</BorderPane>
