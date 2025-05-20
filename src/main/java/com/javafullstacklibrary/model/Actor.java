@@ -2,6 +2,7 @@ package com.javafullstacklibrary.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -47,4 +48,23 @@ public class Actor {
 
     public Set<Item> getItems() { return items; }
     public void setItems(Set<Item> items) { this.items = items; }
+
+    // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
+    // This uses firstName, lastName, and dob as a composite business key, so that
+    // different Actor instances with the same identifying fields are treated as equal.
+    // This is important for collection operations and for comparing detached/persisted entities.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actor actor = (Actor) o;
+        return Objects.equals(firstName, actor.firstName) &&
+            Objects.equals(lastName, actor.lastName) &&
+            Objects.equals(dob, actor.dob);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, dob);
+    }
 }

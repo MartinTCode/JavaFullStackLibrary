@@ -2,6 +2,7 @@ package com.javafullstacklibrary.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set; // used for m2m relationship (creator shouldn't be duplicated in item)
 
 @Entity
@@ -47,4 +48,23 @@ public class Creator {
 
     public Set<Item> getItems() { return items; }
     public void setItems(Set<Item> items) { this.items = items; }
+
+    // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
+    // This uses firstName, lastName, and dob as a composite business key, so that
+    // different Creator instances with the same identifying fields are treated as equal.
+    // This is important for collection operations and for comparing detached/persisted entities.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Creator creator = (Creator) o;
+        return Objects.equals(firstName, creator.firstName) &&
+            Objects.equals(lastName, creator.lastName) &&
+            Objects.equals(dob, creator.dob);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, dob);
+    }
 }

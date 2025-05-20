@@ -1,6 +1,8 @@
 package com.javafullstacklibrary.model;
 
 import jakarta.persistence.*;
+
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -42,4 +44,20 @@ public class Keyword {
 
     public Set<Item> getItems() { return items; }
     public void setItems(Set<Item> items) { this.items = items; }
+
+    // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
+    // This allows different Keyword instances with the same 'keyword' value to be treated as equal,
+    // which is important for collection operations and for comparing detached/persisted entities.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Keyword keyword1 = (Keyword) o;
+        return Objects.equals(keyword, keyword1.keyword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(keyword);
+    }
 }
