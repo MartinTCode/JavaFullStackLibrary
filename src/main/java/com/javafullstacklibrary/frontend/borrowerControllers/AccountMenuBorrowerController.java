@@ -2,6 +2,7 @@ package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
@@ -38,7 +39,7 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedSignOutMenuBorrower() {
-        MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
+        System.out.println("Sign Out button clicked");
     }
 
     @FXML

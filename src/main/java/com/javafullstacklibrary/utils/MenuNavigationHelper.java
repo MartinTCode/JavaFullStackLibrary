@@ -106,6 +106,10 @@ public class MenuNavigationHelper {
                 // Navigate to the Change Password view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
+            case "LoanView":
+                // Navigate to the Loan view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
+                break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);

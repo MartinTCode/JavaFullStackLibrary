@@ -136,7 +136,7 @@
                         alignment="BOTTOM_CENTER">
                         <children>
                            <Button 
-                              fx:id="printRecieptButton"
+                              fx:id="printReturnRecieptBorrower"
                               mnemonicParsing="false"
                               styleClass="button-selected"
                               text="Print" />

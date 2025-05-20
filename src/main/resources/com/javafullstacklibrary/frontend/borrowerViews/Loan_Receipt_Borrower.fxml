@@ -136,9 +136,8 @@
                         alignment="BOTTOM_CENTER">
                         <children>
                            <Button 
-                              fx:id="printButtonBorrower"
+                              fx:id="printLoanRecieptBorrower"
                               mnemonicParsing="false"
-                              onMouseClicked="#clickedConfirmLoansButtonBorrower"
                               styleClass="button-selected"
                               text="Print" />
                         </children>
