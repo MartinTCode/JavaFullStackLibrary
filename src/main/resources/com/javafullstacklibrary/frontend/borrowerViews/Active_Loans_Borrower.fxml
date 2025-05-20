@@ -27,16 +27,22 @@
    <top>
       <StackPane>
          <!-- Background -->
-         <Region styleClass="top-menu-region" />
+         <Region
+             styleClass="top-menu-region"
+         />
 
          <!-- Top Menu Buttons -->
-         <StackPane BorderPane.alignment="CENTER">
+         <StackPane
+             BorderPane.alignment="CENTER"
+         >
             <children>
-               <FlowPane styleClass="flow-pane-padding">
+               <FlowPane
+                   styleClass="flow-pane-padding"
+               >
                   <children>
                      <ImageView
                          fx:id="startMenuBorrower"
-                         onMouseClicked="#clickedHomeMenuBorrower" 
+                         onMouseClicked="#clickedHomeMenuBorrower"
                          styleClass="home-icon-active"
                      />
                      <ImageView
@@ -87,7 +93,9 @@
          </StackPane>
 
          <!-- Results Box -->
-         <StackPane VBox.vgrow="ALWAYS">
+         <StackPane
+             VBox.vgrow="ALWAYS"
+         >
             <children>
                <HBox
                    prefHeight="100.0"
@@ -95,7 +103,10 @@
                    spacing="10.0"
                >
                   <children>
-                     <VBox spacing="10.0" styleClass="results-box">
+                     <VBox
+                         spacing="10.0"
+                         styleClass="results-box"
+                     >
                         <children>
                            <Button
                                fx:id="userInfoButtonBorrower"
@@ -123,9 +134,14 @@
                            />
                         </children>
                      </VBox>
-                     <VBox styleClass="results-box">
+                     <VBox
+                         styleClass="results-box"
+                     >
                         <padding>
-                           <Insets left="10.0" right="10.0" />
+                           <Insets
+                               left="10.0"
+                               right="10.0"
+                           />
                         </padding>
                         <children>
                            <VBox
