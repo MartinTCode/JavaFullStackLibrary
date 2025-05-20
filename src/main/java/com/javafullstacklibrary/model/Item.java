@@ -8,22 +8,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import java.util.Set; // Importing Set for many-to-many relationship
+import jakarta.persistence.JoinTable; // Importing JoinTable for many-to-many relationship
 
 @Entity
 public class Item {
 
+    // #region Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id") // Maps to the SQL column name
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
-    private Location location;
-
-    @ManyToOne
-    @JoinColumn(name = "language_id", nullable = false) // Foreign key to language table
-    private Language language;
 
     @Column(name = "item_type", nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
     private String type;
@@ -46,7 +42,93 @@ public class Item {
     @Column(name = "country_of_production", length = 100) // Matches SQL: VARCHAR(100)
     private String countryOfProduction;
 
-    // Getters and setters
+    // #endregion
+
+    // #region One-to-Many Relationships Attributes
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id", nullable = false) // Foreign key to language table
+    private Language language;
+
+    // #endregion
+
+    // #region Many-to-Many Relationships Attributes
+
+    // m2m relatioship with Keyword
+    // defining the join table "item_keyword" with join columns
+    @ManyToMany
+    @JoinTable(
+        name = "item_keyword",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "keyword_id")
+    )
+    // Many-to-many relationship with Keyword, "Set" is used to avoid duplicates
+    private Set<Keyword> keywords;
+
+    @ManyToMany
+    @JoinTable(
+        name = "item_creator",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "creator_id")
+    )
+    private Set<Creator> creators;
+
+    @ManyToMany
+    @JoinTable(
+        name = "item_actor",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private Set<Actor> actors;
+
+    @ManyToMany
+    @JoinTable(
+        name = "item_genre",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
+
+    // #endregion
+
+    // #region Constructors
+
+    // No-arg constructor required by JPA
+    public Item() {
+    }
+
+    // Optional: constructor for convenience (without id)
+    public Item(Location location, Language language,
+                Set<Keyword> keywords, // m2m relationship (keyword shouldn't be duplicated in item)
+                Set<Creator> creators, // m2m relationship (creator shouldn't be duplicated in item)
+                Set<Actor> actors, // m2m relationship (actor shouldn't be duplicated in item)
+                Set<Genre> genres, // m2m relationship (genre shouldn't be duplicated in item)
+                String type, String identifier,
+                String identifier2, String title,
+                String publisher, Short ageLimit,
+                String countryOfProduction) {
+        this.location = location;
+        this.language = language;
+        this.keywords = keywords;
+        this.creators = creators;
+        this.actors = actors;
+        this.genres = genres;
+        this.type = type;
+        this.identifier = identifier;
+        this.identifier2 = identifier2;
+        this.title = title;
+        this.publisher = publisher;
+        this.ageLimit = ageLimit;
+        this.countryOfProduction = countryOfProduction;
+    }
+
+    // #endregion
+
+    // #region Getters and setters
     public Integer getId() {
         return id;
     }
@@ -126,4 +208,42 @@ public class Item {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
+    // #endregion
+
+    // #region Getters and setters for many-to-many relationships
+
+    public Set<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Set<Keyword> keywords) {
+        this.keywords = keywords;
+    }
+
+    public Set<Creator> getCreators() {
+        return creators;
+    }
+
+    public void setCreators(Set<Creator> creators) {
+        this.creators = creators;
+    }
+
+    public Set<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    // #endregion
 }

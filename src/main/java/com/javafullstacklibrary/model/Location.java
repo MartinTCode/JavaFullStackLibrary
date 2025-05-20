@@ -22,6 +22,18 @@ public class Location {
     @Column(nullable = false, length = 50)
     private String position;
 
+    // No-arg constructor required by JPA
+    public Location() {
+    }
+
+    // Optional: constructor for convenience (no id as it is auto-generated)
+    public Location(String floor, String section, String shelf, String position) {
+        this.floor = floor;
+        this.section = section;
+        this.shelf = shelf;
+        this.position = position;
+    }
+
     // Getters and setters
     public Integer getId() {
         return id;

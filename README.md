@@ -1,24 +1,22 @@
-# Development Branch
+# feature/database-implementation
 
-This is the active development branch of the project.  
-All current feature development and integration work is based off this branch.
+This branch contains the foundational implementation of the backend database layer.  
+It defines the entity models, repositories, and initial configuration needed for persistent data storage and retrieval.
 
-## Branch Structure
+## Purpose
+- Create all needed models to represent the database in backend.
+- Set up the database schema and connection using JPA.
+- Provide and test basic CRUD functionality for database entities.
+- Serve as the backend data source for other features (e.g., search, item listing).
+- Set up testing environment with logging dependencies and testutils.
 
-- `dev`: Main development branch — all features are branched from and merged into this.
-- `main`: Currently empty and reserved for future production-ready releases.
+## Scope
+- PostgreSQL database integration.
+- Entity and repository creation for domain objects.
+- Basic test data setup for development purposes.
 
-## Status
+## Dependencies
+- None directly; this is a core backend layer.
 
-The project is in active development.  
-For now, the `main` branch is not in use and contains no commits.
-
-## Contribution Flow
-
-1. New features are created from `dev` (e.g., `feature/your-feature-name`).
-2. After testing and review, features are merged back into `dev`.
-3. Once the project is stable and ready for release, a version will be merged into `main`.
-
-## Coming Soon
-
-A full project overview, setup instructions, and documentation will be added to the `main` branch when the initial release is prepared.
+## Notes
+- Assumes local PostgreSQL instance with appropriate user/DB setup.

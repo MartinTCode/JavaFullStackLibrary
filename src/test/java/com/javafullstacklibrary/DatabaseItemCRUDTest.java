@@ -27,8 +27,8 @@ public class DatabaseItemCRUDTest {
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseItemCRUDTest.class);
 
-    // Manages the persistence context and performs CRUD operations on database entities.
-    private EntityManagerFactory emf;
+    // Use static for EntityManagerFactory to share across all tests
+    private static EntityManagerFactory emf;
     private EntityManager em;
 
     // Lists to track IDs of created entities for cleanup after tests.
@@ -54,18 +54,35 @@ public class DatabaseItemCRUDTest {
     );
 
     /**
+     * Initializes the EntityManagerFactory once before all tests.
+     */
+    @BeforeAll
+    static void init() {
+        emf = Persistence.createEntityManagerFactory("libraryPU");
+    }
+
+    /**
+     * Closes the EntityManagerFactory after all tests.
+     */
+    @AfterAll
+    static void close() {
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
+    }
+
+    /**
      * Sets up the EntityManager and starts a transaction before each test.
      */
     @BeforeEach
     public void setUp() {
         logger.debug("Setting up EntityManager and starting a transaction.");
-        emf = Persistence.createEntityManagerFactory("libraryPU");
         em = emf.createEntityManager();
         em.getTransaction().begin();
     }
 
     /**
-     * Cleans up test data and closes the EntityManager and EntityManagerFactory after each test.
+     * Cleans up test data and closes the EntityManager after each test.
      */
     @AfterEach
     public void tearDown() {
@@ -76,8 +93,6 @@ public class DatabaseItemCRUDTest {
         }
         cleanupTestData(em, createdItemIds, createdLocationIds, createdLanguageIds);
         em.close();
-        emf.close();
-
         logger.debug("Test data cleaned up and EntityManager closed.");
     }
 

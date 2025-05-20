@@ -84,7 +84,7 @@ CREATE TABLE keyword (
 CREATE TABLE item (
     item_id SERIAL PRIMARY KEY,
     location_id INT REFERENCES location(location_id) 
-        ON UPDATE CASCADE ON DELETE SET NULL,
+        ON UPDATE CASCADE ON DELETE RESTRICT,
     language_id INT NOT NULL REFERENCES language(language_id) 
         ON UPDATE CASCADE ON DELETE RESTRICT,
     item_type VARCHAR(20) NOT NULL CHECK (
