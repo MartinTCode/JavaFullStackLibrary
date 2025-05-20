@@ -1,18 +1,26 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
+import com.javafullstacklibrary.utils.DataSingleton;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 public class SearchMenuBorrowerController {
+
+    // Singleton instance to store search query
+    private DataSingleton dataSingleton = DataSingleton.getInstance();
 
     @FXML
     private Pane mainPane;
 
     @FXML
     private TextField searchField;
+
+    @FXML
+    private MenuButton filterButton;
 
     @FXML
     private void clickedHomeMenuBorrower() {
@@ -46,8 +54,13 @@ public class SearchMenuBorrowerController {
 
     @FXML
     private void clickedSearchButtonBorrower() {
-        String searchQuery = searchField.getText();
-        System.out.println("Search button clicked with query: " + searchQuery);
-        // Add logic to handle the search process using the search query
+        // Print the search query
+        String query = searchField.getText();
+        System.out.println("Search query: " + query);
+        // Set the search query in the singleton instance
+        dataSingleton.setSearchQuery(query);
+        // Load the search results view
+        MenuNavigationHelper.menuClickBorrower(mainPane, "SearchResults");
     }
+
 }
