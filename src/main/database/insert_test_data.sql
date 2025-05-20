@@ -58,13 +58,13 @@ INSERT INTO item (location_id, language_id, item_type, identifier, identifier2, 
 -- Add 15 more items with varying attributes...
 
 -- Insert data into item_copy table
-INSERT INTO item_copy (item_id, barcode, is_reference, date_added, copy_status) VALUES
-(1, 'X82DMJQ1', FALSE, '2025-01-01', 'available'),
-(3, '7PTK3A94', FALSE, '2025-01-02', 'borrowed'),
-(2, 'QW8Z4NME2L', FALSE, '2025-01-03', 'available'),
-(3, 'KD9T7P6R', FALSE, '2025-01-04', 'available'),
-(4, 'R5BX0Q29', FALSE, '2025-01-05', 'borrowed'),
-(5, 'R5BX0Q30', TRUE, '2025-01-04', 'available');
+INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
+(1, 'X82DMJQ1', FALSE, '2025-01-01'),
+(3, '7PTK3A94', FALSE, '2025-01-02'),
+(2, 'QW8Z4NME2L', FALSE, '2025-01-03'),
+(3, 'KD9T7P6R', FALSE, '2025-01-04'),
+(4, 'R5BX0Q29', FALSE, '2025-01-05'),
+(5, 'R5BX0Q30', TRUE, '2025-01-04');
 -- Add more copies ensuring at least double the number of items and max 10% borrowed...
 
 -- Insert data into user_profile table

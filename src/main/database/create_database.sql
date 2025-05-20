@@ -113,8 +113,6 @@ CREATE TABLE item_copy (
         ON UPDATE CASCADE ON DELETE RESTRICT,
     is_reference BOOLEAN NOT NULL,
     date_added DATE NOT NULL,
-    copy_status VARCHAR(10) NOT NULL DEFAULT 'available' CHECK (
-        copy_status IN ('available', 'borrowed')
     )
 );
 
