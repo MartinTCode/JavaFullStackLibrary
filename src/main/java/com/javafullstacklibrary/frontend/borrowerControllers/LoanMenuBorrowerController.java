@@ -48,6 +48,20 @@ public class LoanMenuBorrowerController {
     private void clickedLoanButtonBorrower() {
         String barcode = barcodeFieldBorrower.getText();
         System.out.println("Loan button clicked with barcode: " + barcode);
-        // Add logic to handle the loan process using the barcode
+       
+        //Implementation for getting the info about loaned book and showing it on the loan view
+        MenuNavigationHelper.menuClickBorrower(mainPane, "LoanView");
+    }
+
+    @FXML
+    private void clickedAddLoanButton() {
+        // Implement the logic for adding a loan
+        System.out.println("Add Loan button clicked");
+    }
+
+    @FXML
+    private void clickedConfirmLoansButtonBorrower() {
+        // Implement the logic for confirming loans
+        System.out.println("Confirm Loans button clicked");
     }
 }
