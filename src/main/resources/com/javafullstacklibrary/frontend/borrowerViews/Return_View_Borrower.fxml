@@ -39,7 +39,7 @@
                   <children>
                      <ImageView 
                         fx:id="startMenuBorrower"
-                        onMouseClicked="#clickedHomewMenuBorrower"
+                        onMouseClicked="#clickedHomeMenuBorrower"
                         styleClass="home-icon-active" />
                      <ImageView 
                         fx:id="searchMenuBorrower"

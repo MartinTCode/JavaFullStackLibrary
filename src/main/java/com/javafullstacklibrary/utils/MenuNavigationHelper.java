@@ -110,6 +110,18 @@ public class MenuNavigationHelper {
                 // Navigate to the Loan view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
                 break;
+            case "LoanReceipt":
+                // Navigate to the Loan Receipt view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
+                break;
+            case "ReturnView":
+                // Navigate to the Return view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
+                break;
+            case "ReturnReceipt":
+                // Navigate to the Return Receipt view for borrowers
+                navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
+                break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);

@@ -61,7 +61,9 @@ public class LoanMenuBorrowerController {
 
     @FXML
     private void clickedConfirmLoansButtonBorrower() {
-        // Implement the logic for confirming loans
         System.out.println("Confirm Loans button clicked");
+        // Implement the logic for confirming loans and getting the info for the reciept
+        // Switch to the Loan_Receipt_Borrower view
+        MenuNavigationHelper.menuClickBorrower(mainPane, "LoanReceipt");
     }
 }
