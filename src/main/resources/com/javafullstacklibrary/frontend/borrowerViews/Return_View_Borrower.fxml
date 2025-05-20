@@ -13,7 +13,15 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/common.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane 
+   fx:id="mainPane"
+   minHeight="400.0"
+   minWidth="600.0"
+   prefHeight="400.0"
+   prefWidth="600.0"
+   stylesheets="@../styles/common.css"
+   xmlns="http://javafx.com/javafx/23.0.1"
+   xmlns:fx="http://javafx.com/fxml/1">
 
    <!-- Top Menu Section -->
    <top>
@@ -31,26 +39,26 @@
                   <children>
                      <ImageView 
                         fx:id="startMenuBorrower"
-                        onMouseClicked="#clickedHomeMenuBorrower" 
+                        onMouseClicked="#clickedHomewMenuBorrower"
                         styleClass="home-icon-active" />
                      <ImageView 
-                        fx:id="searchMenuBorrower" 
+                        fx:id="searchMenuBorrower"
                         onMouseClicked="#clickedSearchMenuBorrower"
                         styleClass="search-icon-active" />
                      <ImageView 
-                        fx:id="loanMenuBorrower" 
-                        styleClass="loan-icon-inactive" />
+                        fx:id="loanMenuBorrower"
+                        onMouseClicked="#clickedLoanMenuBorrower"
+                        styleClass="loan-icon-active" />
                      <ImageView 
-                        fx:id="returnMenuBorrower" 
-                        onMouseClicked="#clickedReturnMenuBorrower" 
-                        styleClass="return-icon-active" />
+                        fx:id="returnMenuBorrower"
+                        styleClass="return-icon-inactive" />
                      <ImageView 
-                        fx:id="accountMenuBorrower" 
-                        onMouseClicked="#clickedAccountMenuBorrower" 
+                        fx:id="accountMenuBorrower"
+                        onMouseClicked="#clickedAccountMenuBorrower"
                         styleClass="account-icon-active" />
                      <ImageView 
-                        fx:id="signOutMenuBorrower" 
-                        onMouseClicked="#clickedSignOutMenuBorrower" 
+                        fx:id="signOutMenuBorrower"
+                        onMouseClicked="#clickedSignOutMenuBorrower"
                         styleClass="sign-out-icon-active" />
                   </children>
                </FlowPane>
@@ -62,33 +70,33 @@
    <!-- Main Content Section -->
    <center>
       <VBox 
-         alignment="TOP_CENTER" 
-         spacing="10.0" 
+         alignment="TOP_CENTER"
+         spacing="10.0"
          BorderPane.alignment="CENTER">
 
          <!-- Search Box -->
          <StackPane>
             <children>
                <VBox 
-                  alignment="CENTER" 
+                  alignment="CENTER"
                   styleClass="results-box">
                   <children>
                      <HBox 
-                        alignment="CENTER" 
+                        alignment="CENTER"
                         spacing="10.0">
                         <children>
                            <Label 
-                              alignment="TOP_LEFT" 
-                              text="Scan or enter barcode" 
+                              alignment="TOP_LEFT"
+                              text="Scan or enter barcode"
                               HBox.hgrow="ALWAYS" />
                            <TextField 
-                              fx:id="barcodeField" 
+                              fx:id="barcodeField"
                               styleClass="text-field" />
                            <Button 
-                              fx:id="addLoanButton" 
-                              mnemonicParsing="false" 
-                              onMouseClicked="#clickedAddLoanButton" 
-                              styleClass="button" 
+                              fx:id="addReturnButton"
+                              mnemonicParsing="false"
+                              onMouseClicked="#clickedAddReturnButton"
+                              styleClass="button"
                               text="Add" />
                         </children>
                      </HBox>
@@ -98,8 +106,8 @@
                   </opaqueInsets>
                   <StackPane.margin>
                      <Insets 
-                        left="10.0" 
-                        right="10.0" 
+                        left="10.0"
+                        right="10.0"
                         top="5.0" />
                   </StackPane.margin>
                </VBox>
@@ -114,26 +122,26 @@
             VBox.vgrow="ALWAYS">
             <children>
                <VBox 
-                  styleClass="results-box" 
+                  styleClass="results-box"
                   VBox.vgrow="ALWAYS">
                   <padding>
                      <Insets 
-                        left="10.0" 
+                        left="10.0"
                         right="10.0" />
                   </padding>
                   <children>
 
                      <!-- Scrollable results -->
                      <ScrollPane 
-                        fx:id="loanScrollPane" 
-                        fitToWidth="true" 
-                        hbarPolicy="NEVER" 
-                        styleClass="scroll-pane-custom" 
+                        fx:id="returnScrollPane"
+                        fitToWidth="true"
+                        hbarPolicy="NEVER"
+                        styleClass="scroll-pane-custom"
                         VBox.vgrow="ALWAYS">
                         <content>
                            <VBox 
-                              fx:id="loanContainer" 
-                              spacing="10.0" 
+                              fx:id="returnContainer"
+                              spacing="10.0"
                               styleClass="results-box" />
                         </content>
                      </ScrollPane>
@@ -143,10 +151,10 @@
                         alignment="BOTTOM_CENTER">
                         <children>
                            <Button 
-                              fx:id="confirmLoansButtonBorrower" 
-                              mnemonicParsing="false" 
-                              onMouseClicked="#clickedConfirmLoansButtonBorrower" 
-                              text="Confirm Loans" />
+                              fx:id="confirmReturnsButtonBorrower"
+                              mnemonicParsing="false"
+                              onMouseClicked="#clickedConfirmReturnsButtonBorrower"
+                              text="Confirm Returns" />
                         </children>
                         <padding>
                            <Insets 
@@ -157,8 +165,8 @@
                   </children>
                   <StackPane.margin>
                      <Insets 
-                        bottom="5.0" 
-                        left="10.0" 
+                        bottom="5.0"
+                        left="10.0"
                         right="10.0" />
                   </StackPane.margin>
                </VBox>
@@ -167,4 +175,5 @@
 
       </VBox>
    </center>
+
 </BorderPane>
