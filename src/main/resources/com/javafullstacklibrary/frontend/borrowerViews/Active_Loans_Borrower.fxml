@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -12,64 +13,54 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane
-    fx:id="mainPane"
-    minHeight="400.0"
-    minWidth="600.0"
-    prefHeight="400.0"
-    prefWidth="600.0"
-    stylesheets="@../styles/common.css"
-    xmlns="http://javafx.com/javafx/23.0.1"
-    xmlns:fx="http://javafx.com/fxml/1"
->
+<BorderPane 
+   fx:id="mainPane"
+   minHeight="400.0"
+   minWidth="600.0"
+   prefHeight="400.0"
+   prefWidth="600.0"
+   stylesheets="@../styles/common.css"
+   xmlns="http://javafx.com/javafx/23.0.1"
+   xmlns:fx="http://javafx.com/fxml/1">
 
    <!-- Top Menu Section -->
    <top>
       <StackPane>
          <!-- Background -->
-         <Region
-             styleClass="top-menu-region"
-         />
+         <Region 
+            styleClass="top-menu-region" />
 
          <!-- Top Menu Buttons -->
-         <StackPane
-             BorderPane.alignment="CENTER"
-         >
+         <StackPane 
+            BorderPane.alignment="CENTER">
             <children>
-               <FlowPane
-                   styleClass="flow-pane-padding"
-               >
+               <FlowPane 
+                  styleClass="flow-pane-padding">
                   <children>
-                     <ImageView
-                         fx:id="startMenuBorrower"
-                         onMouseClicked="#clickedHomeMenuBorrower"
-                         styleClass="home-icon-active"
-                     />
-                     <ImageView
-                         fx:id="searchMenuBorrower"
-                         onMouseClicked="#clickedSearchMenuBorrower"
-                         styleClass="search-icon-active"
-                     />
-                     <ImageView
-                         fx:id="loanMenuBorrower"
-                         onMouseClicked="#clickedLoanMenuBorrower"
-                         styleClass="loan-icon-active"
-                     />
-                     <ImageView
-                         fx:id="returnMenuBorrower"
-                         onMouseClicked="#clickedReturnMenuBorrower"
-                         styleClass="return-icon-active"
-                     />
-                     <ImageView
-                         fx:id="accountMenuBorrower"
-                         onMouseClicked="#clickedAccountMenuBorrower"
-                         styleClass="account-icon-inactive"
-                     />
-                     <ImageView
-                         fx:id="signOutMenuBorrower"
-                         onMouseClicked="#clickedSignOutMenuBorrower"
-                         styleClass="sign-out-icon-active"
-                     />
+                     <ImageView 
+                        fx:id="startMenuBorrower"
+                        onMouseClicked="#clickedHomeMenuBorrower"
+                        styleClass="home-icon-active" />
+                     <ImageView 
+                        fx:id="searchMenuBorrower"
+                        onMouseClicked="#clickedSearchMenuBorrower"
+                        styleClass="search-icon-active" />
+                     <ImageView 
+                        fx:id="loanMenuBorrower"
+                        onMouseClicked="#clickedLoanMenuBorrower"
+                        styleClass="loan-icon-active" />
+                     <ImageView 
+                        fx:id="returnMenuBorrower"
+                        onMouseClicked="#clickedReturnMenuBorrower"
+                        styleClass="return-icon-active" />
+                     <ImageView 
+                        fx:id="accountMenuBorrower"
+                        onMouseClicked="#clickedAccountMenuBorrower"
+                        styleClass="account-icon-inactive" />
+                     <ImageView 
+                        fx:id="signOutMenuBorrower"
+                        onMouseClicked="#clickedSignOutMenuBorrower"
+                        styleClass="sign-out-icon-active" />
                   </children>
                </FlowPane>
             </children>
@@ -79,11 +70,10 @@
 
    <!-- Main Content Section -->
    <center>
-      <VBox
-          alignment="TOP_CENTER"
-          spacing="10.0"
-          BorderPane.alignment="CENTER"
-      >
+      <VBox 
+         alignment="TOP_CENTER"
+         spacing="10.0"
+         BorderPane.alignment="CENTER">
 
          <!-- Search Box -->
          <StackPane>
@@ -91,81 +81,74 @@
                <Insets />
             </opaqueInsets>
          </StackPane>
-
-         <!-- Results Box -->
-         <StackPane
-             VBox.vgrow="ALWAYS"
-         >
+         <AnchorPane 
+            VBox.vgrow="ALWAYS">
             <children>
-               <HBox
-                   prefHeight="100.0"
-                   prefWidth="200.0"
-                   spacing="10.0"
-               >
+               <HBox 
+                  prefHeight="100.0"
+                  prefWidth="200.0"
+                  spacing="10.0"
+                  AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="0.0">
                   <children>
-                     <VBox
-                         spacing="10.0"
-                         styleClass="results-box"
-                     >
+                     <VBox 
+                        spacing="10.0"
+                        styleClass="results-box"
+                        HBox.hgrow="ALWAYS">
                         <children>
-                           <Button
-                               fx:id="userInfoButtonBorrower"
-                               mnemonicParsing="false"
-                               onMouseClicked="#clickedUserInfoButtonBorrower"
-                               text=" User Information  "
-                           />
-                           <Button
-                               fx:id="activeLoansButtonBorrower"
-                               mnemonicParsing="false"
-                               styleClass="button-selected"
-                               text="    Active Loans     "
-                           />
-                           <Button
-                               fx:id="changePasswordButtonBorrower"
-                               mnemonicParsing="false"
-                               onMouseClicked="#clickedChangePasswordButtonBorrower"
-                               text="Change Password"
-                           />
-                           <Button
-                               fx:id="signOutButtonBorrower"
-                               mnemonicParsing="false"
-                               onMouseClicked="#clickedSignOutButtonBorrower"
-                               text="        Sign Out       "
-                           />
+                           <Button 
+                              fx:id="userInfoButtonBorrower"
+                              mnemonicParsing="false"
+                              onMouseClicked="#clickedUserInfoButtonBorrower"
+                              text=" User Information  " />
+                           <Button 
+                              fx:id="activeLoansButtonBorrower"
+                              mnemonicParsing="false"
+                              styleClass="button-selected"
+                              text="    Active Loans     " />
+                           <Button 
+                              fx:id="changePasswordButtonBorrower"
+                              mnemonicParsing="false"
+                              onMouseClicked="#clickedChangePasswordButtonBorrower"
+                              text="Change Password" />
+                           <Button 
+                              fx:id="signOutButtonBorrower"
+                              mnemonicParsing="false"
+                              onMouseClicked="#clickedSignOutButtonBorrower"
+                              text="        Sign Out       " />
                         </children>
                      </VBox>
-                     <VBox
-                         styleClass="results-box"
-                     >
+                     <VBox 
+                        styleClass="results-box"
+                        HBox.hgrow="ALWAYS">
                         <padding>
-                           <Insets
-                               left="10.0"
-                               right="10.0"
-                           />
+                           <Insets 
+                              left="10.0"
+                              right="10.0" />
                         </padding>
                         <children>
-                           <VBox
-                               prefWidth="390.0"
-                               spacing="10.0"
-                           >
+                           <VBox 
+                              prefWidth="390.0"
+                              spacing="10.0"
+                              VBox.vgrow="ALWAYS">
                               <children>
-                                 <Label
-                                     alignment="TOP_LEFT"
-                                     styleClass="label-title"
-                                     text="Active Loans"
-                                 />
-                                 <ScrollPane
-                                     fx:id="loansScrollPaneBorrower"
-                                     fitToWidth="true"
-                                     hbarPolicy="NEVER"
-                                     styleClass="scroll-pane-custom"
-                                 >
+                                 <Label 
+                                    alignment="TOP_LEFT"
+                                    styleClass="label-title"
+                                    text="Active Loans" />
+                                 <ScrollPane 
+                                    fx:id="loansScrollPaneBorrower"
+                                    fitToWidth="true"
+                                    hbarPolicy="NEVER"
+                                    styleClass="scroll-pane-custom"
+                                    VBox.vgrow="ALWAYS">
                                     <content>
-                                       <VBox
-                                           fx:id="loansContainerBorrower"
-                                           spacing="10.0"
-                                           styleClass="results-box"
-                                       />
+                                       <VBox 
+                                          fx:id="loansContainerBorrower"
+                                          spacing="10.0"
+                                          styleClass="results-box" />
                                     </content>
                                  </ScrollPane>
                               </children>
@@ -174,15 +157,14 @@
                      </VBox>
                   </children>
                   <padding>
-                     <Insets
-                         bottom="10.0"
-                         left="10.0"
-                         right="10.0"
-                     />
+                     <Insets 
+                        bottom="10.0"
+                        left="10.0"
+                        right="10.0" />
                   </padding>
                </HBox>
             </children>
-         </StackPane>
+         </AnchorPane>
 
       </VBox>
    </center>
