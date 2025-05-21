@@ -13,7 +13,6 @@ import com.javafullstacklibrary.frontend.borrowerControllers.SearchViewBorrowerC
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
-import com.javafullstacklibrary.frontend.borrowerControllers.SignOutBorrowerController;
 
 
 import javafx.scene.layout.Pane;
@@ -89,7 +88,7 @@ public class MenuNavigationHelper {
                 break;
             case "SignOut":
                 // Navigate to the Sign-Out view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new SignOutBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "SearchResults":
                 // Navigate to the Search Results view for borrowers
