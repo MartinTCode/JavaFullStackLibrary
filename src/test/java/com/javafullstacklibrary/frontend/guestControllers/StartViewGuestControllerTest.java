@@ -44,6 +44,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
         new MenuEntry("#signInMenuGuest", "#ssnField")
     );
 
+
     // TODO: add transition logic to go to next menu view 
     // (staff / user via #signInMenuGuest), and add field to MenuEntry to if entry is transition steps.
     // then change logic in testMenuButtonClick_All to check if the entry is a transition step, and if so,
@@ -100,18 +101,27 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     void testMenuButtonClick_All() {
         List<MenuEntry> menuEntries = MENU_ENTRIES_LIST;
         for (int i = 0; i < menuEntries.size(); i++) {
-            String buttonIdFrom = menuEntries.get(i).getButtonId();
+            MenuEntry entry_from = menuEntries.get(i);
+            String buttonIdFrom = entry_from.getButtonId();
+            //TODO: add transition logic here to do transition steps and then continue to the next menu entry:
+
             // ... and try to click all other buttons from this view:
-            for (MenuEntry entry_to : MENU_ENTRIES_LIST) {
+            for (int y = 0; y < menuEntries.size(); y++) {
+                MenuEntry entry_to = menuEntries.get(y);
+                String buttonIdTo = entry_to.getButtonId();
                 // Skip if the button is the same it's coming from (can't click itself)
-                if (buttonIdFrom.equals(entry_to.getButtonId())) {
+                if (buttonIdFrom.equals(buttonIdTo)) {
                     continue; 
                 }
+                if (entry_to.isTransition()) {
+                    // If the entry is a transition step, navigate to the next menu entry
+                    navigateTo(buttonIdTo);
+                    continue;
+                }
                 // Click the button and verify the expected field is visible
-                String buttonId = entry_to.getButtonId();
                 String expectedFieldId = entry_to.getFieldId();
-                logger.info("[testMenuButtonClick_All] Clicking " + buttonId + ", from " + buttonIdFrom + ", expecting " + expectedFieldId);
-                clickMenuAndVerify(buttonId, expectedFieldId, "testMenuButtonClick_All");
+                logger.info("[testMenuButtonClick_All] Clicking " + buttonIdTo + ", from " + buttonIdFrom + ", expecting " + expectedFieldId);
+                clickMenuAndVerify(buttonIdTo, expectedFieldId, "testMenuButtonClick_All");
                 // go back to from again:
                 navigateTo(buttonIdFrom);
             }
