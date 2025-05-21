@@ -37,7 +37,7 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedSignOutMenuBorrower() {
-        System.out.println("Sign Out button clicked");
+        MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
     @FXML
@@ -57,7 +57,7 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedSignOutButtonBorrower() {
-        System.out.println("Sign Out button clicked");
+        MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
     @FXML
@@ -75,5 +75,19 @@ public class AccountMenuBorrowerController {
     private void clickedConfirmNewPasswordButtonBorrower() {
         //Implementation for changing password
         System.out.println("Confirm New Password button clicked");
+    }
+
+    @FXML
+    private void clickedConfirmSignOutButtonBorrower() {
+        //Implementation for siogning out
+        System.out.println("Confirm Sign Out button clicked");
+        MenuNavigationHelper.menuClickGuest(mainPane, "Home");
+    }
+
+    @FXML
+    private void clickedCancelSignOutButtonBorrower() {
+        //Implementation for canceling sign out
+        System.out.println("Cancel Sign Out button clicked");
+        MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 }
