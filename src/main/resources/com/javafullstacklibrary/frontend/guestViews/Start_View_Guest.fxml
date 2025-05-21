@@ -39,24 +39,30 @@
                styleClass="flow-pane-padding">
                <children>
                   <!-- Home Button -->
-                  <ImageView 
-                     fx:id="homeMenuGuest" 
-                     styleClass="home-icon-inactive">
-                  </ImageView>
-
+                  <StackPane>
+                     <ImageView 
+                        fx:id="homeMenuGuest" 
+                        styleClass="home-icon-inactive">
+                     </ImageView>
+                  </StackPane>
                   <!-- Search Button -->
-                  <ImageView 
-                     fx:id="searchMenuGuest" 
-                     onMouseClicked="#clickedSearchMenuGuest" 
-                     styleClass="search-icon-active">
-                  </ImageView>
-
+                  <StackPane>
+                     <ImageView 
+                        fx:id="searchMenuGuest" 
+                        styleClass="search-icon-active">
+                     </ImageView>
+                     <Region style="-fx-background-color: transparent;" 
+                              onMouseClicked="#clickedSearchMenuGuest"/>
+                  </StackPane>
                   <!-- Sign In Button -->
-                  <ImageView 
-                     fx:id="signInMenuGuest" 
-                     onMouseClicked="#clickedSignInMenuGuest" 
-                     styleClass="sign-in-icon-active">
-                  </ImageView>
+                  <StackPane>
+                     <ImageView 
+                        fx:id="signInMenuGuest" 
+                        styleClass="sign-in-icon-active">
+                     </ImageView>
+                     <Region style="-fx-background-color: transparent;" 
+                        onMouseClicked="#clickedSignInMenuGuest"/>
+                  </StackPane>
                </children>
             </FlowPane>
          </children>
@@ -80,6 +86,7 @@
 
             <!-- Welcome Text -->
             <VBox 
+               fx:id="welcomeTextGuest"
                alignment="CENTER" 
                prefHeight="200.0" 
                prefWidth="100.0">
