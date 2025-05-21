@@ -41,31 +41,36 @@
          prefHeight="55.0"  
          BorderPane.alignment="CENTER">
          <children>
-            
             <!-- Top Menu Buttons -->
             <FlowPane 
                prefHeight="55.0" 
                styleClass="flow-pane-padding">
                <children>
                   <!-- Home Button -->
-                  <ImageView 
-                     fx:id="homeMenuGuest" 
-                     styleClass="home-icon-active" 
-                     onMouseClicked="#clickedHomeMenuGuest" >
-                  </ImageView>
+                  <StackPane>
+                     <ImageView 
+                        fx:id="homeMenuGuest" 
+                        styleClass="home-icon-active" />
+                     <Region style="-fx-background-color: transparent;" 
+                             onMouseClicked="#clickedHomeMenuGuest"/>
+                  </StackPane>
 
                   <!-- Search Button -->
-                  <ImageView 
-                     fx:id="searchMenuGuest" 
-                     styleClass="search-icon-inactive">
-                  </ImageView>
+                  <StackPane>
+                     <ImageView 
+                        fx:id="searchMenuGuest" 
+                        styleClass="search-icon-inactive" />
+                     <!-- No click handler for inactive button -->
+                  </StackPane>
 
                   <!-- Sign In Button -->
-                  <ImageView 
-                     fx:id="signInMenuGuest" 
-                     styleClass="sign-in-icon-active" 
-                     onMouseClicked="#clickedSignInMenuGuest">
-                  </ImageView>
+                  <StackPane>
+                     <ImageView 
+                        fx:id="signInMenuGuest" 
+                        styleClass="sign-in-icon-active" />
+                     <Region style="-fx-background-color: transparent;" 
+                             onMouseClicked="#clickedSignInMenuGuest"/>
+                  </StackPane>
 
                </children>
             </FlowPane>
