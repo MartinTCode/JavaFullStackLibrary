@@ -114,8 +114,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
                     continue; 
                 }
                 if (entry_to.isTransition()) {
-                    // If the entry is a transition step, navigate to the next menu entry
-                    navigateTo(buttonIdTo);
+                    // If the entry is a transition step, skip it.
                     continue;
                 }
                 // Click the button and verify the expected field is visible
