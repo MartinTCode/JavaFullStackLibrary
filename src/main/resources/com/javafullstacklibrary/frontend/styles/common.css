@@ -156,6 +156,15 @@
     -fx-content-display: center;
 }
 
+.label-title {
+    font-size: 20px;
+    -fx-font-size: 20px;
+    text-align: center;
+    -fx-alignment: center;
+    font-weight: bold; 
+    -fx-font-weight: bold;
+}
+
 /* ImageView Styles */
 .image-view {
     width: 70px;
@@ -219,6 +228,73 @@
     -fx-preserve-ratio: true;
     -fx-pick-on-bounds: true;
     -fx-image: url("../figma_icons/navBarButtons/SignInNavigationButton.png");
+}
+
+.loan-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/LoanNavigationButtonClickable.png");
+}
+.loan-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/LoanNavigationButton.png");
+}
+
+.return-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/ReturnNavigationButtonClickable.png");
+}
+.return-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/ReturnNavigationButton.png");
+}
+
+.account-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/AccountNavigationButtonClickable.png");
+}
+.account-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/AccountNavigationButton.png");
+}
+
+.sign-out-icon-active {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignOutNavigationButtonClickable.png");
 }
 
 /* FlowPane Padding */
