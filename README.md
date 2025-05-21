@@ -1,21 +1,20 @@
-# feature/frontend_guestViews
+# feature/frontend_guestViews-testfx-integration
 
-This branch implements the guest-facing views of the frontend.  
-It contains UI components for browsing and interacting with content without user authentication.
+This branch is based on `feature/frontend_guestViews` and focuses on integrating automated frontend testing using TestFX for the JavaFX menu buttons.
 
 ## Purpose
-- Provide a user-friendly interface for guest users.
-- Lay out structure and styling of key views (e.g., search bar, start menu, loggin screens).
-- Serve as the frontend basis for later functional integration with the backend.
+- Add automated UI tests for guest-facing menu buttons using TestFX.
+- Ensure menu navigation and button interactions work as intended.
 
 ## Scope
-- Static layout and initial components for the guest view.
-- Placeholder interaction patterns (e.g., search input without live results).
-- Basic styling and responsive behavior.
+- Set up TestFX in the project.
+- Write and maintain tests for menu button functionality in guest views.
+- Keep in sync with changes from `feature/frontend_guestViews` and `dev`.
 
 ## Dependencies
-- Tied to the application’s general frontend setup (JavaFX).
+- JavaFX frontend implementation.
+- TestFX testing framework.
 
 ## Notes
-- This branch contains no backend communication yet.
-- Integrates later with `feature/search-query-integration` for live functionality.
+- This branch is intended for frontend test integration only.
+- Merge back to `feature/frontend_guestViews` or `dev` after successful test implementation.
