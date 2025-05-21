@@ -44,6 +44,11 @@ public class StartViewGuestControllerTest extends ApplicationTest {
         new MenuEntry("#signInMenuGuest", "#ssnField")
     );
 
+    // TODO: add transition logic to go to next menu view 
+    // (staff / user via #signInMenuGuest), and add field to MenuEntry to if entry is transition steps.
+    // then change logic in testMenuButtonClick_All to check if the entry is a transition step, and if so,
+    // navigate to the next menu entry after testing all buttons from the current one.
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
