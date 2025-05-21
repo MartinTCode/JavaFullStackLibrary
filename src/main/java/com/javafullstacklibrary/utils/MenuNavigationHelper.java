@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.javafullstacklibrary.frontend.guestControllers.SignInUserController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -125,6 +126,18 @@ public class MenuNavigationHelper {
             case "ReturnReceipt":
                 // Navigate to the Return Receipt view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
+                break;
+            default:
+                // Throw an exception for invalid menu options
+                throw new IllegalArgumentException("Invalid menu type: " + menuChange);
+        }
+    }
+
+    public static void menuClickLibrarian(Pane mainPane, String menuChange) {
+        switch (menuChange) {
+            case "Home":
+                // Navigate to the Home view for librarians
+                navigateToView(mainPane, "librarianViews", "Start_View_Librarian.fxml", new StartViewLibrarianController());
                 break;
             default:
                 // Throw an exception for invalid menu options
