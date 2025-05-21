@@ -39,11 +39,12 @@
                styleClass="flow-pane-padding">
                <children>
                   <!-- Home Button -->
-                  <ImageView 
-                     fx:id="homeMenuGuest" 
-                     styleClass="home-icon-inactive">
-                  </ImageView>
-
+                  <StackPane>
+                     <ImageView 
+                        fx:id="homeMenuGuest" 
+                        styleClass="home-icon-inactive">
+                     </ImageView>
+                  </StackPane>
                   <!-- Search Button -->
                   <StackPane>
                      <ImageView 
@@ -85,6 +86,7 @@
 
             <!-- Welcome Text -->
             <VBox 
+               fx:id="welcomeTextGuest"
                alignment="CENTER" 
                prefHeight="200.0" 
                prefWidth="100.0">
