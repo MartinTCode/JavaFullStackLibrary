@@ -42,17 +42,17 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedUserInfoButtonBorrower() {
-        MenuNavigationHelper.menuClickBorrower(mainPane, "UserInfo");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "UserInfo");
     }
 
     @FXML
     private void clickedActiveLoansButtonBorrower() {
-        MenuNavigationHelper.menuClickBorrower(mainPane, "ActiveLoans");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "ActiveLoans");
     }
 
     @FXML
     private void clickedChangePasswordButtonBorrower() {
-        MenuNavigationHelper.menuClickBorrower(mainPane, "ChangePassword");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "ChangePassword");
     }
 
     @FXML
@@ -62,13 +62,13 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedChangeUserInfoButtonBorrower() {
-        MenuNavigationHelper.menuClickBorrower(mainPane, "ChangeInfo");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "ChangeInfo");
     }
 
     @FXML
     private void clickedSaveUserInfoButtonBorrower() {
         //Implementation for saving user info
-        MenuNavigationHelper.menuClickBorrower(mainPane, "UserInfo");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "UserInfo");
     }
 
     @FXML

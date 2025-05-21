@@ -106,7 +106,7 @@
                            <Button
                                fx:id="signOutButtonBorrower"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedSignOutButtonBorrower"
+                               onMouseClicked="#clickedSignOutMenuBorrower"
                                text="        Sign Out       " />
                         </children>
                      </VBox>

@@ -65,71 +65,68 @@ public class MenuNavigationHelper {
         }
     }
 
-    public static void menuClickBorrower(Pane mainPane, String menuChange) {
-        switch (menuChange) {
-            case "Home":
-                // Navigate to the Home view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Start_View_Borrower.fxml", new StartViewBorrowerController());
-                break;
-            case "Search":
-                // Navigate to the Search view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Search_Menu_Borrower.fxml", new SearchMenuBorrowerController());
-                break;
-            case "Loan":
-                // Navigate to the Loan view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Loan_Menu_Borrower.fxml", new LoanMenuBorrowerController());
-                break;
-            case "Return":
-                // Navigate to the Return view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Return_Menu_Borrower.fxml", new ReturnMenuBorrowerController());
-                break;
-            case "Account":
-                // Navigate to the Account view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Account_Menu_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "SignOut":
-                // Navigate to the Sign-Out view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "SearchResults":
-                // Navigate to the Search Results view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchViewBorrowerController());
-                break;
-            case "UserInfo":
-                // Navigate to the User Info view for borrowers
-                navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "ChangeInfo":
-                // Navigate to the Change Info view for borrowers
-                navigateToView(mainPane, "borrowerViews", "User_Info_Edit_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "ActiveLoans":
-                // Navigate to the Active Loans view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Active_Loans_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "ChangePassword":
-                // Navigate to the Change Password view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
-                break;
-            case "LoanView":
-                // Navigate to the Loan view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
-                break;
-            case "LoanReceipt":
-                // Navigate to the Loan Receipt view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
-                break;
-            case "ReturnView":
-                // Navigate to the Return view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
-                break;
-            case "ReturnReceipt":
-                // Navigate to the Return Receipt view for borrowers
-                navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
-                break;
-            default:
-                // Throw an exception for invalid menu options
-                throw new IllegalArgumentException("Invalid menu type: " + menuChange);
+/**
+ * Handles navigation for borrower menu bar clicks (top navigation).
+ */
+public static void menuClickBorrower(Pane mainPane, String menuChange) {
+    switch (menuChange) {
+        case "Home":
+            navigateToView(mainPane, "borrowerViews", "Start_View_Borrower.fxml", new StartViewBorrowerController());
+            break;
+        case "Search":
+            navigateToView(mainPane, "borrowerViews", "Search_Menu_Borrower.fxml", new SearchMenuBorrowerController());
+            break;
+        case "Loan":
+            navigateToView(mainPane, "borrowerViews", "Loan_Menu_Borrower.fxml", new LoanMenuBorrowerController());
+            break;
+        case "Return":
+            navigateToView(mainPane, "borrowerViews", "Return_Menu_Borrower.fxml", new ReturnMenuBorrowerController());
+            break;
+        case "Account":
+            navigateToView(mainPane, "borrowerViews", "Account_Menu_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        case "SignOut":
+            navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        default:
+            throw new IllegalArgumentException("Invalid menu type: " + menuChange);
+    }
+}
+
+/**
+ * Handles navigation for borrower button clicks (side panel or content buttons).
+ */
+public static void buttonClickBorrower(Pane mainPane, String buttonAction) {
+    switch (buttonAction) {
+        case "SearchResults":
+            navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchViewBorrowerController());
+            break;
+        case "UserInfo":
+            navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        case "ChangeInfo":
+            navigateToView(mainPane, "borrowerViews", "User_Info_Edit_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        case "ActiveLoans":
+            navigateToView(mainPane, "borrowerViews", "Active_Loans_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        case "ChangePassword":
+            navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
+            break;
+        case "LoanView":
+            navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
+            break;
+        case "LoanReceipt":
+            navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
+            break;
+        case "ReturnView":
+            navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
+            break;
+        case "ReturnReceipt":
+            navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
+            break;
+        default:
+            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
         }
     }
 

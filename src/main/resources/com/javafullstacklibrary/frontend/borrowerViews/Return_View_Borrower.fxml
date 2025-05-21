@@ -90,7 +90,7 @@
                               text="Scan or enter barcode"
                               HBox.hgrow="ALWAYS" />
                            <TextField 
-                              fx:id="barcodeField"
+                              fx:id="barcodeFieldBorrower"
                               styleClass="text-field" />
                            <Button 
                               fx:id="addReturnButton"

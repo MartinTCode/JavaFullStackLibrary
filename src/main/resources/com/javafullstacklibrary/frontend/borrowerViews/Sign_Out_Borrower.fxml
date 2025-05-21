@@ -61,7 +61,7 @@
                      />
                      <ImageView
                          fx:id="signOutMenuBorrower"
-                         styleClass="sign-out-icon-inactive"
+                         styleClass="sign-out-icon-active"
                      />
                   </children>
                </FlowPane>
