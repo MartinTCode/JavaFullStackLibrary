@@ -1,27 +1,36 @@
 package com.javafullstacklibrary.frontend.guestControllers;
 
+import java.util.List;
+
 public class MenuEntry {
     private final String buttonId;
     private final String fieldId;
-    private final boolean transitionStep;
+    private final boolean isTransition;
+    private final List<MenuEntry> transitionSteps;
 
     // Constructor for MenuEntry
     public MenuEntry(String buttonId, String fieldId) {
         this.buttonId = buttonId;
         this.fieldId = fieldId;
-        this.transitionStep = false;
+        this.isTransition = false;
+        this.transitionSteps = null;
     }
 
     // Overloaded constructor for MenuEntry with transitionStep
     // This constructor allows you to specify if the entry is a transition step
-    public MenuEntry(String buttonId, String fieldId, boolean transitionStep) {
+    public MenuEntry(String buttonId, String fieldId, boolean isTransition, List<MenuEntry> transitionSteps) {
         this.buttonId = buttonId;
         this.fieldId = fieldId;
-        this.transitionStep = transitionStep;
+        this.isTransition = isTransition;
+        this.transitionSteps = transitionSteps;
     }
 
-    public boolean isTransitionStep() {
-        return transitionStep;
+    public boolean isTransition() {
+        return isTransition;
+    }
+
+    public List<MenuEntry> getTransitionSteps() {
+        return transitionSteps;
     }
 
     public String getButtonId() {
