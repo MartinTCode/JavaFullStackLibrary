@@ -127,6 +127,7 @@
 
                 <!-- Welcome Message -->
                 <VBox
+                    fx:id="welcomeMsgLibrarian"
                     alignment="CENTER"
                     prefHeight="200.0"
                     prefWidth="100.0"

@@ -45,16 +45,69 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     // List of menu entries for the test
     // This list contains the button IDs and their corresponding expected field IDs to show when being in their view.
-    private static final List<MenuEntry> MENU_ENTRIES_GUESTVIEWS = List.of(
+    // represents menus: start > search > sign_in
+    private final List<MenuEntry> MENU_ENTRIES_GUESTVIEWS = List.of(
         new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"),
         new MenuEntry("#searchMenuGuest", "#searchField"),
         new MenuEntry("#signInMenuGuest", "#ssnField")
     );
 
+    private final MenuEntry BORROWER_TRANSITION_GW = new MenuEntry(
+        //1. transition to sign in view:
+        "#signInMenuGuest", "#ssnField", true,
+        // List<MenuEntry>. 
+        List.of(
+        // 2. Fake login as user BREAKS! (expect username field, should alrdy be there).
+        //new MenuEntry("#userButton", "#usernameField", true),
+        // 3. press sign in.
+        new MenuEntry("#signInButton", "#welcomeMsgUser", true)
+        )
+    );
+
+    // represents menus: start > search > loan > return > account > sign_out
+    private final List<MenuEntry> MENU_ENTRIES_BORROWERVIEWS = List.of(
+        BORROWER_TRANSITION_GW,
+        new MenuEntry("#homeMenuBorrower", "#welcomeMsgUser"),
+        new MenuEntry("#searchMenuBorrower", "#searchButtonBorrower"),
+        new MenuEntry("#loanMenuBorrower", "#loanButtonBorrower"),
+        new MenuEntry("#returnMenuBorrower", "#returnButtonBorrower"),
+        new MenuEntry("#accountMenuBorrower", "#userInfoButtonBorrower"),
+        new MenuEntry("#signOutMenuBorrower", "#confirmSignOutButtonBorrower")
+    );
+
+    private final MenuEntry LIBRARIAN_TRANSITION_GW = new MenuEntry(
+        //1. transition to sign in view:
+        "#signInMenuGuest", "#ssnField", true,
+        // List<MenuEntry>. 
+        List.of(
+        // 2. Press login as staff.
+        new MenuEntry("#staffButton", "#usernameField", true),
+        // 3. press sign in.
+        new MenuEntry("#signInButtonLibrarian", "#welcomeMsgLibrarian", true)
+        )
+    );
+
+    // TODO: add entries here as work goes on, making sure to use or add unique ID in fxml.
+    private final List<MenuEntry> MENU_ENTRIES_LIBRARIANVIEWS = List.of(
+        LIBRARIAN_TRANSITION_GW,
+        new MenuEntry("#homeMenuLibrarian", "#welcomeMsgLibrarian")
+    );
+
     @Test
     @Order(1)
     void testGuestViewMenuButtons() {
-        testMenuButtonClick_All(MENU_ENTRIES_GUESTVIEWS);
+        testMenuButtonClick_All (
+            MENU_ENTRIES_GUESTVIEWS, 
+            List.of(new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"))
+        );
+    }
+
+    @Test
+    @Order(2)
+    // FIXME: there be dragons here, transition works fine, but then it finds no node for:
+    // lookup by selector: "#searchButtonBorrower"
+    void testBorrowerViewMenuButtons() {
+        testMenuButtonClick_All(MENU_ENTRIES_BORROWERVIEWS, null);
     }
 
 
@@ -111,24 +164,27 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
 
 
-    private void testMenuButtonClick_All(List<MenuEntry> menuEntries) {
+    private void testMenuButtonClick_All(List<MenuEntry> menuEntries, List<MenuEntry> back2homeTraversal) {
         for (int i = 0; i < menuEntries.size(); i++) {
             MenuEntry entry_from = menuEntries.get(i);
             String buttonIdFrom = entry_from.getButtonId();
             //TODO: add transition logic here to do transition steps and then continue to the next menu entry:
-
+            if (entry_from.isTransition()) {
+                // If the entry is a transition step, 
+                traverseThroughViews(List.of(entry_from), true);
+                traverseThroughViews(entry_from.getTransitionSteps(), true);
+                continue;
+            }
             // ... and try to click all other buttons from this view:
             for (int y = 0; y < menuEntries.size(); y++) {
                 MenuEntry entry_to = menuEntries.get(y);
                 String buttonIdTo = entry_to.getButtonId();
                 // Skip if the button is the same it's coming from (can't click itself)
-                if (buttonIdFrom.equals(buttonIdTo)) {
+                if (buttonIdFrom.equals(buttonIdTo) || entry_to.isTransition()) {
+                    // If the entry is a transition step, skip it.
                     continue; 
                 }
-                if (entry_to.isTransition()) {
-                    // If the entry is a transition step, skip it.
-                    continue;
-                }
+
                 // Click the button and verify the expected field is visible
                 String expectedFieldId = entry_to.getFieldId();
                 logger.info("[testMenuButtonClick_All] Clicking " + buttonIdTo + ", from " + buttonIdFrom + ", expecting " + expectedFieldId);
@@ -140,6 +196,27 @@ public class StartViewGuestControllerTest extends ApplicationTest {
             if (i < menuEntries.size()-1)
             {
                 navigateTo(menuEntries.get(i+1).getButtonId());
+            }
+        }
+        // once all tests are done, go back home so to not pollute next test:
+        if (back2homeTraversal != null) {
+            traverseThroughViews(back2homeTraversal, false);
+        }
+        // TODO: add logic here for doing several steps at a time.
+        //navigateTo(buttonForStartView);
+    }
+
+    private void traverseThroughViews(List<MenuEntry> menuEntries, boolean verifyClick) {
+        for (MenuEntry entry : menuEntries) {
+            String button2press = entry.getButtonId();
+            if (verifyClick) {
+                // Click the button and verify the expected field is visible
+                String expectedFieldId = entry.getFieldId();
+                clickMenuAndVerify(button2press, expectedFieldId, "traverseThroughViews");
+            } else {
+                String expectedFieldId = entry.getFieldId();
+                logger.info("Clicking " + button2press + ", expecting " + expectedFieldId);
+                navigateTo(button2press);
             }
         }
     }
