@@ -93,6 +93,7 @@
 
             <!-- Welcome Text -->
             <VBox 
+                fx:id = "welcomeMsgUser"
                 alignment="CENTER" 
                 prefHeight="200.0" 
                 prefWidth="100.0">
