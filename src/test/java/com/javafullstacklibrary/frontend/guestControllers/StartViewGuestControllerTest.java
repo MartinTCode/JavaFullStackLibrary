@@ -31,6 +31,13 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import java.util.List;
 import java.util.logging.Logger;
 
+/*
+ * This class is a test suite for the StartViewGuestController class.
+ * It uses TestFX for JavaFX UI testing and JUnit 5 for test organization.
+ * The tests are designed to verify the functionality of the menu buttons in the guest view.
+ * NOTE: this test class extends ApplicationTest, which is a TestFX class.
+ * Be very careful with migrating code from here to utils since many are dependent on the ApplicationTest class.
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StartViewGuestControllerTest extends ApplicationTest {
 
@@ -38,11 +45,17 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     // List of menu entries for the test
     // This list contains the button IDs and their corresponding expected field IDs to show when being in their view.
-    private static final List<MenuEntry> MENU_ENTRIES_LIST = List.of(
+    private static final List<MenuEntry> MENU_ENTRIES_GUESTVIEWS = List.of(
         new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"),
         new MenuEntry("#searchMenuGuest", "#searchField"),
         new MenuEntry("#signInMenuGuest", "#ssnField")
     );
+
+    @Test
+    @Order(1)
+    void testGuestViewMenuButtons() {
+        testMenuButtonClick_All(MENU_ENTRIES_GUESTVIEWS);
+    }
 
 
     // TODO: add transition logic to go to next menu view 
@@ -96,10 +109,9 @@ public class StartViewGuestControllerTest extends ApplicationTest {
         navigateTo("#homeMenuGuest");
     }
 
-    @Order(1)
-    @Test
-    void testMenuButtonClick_All() {
-        List<MenuEntry> menuEntries = MENU_ENTRIES_LIST;
+
+
+    private void testMenuButtonClick_All(List<MenuEntry> menuEntries) {
         for (int i = 0; i < menuEntries.size(); i++) {
             MenuEntry entry_from = menuEntries.get(i);
             String buttonIdFrom = entry_from.getButtonId();
