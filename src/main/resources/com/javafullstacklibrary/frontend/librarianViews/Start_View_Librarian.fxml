@@ -42,52 +42,67 @@
                     >
                         <children>
                             <!-- Home Menu Button (inactive) -->
-                            <ImageView
-                                fx:id="homeMenuLibrarian"
-                                styleClass="home-icon-inactive"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="homeMenuLibrarian"
+                                    styleClass="home-icon-inactive"
+                                />
+                                <!-- No Region for current/active page -->
+                            </StackPane>
                             <!-- Search Menu Button -->
-                            <ImageView
-                                fx:id="searchMenuLibrarian"
-                                onMouseClicked="#clickedSearchMenuLibrarian"
-                                styleClass="search-icon-active"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="searchMenuLibrarian"
+                                    styleClass="search-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedSearchMenuLibrarian"/>
+                            </StackPane>
                             <!-- Overdue Loans Menu Button -->
-                            <ImageView
-                                fx:id="overdueMenuLibrarian"
-                                onMouseClicked="#clickedOverdueMenuLibrarian"
-                                styleClass="overdue-icon-active"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="overdueMenuLibrarian"
+                                    styleClass="overdue-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedOverdueMenuLibrarian"/>
+                            </StackPane>
                             <!-- Manage Library Menu Button -->
-                            <ImageView
-                                fx:id="libraryMenuLibrarian"
-                                onMouseClicked="#clickedLibraryMenuLibrarian"
-                                styleClass="manage-library-icon-active"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="libraryMenuLibrarian"
+                                    styleClass="manage-library-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedLibraryMenuLibrarian"/>
+                            </StackPane>
                             <!-- Manage Users Menu Button -->
-                            <ImageView
-                                fx:id="usersMenuLibrarian"
-                                onMouseClicked="#clickedUsersMenuLibrarian"
-                                styleClass="manage-users-icon-active"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="usersMenuLibrarian"
+                                    styleClass="manage-users-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedUsersMenuLibrarian"/>
+                            </StackPane>
                             <!-- Account Menu Button -->
-                            <ImageView
-                                fx:id="accountMenuLibrarian"
-                                onMouseClicked="#clickedAccountMenuLibrarian"
-                                styleClass="account-icon-active"
-                            />
-
+                            <StackPane>
+                                <ImageView
+                                    fx:id="accountMenuLibrarian"
+                                    styleClass="account-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedAccountMenuLibrarian"/>
+                            </StackPane>
                             <!-- Sign Out Menu Button -->
-                            <ImageView
-                                fx:id="signOutMenuLibrarian"
-                                onMouseClicked="#clickedSignOutMenuLibrarian"
-                                styleClass="sign-out-icon-active"
-                            />
+                            <StackPane>
+                                <ImageView
+                                    fx:id="signOutMenuLibrarian"
+                                    styleClass="sign-out-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedSignOutMenuLibrarian"/>
+                            </StackPane>
                         </children>
                     </FlowPane>
                 </children>

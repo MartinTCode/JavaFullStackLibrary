@@ -30,65 +30,101 @@
    <top>
       <StackPane>
          <!-- Background -->
-         <Region styleClass="top-menu-region" />
+         <Region
+             styleClass="top-menu-region"
+         />
 
          <!-- Top Menu Buttons -->
-         <StackPane BorderPane.alignment="CENTER">
+         <StackPane
+             BorderPane.alignment="CENTER"
+         >
             <children>
-               <FlowPane styleClass="flow-pane-padding">
+               <FlowPane
+                   styleClass="flow-pane-padding"
+               >
                   <children>
-                     <!-- Home Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="startMenuBorrower"
-                            styleClass="home-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedHomeMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="homeMenuLibrarian"
+                               styleClass="home-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedHomeMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Search Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="searchMenuBorrower"
-                            styleClass="search-icon-inactive"
-                        />
-                        <!-- No Region for current/active page -->
+                        <children>
+                           <ImageView
+                               fx:id="searchMenuLibrarian"
+                               styleClass="search-icon-inactive"
+                           />
+                           <Region
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Loan Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="loanMenuBorrower"
-                            styleClass="loan-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedLoanMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="overdueMenuLibrarian"
+                               styleClass="overdue-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedOverdueMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Return Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="returnMenuBorrower"
-                            styleClass="return-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedReturnMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="libraryMenuLibrarian"
+                               styleClass="manage-library-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedLibraryMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Account Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="accountMenuBorrower"
-                            styleClass="account-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedAccountMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="usersMenuLibrarian"
+                               styleClass="manage-users-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedUsersMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Sign Out Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="signOutMenuBorrower"
-                            styleClass="sign-out-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedSignOutMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="accountMenuLibrarian"
+                               styleClass="account-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedAccountMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
+                     </StackPane>
+                     <StackPane>
+                        <children>
+                           <ImageView
+                               fx:id="signOutMenuLibrarian"
+                               styleClass="sign-out-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedSignOutMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
                   </children>
                </FlowPane>
@@ -141,9 +177,9 @@
                               </items>
                            </MenuButton>
                            <Button
-                               fx:id="searchButtonBorrower"
+                               fx:id="searchButtonLibrarian"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedSearchButtonBorrower"
+                               onMouseClicked="#clickedSearchButtonLibrarian"
                                styleClass="button"
                                text="Search"
                            />
@@ -174,7 +210,9 @@
          </StackPane>
 
          <!-- Results Box -->
-         <StackPane VBox.vgrow="ALWAYS">
+         <StackPane
+             VBox.vgrow="ALWAYS"
+         >
             <children>
                <VBox
                    styleClass="results-box"
@@ -194,7 +232,9 @@
                          text="Search query resulted in X matches"
                      >
                         <padding>
-                           <Insets left="10.0" />
+                           <Insets
+                               left="10.0"
+                           />
                         </padding>
                         <VBox.margin>
                            <Insets />
@@ -219,7 +259,9 @@
                      </ScrollPane>
 
                      <!-- Load more button -->
-                     <HBox alignment="BOTTOM_CENTER">
+                     <HBox
+                         alignment="BOTTOM_CENTER"
+                     >
                         <children>
                            <Button
                                fx:id="loadMoreButton"

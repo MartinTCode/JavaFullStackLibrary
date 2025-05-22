@@ -34,59 +34,86 @@
             <children>
                <FlowPane styleClass="flow-pane-padding">
                   <children>
-                     <!-- Home Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="startMenuBorrower"
-                            styleClass="home-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedHomeMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="homeMenuLibrarian"
+                               styleClass="home-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedHomeMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Search Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="searchMenuBorrower"
-                            styleClass="search-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedSearchMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="searchMenuLibrarian"
+                               styleClass="search-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedSearchMenyLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Loan Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="loanMenuBorrower"
-                            styleClass="loan-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedLoanMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="overdueMenuLibrarian"
+                               styleClass="overdue-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedOverdueMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Return Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="returnMenuBorrower"
-                            styleClass="return-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedReturnMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="libraryMenuLibrarian"
+                               styleClass="manage-library-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedLibraryMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Account Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="accountMenuBorrower"
-                            styleClass="account-icon-inactive"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedAccountMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="usersMenuLibrarian"
+                               styleClass="manage-users-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedUsersMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
-                     <!-- Sign Out Button -->
                      <StackPane>
-                        <ImageView
-                            fx:id="signOutMenuBorrower"
-                            styleClass="sign-out-icon-active"
-                        />
-                        <Region style="-fx-background-color: transparent;"
-                           onMouseClicked="#clickedSignOutMenuBorrower"/>
+                        <children>
+                           <ImageView
+                               fx:id="accountMenuLibrarian"
+                               styleClass="account-icon-inactive"
+                           />
+                           <Region style="-fx-background-color: transparent;" />
+                        </children>
+                     </StackPane>
+                     <StackPane>
+                        <children>
+                           <ImageView
+                               fx:id="signOutMenuLibrarian"
+                               styleClass="sign-out-icon-active"
+                           />
+                           <Region
+                               onMouseClicked="#clickedSignOutMenuLibrarian"
+                               style="-fx-background-color: transparent;"
+                           />
+                        </children>
                      </StackPane>
                   </children>
                </FlowPane>
@@ -122,27 +149,21 @@
                      <VBox spacing="10.0" styleClass="results-box">
                         <children>
                            <Button
-                               fx:id="userInfoButtonBorrower"
+                               fx:id="userInfoButtonLibrarian"
                                mnemonicParsing="false"
                                styleClass="button-selected"
                                text=" User Information  "
                            />
                            <Button
-                               fx:id="activeLoansButtonBorrower"
+                               fx:id="changePasswordButtonLibrarian"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedActiveLoansButtonBorrower"
-                               text="    Active Loans     "
-                           />
-                           <Button
-                               fx:id="changePasswordButtonBorrower"
-                               mnemonicParsing="false"
-                               onMouseClicked="#clickedChangePasswordButtonBorrower"
+                               onMouseClicked="#clickedChangePasswordButtonLibrarian"
                                text="Change Password"
                            />
                            <Button
-                               fx:id="signOutButtonBorrower"
+                               fx:id="signOutButtonLibrarian"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedSignOutButtonBorrower"
+                               onMouseClicked="#clickedSignOutButtonLibrarian"
                                text="        Sign Out       "
                            />
                         </children>
@@ -156,6 +177,9 @@
                                prefWidth="390.0"
                                spacing="10.0"
                            >
+                              <VBox.margin>
+                                 <Insets />
+                              </VBox.margin>
                               <children>
                                  <Label
                                      alignment="TOP_LEFT"
@@ -167,7 +191,7 @@
                                        <Label
                                            prefWidth="171.0"
                                            styleClass="label-left"
-                                           text="Social Security Number"
+                                           text="Username"
                                        >
                                           <opaqueInsets>
                                              <Insets />
@@ -176,15 +200,11 @@
                                        <TextField
                                            editable="false"
                                            styleClass="text-field"
-                                           text="YYYYMMDD-XXXX"
+                                           text="username"
                                        />
                                     </children>
                                  </HBox>
-                                 <HBox
-                                     alignment="CENTER_LEFT"
-                                     layoutX="10.0"
-                                     layoutY="33.0"
-                                 >
+                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                        <Label
                                            prefWidth="171.0"
@@ -196,17 +216,13 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="first name"
                                        />
                                     </children>
                                  </HBox>
-                                 <HBox
-                                     alignment="CENTER_LEFT"
-                                     layoutX="10.0"
-                                     layoutY="78.0"
-                                 >
+                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                        <Label
                                            prefWidth="171.0"
@@ -218,17 +234,13 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="last name"
                                        />
                                     </children>
                                  </HBox>
-                                 <HBox
-                                     alignment="CENTER_LEFT"
-                                     layoutX="10.0"
-                                     layoutY="113.0"
-                                 >
+                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                        <Label
                                            prefWidth="171.0"
@@ -240,17 +252,13 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="address 123"
                                        />
                                     </children>
                                  </HBox>
-                                 <HBox
-                                     alignment="CENTER_LEFT"
-                                     layoutX="10.0"
-                                     layoutY="148.0"
-                                 >
+                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                        <Label
                                            prefWidth="171.0"
@@ -262,17 +270,13 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="email@mail.com"
                                        />
                                     </children>
                                  </HBox>
-                                 <HBox
-                                     alignment="CENTER_LEFT"
-                                     layoutX="10.0"
-                                     layoutY="183.0"
-                                 >
+                                 <HBox alignment="CENTER_LEFT">
                                     <children>
                                        <Label
                                            prefWidth="171.0"
@@ -284,7 +288,7 @@
                                           </opaqueInsets>
                                        </Label>
                                        <TextField
-                                           editable="false"
+                                           editable="true"
                                            styleClass="text-field"
                                            text="+12344567890"
                                        />
@@ -298,13 +302,13 @@
                                        <Button
                                            fx:id="changeUserInfoButtonBorrower"
                                            mnemonicParsing="false"
-                                           onMouseClicked="#clickedChangeUserInfoButtonBorrower"
+                                           styleClass="button-selected"
                                            text="Change Info"
                                        />
                                        <Button
-                                           fx:id="saveUserInfoButtonBorrower"
+                                           fx:id="saveUserInfoButtonLibrarian"
                                            mnemonicParsing="false"
-                                           styleClass="button-selected"
+                                           onMouseClicked="#clickedSaveUserInfoButtonBorrowerLibrarian"
                                            text="Save Info"
                                        />
                                     </children>
@@ -318,7 +322,11 @@
                      </VBox>
                   </children>
                   <padding>
-                     <Insets bottom="10.0" left="10.0" right="10.0" />
+                     <Insets
+                         bottom="10.0"
+                         left="10.0"
+                         right="10.0"
+                     />
                   </padding>
                </HBox>
             </children>
