@@ -38,6 +38,10 @@ import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_B
 // import start controller class
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 
+// import class responsible for changing the view to monitor current controller.
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+
 /*
  * This class is a test suite for the StartViewGuestController class.
  * It uses TestFX for JavaFX UI testing and JUnit 5 for test organization.
@@ -146,7 +150,8 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
                 // Click the button and verify the expected field is visible
                 String expectedFieldId = entry_to.getFieldId();
-                logger.info("[testMenuButtonClick_All] Clicking " + buttonIdTo + ", from " + buttonIdFrom + ", expecting " + expectedFieldId);
+                logger.info("\n\n[testMenuButtonClick_All] Clicking " + buttonIdTo + ", from " + buttonIdFrom + ", expecting " + expectedFieldId
+                + " | CurrentController: " + MenuNavigationHelper.getCurrentControllerName());
                 clickMenuAndVerify(buttonIdTo, expectedFieldId, "testMenuButtonClick_All");
                 // go back to from again:
                 navigateTo(buttonIdFrom);
