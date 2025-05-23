@@ -20,10 +20,17 @@ import javafx.scene.layout.Pane;
 
 public class MenuNavigationHelper {
 
+    private static String currentControllerName = null;
+
+
     // Private constructor to prevent instantiation
     private MenuNavigationHelper() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     } 
+
+    public static String getCurrentControllerName() {
+        return currentControllerName;
+    }
 
     /**
      * Handles the action when a guest menu button is clicked.
@@ -175,6 +182,13 @@ public class MenuNavigationHelper {
     private static void navigateToView(Pane mainPane, String viewFolder, String fxmlFile, Object controller) {
         try {
             // Load the specified view into the main pane
+            // Update the current controller name
+            if (controller != null) {
+                currentControllerName = controller.getClass().getSimpleName();
+            } else {
+                currentControllerName = null;
+            }
+            // Load the FXML file and set the controller
             ViewLoader.loadToStage(mainPane, viewFolder, fxmlFile, controller);
         } catch (IOException e) {
             // Print the stack trace if an error occurs during view loading
