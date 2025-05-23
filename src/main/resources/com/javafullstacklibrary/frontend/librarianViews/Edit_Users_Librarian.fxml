@@ -315,7 +315,12 @@
                                      mnemonicParsing="false"
                                      onMouseClicked="#clickedDeleteUserButtonLibrarian"
                                      text="Delete User"
-                                     textFill="WHITE"
+                                 />
+                                 <Button
+                                     fx:id="cancelEditUsersButtonLibrarian"
+                                     mnemonicParsing="false"
+                                     onMouseClicked="#clickedCancelEditUsersButtonLibrarian"
+                                     text="Cancel"
                                  />
                               </children>
                               <padding>
