@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.frontend.guestControllers;
+package com.javafullstacklibrary.frontend;
 
 // Importing necessary classes for JavaFX testing
 import javafx.fxml.FXMLLoader;
@@ -31,6 +31,13 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import java.util.List;
 import java.util.logging.Logger;
 
+// Importing testdata class instances
+import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_GUESTVIEWS;
+import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_BORROWERVIEWS;
+
+// import start controller class
+import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+
 /*
  * This class is a test suite for the StartViewGuestController class.
  * It uses TestFX for JavaFX UI testing and JUnit 5 for test organization.
@@ -43,63 +50,13 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     private static final Logger logger = LoggerUtil.getFileLogger(StartViewGuestControllerTest.class, "StartViewGuestControllerTest.log");
 
-    // List of menu entries for the test
-    // This list contains the button IDs and their corresponding expected field IDs to show when being in their view.
-    // represents menus: start > search > sign_in
-    private final List<MenuEntry> MENU_ENTRIES_GUESTVIEWS = List.of(
-        new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"),
-        new MenuEntry("#searchMenuGuest", "#searchField"),
-        new MenuEntry("#signInMenuGuest", "#ssnField")
-    );
-
-    private final MenuEntry BORROWER_TRANSITION_GW = new MenuEntry(
-        //1. transition to sign in view:
-        "#signInMenuGuest", "#ssnField", true,
-        // List<MenuEntry>. 
-        List.of(
-        // 2. Fake login as user BREAKS! (expect username field, should alrdy be there).
-        //new MenuEntry("#userButton", "#usernameField", true),
-        // 3. press sign in.
-        new MenuEntry("#signInButton", "#welcomeMsgUser", true)
-        )
-    );
-
-    // represents menus: start > search > loan > return > account > sign_out
-    private final List<MenuEntry> MENU_ENTRIES_BORROWERVIEWS = List.of(
-        BORROWER_TRANSITION_GW,
-        new MenuEntry("#homeMenuBorrower", "#welcomeMsgUser"),
-        new MenuEntry("#searchMenuBorrower", "#searchButtonBorrower"),
-        new MenuEntry("#loanMenuBorrower", "#loanButtonBorrower"),
-        new MenuEntry("#returnMenuBorrower", "#returnButtonBorrower"),
-        new MenuEntry("#accountMenuBorrower", "#userInfoButtonBorrower"),
-        new MenuEntry("#signOutMenuBorrower", "#confirmSignOutButtonBorrower")
-    );
-
-    private final MenuEntry LIBRARIAN_TRANSITION_GW = new MenuEntry(
-        //1. transition to sign in view:
-        "#signInMenuGuest", "#ssnField", true,
-        // List<MenuEntry>. 
-        List.of(
-        // 2. Press login as staff.
-        new MenuEntry("#staffButton", "#usernameField", true),
-        // 3. press sign in.
-        new MenuEntry("#signInButtonLibrarian", "#welcomeMsgLibrarian", true)
-        )
-    );
-
-    // TODO: add entries here as work goes on, making sure to use or add unique ID in fxml.
-    private final List<MenuEntry> MENU_ENTRIES_LIBRARIANVIEWS = List.of(
-        LIBRARIAN_TRANSITION_GW,
-        new MenuEntry("#homeMenuLibrarian", "#welcomeMsgLibrarian")
-    );
-
     @Test
     @Order(1)
     void testGuestViewMenuButtons() {
         testMenuButtonClick_All (
             MENU_ENTRIES_GUESTVIEWS, 
-            List.of(new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"))
-        );
+            null
+            );
     }
 
     @Test
@@ -107,7 +64,9 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     // FIXME: there be dragons here, transition works fine, but then it finds no node for:
     // lookup by selector: "#searchButtonBorrower"
     void testBorrowerViewMenuButtons() {
-        testMenuButtonClick_All(MENU_ENTRIES_BORROWERVIEWS, null);
+        testMenuButtonClick_All(MENU_ENTRIES_BORROWERVIEWS, 
+        null
+        );
     }
 
 
@@ -223,7 +182,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
 
     @Disabled
-    @Order(2)
+    @Order(3)
     @ParameterizedTest
     @CsvSource({
         "#homeMenuGuest, #welcomeTextGuest", 
@@ -235,7 +194,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     }
 
     @Disabled
-    @Order(3)
+    @Order(4)
     @ParameterizedTest
     @CsvSource({
         "#homeMenuGuest, #welcomeTextGuest",
