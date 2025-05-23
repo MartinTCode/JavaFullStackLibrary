@@ -305,6 +305,12 @@
                            >
                               <children>
                                  <Button
+                                     fx:id="cancelEditUsersButtonLibrarian"
+                                     mnemonicParsing="false"
+                                     onMouseClicked="#clickedCancelEditUsersButtonLibrarian"
+                                     text="Cancel"
+                                 />
+                                 <Button
                                      fx:id="saveEditUsersButtonLibrarian"
                                      mnemonicParsing="false"
                                      onMouseClicked="#clickedSaveEditUsersButtonLibrarian"
@@ -315,12 +321,6 @@
                                      mnemonicParsing="false"
                                      onMouseClicked="#clickedDeleteUserButtonLibrarian"
                                      text="Delete User"
-                                 />
-                                 <Button
-                                     fx:id="cancelEditUsersButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelEditUsersButtonLibrarian"
-                                     text="Cancel"
                                  />
                               </children>
                               <padding>
