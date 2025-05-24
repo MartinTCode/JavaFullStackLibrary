@@ -1,6 +1,5 @@
-package com.javafullstacklibrary;
+package com.javafullstacklibrary.model;
 
-import com.javafullstacklibrary.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
