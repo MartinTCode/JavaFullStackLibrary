@@ -1,6 +1,6 @@
 package com.javafullstacklibrary.utils;
 
-import com.javafullstacklibrary.ItemTestParams;
+import com.javafullstacklibrary.model.ItemTestParams;
 import com.javafullstacklibrary.model.Location;
 
 import jakarta.persistence.EntityManager;
