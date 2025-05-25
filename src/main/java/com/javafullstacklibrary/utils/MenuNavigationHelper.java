@@ -192,6 +192,33 @@ public class MenuNavigationHelper {
         }
     }
 
+    /**
+     * Handles navigation for librarian button clicks.
+     * Navigates the user to the appropriate librarian view based on the button action selected.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the librarian (e.g., "UserInfo", "ChangePassword").
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
+        switch (buttonAction) {
+            case "UserInfo":
+                navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            case "ChangeInfo":
+                navigateToView(mainPane, "librarianViews", "User_Info_Edit_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            case "ChangePassword":
+                navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            case "SignOut":
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+        }
+    }
+
 
 
     /**

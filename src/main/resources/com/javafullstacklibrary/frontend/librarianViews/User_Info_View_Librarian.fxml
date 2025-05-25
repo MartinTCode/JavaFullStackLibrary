@@ -329,7 +329,7 @@
                                            text="Change Info"
                                        />
                                        <Button
-                                           fx:id="saveUserInfoButtonBorrower"
+                                           fx:id="saveUserInfoButtonLibrarian"
                                            mnemonicParsing="false"
                                            styleClass="button-selected"
                                            text="Save Info"
