@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.javafullstacklibrary.frontend.guestControllers.SignInUserController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+import com.javafullstacklibrary.frontend.librarianControllers.AccountMenuLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
@@ -179,7 +180,7 @@ public class MenuNavigationHelper {
                 break;
             case "Account":
                 // Navigate to the Account view for librarians
-                navigateToView(mainPane, "librarianViews", "Account_Menu_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Account_Menu_Librarian.fxml", new AccountMenuLibrarianController());
                 break;
             case "SignOut":
                 // Navigate to the Sign-Out view for librarians

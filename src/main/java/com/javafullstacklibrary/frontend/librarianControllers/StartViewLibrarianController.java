@@ -1,43 +1,42 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 public class StartViewLibrarianController {
+    @FXML
+    private Pane mainPane;
 
     @FXML
     private void clickedSearchMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Search view
-        System.out.println("Search menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Search");   
     }
 
     @FXML
     private void clickedOverdueMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Overdue Loans view
-        System.out.println("Overdue menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Overdue");
     }
 
     @FXML
     private void clickedLibraryMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Manage Library view
-        System.out.println("Library menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
     @FXML
     private void clickedUsersMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Manage Users view
-        System.out.println("Users menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageUsers");
     }
 
     @FXML
     private void clickedAccountMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Account view
-        System.out.println("Account menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuLibrarian(MouseEvent event) {
-        //Implement navigation to Sign Out view
-        System.out.println("Sign out menu clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 }

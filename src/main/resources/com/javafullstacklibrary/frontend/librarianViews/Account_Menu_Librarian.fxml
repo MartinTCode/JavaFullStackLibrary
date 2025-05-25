@@ -51,7 +51,7 @@
                                styleClass="search-icon-active"
                            />
                            <Region
-                               onMouseClicked="#clickedSearchMenyLibrarian"
+                               onMouseClicked="#clickedSearchMenuLibrarian"
                                style="-fx-background-color: transparent;"
                            />
                         </children>
