@@ -161,6 +161,30 @@ public class MenuNavigationHelper {
                 // Navigate to the Home view for librarians
                 navigateToView(mainPane, "librarianViews", "Start_View_Librarian.fxml", new StartViewLibrarianController());
                 break;
+            case "Search":
+                // Navigate to the Search view for librarians
+                navigateToView(mainPane, "librarianViews", "Search_Menu_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
+            case "Overdue":
+                // Navigate to the Overdue Loans view for librarians
+                navigateToView(mainPane, "librarianViews", "Overdue_View_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
+            case "ManageLibrary":
+                // Navigate to the Manage Library view for librarians
+                navigateToView(mainPane, "librarianViews", "Manage_Library_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
+            case "ManageUsers":
+                // Navigate to the Manage Users view for librarians
+                navigateToView(mainPane, "librarianViews", "Manage_Users_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
+            case "Account":
+                // Navigate to the Account view for librarians
+                navigateToView(mainPane, "librarianViews", "Account_Menu_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
+            case "SignOut":
+                // Navigate to the Sign-Out view for librarians
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SearchMenuBorrowerController());
+                break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
