@@ -5,7 +5,20 @@ import java.io.IOException;
 import com.javafullstacklibrary.frontend.guestControllers.SignInUserController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 import com.javafullstacklibrary.frontend.librarianControllers.AccountMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateBookLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateCourseLitLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateDvdLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateJournalLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateUserLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.EditUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ManageLibraryLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ManageUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.OverdueViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.UserInfoEditLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.UserInfoViewLibrarianController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -164,19 +177,19 @@ public class MenuNavigationHelper {
                 break;
             case "Search":
                 // Navigate to the Search view for librarians
-                navigateToView(mainPane, "librarianViews", "Search_Menu_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Search_Menu_Librarian.fxml", new SearchMenuLibrarianController());
                 break;
             case "Overdue":
                 // Navigate to the Overdue Loans view for librarians
-                navigateToView(mainPane, "librarianViews", "Overdue_View_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Overdue_View_Librarian.fxml", new OverdueViewLibrarianController());
                 break;
             case "ManageLibrary":
                 // Navigate to the Manage Library view for librarians
-                navigateToView(mainPane, "librarianViews", "Manage_Library_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Manage_Library_Librarian.fxml", new ManageLibraryLibrarianController());
                 break;
             case "ManageUsers":
                 // Navigate to the Manage Users view for librarians
-                navigateToView(mainPane, "librarianViews", "Manage_Users_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Manage_Users_Librarian.fxml", new ManageUsersLibrarianController());
                 break;
             case "Account":
                 // Navigate to the Account view for librarians
@@ -184,7 +197,7 @@ public class MenuNavigationHelper {
                 break;
             case "SignOut":
                 // Navigate to the Sign-Out view for librarians
-                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SearchMenuBorrowerController());
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SignOutLibrarianController());
                 break;
             default:
                 // Throw an exception for invalid menu options
@@ -203,16 +216,37 @@ public class MenuNavigationHelper {
     public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
         switch (buttonAction) {
             case "UserInfo":
-                navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new AccountMenuLibrarianController());
+                navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new UserInfoViewLibrarianController());
                 break;
             case "ChangeInfo":
-                navigateToView(mainPane, "librarianViews", "User_Info_Edit_Librarian.fxml", new AccountMenuLibrarianController());
+                navigateToView(mainPane, "librarianViews", "User_Info_Edit_Librarian.fxml", new UserInfoEditLibrarianController());
                 break;
             case "ChangePassword":
                 navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new AccountMenuLibrarianController());
                 break;
             case "SignOut":
                 navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            case "CreateBook":
+                navigateToView(mainPane, "librarianViews", "Create_Book_Librarian.fxml", new CreateBookLibrarianController());
+                break;	
+            case "CreateCourseLit":
+                navigateToView(mainPane, "librarianViews", "Create_Course_Lit_Librarian.fxml", new CreateCourseLitLibrarianController());
+                break;
+            case "CreateJournal":
+                navigateToView(mainPane, "librarianViews", "Create_Journal_Librarian.fxml", new CreateJournalLibrarianController());
+                break;
+            case "CreateDvd":
+                navigateToView(mainPane, "librarianViews", "Create_Dvd_Librarian.fxml", new CreateDvdLibrarianController());
+                break;
+            case "ModifyItem":
+                navigateToView(mainPane, "librarianViews", "Search_View_Librarian", new SearchViewBorrowerController());
+                break;
+            case "EditUser":
+                navigateToView(mainPane, "librarianViews", "Edit_Users_Librarian.fxml", new EditUsersLibrarianController());
+                break;
+            case "CreateUser":
+                navigateToView(mainPane, "librarianViews", "Create_User_Librarian", new CreateUserLibrarianController());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);
