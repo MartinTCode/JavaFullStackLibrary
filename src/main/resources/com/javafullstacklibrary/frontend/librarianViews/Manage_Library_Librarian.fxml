@@ -194,7 +194,6 @@
                                  />
                                  <ComboBox
                                      fx:id="itemTypeComboBox"
-                                     editable="true"
                                      prefWidth="150.0"
                                  />
                               </children>
@@ -203,6 +202,7 @@
                                fx:id="continueNewItemButton"
                                mnemonicParsing="false"
                                text="Continue"
+                               onMouseClicked="#continueNewItemButtonClicked"
                            />
                         </children>
                      </VBox>
@@ -236,6 +236,7 @@
                                fx:id="continueModifyItemButton"
                                mnemonicParsing="false"
                                text="Continue"
+                               onMouseClicked="#continueModifyItemButtonClicked"
                            />
                         </children>
                      </VBox>

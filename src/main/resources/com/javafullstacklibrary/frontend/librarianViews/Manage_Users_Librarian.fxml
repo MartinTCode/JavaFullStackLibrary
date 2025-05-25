@@ -188,7 +188,6 @@
                                  <Label text="Choose user type" />
                                  <ComboBox
                                      fx:id="userTypeComboBox"
-                                     editable="true"
                                      prefWidth="150.0"
                                  />
                               </children>

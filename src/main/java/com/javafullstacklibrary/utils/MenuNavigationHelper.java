@@ -15,6 +15,7 @@ import com.javafullstacklibrary.frontend.librarianControllers.ManageLibraryLibra
 import com.javafullstacklibrary.frontend.librarianControllers.ManageUsersLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.OverdueViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.UserInfoEditLibrarianController;
@@ -215,9 +216,6 @@ public class MenuNavigationHelper {
      */
     public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
         switch (buttonAction) {
-            case "SearchView":
-                navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewBorrowerController());
-                break;
             case "UserInfo":
                 navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new UserInfoViewLibrarianController());
                 break;
@@ -249,12 +247,33 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "librarianViews", "Edit_Users_Librarian.fxml", new EditUsersLibrarianController());
                 break;
             case "CreateUser":
-                navigateToView(mainPane, "librarianViews", "Create_User_Librarian", new CreateUserLibrarianController());
+                navigateToView(mainPane, "librarianViews", "Create_User_Librarian.fxml", new CreateUserLibrarianController());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);
         }
     }
+
+    /**
+     * Handles navigation for librarian button clicks with a search query.
+     * Navigates the user to the appropriate librarian view based on the button action and search query.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the librarian (e.g., "SearchView").
+     * @param query        The search query to be used in the search view.
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
+    switch (buttonAction) {
+        case "SearchView":
+            SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
+            navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
+            break;
+        // ...other cases...
+        default:
+            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+    }
+}
 
 
 

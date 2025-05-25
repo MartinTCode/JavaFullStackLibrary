@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 public class ManageLibraryLibrarianController {
@@ -50,8 +51,6 @@ public class ManageLibraryLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
-    // --- Button Handlers ---
-
     @FXML
     private void initialize() {
         // Populate itemTypeComboBox with item types
@@ -63,24 +62,30 @@ public class ManageLibraryLibrarianController {
         );
     }
 
+    // --- Button Handlers ---
+
     @FXML
     private void continueNewItemButtonClicked(MouseEvent event) {
         // Implement logic to continue adding a new item based on selected type
         String selectedType = itemTypeComboBox.getValue();
-        // Example: Navigate to the appropriate create item view
-        if (selectedType == null) return;
+        // Navigate to the appropriate create item view
+        if (selectedType == null) {
+            System.out.println("No item type selected.");
+            return;
+        }
+        
         switch (selectedType) {
             case "Book":
-                MenuNavigationHelper.menuClickLibrarian(mainPane, "CreateBook");
+                MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateBook");
                 break;
             case "Course Literature":
-                MenuNavigationHelper.menuClickLibrarian(mainPane, "CreateCourseLit");
+                MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateCourseLit");
                 break;
             case "Journal":
-                MenuNavigationHelper.menuClickLibrarian(mainPane, "CreateJournal");
+                MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateJournal");
                 break;
             case "DVD":
-                MenuNavigationHelper.menuClickLibrarian(mainPane, "CreateDvd");
+                MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateDvd");
                 break;
             default:
                 System.out.println("Unknown item type selected: " + selectedType);
@@ -91,10 +96,10 @@ public class ManageLibraryLibrarianController {
     @FXML
     private void continueModifyItemButtonClicked(MouseEvent event) {
         // Implement logic to search and modify item
-        String searchTerm = modifyItemSearchFieldLibrarian.getText();
+        String query = modifyItemSearchFieldLibrarian.getText();
         // Example: Print or handle search
-        System.out.println("Modify item search: " + searchTerm);
+        System.out.println("Modify item search: " + query);
         // Naviagate to modify item view
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ModifyItem");
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "SearchView", query);
     }
 }

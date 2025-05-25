@@ -16,6 +16,8 @@ import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 public class SearchViewLibrarianController implements Initializable {
 
+    public static String initialQuery = null; // <-- Add this line
+
     @FXML
     private Pane mainPane;
 
@@ -46,6 +48,12 @@ public class SearchViewLibrarianController implements Initializable {
         // Initialize the search view
         resultsContainer.getChildren().clear();
         loadMoreButton.setVisible(false);
+
+        // Set the search field if initialQuery is set
+        if (initialQuery != null) {
+            setSearchQuery(initialQuery);
+            initialQuery = null; // Reset after use
+        }
     }
 
     @FXML

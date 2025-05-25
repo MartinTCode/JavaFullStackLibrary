@@ -73,4 +73,14 @@ public class ManageUsersLibrarianController {
             MenuNavigationHelper.buttonClickLibrarian(mainPane, "EditUser");
         }
     }
+
+    @FXML
+    private void initialize() {
+        userTypeComboBox.getItems().addAll(
+            "Public",
+            "Student",
+            "Researcher",
+            "University_Employee"
+        );
+    }
 }
