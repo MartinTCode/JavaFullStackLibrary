@@ -77,10 +77,9 @@
                         <children>
                            <ImageView
                                fx:id="libraryMenuLibrarian"
-                               styleClass="manage-library-icon-active"
+                               styleClass="manage-library-icon-inactive"
                            />
                            <Region
-                               onMouseClicked="#clickedLibraryMenuLibrarian"
                                style="-fx-background-color: transparent;"
                            />
                         </children>
@@ -89,9 +88,10 @@
                         <children>
                            <ImageView
                                fx:id="usersMenuLibrarian"
-                               styleClass="manage-users-icon-inactive"
+                               styleClass="manage-users-icon-active"
                            />
                            <Region
+                               onMouseClicked="#clickedManageUsersMenuLibrarian"
                                style="-fx-background-color: transparent;"
                            />
                         </children>
@@ -145,7 +145,9 @@
          <!-- Results Box -->
          <StackPane VBox.vgrow="ALWAYS">
             <children>
-               <GridPane hgap="20.0">
+               <GridPane
+                   hgap="20.0"
+               >
                  <columnConstraints>
                    <ColumnConstraints
                        hgrow="SOMETIMES"
@@ -181,22 +183,25 @@
                         <children>
                            <Label
                                styleClass="label-title"
-                               text="Add new user"
+                               text="Add new item"
                            />
-                           <VBox alignment="TOP_CENTER">
+                           <VBox
+                               alignment="TOP_CENTER"
+                           >
                               <children>
-                                 <Label text="Choose user type" />
+                                 <Label
+                                     text="Choose item type"
+                                 />
                                  <ComboBox
-                                     fx:id="userTypeComboBox"
+                                     fx:id="itemTypeComboBox"
                                      editable="true"
                                      prefWidth="150.0"
                                  />
                               </children>
                            </VBox>
                            <Button
-                               fx:id="continueNewUserButton"
+                               fx:id="continueNewItemButton"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedContinueNewUserButton"
                                text="Continue"
                            />
                         </children>
@@ -212,24 +217,24 @@
                         <children>
                            <Label
                                styleClass="label-title"
-                               text="Modify existing user"
+                               text="Modify item (incl. copies)"
                            />
                            <VBox
                                prefHeight="200.0"
                                prefWidth="100.0"
                            >
                               <children>
-                                 <Label text="Enter user social security number" />
+                                 <Label
+                                     text="Enter search term"
+                                 />
                                  <TextField
-                                     fx:id="modifyUserSSNField"
-                                     text="YYYYMMDDXXXX"
+                                     fx:id="modifyItemSearchFieldLibrarian"
                                  />
                               </children>
                            </VBox>
                            <Button
-                               fx:id="continueModifyUserButton"
+                               fx:id="continueModifyItemButton"
                                mnemonicParsing="false"
-                               onMouseClicked="#clickedContinueModifyUserButton"
                                text="Continue"
                            />
                         </children>
