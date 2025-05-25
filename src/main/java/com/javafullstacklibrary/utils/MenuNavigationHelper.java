@@ -215,6 +215,9 @@ public class MenuNavigationHelper {
      */
     public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
         switch (buttonAction) {
+            case "SearchView":
+                navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewBorrowerController());
+                break;
             case "UserInfo":
                 navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new UserInfoViewLibrarianController());
                 break;

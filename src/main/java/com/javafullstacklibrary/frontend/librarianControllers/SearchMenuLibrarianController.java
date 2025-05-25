@@ -58,6 +58,6 @@ public class SearchMenuLibrarianController implements Initializable {
         String query = searchField.getText();
         System.out.println("Librarian search query: " + query);
         // Implement search logic 
-        MenuNavigationHelper.buttonClickLibrarian(mainPane, "SearchResults");
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "SearchView");
     }
 }
