@@ -10,6 +10,7 @@ public class AccountMenuLibrarianController {
     @FXML
     private BorderPane mainPane;
 
+    // --- Top Menu Methods ---
     @FXML
     private void clickedHomeMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
@@ -40,14 +41,15 @@ public class AccountMenuLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
-        @FXML
+    // --- Side Button Methods ---
+    @FXML
     private void clickedUserInfoButtonLibrarian(MouseEvent event) {
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "UserInfo");
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "UserInfo");
     }
 
     @FXML
     private void clickedChangePasswordButtonLibrarian(MouseEvent event) {
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ChangePassword");
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "ChangePassword");
     }
 
     @FXML
@@ -55,17 +57,7 @@ public class AccountMenuLibrarianController {
         MenuNavigationHelper.buttonClickLibrarian(mainPane, "SignOut");
     }
 
-    @FXML
-    private void clickedChangeUserInfoButtonLibrarian(MouseEvent event) {
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ChangeInfo");
-    }
-
-    @FXML
-    private void clickedSaveUserInfoButtonLibrarian(MouseEvent event) {
-        // Implement logic for saving user info
-        System.out.println("Save User Info button clicked");
-    }
-
+    // --- Password Change Methods ---
     @FXML
     private void clickedConfirmNewPasswordButtonLibrarian(MouseEvent event) {
         // Implement logic for confirming new password
@@ -74,7 +66,7 @@ public class AccountMenuLibrarianController {
 
     @FXML
     private void clickedCancelNewPasswordButtonLibrarian(MouseEvent event) {
-    MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
     }
 }
- 
+

@@ -53,7 +53,7 @@
                                styleClass="search-icon-active"
                            />
                            <Region
-                               onMouseClicked="#clickedSearchMenyLibrarian"
+                               onMouseClicked="#clickedSearchMenuLibrarian"
                                style="-fx-background-color: transparent;"
                            />
                         </children>
@@ -200,11 +200,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="username"
-                                       />
+                                       <TextField 
+                                          fx:id="usernameFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field" />
                                     </children>
                                  </HBox>
                                  <HBox
@@ -222,11 +221,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="first name"
-                                       />
+                                       <TextField 
+                                          fx:id="firstNameFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field" />
                                     </children>
                                  </HBox>
                                  <HBox
@@ -244,11 +242,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="last name"
-                                       />
+                                       <TextField 
+                                          fx:id="lastNameFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field"/>
                                     </children>
                                  </HBox>
                                  <HBox
@@ -266,11 +263,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="address 123"
-                                       />
+                                       <TextField 
+                                          fx:id="addressFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field" />
                                     </children>
                                  </HBox>
                                  <HBox
@@ -288,11 +284,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="email@mail.com"
-                                       />
+                                       <TextField 
+                                          fx:id="emailFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field" />
                                     </children>
                                  </HBox>
                                  <HBox
@@ -310,11 +305,10 @@
                                              <Insets />
                                           </opaqueInsets>
                                        </Label>
-                                       <TextField
-                                           editable="false"
-                                           styleClass="text-field"
-                                           text="+12344567890"
-                                       />
+                                       <TextField 
+                                          fx:id="phoneNumberFieldLibrarian" 
+                                          editable="false" 
+                                          styleClass="text-field" />
                                     </children>
                                  </HBox>
                                  <HBox

@@ -18,8 +18,7 @@ import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibraria
 import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
-import com.javafullstacklibrary.frontend.librarianControllers.UserInfoEditLibrarianController;
-import com.javafullstacklibrary.frontend.librarianControllers.UserInfoViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.UserInfoLibrarianController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -217,10 +216,7 @@ public class MenuNavigationHelper {
     public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
         switch (buttonAction) {
             case "UserInfo":
-                navigateToView(mainPane, "librarianViews", "User_Info_View_Librarian.fxml", new UserInfoViewLibrarianController());
-                break;
-            case "ChangeInfo":
-                navigateToView(mainPane, "librarianViews", "User_Info_Edit_Librarian.fxml", new UserInfoEditLibrarianController());
+                navigateToView(mainPane, "librarianViews", "User_Info_Librarian.fxml", new UserInfoLibrarianController());
                 break;
             case "ChangePassword":
                 navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new AccountMenuLibrarianController());
