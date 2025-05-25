@@ -169,8 +169,7 @@
                                      text="Borrower Type"
                                  />
                                  <ComboBox
-                                     fx:id="EditBorrowerTypeComboBoxLibrarian"
-                                     editable="true"
+                                     fx:id="createBorrowerTypeComboBoxLibrarian"
                                      prefWidth="171.0"
                                      promptText="Type"
                                  />
@@ -188,7 +187,7 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
-                                     fx:id="EditUserSSNFieldLibrarian"
+                                     fx:id="createUserSSNFieldLibrarian"
                                      styleClass="text-field"
                                      text="YYYYMMDDXXXX"
                                  />
@@ -210,8 +209,8 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
+                                     fx:id="createUserFirstNameFieldLibrarian"
                                      styleClass="text-field"
-                                     text="first name"
                                  />
                               </children>
                            </HBox>
@@ -231,8 +230,8 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
+                                     fx:id="createUserLastNameFieldLibrarian"
                                      styleClass="text-field"
-                                     text="last name"
                                  />
                               </children>
                            </HBox>
@@ -252,8 +251,8 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
+                                     fx:id="createUserAddressFieldLibrarian"
                                      styleClass="text-field"
-                                     text="address 123"
                                  />
                               </children>
                            </HBox>
@@ -273,8 +272,8 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
+                                     fx:id="createUserEmailFieldLibrarian"
                                      styleClass="text-field"
-                                     text="email@mail.com"
                                  />
                               </children>
                            </HBox>
@@ -294,8 +293,8 @@
                                     </opaqueInsets>
                                  </Label>
                                  <TextField
+                                     fx:id="editUserPhoneFieldLibrarian"
                                      styleClass="text-field"
-                                     text="+12344567890"
                                  />
                               </children>
                            </HBox>

@@ -53,7 +53,8 @@ public class ManageUsersLibrarianController {
     private void clickedContinueNewUserButton() {
         String userType = userTypeComboBox.getValue();
         System.out.println("Continue to add new user of type: " + userType);
-        // Navigate to add new user form, pass userType if needed
+        // Pass the selected user type to the next controller
+        CreateUserLibrarianController.initialUserType = userType;
         MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateUser");
     }
 
@@ -62,14 +63,12 @@ public class ManageUsersLibrarianController {
     private void clickedContinueModifyUserButton() {
         String ssn = modifyUserSSNField.getText();
         System.out.println("Continue to modify user with SSN: " + ssn);
-        // Navigate to modify user form, pass ssn if needed
         if (ssn.isEmpty()) {
             System.out.println("SSN field is empty. Please enter a valid SSN.");
-            // Optionally, show an error message to the user
         } else {
             System.out.println("Valid SSN entered. Proceeding with modification."); 
-            // Proceed with the modification logic
-            // For example, load user data based on SSN and navigate to modify form
+            // Pass SSN to EditUsersLibrarianController
+            EditUsersLibrarianController.initialSSN = ssn;
             MenuNavigationHelper.buttonClickLibrarian(mainPane, "EditUser");
         }
     }
