@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.frontend.guestControllers;
+package com.javafullstacklibrary.frontend;
 
 import java.util.List;
 
