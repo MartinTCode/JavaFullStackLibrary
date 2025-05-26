@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.javafullstacklibrary.frontend.guestControllers.SignInUserController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 import com.javafullstacklibrary.frontend.librarianControllers.AccountMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ChangePasswordLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.CreateBookLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.CreateCourseLitLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.CreateDvdLibrarianController;
@@ -219,10 +220,10 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "librarianViews", "User_Info_Librarian.fxml", new UserInfoLibrarianController());
                 break;
             case "ChangePassword":
-                navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new AccountMenuLibrarianController());
+                navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new ChangePasswordLibrarianController());
                 break;
             case "SignOut":
-                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new AccountMenuLibrarianController());
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SignOutLibrarianController());
                 break;
             case "CreateBook":
                 navigateToView(mainPane, "librarianViews", "Create_Book_Librarian.fxml", new CreateBookLibrarianController());

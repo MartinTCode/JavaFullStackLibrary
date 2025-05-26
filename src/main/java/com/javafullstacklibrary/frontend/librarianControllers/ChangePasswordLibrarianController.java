@@ -2,13 +2,23 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class AccountMenuLibrarianController {
+public class ChangePasswordLibrarianController {
 
     @FXML
     private BorderPane mainPane;
+
+    @FXML
+    private TextField currentPasswordFieldLibrarian;
+
+    @FXML
+    private TextField newPasswordFieldLibrarian;
+
+    @FXML
+    private TextField confirmNewPasswordFieldLibrarian;
 
     // --- Top Menu Methods ---
     @FXML
@@ -43,18 +53,29 @@ public class AccountMenuLibrarianController {
 
     // --- Side Button Methods ---
     @FXML
-    private void clickedUserInfoButtonLibrarian(MouseEvent event) {
+    private void clickedUserInfoLibrarian(MouseEvent event) {
         MenuNavigationHelper.buttonClickLibrarian(mainPane, "UserInfo");
-    }
-
-    @FXML
-    private void clickedChangePasswordButtonLibrarian(MouseEvent event) {
-        MenuNavigationHelper.buttonClickLibrarian(mainPane, "ChangePassword");
     }
 
     @FXML
     private void clickedSignOutButtonLibrarian(MouseEvent event) {
         MenuNavigationHelper.buttonClickLibrarian(mainPane, "SignOut");
     }
-}
 
+    // --- Password Change Method ---
+    @FXML
+    private void clickedConfirmNewPasswordButtonLibrarian(MouseEvent event) {
+        // Implement logic for confirming new password
+        String currentPassword = currentPasswordFieldLibrarian.getText();
+        String newPassword = newPasswordFieldLibrarian.getText();
+        String confirmNewPassword = confirmNewPasswordFieldLibrarian.getText();
+        System.out.println("Current: " + currentPassword + ", New: " + newPassword + ", Confirm: " + confirmNewPassword);
+    }
+
+    @FXML
+    private void clickedCancelChangePasswordButtonLibrarian(MouseEvent event) {
+        // Implement logic for canceling password change
+        System.out.println("Cancel Change Password button clicked");
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
+    }
+}
