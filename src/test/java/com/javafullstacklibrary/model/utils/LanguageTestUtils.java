@@ -1,8 +1,8 @@
-package com.javafullstacklibrary.utils;
+package com.javafullstacklibrary.model.utils;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.javafullstacklibrary.ItemTestParams;
+import com.javafullstacklibrary.model.ItemTestParams;
 import com.javafullstacklibrary.model.Language;
 
 import jakarta.persistence.EntityManager;

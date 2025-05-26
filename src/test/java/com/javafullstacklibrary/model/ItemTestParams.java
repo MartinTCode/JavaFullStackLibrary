@@ -1,4 +1,4 @@
-package com.javafullstacklibrary;
+package com.javafullstacklibrary.model;
 
 // Record class to hold item test parameters
 // This class is used to define the parameters for testing item creation

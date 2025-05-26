@@ -1,6 +1,5 @@
-package com.javafullstacklibrary;
+package com.javafullstacklibrary.model;
 
-import com.javafullstacklibrary.model.*;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +8,10 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 
-import static com.javafullstacklibrary.utils.LanguageTestUtils.initializeOrFetchLanguage;
-import static com.javafullstacklibrary.utils.LocationTestUtils.initializeOrFetchLocation;
-import static com.javafullstacklibrary.utils.EntityCleanupUtils.cleanupTestData;
-import static com.javafullstacklibrary.utils.EntityFetchOrCreateUtils.getOrCreateEntity;
+import static com.javafullstacklibrary.model.utils.LanguageTestUtils.initializeOrFetchLanguage;
+import static com.javafullstacklibrary.model.utils.LocationTestUtils.initializeOrFetchLocation;
+import static com.javafullstacklibrary.model.utils.EntityCleanupUtils.cleanupTestData;
+import static com.javafullstacklibrary.model.utils.EntityFetchOrCreateUtils.getOrCreateEntity;
 
 public class ItemM2MCRUDTests {
 

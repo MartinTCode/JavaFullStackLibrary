@@ -112,8 +112,7 @@ CREATE TABLE item_copy (
     item_id INT NOT NULL REFERENCES item(item_id) 
         ON UPDATE CASCADE ON DELETE RESTRICT,
     is_reference BOOLEAN NOT NULL,
-    date_added DATE NOT NULL,
-    )
+    date_added DATE NOT NULL
 );
 
 CREATE TABLE user_profile (

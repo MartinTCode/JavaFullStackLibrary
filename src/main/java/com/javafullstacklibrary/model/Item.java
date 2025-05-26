@@ -8,9 +8,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToMany;
-import java.util.Set; // Importing Set for many-to-many relationship
 import jakarta.persistence.JoinTable; // Importing JoinTable for many-to-many relationship
+
+
+import java.util.ArrayList; // Importing ArrayList for one-to-many relationship
+import java.util.List; // Importing List for one-to-many relationship
+import jakarta.persistence.CascadeType;
+import java.util.Set; // Importing Set for many-to-many relationship
 
 @Entity
 public class Item {
@@ -45,6 +51,18 @@ public class Item {
     // #endregion
 
     // #region One-to-Many Relationships Attributes
+
+        @OneToMany(
+        mappedBy = "item",
+        // PERSIST: allows for saving copies when saving an item
+        // MERGE: allows for updating copies when updating an item
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )
+    private List<ItemCopy> copies = new ArrayList<>();
+
+    // #endregion
+
+    // #region Many-to-one Relationships Attributes
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false) // Foreign key to location table
@@ -207,6 +225,31 @@ public class Item {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+
+    // #endregion
+
+    // #region Getters and setters for one-to-many relationships (& elementary helpers)
+
+    public List<ItemCopy> getCopies() {
+    return copies;
+    }
+
+    public void setCopies(List<ItemCopy> copies) {
+        this.copies = copies;
+    }
+
+    // Helper method to add a copy to the item
+    public void addCopy(ItemCopy copy) {
+        this.copies.add(copy);
+        copy.setItem(this); // Set the item reference in the copy
+    }
+
+    // Helper method to remove a copy from the item (stays in item_copy!)
+    public void removeCopy(ItemCopy copy) {
+        this.copies.remove(copy);
+        copy.setItem(null); // Clear the item reference in the copy
     }
 
     // #endregion

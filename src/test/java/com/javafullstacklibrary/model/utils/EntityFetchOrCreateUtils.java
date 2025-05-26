@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.utils;
+package com.javafullstacklibrary.model.utils;
 
 // Utility class for fetching or creating entities in the database
 import java.util.function.Supplier;

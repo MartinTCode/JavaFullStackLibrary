@@ -1,6 +1,5 @@
-package com.javafullstacklibrary;
+package com.javafullstacklibrary.model;
 
-import com.javafullstacklibrary.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -13,10 +12,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 // Importing utility classes for entity cleanup and test utilities for Location, Language, and Item entities.
-import static com.javafullstacklibrary.utils.EntityCleanupUtils.*;
-import static com.javafullstacklibrary.utils.LocationTestUtils.*;
-import static com.javafullstacklibrary.utils.LanguageTestUtils.*;
-import static com.javafullstacklibrary.utils.ItemTestUtils.*;
+import static com.javafullstacklibrary.model.utils.EntityCleanupUtils.*;
+import static com.javafullstacklibrary.model.utils.LocationTestUtils.*;
+import static com.javafullstacklibrary.model.utils.LanguageTestUtils.*;
+import static com.javafullstacklibrary.model.utils.ItemTestUtils.*;
 
 /**
  * Comprehensive CRUD test suite for verifying database connectivity and operations.
