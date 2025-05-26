@@ -43,6 +43,11 @@ public class Creator {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
+    @Transient // Derived field, not stored in the database
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public LocalDate getDob() { return dob; }
     public void setDob(LocalDate dob) { this.dob = dob; }
 
