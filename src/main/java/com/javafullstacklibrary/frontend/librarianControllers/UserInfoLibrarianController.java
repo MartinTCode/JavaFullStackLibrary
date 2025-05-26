@@ -78,12 +78,12 @@ public class UserInfoLibrarianController {
         saveUserInfoButtonLibrarian.setDisable(!editing);
     }
 
-    private void clickedChangeUserInfoButtonLibrarian() {
+    public void clickedChangeUserInfoButtonLibrarian() {
         setFieldsEditable(true);
         setButtonStates(true);
     }
 
-    private void clickedSaveUserInfoButtonLibrarian() {
+    public void clickedSaveUserInfoButtonLibrarian() {
         // Here you would typically save the data to a database or backend service
         // For now, we will just print the values to the console
         System.out.println("Saving user info:");
