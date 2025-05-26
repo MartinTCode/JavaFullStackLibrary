@@ -144,8 +144,21 @@ public class SearchViewGuestController implements Initializable {
         }
     }
 
+    /**
+     * Updates the results count label with the number of found items
+     * 
+     * @param count The number of items found
+     */
     private void setResultsCountLabel(int count) {
-        resultsCountLabel.setText("Search query resulted in " + count + " matches");
+        String resultText;
+        if (count == 0) {
+            resultText = "No matches found";
+        } else if (count == 1) {
+            resultText = "Found 1 match";
+        } else {
+            resultText = "Found " + count + " matches";
+        }
+        resultsCountLabel.setText(resultText);
     }
 
     /**
