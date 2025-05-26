@@ -105,6 +105,15 @@ CREATE TABLE item (
         OR (item_type = 'dvd')
     )
 );
+CREATE UNIQUE INDEX unique_item_attributes ON item 
+(
+    title, 
+    COALESCE(publisher, ''),
+    language_id, 
+    COALESCE(identifier, ''), 
+    COALESCE(identifier2, ''),
+    COALESCE(country_of_production, '')
+);
 
 CREATE TABLE item_copy (
     item_copy_id SERIAL PRIMARY KEY,
@@ -124,6 +133,15 @@ CREATE TABLE user_profile (
     l_name VARCHAR(50) NOT NULL,
     phone VARCHAR(15),
     full_address VARCHAR(255)
+);
+
+CREATE UNIQUE INDEX unique_user_profile ON user_profile 
+(
+    user_type, 
+    f_name, 
+    l_name, 
+    COALESCE(phone, ''), 
+    COALESCE(full_address, '')
 );
 
 CREATE TABLE library_user (
@@ -150,6 +168,13 @@ CREATE TABLE library_user (
             AND ssn IS NULL
         )
     )
+);
+CREATE UNIQUE INDEX unique_library_user ON library_user 
+(
+    user_role, 
+    COALESCE(ssn, ''), 
+    COALESCE(u_name, ''), 
+    email
 );
 
 CREATE TABLE loan (
