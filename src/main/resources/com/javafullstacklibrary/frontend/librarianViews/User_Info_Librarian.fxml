@@ -325,7 +325,7 @@
                                        <Button
                                            fx:id="saveUserInfoButtonLibrarian"
                                            mnemonicParsing="false"
-                                           styleClass="button-selected"
+                                           onMouseClicked="#clickedSaveUserInfoButtonLibrarian"
                                            text="Save Info"
                                        />
                                     </children>

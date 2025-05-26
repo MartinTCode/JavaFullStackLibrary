@@ -1,13 +1,15 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 public class UserInfoLibrarianController {
 
-        @FXML
+    @FXML
     private BorderPane mainPane;
 
     // --- User Info TextFields from FXML ---
@@ -99,4 +101,45 @@ public class UserInfoLibrarianController {
         setButtonStates(false);
     }
     
+    // --- Top Menu Methods ---
+    @FXML
+    private void clickedHomeMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
+    }
+
+    @FXML
+    private void clickedSearchMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Search");
+    }
+
+    @FXML
+    private void clickedOverdueMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Overdue");
+    }
+
+    @FXML
+    private void clickedLibraryMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+    }
+
+    @FXML
+    private void clickedUsersMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageUsers");
+    }
+
+    @FXML
+    private void clickedSignOutMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
+    }
+
+    @FXML
+    private void clickedChangePasswordButtonLibrarian(MouseEvent event) {
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "ChangePassword");
+    }
+
+    @FXML
+    private void clickedSignOutButtonLibrarian(MouseEvent event) {
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "SignOut");
+    }
+
 }
