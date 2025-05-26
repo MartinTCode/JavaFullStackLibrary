@@ -18,8 +18,17 @@ import java.util.List; // Importing List for one-to-many relationship
 import jakarta.persistence.CascadeType;
 import java.util.Set; // Importing Set for many-to-many relationship
 
+// Importing necessary packages for JPA inheritance and discriminator column
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+
 @Entity
-public class Item {
+// Specifying inheritance strategy and discriminator column for polymorphic behavior
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "item_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Item {
 
     // #region Attributes
     @Id
@@ -27,8 +36,11 @@ public class Item {
     @Column(name = "item_id") // Maps to the SQL column name
     private Integer id;
 
+    /* Handled by the discriminator column instead
+    
     @Column(name = "item_type", nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
     private String type;
+    */
 
     @Column(length = 17) // Matches SQL: VARCHAR(17)
     private String identifier;
@@ -125,7 +137,8 @@ public class Item {
                 Set<Creator> creators, // m2m relationship (creator shouldn't be duplicated in item)
                 Set<Actor> actors, // m2m relationship (actor shouldn't be duplicated in item)
                 Set<Genre> genres, // m2m relationship (genre shouldn't be duplicated in item)
-                String type, String identifier,
+                //String type, handled by discriminator column
+                String identifier,
                 String identifier2, String title,
                 String publisher, Short ageLimit,
                 String countryOfProduction) {
@@ -135,7 +148,7 @@ public class Item {
         this.creators = creators;
         this.actors = actors;
         this.genres = genres;
-        this.type = type;
+        // this.type = type; handled by discriminator column
         this.identifier = identifier;
         this.identifier2 = identifier2;
         this.title = title;
@@ -154,7 +167,7 @@ public class Item {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    /* // Abstracted to discriminator column and iherited classes
     public String getType() {
         return type;
     }
@@ -162,7 +175,7 @@ public class Item {
     public void setType(String type) {
         this.type = type;
     }
-
+    */
     public String getIdentifier() {
         return identifier;
     }
