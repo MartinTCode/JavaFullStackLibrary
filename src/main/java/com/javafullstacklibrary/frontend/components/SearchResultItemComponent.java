@@ -34,7 +34,7 @@ public class SearchResultItemComponent extends VBox {
         titleLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
         
         // Type of item
-        Label typeLabel = new Label("Type: " + item.getType());
+        //Label typeLabel = new Label("Type: " + item.getType());
 
         // Add creator information if available
         Label creatorLabel = null;
@@ -105,7 +105,8 @@ public class SearchResultItemComponent extends VBox {
         if (creatorLabel != null) {
             getChildren().add(creatorLabel);
         }
-        getChildren().addAll(typeLabel, detailsLabel, locationLabel, availabilityLabel);
+        getChildren().addAll(//TypeLabel, 
+        detailsLabel, locationLabel, availabilityLabel);
             }
     
     /**
