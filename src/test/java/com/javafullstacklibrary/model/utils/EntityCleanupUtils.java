@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.utils;
+package com.javafullstacklibrary.model.utils;
 
 import jakarta.persistence.EntityManager;
 

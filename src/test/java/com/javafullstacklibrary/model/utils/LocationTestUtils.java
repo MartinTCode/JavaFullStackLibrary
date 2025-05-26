@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.utils;
+package com.javafullstacklibrary.model.utils;
 
 import com.javafullstacklibrary.model.ItemTestParams;
 import com.javafullstacklibrary.model.Location;

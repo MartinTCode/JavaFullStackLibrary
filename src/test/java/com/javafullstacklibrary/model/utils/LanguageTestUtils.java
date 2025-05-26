@@ -1,4 +1,4 @@
-package com.javafullstacklibrary.utils;
+package com.javafullstacklibrary.model.utils;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
