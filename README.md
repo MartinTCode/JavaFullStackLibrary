@@ -1,22 +1,22 @@
-# feature/database-implementation
+# feature/search-query-integration
 
-This branch contains the foundational implementation of the backend database layer.  
-It defines the entity models, repositories, and initial configuration needed for persistent data storage and retrieval.
+This feature branch integrates the frontend guest view with backend controller logic to enable item search functionality.  
+It connects the UI search input to the backend through a RESTful endpoint, allowing users to query items stored in the database.
 
 ## Purpose
-- Create all needed models to represent the database in backend.
-- Set up the database schema and connection using JPA.
-- Provide and test basic CRUD functionality for database entities.
-- Serve as the backend data source for other features (e.g., search, item listing).
-- Set up testing environment with logging dependencies and testutils.
+- Enable live communication between frontend and backend for search queries.
+- Utilize the database implementation from `feature/database-implementation`.
+- Leverage the frontend view components from `feature/frontend_guestViews`.
 
 ## Scope
-- PostgreSQL database integration.
-- Entity and repository creation for domain objects.
-- Basic test data setup for development purposes.
+- Query controller setup and endpoint exposure.
+- Fetch logic on the frontend (e.g., using `fetch` or an API client).
+- JSON response handling and result display in the guest view.
 
 ## Dependencies
-- None directly; this is a core backend layer.
+- `feature/database-implementation`
+- `feature/frontend_guestViews`
 
 ## Notes
-- Assumes local PostgreSQL instance with appropriate user/DB setup.
+- This branch does **not** handle advanced filters or pagination yet.
+- The database must be seeded with sample items for search to return results.
