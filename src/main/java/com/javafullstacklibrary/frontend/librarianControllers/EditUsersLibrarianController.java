@@ -16,7 +16,7 @@ public class EditUsersLibrarianController {
 
     // --- Form Fields ---
     @FXML
-    private ComboBox<?> editBorrowerTypeComboBoxLibrarian;
+    private ComboBox<String> editBorrowerTypeComboBoxLibrarian;
 
     @FXML
     private TextField editUserSSNFieldLibrarian;
@@ -71,6 +71,7 @@ public class EditUsersLibrarianController {
     public void initialize() {
         // Initialize any necessary data or state here
         initializeUserFields();
+        initializeBorrowerTypeComboBox();
     }
 
     // --- Form Button Handlers ---
@@ -109,5 +110,12 @@ public class EditUsersLibrarianController {
         editUserAddressFieldLibrarian.setText("123 Main St, Springfield");
         editUserEmailFieldLibrarian.setText("anna.smith@example.com");
         editUserPhoneFieldLibrarian.setText("(555) 123-4567");
+    }
+
+    public void initializeBorrowerTypeComboBox() {
+        // Populate the ComboBox with borrower types
+        editBorrowerTypeComboBoxLibrarian.getItems().addAll("Public", "Student", "Researcher", "University Employee");
+        // Sets to a mock default value for demonstration purposes, change to real data later
+        editBorrowerTypeComboBoxLibrarian.setValue("Student");
     }
 }

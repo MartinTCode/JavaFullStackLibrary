@@ -138,8 +138,7 @@
                         <!-- Sign-in Button for Admin -->
                         <Button 
                               fx:id="signInButtonAdmin" 
-                              styleClass="button" 
-                              onMouseClicked="#clickedSignInButtonAdmin" 
+                              styleClass="button-selected"  
                               text="Sign in - Admin" />
                         
                         <!-- Sign-in Button for Librarian -->
