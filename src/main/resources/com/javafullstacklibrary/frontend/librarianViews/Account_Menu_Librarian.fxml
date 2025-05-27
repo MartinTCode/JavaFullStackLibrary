@@ -139,8 +139,6 @@
          <StackPane VBox.vgrow="ALWAYS">
             <children>
                <HBox
-                   prefHeight="100.0"
-                   prefWidth="200.0"
                    spacing="10.0"
                >
                   <children>
@@ -178,7 +176,6 @@
                         </padding>
                         <children>
                            <VBox
-                               prefWidth="390.0"
                                spacing="10.0"
                            >
                               <children>

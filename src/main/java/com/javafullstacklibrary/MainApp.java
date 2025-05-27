@@ -24,8 +24,8 @@ public class MainApp extends Application {
             // Set up the stage
             primaryStage.setScene(new Scene(root));
             // Set minimum width and height for the stage (window)
-            primaryStage.setMinWidth(600);
-            primaryStage.setMinHeight(400);
+            primaryStage.setMinWidth(1200);
+            primaryStage.setMinHeight(800);
             // set title of window.
             primaryStage.setTitle("JavaFX Library App");
             primaryStage.show();

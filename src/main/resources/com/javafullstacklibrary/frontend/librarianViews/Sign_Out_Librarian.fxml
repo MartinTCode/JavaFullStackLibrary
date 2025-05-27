@@ -156,7 +156,7 @@
                            <Button
                                fx:id="userInfoButtonLibrarian"
                                mnemonicParsing="false"
-                               onMouseDragged="#clickedUserInfoLibrarian"
+                               onMouseClicked="#clickedUserInfoLibrarian"
                                text=" User Information  "
                            />
                            <Button
