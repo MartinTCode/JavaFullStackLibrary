@@ -93,6 +93,10 @@ public class SearchViewLibrarianController implements Initializable {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
+    /**
+     * Handles the search button click event for the librarian view.
+     * Validates the search query, performs the search, and updates the results.
+     */
     @FXML
     private void clickedSearchButtonLibrarian() {
         String query = searchField.getText();
@@ -121,6 +125,13 @@ public class SearchViewLibrarianController implements Initializable {
         loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
     }
 
+    /**
+     * Loads search results from the database and displays them in the results container.
+     * 
+     * @param query The search query
+     * @param offset The offset for pagination
+     * @param limit The maximum number of results to load
+     */
     private void loadSearchResults(String query, int offset, int limit) {
         List<Item> items = queryService.searchItems(query, offset, limit);
 
@@ -135,6 +146,11 @@ public class SearchViewLibrarianController implements Initializable {
         }
     }
 
+    /**
+     * Sets the results count label based on the number of matches found.
+     * Displays a message indicating how many matches were found.
+     * @param count
+     */
     private void setResultsCountLabel(int count) {
         String resultText;
         if (count == 0) {
@@ -147,6 +163,10 @@ public class SearchViewLibrarianController implements Initializable {
         resultsCountLabel.setText(resultText);
     }
 
+    /**
+     * Handles the "Load More Results" button click event.  
+     * Loads the next page of search results and updates the UI accordingly.
+     */
     @FXML
     private void handleLoadMoreResults() {
         System.out.println("Loading more results...");
