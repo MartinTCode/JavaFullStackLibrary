@@ -96,12 +96,12 @@
                      <StackPane>
                         <children>
                            <ImageView
-                               fx:id="accountMenuLibrarian"
-                               onMouseClicked="#clickedAccountMenuLibrarian"
-                               styleClass="account-icon-active"
+                              fx:id="accountMenuLibrarian"
+                              styleClass="account-icon-active"
                            />
                            <Region
-                               style="-fx-background-color: transparent;"
+                              onMouseClicked="#clickedAccountMenuLibrarian"
+                              style="-fx-background-color: transparent;"
                            />
                         </children>
                      </StackPane>
@@ -109,7 +109,7 @@
                         <children>
                            <ImageView
                                fx:id="signOutMenuLibrarian"
-                               styleClass="sign-out-icon-active"
+                               styleClass="sign-out-icon-inactive"
                            />
                            <Region
                                onMouseClicked="#clickedSignOutMenuLibrarian"

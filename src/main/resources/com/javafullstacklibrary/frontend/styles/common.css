@@ -297,6 +297,16 @@
     -fx-image: url("../figma_icons/navBarButtons/SignOutNavigationButtonClickable.png");
 }
 
+.sign-out-icon-inactive {
+    width: 70px;
+    -fx-fit-width: 70;
+    height: 55px;
+    -fx-fit-height: 55;
+    -fx-preserve-ratio: true;
+    -fx-pick-on-bounds: true;
+    -fx-image: url("../figma_icons/navBarButtons/SignOutNavigationButton.png");
+}
+
 .manage-library-icon-inactive {
     width: 100px;
     -fx-fit-width: 100;

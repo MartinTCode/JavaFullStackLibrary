@@ -83,7 +83,7 @@
                      <StackPane>
                         <ImageView
                             fx:id="signOutMenuBorrower"
-                            styleClass="sign-out-icon-active"
+                            styleClass="sign-out-icon-inactive"
                         />
                         <!-- No Region for current/active page -->
                      </StackPane>
