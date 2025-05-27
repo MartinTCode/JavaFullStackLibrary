@@ -8,6 +8,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.hibernate.Hibernate;
 
+import java.util.Map;
+
 /**
  * Component to display search result items in a standardized format.
  */
@@ -28,9 +30,20 @@ public class SearchResultItemComponent extends VBox {
         setSpacing(5);
         getStyleClass().add("search-result-item");
         setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-color: #f9f9f9;");
-        
+
+
         // Title with bold font
-        Label titleLabel = new Label(item.getTitle());
+        //titleLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
+
+        StringBuilder titleBuilder = new StringBuilder(item.getTitle());
+
+        Map<String, String> paramMap = item.getParameterMap();
+        if (paramMap != null && paramMap.containsKey("type")) {
+        titleBuilder.append(" (").append(paramMap.get("type")).append(")");
+        }
+
+        // Create and style the title label
+        Label titleLabel = new Label(titleBuilder.toString());
         titleLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
         
         // Type of item
