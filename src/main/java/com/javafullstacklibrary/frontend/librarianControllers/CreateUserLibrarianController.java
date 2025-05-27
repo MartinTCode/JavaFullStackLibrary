@@ -70,16 +70,42 @@ public class CreateUserLibrarianController {
 
     // --- Form Button Handlers ---
 
+    /**
+     * This method is called when the "Cancel" button is clicked.
+     * It navigates back to the ManageUsers view.
+     * @param event
+     */
     @FXML
     private void clickedCancelNewUsersButtonLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageUsers");
     }
 
+    /**
+     * This method is called when the "Save New User" button is clicked.
+     * It reads the input from all fields and prints them to the console.
+     * #TODO: Implement actual user creation logic.
+     * @param event
+     */
     @FXML
     private void clickedSaveNewUsersButtonLibrarian(MouseEvent event) {
-        // Implement saving logic here
+        // Read input from all fields
+        String borrowerType = createBorrowerTypeComboBoxLibrarian.getValue();
+        String ssn = createUserSSNFieldLibrarian.getText();
+        String firstName = createUserFirstNameFieldLibrarian.getText();
+        String lastName = createUserLastNameFieldLibrarian.getText();
+        String address = createUserAddressFieldLibrarian.getText();
+        String email = createUserEmailFieldLibrarian.getText();
+        String phone = editUserPhoneFieldLibrarian.getText();
 
-        System.out.println("Save New User button clicked.");
+        // Print all values to the console, implement actual save logic later
+        System.out.println("Save New User button clicked. Input values:");
+        System.out.println("Borrower Type: " + borrowerType);
+        System.out.println("SSN: " + ssn);
+        System.out.println("First Name: " + firstName);
+        System.out.println("Last Name: " + lastName);
+        System.out.println("Address: " + address);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phone);
     }
 
     @FXML
