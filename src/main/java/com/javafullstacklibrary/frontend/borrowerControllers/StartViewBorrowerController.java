@@ -39,10 +39,4 @@ public class StartViewBorrowerController {
     private void clickedSignOutMenuBorrower() {
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
-
-    @FXML
-    private void clickedSearchButtonBorrower() {
-        System.out.println("Search button clicked");
-        // Add logic for handling the search button click
-    }
 }

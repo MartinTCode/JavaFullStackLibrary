@@ -50,6 +50,11 @@ public class SignInStaffController {
         String password = passwordField.getText();
         System.out.println("SSN: " + username);
         System.out.println("Password: " + password);
+
+        //Implement sign in logic here
+
+        // Navigate to the librarian start view
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
     }
 
     @FXML

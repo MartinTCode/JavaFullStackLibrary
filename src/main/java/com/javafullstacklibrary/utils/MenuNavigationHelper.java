@@ -4,6 +4,22 @@ import java.io.IOException;
 
 import com.javafullstacklibrary.frontend.guestControllers.SignInUserController;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+import com.javafullstacklibrary.frontend.librarianControllers.AccountMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ChangePasswordLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateBookLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateCourseLitLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateDvdLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateJournalLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.CreateUserLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.EditUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ManageLibraryLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ManageUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.OverdueViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.UserInfoLibrarianController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -19,10 +35,17 @@ import javafx.scene.layout.Pane;
 
 public class MenuNavigationHelper {
 
+    private static String currentControllerName = null;
+
+
     // Private constructor to prevent instantiation
     private MenuNavigationHelper() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     } 
+
+    public static String getCurrentControllerName() {
+        return currentControllerName;
+    }
 
     /**
      * Handles the action when a guest menu button is clicked.
@@ -64,73 +87,190 @@ public class MenuNavigationHelper {
         }
     }
 
+    /**
+     * Handles navigation for borrower menu bar clicks (top navigation).
+     * Navigates the user to the appropriate borrower view based on the selected menu option.
+     *
+     * @param mainPane   The main pane where the new view will be loaded.
+     * @param menuChange The menu option selected by the borrower (e.g., "Home", "Search", "Loan", "Return", "Account", "SignOut").
+     * @throws IllegalArgumentException if the menuChange value is invalid.
+     */
     public static void menuClickBorrower(Pane mainPane, String menuChange) {
         switch (menuChange) {
             case "Home":
-                // Navigate to the Home view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Start_View_Borrower.fxml", new StartViewBorrowerController());
                 break;
             case "Search":
-                // Navigate to the Search view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Search_Menu_Borrower.fxml", new SearchMenuBorrowerController());
                 break;
             case "Loan":
-                // Navigate to the Loan view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Loan_Menu_Borrower.fxml", new LoanMenuBorrowerController());
                 break;
             case "Return":
-                // Navigate to the Return view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Return_Menu_Borrower.fxml", new ReturnMenuBorrowerController());
                 break;
             case "Account":
-                // Navigate to the Account view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Account_Menu_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "SignOut":
-                // Navigate to the Sign-Out view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Sign_Out_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid menu type: " + menuChange);
+        }
+    }
+
+    /**
+     * Handles navigation for borrower button clicks (side panel or content buttons).
+     * Navigates the user to the appropriate borrower view based on the button action selected.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the borrower 
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickBorrower(Pane mainPane, String buttonAction) {
+        switch (buttonAction) {
             case "SearchResults":
-                // Navigate to the Search Results view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Search_View_Borrower.fxml", new SearchViewBorrowerController());
                 break;
             case "UserInfo":
-                // Navigate to the User Info view for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_View_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "ChangeInfo":
-                // Navigate to the Change Info view for borrowers
                 navigateToView(mainPane, "borrowerViews", "User_Info_Edit_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "ActiveLoans":
-                // Navigate to the Active Loans view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Active_Loans_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "ChangePassword":
-                // Navigate to the Change Password view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "LoanView":
-                // Navigate to the Loan view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
                 break;
             case "LoanReceipt":
-                // Navigate to the Loan Receipt view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
                 break;
             case "ReturnView":
-                // Navigate to the Return view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
                 break;
             case "ReturnReceipt":
-                // Navigate to the Return Receipt view for borrowers
                 navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid button action: " + buttonAction);  
+        }
+    }
+
+    /**
+     * Handles navigation for librarian menu bar clicks.
+     * Navigates the user to the appropriate librarian view based on the selected menu option.
+     *
+     * @param mainPane   The main pane where the new view will be loaded.
+     * @param menuChange The menu option selected by the librarian (e.g., "Home").
+     * @throws IllegalArgumentException if the menuChange value is invalid.
+     */
+    public static void menuClickLibrarian(Pane mainPane, String menuChange) {
+        switch (menuChange) {
+            case "Home":
+                // Navigate to the Home view for librarians
+                navigateToView(mainPane, "librarianViews", "Start_View_Librarian.fxml", new StartViewLibrarianController());
+                break;
+            case "Search":
+                // Navigate to the Search view for librarians
+                navigateToView(mainPane, "librarianViews", "Search_Menu_Librarian.fxml", new SearchMenuLibrarianController());
+                break;
+            case "Overdue":
+                // Navigate to the Overdue Loans view for librarians
+                navigateToView(mainPane, "librarianViews", "Overdue_View_Librarian.fxml", new OverdueViewLibrarianController());
+                break;
+            case "ManageLibrary":
+                // Navigate to the Manage Library view for librarians
+                navigateToView(mainPane, "librarianViews", "Manage_Library_Librarian.fxml", new ManageLibraryLibrarianController());
+                break;
+            case "ManageUsers":
+                // Navigate to the Manage Users view for librarians
+                navigateToView(mainPane, "librarianViews", "Manage_Users_Librarian.fxml", new ManageUsersLibrarianController());
+                break;
+            case "Account":
+                // Navigate to the Account view for librarians
+                navigateToView(mainPane, "librarianViews", "Account_Menu_Librarian.fxml", new AccountMenuLibrarianController());
+                break;
+            case "SignOut":
+                // Navigate to the Sign-Out view for librarians
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SignOutLibrarianController());
                 break;
             default:
                 // Throw an exception for invalid menu options
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
         }
     }
+
+    /**
+     * Handles navigation for librarian button clicks.
+     * Navigates the user to the appropriate librarian view based on the button action selected.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the librarian (e.g., "UserInfo", "ChangePassword").
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickLibrarian(Pane mainPane, String buttonAction) {
+        switch (buttonAction) {
+            case "UserInfo":
+                navigateToView(mainPane, "librarianViews", "User_Info_Librarian.fxml", new UserInfoLibrarianController());
+                break;
+            case "ChangePassword":
+                navigateToView(mainPane, "librarianViews", "Change_Password_Librarian.fxml", new ChangePasswordLibrarianController());
+                break;
+            case "SignOut":
+                navigateToView(mainPane, "librarianViews", "Sign_Out_Librarian.fxml", new SignOutLibrarianController());
+                break;
+            case "CreateBook":
+                navigateToView(mainPane, "librarianViews", "Create_Book_Librarian.fxml", new CreateBookLibrarianController());
+                break;	
+            case "CreateCourseLit":
+                navigateToView(mainPane, "librarianViews", "Create_Course_Lit_Librarian.fxml", new CreateCourseLitLibrarianController());
+                break;
+            case "CreateJournal":
+                navigateToView(mainPane, "librarianViews", "Create_Journal_Librarian.fxml", new CreateJournalLibrarianController());
+                break;
+            case "CreateDvd":
+                navigateToView(mainPane, "librarianViews", "Create_Dvd_Librarian.fxml", new CreateDvdLibrarianController());
+                break;
+            case "ModifyItem":
+                navigateToView(mainPane, "librarianViews", "Search_View_Librarian", new SearchViewBorrowerController());
+                break;
+            case "EditUser":
+                navigateToView(mainPane, "librarianViews", "Edit_Users_Librarian.fxml", new EditUsersLibrarianController());
+                break;
+            case "CreateUser":
+                navigateToView(mainPane, "librarianViews", "Create_User_Librarian.fxml", new CreateUserLibrarianController());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+        }
+    }
+
+    /**
+     * Handles navigation for librarian button clicks with a search query.
+     * Navigates the user to the appropriate librarian view based on the button action and search query.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the librarian (e.g., "SearchView").
+     * @param query        The search query to be used in the search view.
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
+    switch (buttonAction) {
+        case "SearchView":
+            SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
+            navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
+            break;
+        // ...other cases...
+        default:
+            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+    }
+}
 
 
 
@@ -147,6 +287,13 @@ public class MenuNavigationHelper {
     private static void navigateToView(Pane mainPane, String viewFolder, String fxmlFile, Object controller) {
         try {
             // Load the specified view into the main pane
+            // Update the current controller name
+            if (controller != null) {
+                currentControllerName = controller.getClass().getSimpleName();
+            } else {
+                currentControllerName = null;
+            }
+            // Load the FXML file and set the controller
             ViewLoader.loadToStage(mainPane, viewFolder, fxmlFile, controller);
         } catch (IOException e) {
             // Print the stack trace if an error occurs during view loading

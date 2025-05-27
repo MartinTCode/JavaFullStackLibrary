@@ -50,7 +50,7 @@ public class LoanMenuBorrowerController {
         System.out.println("Loan button clicked with barcode: " + barcode);
        
         //Implementation for getting the info about loaned book and showing it on the loan view
-        MenuNavigationHelper.menuClickBorrower(mainPane, "LoanView");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
     }
 
     @FXML
@@ -64,6 +64,6 @@ public class LoanMenuBorrowerController {
         System.out.println("Confirm Loans button clicked");
         // Implement the logic for confirming loans and getting the info for the reciept
         // Switch to the Loan_Receipt_Borrower view
-        MenuNavigationHelper.menuClickBorrower(mainPane, "LoanReceipt");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanReceipt");
     }
 }
