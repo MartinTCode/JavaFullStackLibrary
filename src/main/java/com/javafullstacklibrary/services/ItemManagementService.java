@@ -3,11 +3,11 @@ package com.javafullstacklibrary.services;
 import com.javafullstacklibrary.dao.ItemDAO;
 import com.javafullstacklibrary.model.Item;
 
-public class ItemModifyerService {
+public class ItemManagementService {
 
     private final ItemDAO itemDAO;
 
-    public ItemModifyerService(ItemDAO itemDAO) {
+    public ItemManagementService(ItemDAO itemDAO) {
         this.itemDAO = itemDAO;
     }
 
