@@ -40,39 +40,52 @@
                    styleClass="flow-pane-padding">
                   <children>
                      <!-- Home Button -->
-                     <ImageView 
-                         fx:id="startMenuBorrower" 
-                         onMouseClicked="#clickedHomeMenuBorrower" 
-                         styleClass="home-icon-active" />
-
+                     <StackPane>
+                        <ImageView 
+                            fx:id="startMenuBorrower" 
+                            styleClass="home-icon-active" />
+                        <Region style="-fx-background-color: transparent;"
+                            onMouseClicked="#clickedHomeMenuBorrower"/>
+                     </StackPane>
                      <!-- Search Button -->
-                     <ImageView 
-                         fx:id="searchMenuBorrower" 
-                         onMouseClicked="#clickedSearchMenuBorrower" 
-                         styleClass="search-icon-active" />
-
+                     <StackPane>
+                        <ImageView 
+                            fx:id="searchMenuBorrower" 
+                            styleClass="search-icon-active" />
+                        <Region style="-fx-background-color: transparent;"
+                            onMouseClicked="#clickedSearchMenuBorrower"/>
+                     </StackPane>
                      <!-- Loan Button -->
-                     <ImageView 
-                         fx:id="loanMenuBorrower" 
-                         onMouseClicked="#clickedLoanMenuBorrower" 
-                         styleClass="loan-icon-active" />
-
+                     <StackPane>
+                        <ImageView 
+                            fx:id="loanMenuBorrower" 
+                            styleClass="loan-icon-active" />
+                        <Region style="-fx-background-color: transparent;"
+                            onMouseClicked="#clickedLoanMenuBorrower"/>
+                     </StackPane>
                      <!-- Return Button -->
-                     <ImageView 
-                         fx:id="returnMenuBorrower" 
-                         styleClass="return-icon-inactive" />
-
+                     <StackPane>
+                        <ImageView 
+                            fx:id="returnMenuBorrower" 
+                            styleClass="return-icon-inactive" />
+                        <!-- No Region for current/active page -->
+                     </StackPane>
                      <!-- Account Button -->
-                     <ImageView 
-                         fx:id="accountMenuBorrower" 
-                         onMouseClicked="#clickedAccountMenuBorrower" 
-                         styleClass="account-icon-active" />
-
+                     <StackPane>
+                        <ImageView 
+                            fx:id="accountMenuBorrower" 
+                            styleClass="account-icon-active" />
+                        <Region style="-fx-background-color: transparent;"
+                            onMouseClicked="#clickedAccountMenuBorrower"/>
+                     </StackPane>
                      <!-- Sign Out Button -->
-                     <ImageView 
-                         fx:id="signOutMenuBorrower" 
-                         onMouseClicked="#clickedSignOutMenuBorrower" 
-                         styleClass="sign-out-icon-active" />
+                     <StackPane>
+                        <ImageView 
+                            fx:id="signOutMenuBorrower" 
+                            styleClass="sign-out-icon-active" />
+                        <Region style="-fx-background-color: transparent;"
+                            onMouseClicked="#clickedSignOutMenuBorrower"/>
+                     </StackPane>
                   </children>
                </FlowPane>
             </children>

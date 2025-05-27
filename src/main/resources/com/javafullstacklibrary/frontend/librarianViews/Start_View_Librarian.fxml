@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane
+    fx:id="mainPane"
+    minHeight="400.0"
+    minWidth="600.0"
+    prefHeight="400.0"
+    prefWidth="600.0"
+    stylesheets="@../styles/common.css"
+    xmlns="http://javafx.com/javafx/23.0.1"
+    xmlns:fx="http://javafx.com/fxml/1"
+>
+
+    <!-- Top Menu Section -->
+    <top>
+        <StackPane
+            prefHeight="55.0"
+        >
+            <!-- Top Menu Background -->
+            <Region
+                styleClass="top-menu-region"
+            />
+
+            <!-- Top Menu Buttons -->
+            <StackPane
+                prefHeight="55.0"
+                BorderPane.alignment="CENTER"
+            >
+                <children>
+                    <FlowPane
+                        prefHeight="55.0"
+                        styleClass="flow-pane-padding"
+                    >
+                        <children>
+                            <!-- Home Menu Button (inactive) -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="homeMenuLibrarian"
+                                    styleClass="home-icon-inactive"
+                                />
+                                <!-- No Region for current/active page -->
+                            </StackPane>
+                            <!-- Search Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="searchMenuLibrarian"
+                                    styleClass="search-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedSearchMenuLibrarian"/>
+                            </StackPane>
+                            <!-- Overdue Loans Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="overdueMenuLibrarian"
+                                    styleClass="overdue-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedOverdueMenuLibrarian"/>
+                            </StackPane>
+                            <!-- Manage Library Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="libraryMenuLibrarian"
+                                    styleClass="manage-library-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedLibraryMenuLibrarian"/>
+                            </StackPane>
+                            <!-- Manage Users Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="usersMenuLibrarian"
+                                    styleClass="manage-users-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedUsersMenuLibrarian"/>
+                            </StackPane>
+                            <!-- Account Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="accountMenuLibrarian"
+                                    styleClass="account-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedAccountMenuLibrarian"/>
+                            </StackPane>
+                            <!-- Sign Out Menu Button -->
+                            <StackPane>
+                                <ImageView
+                                    fx:id="signOutMenuLibrarian"
+                                    styleClass="sign-out-icon-active"
+                                />
+                                <Region style="-fx-background-color: transparent;"
+                                    onMouseClicked="#clickedSignOutMenuLibrarian"/>
+                            </StackPane>
+                        </children>
+                    </FlowPane>
+                </children>
+            </StackPane>
+        </StackPane>
+    </top>
+
+    <!-- Main Content Section -->
+    <center>
+        <StackPane
+            prefHeight="270.0"
+            prefWidth="612.0"
+            BorderPane.alignment="CENTER"
+        >
+            <children>
+                <!-- Center Rectangle Background -->
+                <Rectangle
+                    height="218.0"
+                    width="451.0"
+                    styleClass="rectangle-center"
+                />
+
+                <!-- Welcome Message -->
+                <VBox
+                    fx:id="welcomeMsgLibrarian"
+                    alignment="CENTER"
+                    prefHeight="200.0"
+                    prefWidth="100.0"
+                >
+                    <children>
+                        <Text
+                            strokeType="OUTSIDE"
+                            styleClass="text-title"
+                            text="Welcome to the Library"
+                        />
+                        <Text
+                            strokeType="OUTSIDE"
+                            text="Navigate using the top menu"
+                        />
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+    </center>
+
+    <!-- Bottom Menu Section -->
+    <bottom>
+        <FlowPane
+            alignment="CENTER_RIGHT"
+            prefHeight="55.0"
+            styleClass="bottom-menu-padding"
+            BorderPane.alignment="CENTER_RIGHT"
+        >
+            <children>
+                <!-- Bottom menu content (empty) -->
+            </children>
+        </FlowPane>
+    </bottom>
+</BorderPane>

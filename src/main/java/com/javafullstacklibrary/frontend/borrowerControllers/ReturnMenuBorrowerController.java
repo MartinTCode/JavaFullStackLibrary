@@ -51,7 +51,7 @@ public class ReturnMenuBorrowerController {
         // Add implementation for getting info about the item an displaying it in next view
 
         // Switch to the Return_View_Borrower view
-        MenuNavigationHelper.menuClickBorrower(mainPane, "ReturnView");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnView");
     }
 
     @FXML
@@ -66,6 +66,6 @@ public class ReturnMenuBorrowerController {
         // Implement the logic for confirming returns and getting the info for the receipt
 
         // Switch to the Return_Receipt_Borrower view
-        MenuNavigationHelper.menuClickBorrower(mainPane, "ReturnReceipt");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnReceipt");
     }
 }

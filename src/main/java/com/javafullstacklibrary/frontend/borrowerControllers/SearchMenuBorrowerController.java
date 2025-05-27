@@ -60,7 +60,7 @@ public class SearchMenuBorrowerController {
         // Set the search query in the singleton instance
         dataSingleton.setSearchQuery(query);
         // Load the search results view
-        MenuNavigationHelper.menuClickBorrower(mainPane, "SearchResults");
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "SearchResults");
     }
 
 }
