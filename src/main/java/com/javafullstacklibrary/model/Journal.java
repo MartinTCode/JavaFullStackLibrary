@@ -3,12 +3,17 @@ package com.javafullstacklibrary.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;// Importing HashSet for Set implementation
+import java.util.Map;
 
 
 @Entity
 @DiscriminatorValue("journal")
 public class Journal extends Item {
+
+    private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
+    private static boolean PARAMETERIZED = false;
     
     // No-arg constructor required by JPA
     public Journal() {
@@ -18,6 +23,8 @@ public class Journal extends Item {
         setAuthors(new HashSet<>());
         //setGenres(new HashSet<>());
         //setActors(new HashSet<>());
+
+        createParameterMap(); // Create the parameter map for this class
     }
     
     // Full constructor that maps to the parent constructor
@@ -44,6 +51,33 @@ public class Journal extends Item {
             title, publisher, 
             // no ageLimit nor country of production for journal.
             null, null);
+
+        createParameterMap(); // Create the parameter map for this class
+    }
+
+    private static final void createParameterMap(){
+    if (PARAMETERIZED) {
+            return; // Avoid re-creating the map if already done
+        }
+        PARAMETER_NAMES.put("type", "Journal");
+        PARAMETER_NAMES.put("location", "location");
+        PARAMETER_NAMES.put("language", "language");
+        PARAMETER_NAMES.put("keywords", "keywords");
+        PARAMETER_NAMES.put("creators", "authors");
+        PARAMETER_NAMES.put("actors",null);
+        PARAMETER_NAMES.put("genres", null);
+        PARAMETER_NAMES.put("identifier1", "ISSN");
+        PARAMETER_NAMES.put("identifier2", null);
+        PARAMETER_NAMES.put("title", "title");
+        PARAMETER_NAMES.put("publisher", "publisher");
+        PARAMETER_NAMES.put("ageLimit", null);
+        PARAMETER_NAMES.put("countryOfProduction", null);
+        PARAMETERIZED = true; // Set to true to prevent re-creations
+    }
+    
+    @Override
+    public Map<String, String> getParameterMap() {
+        return PARAMETER_NAMES;
     }
     
     // Book-specific getter/setter that provides domain-specific naming

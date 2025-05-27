@@ -3,13 +3,18 @@ package com.javafullstacklibrary.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
 @Entity
 @DiscriminatorValue("dvd")
 public class DVD extends Item {
+
+    private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
+    private static boolean PARAMETERIZED = false;
     
     // No-arg constructor required by JPA
     public DVD() {
@@ -19,6 +24,7 @@ public class DVD extends Item {
         setDirectors(new HashSet<>());
         setGenres(new HashSet<>());
         setActors(new HashSet<>());
+        createParameterMap();
     }
     
     // Full constructor that maps to the parent constructor
@@ -49,12 +55,40 @@ public class DVD extends Item {
                 null, 
             title, studio, 
             ageLimit, countryOfProduction);
+
+        createParameterMap();
     }
     
+    private static final void createParameterMap(){
+        if (PARAMETERIZED) {
+            return; // Avoid re-creating the map if already done
+        }
+        PARAMETER_NAMES.put("type", "DVD");
+        PARAMETER_NAMES.put("location", "location");
+        PARAMETER_NAMES.put("language", "language");
+        PARAMETER_NAMES.put("keywords", "keywords");
+        PARAMETER_NAMES.put("creators", "directors");
+        PARAMETER_NAMES.put("actors","actors");
+        PARAMETER_NAMES.put("genres", "genres");
+        PARAMETER_NAMES.put("identifier1", "IMDBC");
+        PARAMETER_NAMES.put("identifier2", null);
+        PARAMETER_NAMES.put("title", "title");
+        PARAMETER_NAMES.put("publisher", "studio");
+        PARAMETER_NAMES.put("ageLimit", "age limit");
+        PARAMETER_NAMES.put("countryOfProduction", "country of production");
+        PARAMETERIZED = true; // Set to true to prevent re-creations
+    }
+    
+    @Override
+    public Map<String, String> getParameterMap() {
+        return PARAMETER_NAMES;
+    }
+
     // DVD-specific getter/setter that provides domain-specific naming
     public String getIMDBC() {
         return getIdentifier();
     }
+
     
     public void setIMDBC(String imdbc) {
         setIdentifier(imdbc);
