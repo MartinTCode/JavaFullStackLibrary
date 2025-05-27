@@ -11,6 +11,7 @@ import jakarta.persistence.criteria.Root;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ItemDAO {
 
@@ -45,6 +46,10 @@ public class ItemDAO {
             }
             throw e;
         }
+    }
+
+    public Map<String, String> getParameterMap(Item item) {
+        return item.getParameterMap();
     }
     
     /**
@@ -158,13 +163,41 @@ public class ItemDAO {
         Join<Item, Language> languageJoin = root.join("language", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.like(cb.lower(languageJoin.get("language")), searchTerm));
         
+        // Explicitly join the copies collection to fetch it eagerly
+        root.fetch("copies", jakarta.persistence.criteria.JoinType.LEFT);
+        
         // Combine predicates with OR (any match is a hit)
         query.where(cb.or(predicates.toArray(new Predicate[0])));
         
         // Remove duplicates (since we're joining multiple tables)
         query.distinct(true);
         
-        return entityManager.createQuery(query).getResultList();
+        List<Item> results = entityManager.createQuery(query).getResultList();
+        
+        // Initialize other collections that might be needed
+        for (Item item : results) {
+            if (item.getCopies() != null) {
+                org.hibernate.Hibernate.initialize(item.getCopies());
+            }
+            if (item.getCreators() != null) {
+                org.hibernate.Hibernate.initialize(item.getCreators());
+            }
+            if (item.getKeywords() != null) {
+                org.hibernate.Hibernate.initialize(item.getKeywords());
+            }
+            if (item.getGenres() != null) {
+                org.hibernate.Hibernate.initialize(item.getGenres());
+            }
+            if (item.getActors() != null) {
+                org.hibernate.Hibernate.initialize(item.getActors());
+            }
+            if (item.getLanguage() != null) {
+                org.hibernate.Hibernate.initialize(item.getLanguage());
+            }
+            // Initialize other collections as needed
+        }
+        
+        return results;
     }
 
     /**
@@ -183,52 +216,53 @@ public class ItemDAO {
         searchTerm = "%" + searchTerm.toLowerCase() + "%";
         
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = cb.createQuery(Long.class);
-        Root<Item> root = query.from(Item.class);
+    
+        // Create a subquery to get distinct item IDs
+        CriteriaQuery<Integer> idQuery = cb.createQuery(Integer.class);
+        Root<Item> idRoot = idQuery.from(Item.class);
         
-        // Create predicates for each field to search
+        // Create predicates for each field to search (same as in search method)
         List<Predicate> predicates = new ArrayList<>();
         
         // Search in title
-        predicates.add(cb.like(cb.lower(root.get("title")), searchTerm));
+        predicates.add(cb.like(cb.lower(idRoot.get("title")), searchTerm));
         
         // Search in item's related entities
         // Keywords
-        Join<Item, Keyword> keywordJoin = root.join("keywords", jakarta.persistence.criteria.JoinType.LEFT);
+        Join<Item, Keyword> keywordJoin = idRoot.join("keywords", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.like(cb.lower(keywordJoin.get("keyword")), searchTerm));
         
         // Creators
-        Join<Item, Creator> creatorJoin = root.join("creators", jakarta.persistence.criteria.JoinType.LEFT);
+        Join<Item, Creator> creatorJoin = idRoot.join("creators", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.or(
             cb.like(cb.lower(creatorJoin.get("firstName")), searchTerm),
             cb.like(cb.lower(creatorJoin.get("lastName")), searchTerm)
         ));
         
         // Genres
-        Join<Item, Genre> genreJoin = root.join("genres", jakarta.persistence.criteria.JoinType.LEFT);
+        Join<Item, Genre> genreJoin = idRoot.join("genres", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.like(cb.lower(genreJoin.get("genre")), searchTerm));
         
         // Actors
-        Join<Item, Actor> actorJoin = root.join("actors", jakarta.persistence.criteria.JoinType.LEFT);
+        Join<Item, Actor> actorJoin = idRoot.join("actors", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.or(
             cb.like(cb.lower(actorJoin.get("firstName")), searchTerm),
             cb.like(cb.lower(actorJoin.get("lastName")), searchTerm)
         ));
         
         // Language
-        Join<Item, Language> languageJoin = root.join("language", jakarta.persistence.criteria.JoinType.LEFT);
+        Join<Item, Language> languageJoin = idRoot.join("language", jakarta.persistence.criteria.JoinType.LEFT);
         predicates.add(cb.like(cb.lower(languageJoin.get("language")), searchTerm));
         
         // Combine predicates with OR (any match is a hit)
-        query.where(cb.or(predicates.toArray(new Predicate[0])));
+        idQuery.where(cb.or(predicates.toArray(new Predicate[0])));
         
-        // Remove duplicates (since we're joining multiple tables)
-        query.distinct(true);
+        // Select only IDs and make them distinct
+        idQuery.select(idRoot.get("id")).distinct(true);
         
-        // Count the results instead of returning the entities
-        query.select(cb.count(root));
-        
-        return entityManager.createQuery(query).getSingleResult().intValue();
+        // Now count the results from the subquery
+        List<Integer> distinctIds = entityManager.createQuery(idQuery).getResultList();
+        return distinctIds.size();
     }
     
     // #endregion
