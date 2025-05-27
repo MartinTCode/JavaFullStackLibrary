@@ -13,10 +13,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.services.ItemQueryService;
+import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.frontend.components.SearchResultItemComponent;
+import java.util.List;
 
 public class SearchViewLibrarianController implements Initializable {
 
-    public static String initialQuery = null; // <-- Add this line
+    public static String initialQuery = null;
 
     @FXML
     private Pane mainPane;
@@ -39,9 +43,12 @@ public class SearchViewLibrarianController implements Initializable {
     @FXML
     private Button loadMoreButton;
 
-    private int totalResults = 10; // Simulated total results
-    private int loadedResults = 0;
-    private final int PAGE_SIZE = 5;
+    // --- Real search state ---
+    private final ItemQueryService queryService = new ItemQueryService();
+    private static final int RESULTS_PER_PAGE = 5;
+    private int currentPage = 0;
+    private String currentQuery = "";
+    private long totalResults = 0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,42 +96,77 @@ public class SearchViewLibrarianController implements Initializable {
     @FXML
     private void clickedSearchButtonLibrarian() {
         String query = searchField.getText();
-        System.out.println("Librarian search query: " + query);
-
-        setResultsCountLabel(totalResults); // Simulate setting the results count
-        resultsContainer.getChildren().clear(); // Clear previous results
-
-        // Add mock results (replace with actual search logic)
-        for (int i = 1; i <= PAGE_SIZE && i <= totalResults; i++) {
-            Label result = new Label("Result " + i + " for query: " + query);
-            resultsContainer.getChildren().add(result);
+        if (query == null || query.trim().isEmpty()) {
+            resultsCountLabel.setText("Please enter a search query");
+            resultsContainer.getChildren().clear();
+            loadMoreButton.setVisible(false);
+            return;
         }
-        loadedResults = PAGE_SIZE;
-        loadMoreButton.setVisible(totalResults > PAGE_SIZE);
+
+        System.out.println("Librarian searching for: " + query);
+        currentQuery = query;
+        currentPage = 0;
+
+        // Query total result count
+        totalResults = queryService.countSearchResults(query);
+        setResultsCountLabel((int) totalResults);
+
+        // Clear previous results
+        resultsContainer.getChildren().clear();
+
+        // Perform search with pagination
+        loadSearchResults(query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
+
+        // Show/hide load more button
+        loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
+    }
+
+    private void loadSearchResults(String query, int offset, int limit) {
+        List<Item> items = queryService.searchItems(query, offset, limit);
+
+        for (Item item : items) {
+            SearchResultItemComponent resultComponent = new SearchResultItemComponent(item);
+            resultsContainer.getChildren().add(resultComponent);
+        }
+
+        if (items.isEmpty() && offset == 0) {
+            Label noResultsLabel = new Label("No results found for query: " + query);
+            resultsContainer.getChildren().add(noResultsLabel);
+        }
     }
 
     private void setResultsCountLabel(int count) {
-        if (resultsCountLabel != null) {
-            resultsCountLabel.setText("Search query resulted in " + count + " matches");
+        String resultText;
+        if (count == 0) {
+            resultText = "No matches found";
+        } else if (count == 1) {
+            resultText = "Found 1 match";
+        } else {
+            resultText = "Found " + count + " matches";
         }
+        resultsCountLabel.setText(resultText);
     }
 
     @FXML
     private void handleLoadMoreResults() {
         System.out.println("Loading more results...");
+        currentPage++;
 
-        int nextLimit = Math.min(loadedResults + PAGE_SIZE, totalResults);
-        for (int i = loadedResults + 1; i <= nextLimit; i++) {
-            Label result = new Label("Additional Result " + i + " for query: " + searchField.getText()
-                + ".\nShowing how it can hold more data in same box");
-            resultsContainer.getChildren().add(result);
+        int offset = currentPage * RESULTS_PER_PAGE;
+        loadSearchResults(currentQuery, offset, RESULTS_PER_PAGE);
+
+        if (offset + RESULTS_PER_PAGE >= totalResults) {
+            loadMoreButton.setVisible(false);
         }
-        loadedResults = nextLimit;
-        loadMoreButton.setVisible(loadedResults < totalResults);
     }
 
     public void setSearchQuery(String query) {
         searchField.setText(query);
         clickedSearchButtonLibrarian();
+    }
+
+    // Optionally, add a cleanup method to close the service
+    public void cleanup() {
+        queryService.close();
     }
 }
