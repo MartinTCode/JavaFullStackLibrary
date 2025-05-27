@@ -13,9 +13,9 @@ import static com.javafullstacklibrary.model.utils.LocationTestUtils.initializeO
 import static com.javafullstacklibrary.model.utils.EntityCleanupUtils.cleanupTestData;
 import static com.javafullstacklibrary.model.utils.EntityFetchOrCreateUtils.getOrCreateEntity;
 
-public class ItemM2MCRUDTests {
+public class BookM2MCRUDTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(ItemM2MCRUDTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(BookM2MCRUDTests.class);
 
     private static EntityManagerFactory emf;
     private EntityManager em;
@@ -74,34 +74,35 @@ public class ItemM2MCRUDTests {
         Keyword k2 = getOrCreateEntity(em, Keyword.class, "keyword", "Fantasy", () -> new Keyword("Fantasy"));
         Creator c1 = getOrCreateEntity(em, Creator.class, "firstName", "John", () -> new Creator("John", "Doe", LocalDate.of(1970, 1, 1)));
         Creator c2 = getOrCreateEntity(em, Creator.class, "firstName", "Jane", () -> new Creator("Jane", "Smith", LocalDate.of(1980, 2, 2)));
-        Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "ActorOne", () -> new Actor("ActorOne", "One", LocalDate.of(1990, 3, 3)));
-        Actor a2 = getOrCreateEntity(em, Actor.class, "firstName", "ActorTwo", () -> new Actor("ActorTwo", "Two", LocalDate.of(1991, 4, 4)));
+        //Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "ActorOne", () -> new Actor("ActorOne", "One", LocalDate.of(1990, 3, 3)));
+        //Actor a2 = getOrCreateEntity(em, Actor.class, "firstName", "ActorTwo", () -> new Actor("ActorTwo", "Two", LocalDate.of(1991, 4, 4)));
         Genre g1 = getOrCreateEntity(em, Genre.class, "genre", "Fiction", () -> new Genre("Fiction"));
         Genre g2 = getOrCreateEntity(em, Genre.class, "genre", "Adventure", () -> new Genre("Adventure"));
 
-        Item item = new Item();
-        item.setTitle("Test Book");
-        item.setType("book");
-        item.setLanguage(language);
-        item.setLocation(location);
-        item.setIdentifier("123");
-        item.setIdentifier2("456");
-        item.setKeywords(new HashSet<>(Set.of(k1, k2)));
-        item.setCreators(new HashSet<>(Set.of(c1, c2)));
-        item.setActors(new HashSet<>(Set.of(a1, a2)));
-        item.setGenres(new HashSet<>(Set.of(g1, g2)));
+        // Create a Book instead of abstract Item
+        Book book = new Book();
+        book.setTitle("Test Book");
+        book.setISBN13("9781234567890"); // Use book-specific method
+        book.setISBN10("1234567890");    // Use book-specific method
+        book.setLanguage(language);
+        book.setLocation(location);
+        book.setPublisher("Test Publisher");
+        book.setKeywords(new HashSet<>(Set.of(k1, k2)));
+        book.setAuthors(new HashSet<>(Set.of(c1, c2))); // Use book-specific method
+        //book.setActors(new HashSet<>(Set.of(a1, a2)));
+        book.setGenres(new HashSet<>(Set.of(g1, g2)));
 
-        // Act: Persist the item and clear the persistence context
-        em.persist(item);
+        // Act: Persist the book and clear the persistence context
+        em.persist(book);
         em.flush();
-        createdItemIds.add(item.getId());
+        createdItemIds.add(book.getId());
         em.clear();
 
         // Assert: Fetch and verify all M2M relationships
-        Item found = em.find(Item.class, item.getId());
+        Book found = em.find(Book.class, book.getId());
         Assertions.assertEquals(2, found.getKeywords().size());
-        Assertions.assertEquals(2, found.getCreators().size());
-        Assertions.assertEquals(2, found.getActors().size());
+        Assertions.assertEquals(2, found.getAuthors().size()); // Use book-specific method
+        //Assertions.assertEquals(2, found.getActors().size());
         Assertions.assertEquals(2, found.getGenres().size());
         logger.debug("testCreateItemWithAllM2M completed successfully.");
     }
@@ -110,56 +111,57 @@ public class ItemM2MCRUDTests {
     void testAddAndRemoveAllM2M() {
         logger.debug("Running testAddAndRemoveAllM2M...");
 
-        // Arrange: Prepare related entities and a new item
+        // Arrange: Prepare related entities and a new book
         Keyword k1 = getOrCreateEntity(em, Keyword.class, "keyword", "Adventure", () -> new Keyword("Adventure"));
         Creator c1 = getOrCreateEntity(em, Creator.class, "firstName", "John", () -> new Creator("John", "Doe", LocalDate.of(1970, 1, 1)));
-        Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "Actor", () -> new Actor("Actor", "One", LocalDate.of(1990, 3, 3)));
+        //Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "Actor", () -> new Actor("Actor", "One", LocalDate.of(1990, 3, 3)));
         Genre g1 = getOrCreateEntity(em, Genre.class, "genre", "Fiction", () -> new Genre("Fiction"));
 
-        Item item = new Item();
-        item.setTitle("Test Book");
-        item.setType("book");
-        item.setLanguage(language);
-        item.setLocation(location);
-        item.setIdentifier("123");
-        item.setIdentifier2("456");
-        item.setKeywords(new HashSet<>());
-        item.setCreators(new HashSet<>());
-        item.setActors(new HashSet<>());
-        item.setGenres(new HashSet<>());
-        em.persist(item);
-        createdItemIds.add(item.getId());
+        // Create a Book instead of abstract Item
+        Book book = new Book();
+        book.setTitle("Test Book");
+        book.setISBN13("9781234567891"); // Use book-specific method
+        book.setISBN10("1234567891");    // Use book-specific method
+        book.setLanguage(language);
+        book.setLocation(location);
+        book.setPublisher("Test Publisher");
+        book.setKeywords(new HashSet<>());
+        //book.setAuthors(new HashSet<>()); // Use book-specific method
+        book.setActors(new HashSet<>());
+        book.setGenres(new HashSet<>());
+        em.persist(book);
+        createdItemIds.add(book.getId());
 
         // Act: Add all M2M relationships, then remove them
-        item.getKeywords().add(k1);
-        item.getCreators().add(c1);
-        item.getActors().add(a1);
-        item.getGenres().add(g1);
-        em.merge(item);
+        book.getKeywords().add(k1);
+        book.getAuthors().add(c1); // Use book-specific method
+        //book.getActors().add(a1);
+        book.getGenres().add(g1);
+        em.merge(book);
         em.flush();
         em.clear();
 
         // Assert: Verify all relationships were added
-        Item found = em.find(Item.class, item.getId());
+        Book found = em.find(Book.class, book.getId());
         Assertions.assertTrue(found.getKeywords().contains(k1));
-        Assertions.assertTrue(found.getCreators().contains(c1));
-        Assertions.assertTrue(found.getActors().contains(a1));
+        Assertions.assertTrue(found.getAuthors().contains(c1)); // Use book-specific method
+        //Assertions.assertTrue(found.getActors().contains(a1));
         Assertions.assertTrue(found.getGenres().contains(g1));
 
         // Act: Remove all M2M relationships and update
         found.getKeywords().remove(k1);
-        found.getCreators().remove(c1);
-        found.getActors().remove(a1);
+        found.getAuthors().remove(c1); // Use book-specific method
+        //found.getActors().remove(a1);
         found.getGenres().remove(g1);
         em.merge(found);
         em.flush();
         em.clear();
 
         // Assert: Verify all relationships were removed
-        Item found2 = em.find(Item.class, item.getId());
+        Book found2 = em.find(Book.class, book.getId());
         Assertions.assertTrue(found2.getKeywords().isEmpty());
-        Assertions.assertTrue(found2.getCreators().isEmpty());
-        Assertions.assertTrue(found2.getActors().isEmpty());
+        Assertions.assertTrue(found2.getAuthors().isEmpty()); // Use book-specific method
+        //Assertions.assertTrue(found2.getActors().isEmpty());
         Assertions.assertTrue(found2.getGenres().isEmpty());
         logger.debug("testAddAndRemoveAllM2M completed successfully.");
     }
@@ -168,40 +170,41 @@ public class ItemM2MCRUDTests {
     void testClearAllM2M() {
         logger.debug("Running testClearAllM2M...");
 
-        // Arrange: Prepare related entities and a new item with all M2M relationships
+        // Arrange: Prepare related entities and a new Book with all M2M relationships
         Keyword k1 = getOrCreateEntity(em, Keyword.class, "keyword", "Adventure", () -> new Keyword("Adventure"));
         Creator c1 = getOrCreateEntity(em, Creator.class, "firstName", "John", () -> new Creator("John", "Doe", LocalDate.of(1970, 1, 1)));
-        Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "Actor", () -> new Actor("Actor", "One", LocalDate.of(1990, 3, 3)));
+        //Actor a1 = getOrCreateEntity(em, Actor.class, "firstName", "Actor", () -> new Actor("Actor", "One", LocalDate.of(1990, 3, 3)));
         Genre g1 = getOrCreateEntity(em, Genre.class, "genre", "Fiction", () -> new Genre("Fiction"));
 
-        Item item = new Item();
-        item.setTitle("Test Book");
-        item.setType("book");
-        item.setLanguage(language);
-        item.setLocation(location);
-        item.setIdentifier("123");
-        item.setIdentifier2("456");
-        item.setKeywords(new HashSet<>(Set.of(k1)));
-        item.setCreators(new HashSet<>(Set.of(c1)));
-        item.setActors(new HashSet<>(Set.of(a1)));
-        item.setGenres(new HashSet<>(Set.of(g1)));
-        em.persist(item);
-        createdItemIds.add(item.getId());
+        // Create a Book instead of abstract Item
+        Book book = new Book();
+        book.setTitle("Test Book");
+        book.setISBN13("9781234567890"); // Use book-specific method
+        book.setISBN10("1234567890");    // Use book-specific method
+        book.setLanguage(language);
+        book.setLocation(location);
+        book.setPublisher("Test Publisher");
+        book.setKeywords(new HashSet<>(Set.of(k1)));
+        book.setAuthors(new HashSet<>(Set.of(c1))); // Use book-specific method for creators
+        //book.setActors(new HashSet<>(Set.of(a1)));
+        book.setGenres(new HashSet<>(Set.of(g1)));
+        em.persist(book);
+        createdItemIds.add(book.getId());
 
         // Act: Clear all M2M relationships and update
-        item.getKeywords().clear();
-        item.getCreators().clear();
-        item.getActors().clear();
-        item.getGenres().clear();
-        em.merge(item);
+        book.getKeywords().clear();
+        book.getAuthors().clear();       // Use book-specific method
+        //book.getActors().clear();
+        book.getGenres().clear();
+        em.merge(book);
         em.flush();
         em.clear();
 
         // Assert: Verify all relationships are cleared
-        Item found = em.find(Item.class, item.getId());
+        Book found = em.find(Book.class, book.getId());
         Assertions.assertTrue(found.getKeywords().isEmpty());
-        Assertions.assertTrue(found.getCreators().isEmpty());
-        Assertions.assertTrue(found.getActors().isEmpty());
+        Assertions.assertTrue(found.getAuthors().isEmpty());  // Use book-specific method
+        //Assertions.assertTrue(found.getActors().isEmpty());
         Assertions.assertTrue(found.getGenres().isEmpty());
         logger.debug("testClearAllM2M completed successfully.");
     }
