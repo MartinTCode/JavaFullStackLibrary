@@ -143,8 +143,8 @@
                >
                   <children>
                      <VBox
-                         spacing="10.0"
-                         styleClass="results-box"
+                        spacing="10.0"
+                        styleClass="results-box"
                      >
                         <children>
                            <Button
@@ -167,7 +167,8 @@
                            />
                         </children>
                      </VBox>
-                     <VBox styleClass="results-box">
+                     <VBox styleClass="results-box"
+                           HBox.hgrow="ALWAYS">
                         <padding>
                            <Insets
                                left="10.0"
