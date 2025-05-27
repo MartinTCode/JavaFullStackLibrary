@@ -64,6 +64,10 @@ public class SearchViewGuestController implements Initializable {
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             System.out.println("Retrieved search query: " + searchQuery);
             setSearchQuery(searchQuery);
+        } else {
+            resultsCountLabel.setText("Please enter a search query");
+            System.out.println("No search query found in DataSingleton.");
+            loadMoreButton.setVisible(false);
         }
         
         // Initially hide the load more button
