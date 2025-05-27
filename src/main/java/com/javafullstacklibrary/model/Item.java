@@ -15,6 +15,8 @@ import jakarta.persistence.JoinTable; // Importing JoinTable for many-to-many re
 
 import java.util.ArrayList; // Importing ArrayList for one-to-many relationship
 import java.util.List; // Importing List for one-to-many relationship
+import java.util.Map;
+
 import jakarta.persistence.CascadeType;
 import java.util.Set; // Importing Set for many-to-many relationship
 
@@ -156,6 +158,12 @@ public abstract class Item {
         this.ageLimit = ageLimit;
         this.countryOfProduction = countryOfProduction;
     }
+
+    public abstract Map<String, String> getParameterMap(); 
+        // This method should be implemented by subclasses to return a map of parameters
+        // specific to the item type, e.g., Book, Journal, DVD, etc.
+        // The map should contain parameter names and their corresponding values.
+        
 
     // #endregion
 
@@ -301,5 +309,43 @@ public abstract class Item {
         this.genres = genres;
     }
 
+    // #endregion
+
+    // #region Object overrides
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        Item item = (Item) o;
+        
+        // First compare by ID if available (for database-persisted entities)
+        if (id != null && item.id != null) {
+            return id.equals(item.id);
+        }
+        
+        // If ID is not available (not persisted yet), compare key fields
+        if (identifier != null ? !identifier.equals(item.identifier) : item.identifier != null) return false;
+        if (identifier2 != null ? !identifier2.equals(item.identifier2) : item.identifier2 != null) return false;
+        if (title != null ? !title.equals(item.title) : item.title != null) return false; 
+        return publisher != null ? publisher.equals(item.publisher) : item.publisher == null;
+    }
+    
+    @Override
+    public int hashCode() {
+        // Use ID if available for consistent hashing
+        if (id != null) {
+            return id.hashCode();
+        }
+        
+        // Otherwise use combination of key fields
+        int result = identifier != null ? identifier.hashCode() : 0;
+        result = 31 * result + (identifier2 != null ? identifier2.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
+        return result;
+    }
+    
     // #endregion
 }
