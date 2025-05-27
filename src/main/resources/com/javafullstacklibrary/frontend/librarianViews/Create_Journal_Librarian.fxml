@@ -220,7 +220,10 @@
                                  >
                                     <children>
                                        <Label text="Title *" />
-                                       <TextField VBox.vgrow="ALWAYS">
+                                       <TextField
+                                           fx:id="journalTitleTextFieldLibrarian"
+                                           VBox.vgrow="ALWAYS"
+                                       >
                                           <VBox.margin>
                                              <Insets />
                                           </VBox.margin>
@@ -237,7 +240,9 @@
                                  >
                                     <children>
                                        <Label text="ISSN *" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="journalIssnTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -247,7 +252,9 @@
                                  >
                                     <children>
                                        <Label text="Publisher" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="journalPublisherTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -409,9 +416,9 @@
                            >
                               <children>
                                  <Button
-                                     fx:id="cancelNewBookButtonLibrarian"
+                                     fx:id="cancelNewJournalButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelNewBookButtonLibrarian"
+                                     onMouseClicked="#clickedCancelNewJournalButtonLibrarian"
                                      text="Cancel"
                                  />
                                  <VBox>
@@ -421,9 +428,9 @@
                                     </children>
                                  </VBox>
                                  <Button
-                                     fx:id="saveNewBookButtonLibrarian"
+                                     fx:id="saveNewJournalButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedSaveNewBookButtonLibrarian"
+                                     onMouseClicked="#clickedSaveNewJournalButtonLibrarian"
                                      text="Create and Save"
                                  />
                               </children>

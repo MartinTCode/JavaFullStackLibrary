@@ -225,7 +225,10 @@
                                  >
                                     <children>
                                        <Label text="Title *" />
-                                       <TextField VBox.vgrow="ALWAYS">
+                                       <TextField
+                                           fx:id="dvdTitleTextFieldLibrarian"
+                                           VBox.vgrow="ALWAYS"
+                                       >
                                           <VBox.margin>
                                              <Insets />
                                           </VBox.margin>
@@ -242,7 +245,9 @@
                                  >
                                     <children>
                                        <Label text="IMDBC" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="dvdImdbcTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -252,7 +257,9 @@
                                  >
                                     <children>
                                        <Label text="Publisher" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="dvdPublisherTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -433,7 +440,9 @@
                                  >
                                     <children>
                                        <Label text="Country of Origin" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="dvdCountryTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -443,7 +452,9 @@
                                  >
                                     <children>
                                        <Label text="Age Limit" />
-                                       <TextField />
+                                       <TextField
+                                           fx:id="dvdAgeLimitTextFieldLibrarian"
+                                       />
                                     </children>
                                  </VBox>
                               </children>
@@ -460,9 +471,9 @@
                            >
                               <children>
                                  <Button
-                                     fx:id="cancelNewUsersButtonLibrarian"
+                                     fx:id="cancelNewDvdButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelNewUsersButtonLibrarian"
+                                     onMouseClicked="#clickedCancelNewDvdButtonLibrarian"
                                      text="Cancel"
                                  />
                                  <VBox>
@@ -472,9 +483,9 @@
                                     </children>
                                  </VBox>
                                  <Button
-                                     fx:id="saveNewUsersButtonLibrarian"
+                                     fx:id="saveNewDvdButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedSaveNewUsersButtonLibrarian"
+                                     onMouseClicked="#clickedSaveNewDvdButtonLibrarian"
                                      text="Create and Save"
                                  />
                               </children>
