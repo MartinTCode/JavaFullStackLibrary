@@ -76,8 +76,8 @@ public class CreateBookLibrarianController {
     /** 
      * Handles the click event for the "Save New Book" button.
      * This method reads input from text fields and combo boxes,
-     * prints the values to the console for now - change this to save the book
-     * to the database later
+     * prints the values to the console for now 
+     * #TODO: Replace with actual save logic when database integration is implemented.
      * @param event the mouse event that triggered this method
      */
     @FXML

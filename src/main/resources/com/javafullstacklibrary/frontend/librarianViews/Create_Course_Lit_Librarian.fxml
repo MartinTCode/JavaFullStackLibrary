@@ -220,10 +220,12 @@
                                  >
                                     <children>
                                        <Label text="Title *" />
-                                       <TextField VBox.vgrow="ALWAYS">
-                                          <VBox.margin>
-                                             <Insets />
-                                          </VBox.margin>
+                                       <TextField 
+                                          fx:id="CourseLitTitleTextFieldLibrarian" 
+                                          VBox.vgrow="ALWAYS">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                                        </TextField>
                                     </children>
                                     <GridPane.margin>
@@ -237,7 +239,7 @@
                                  >
                                     <children>
                                        <Label text="ISBN13 **" />
-                                       <TextField />
+                                       <TextField fx:id="CourseLitIsbn13TextFieldLibrarian" />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -247,7 +249,7 @@
                                  >
                                     <children>
                                        <Label text="ISBN10 **" />
-                                       <TextField />
+                                       <TextField fx:id="CourseLitIsbn10TextFieldLibrarian" />
                                     </children>
                                  </VBox>
                                  <VBox
@@ -257,7 +259,7 @@
                                  >
                                     <children>
                                        <Label text="Publisher" />
-                                       <TextField />
+                                       <TextField fx:id="CourseLitPublisherTextFieldLibrarian" />
                                     </children>
                                  </VBox>
                                  <VBox
