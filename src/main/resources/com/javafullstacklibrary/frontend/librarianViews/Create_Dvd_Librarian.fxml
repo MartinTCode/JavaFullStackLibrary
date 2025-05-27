@@ -18,10 +18,6 @@
 
 <BorderPane
     fx:id="mainPane"
-    minHeight="400.0"
-    minWidth="600.0"
-    prefHeight="400.0"
-    prefWidth="600.0"
     stylesheets="@../styles/common.css"
     xmlns="http://javafx.com/javafx/23.0.1"
     xmlns:fx="http://javafx.com/fxml/1"
@@ -173,20 +169,20 @@
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
                                    minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                              </columnConstraints>
                              <rowConstraints>
+                               <RowConstraints
+                                   minHeight="10.0"
+                                   prefHeight="30.0"
+                                   vgrow="SOMETIMES"
+                               />
                                <RowConstraints
                                    minHeight="10.0"
                                    prefHeight="30.0"
@@ -272,7 +268,6 @@
                                        <ComboBox
                                            fx:id="dvdLanguageComboBoxLibrarian"
                                            editable="true"
-                                           prefWidth="150.0"
                                            VBox.vgrow="ALWAYS"
                                        />
                                     </children>
@@ -282,14 +277,13 @@
                                      prefWidth="100.0"
                                      spacing="3.0"
                                      GridPane.columnIndex="1"
-                                     GridPane.rowIndex="1"
+                                     GridPane.rowIndex="5"
                                  >
                                     <children>
                                        <Label text="Actor(s)" />
                                        <ComboBox
                                            fx:id="dvdActorComboBox1"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="actor *"
                                        />
                                        <ComboBox
@@ -297,7 +291,6 @@
                                            editable="true"
                                            layoutX="10.0"
                                            layoutY="25.0"
-                                           prefWidth="150.0"
                                            promptText="actor"
                                        />
                                        <ComboBox
@@ -305,20 +298,11 @@
                                            editable="true"
                                            layoutX="10.0"
                                            layoutY="48.0"
-                                           prefWidth="150.0"
-                                           promptText="actor"
-                                       />
-                                       <ComboBox
-                                           fx:id="dvdActorComboBox4"
-                                           editable="true"
-                                           layoutX="10.0"
-                                           layoutY="71.0"
-                                           prefWidth="150.0"
                                            promptText="actor"
                                        />
                                     </children>
                                     <GridPane.margin>
-                                       <Insets />
+                                       <Insets top="50.0" />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -333,7 +317,6 @@
                                        <ComboBox
                                            fx:id="dvdDirectorComboBox1"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="director *"
                                        />
                                        <ComboBox
@@ -341,7 +324,6 @@
                                            editable="true"
                                            layoutX="10.0"
                                            layoutY="25.0"
-                                           prefWidth="150.0"
                                            promptText="co-director"
                                        />
                                        <ComboBox
@@ -349,7 +331,6 @@
                                            editable="true"
                                            layoutX="10.0"
                                            layoutY="48.0"
-                                           prefWidth="150.0"
                                            promptText="co-director"
                                        />
                                     </children>
@@ -357,7 +338,7 @@
                                        <Insets />
                                     </opaqueInsets>
                                     <GridPane.margin>
-                                       <Insets top="80.0" />
+                                       <Insets />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -371,24 +352,21 @@
                                        <ComboBox
                                            fx:id="dvdGenreComboBox1"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="genre *"
                                        />
                                        <ComboBox
                                            fx:id="dvdGenreComboBox2"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="genre"
                                        />
                                        <ComboBox
                                            fx:id="dvdGenreComboBox3"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="genre"
                                        />
                                     </children>
                                     <GridPane.margin>
-                                       <Insets top="55.0" />
+                                       <Insets top="45.0" />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -405,32 +383,21 @@
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox1"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="keyword *"
                                        />
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox2"
                                            editable="true"
-                                           prefWidth="150.0"
                                            promptText="keyword"
                                        />
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox3"
                                            editable="true"
-                                           prefWidth="150.0"
-                                           promptText="keyword"
-                                       />
-                                       <ComboBox
-                                           fx:id="dvdKeywordComboBox4"
-                                           editable="true"
-                                           layoutX="10.0"
-                                           layoutY="80.0"
-                                           prefWidth="150.0"
                                            promptText="keyword"
                                        />
                                     </children>
                                     <GridPane.margin>
-                                       <Insets top="50.0" />
+                                       <Insets />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -456,6 +423,45 @@
                                            fx:id="dvdAgeLimitTextFieldLibrarian"
                                        />
                                     </children>
+                                 </VBox>
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     spacing="3.0"
+                                     GridPane.columnIndex="1"
+                                 >
+                                    <children>
+                                       <Label text="Location" />
+                                       <ComboBox
+                                           fx:id="dvdFloorComboBoxLibrarian"
+                                           editable="true"
+                                           promptText="Floor "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdSectionComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="25.0"
+                                           promptText="Section "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdShelfComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="48.0"
+                                           promptText="Shelf "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdPositionComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="71.0"
+                                           promptText="Position "
+                                       />
+                                    </children>
+                                    <GridPane.margin>
+                                       <Insets top="70.0" />
+                                    </GridPane.margin>
                                  </VBox>
                               </children>
                               <padding>

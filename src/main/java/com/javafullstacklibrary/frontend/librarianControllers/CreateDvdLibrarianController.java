@@ -26,7 +26,6 @@ public class CreateDvdLibrarianController {
     @FXML private ComboBox<String> dvdActorComboBox1;
     @FXML private ComboBox<String> dvdActorComboBox2;
     @FXML private ComboBox<String> dvdActorComboBox3;
-    @FXML private ComboBox<String> dvdActorComboBox4;
     @FXML private ComboBox<String> dvdDirectorComboBox1;
     @FXML private ComboBox<String> dvdDirectorComboBox2;
     @FXML private ComboBox<String> dvdDirectorComboBox3;
@@ -36,7 +35,10 @@ public class CreateDvdLibrarianController {
     @FXML private ComboBox<String> dvdKeywordComboBox1;
     @FXML private ComboBox<String> dvdKeywordComboBox2;
     @FXML private ComboBox<String> dvdKeywordComboBox3;
-    @FXML private ComboBox<String> dvdKeywordComboBox4;
+    @FXML private ComboBox<String> dvdFloorComboBoxLibrarian;
+    @FXML private ComboBox<String> dvdSectionComboBoxLibrarian;
+    @FXML private ComboBox<String> dvdShelfComboBoxLibrarian;
+    @FXML private ComboBox<String> dvdPositionComboBoxLibrarian;
 
     /**
      * This method is called when the controller is initialized.
@@ -57,13 +59,16 @@ public class CreateDvdLibrarianController {
         ObservableList<String> directors = FXCollections.observableArrayList("Director X", "Director Y", "Director Z");
         ObservableList<String> genres = FXCollections.observableArrayList("Action", "Comedy", "Drama", "Documentary");
         ObservableList<String> keywords = FXCollections.observableArrayList("Keyword1", "Keyword2", "Keyword3", "Keyword4");
+        ObservableList<String> floors = FXCollections.observableArrayList("1", "2", "3", "4");
+        ObservableList<String> sections = FXCollections.observableArrayList("A", "B", "C", "D");
+        ObservableList<String> shelves = FXCollections.observableArrayList("Shelf 1", "Shelf 2", "Shelf 3", "Shelf 4");
+        ObservableList<String> positions = FXCollections.observableArrayList("Top", "Middle", "Bottom");
 
         dvdLanguageComboBoxLibrarian.setItems(languages);
 
         dvdActorComboBox1.setItems(actors);
         dvdActorComboBox2.setItems(actors);
         dvdActorComboBox3.setItems(actors);
-        dvdActorComboBox4.setItems(actors);
 
         dvdDirectorComboBox1.setItems(directors);
         dvdDirectorComboBox2.setItems(directors);
@@ -76,7 +81,12 @@ public class CreateDvdLibrarianController {
         dvdKeywordComboBox1.setItems(keywords);
         dvdKeywordComboBox2.setItems(keywords);
         dvdKeywordComboBox3.setItems(keywords);
-        dvdKeywordComboBox4.setItems(keywords);
+
+        // Location ComboBoxes
+        dvdFloorComboBoxLibrarian.setItems(floors);
+        dvdSectionComboBoxLibrarian.setItems(sections);
+        dvdShelfComboBoxLibrarian.setItems(shelves);
+        dvdPositionComboBoxLibrarian.setItems(positions);
     }
 
     // --- Top Menu Navigation Handlers ---
@@ -139,7 +149,6 @@ public class CreateDvdLibrarianController {
         String actor1 = dvdActorComboBox1.getValue();
         String actor2 = dvdActorComboBox2.getValue();
         String actor3 = dvdActorComboBox3.getValue();
-        String actor4 = dvdActorComboBox4.getValue();
 
         String director1 = dvdDirectorComboBox1.getValue();
         String director2 = dvdDirectorComboBox2.getValue();
@@ -152,7 +161,11 @@ public class CreateDvdLibrarianController {
         String keyword1 = dvdKeywordComboBox1.getValue();
         String keyword2 = dvdKeywordComboBox2.getValue();
         String keyword3 = dvdKeywordComboBox3.getValue();
-        String keyword4 = dvdKeywordComboBox4.getValue();
+
+        String floor = dvdFloorComboBoxLibrarian.getValue();
+        String section = dvdSectionComboBoxLibrarian.getValue();
+        String shelf = dvdShelfComboBoxLibrarian.getValue();        
+        String position = dvdPositionComboBoxLibrarian.getValue();
 
         // Print all values to the console, switch this out to actual save logic later
         System.out.println("Save New DVD button clicked. Input values:");
@@ -165,7 +178,6 @@ public class CreateDvdLibrarianController {
         System.out.println("Actor 1: " + actor1);
         System.out.println("Actor 2: " + actor2);
         System.out.println("Actor 3: " + actor3);
-        System.out.println("Actor 4: " + actor4);
         System.out.println("Director 1: " + director1);
         System.out.println("Director 2: " + director2);
         System.out.println("Director 3: " + director3);
@@ -175,14 +187,16 @@ public class CreateDvdLibrarianController {
         System.out.println("Keyword 1: " + keyword1);
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Keyword 4: " + keyword4);
+        System.out.println("Floor: " + floor);
+        System.out.println("Section: " + section);  
+        System.out.println("Shelf: " + shelf);
+        System.out.println("Position: " + position);
 
         // Add new inputs to ComboBoxes if they are not already present
         addNewInputToComboBox(dvdLanguageComboBoxLibrarian);
         addNewInputToComboBox(dvdActorComboBox1);
         addNewInputToComboBox(dvdActorComboBox2);
         addNewInputToComboBox(dvdActorComboBox3);
-        addNewInputToComboBox(dvdActorComboBox4);
         addNewInputToComboBox(dvdDirectorComboBox1);
         addNewInputToComboBox(dvdDirectorComboBox2);
         addNewInputToComboBox(dvdDirectorComboBox3);
@@ -192,7 +206,10 @@ public class CreateDvdLibrarianController {
         addNewInputToComboBox(dvdKeywordComboBox1);
         addNewInputToComboBox(dvdKeywordComboBox2);
         addNewInputToComboBox(dvdKeywordComboBox3);
-        addNewInputToComboBox(dvdKeywordComboBox4);
+        addNewInputToComboBox(dvdFloorComboBoxLibrarian);
+        addNewInputToComboBox(dvdSectionComboBoxLibrarian);
+        addNewInputToComboBox(dvdShelfComboBoxLibrarian);
+        addNewInputToComboBox(dvdPositionComboBoxLibrarian);
     }
 
     /**

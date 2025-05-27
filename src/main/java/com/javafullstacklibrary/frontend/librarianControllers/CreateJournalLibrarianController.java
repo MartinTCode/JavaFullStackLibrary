@@ -31,8 +31,6 @@ public class CreateJournalLibrarianController {
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian1;
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian2;
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian3;
-    @FXML private ComboBox<String> journalAuthorComboBoxLibrarian4;
-    @FXML private ComboBox<String> journalAuthorComboBoxLibrarian5;
 
 
     // --- Top Menu Navigation Handlers ---
@@ -101,8 +99,6 @@ public class CreateJournalLibrarianController {
         String author1 = journalAuthorComboBoxLibrarian1.getValue();
         String author2 = journalAuthorComboBoxLibrarian2.getValue();
         String author3 = journalAuthorComboBoxLibrarian3.getValue();
-        String author4 = journalAuthorComboBoxLibrarian4.getValue();
-        String author5 = journalAuthorComboBoxLibrarian5.getValue();
 
         // Print all values to the console, changed to actual save logic later
         System.out.println("Save New Journal button clicked. Input values:");
@@ -120,8 +116,6 @@ public class CreateJournalLibrarianController {
         System.out.println("Author 1: " + author1);
         System.out.println("Author 2: " + author2);
         System.out.println("Author 3: " + author3);
-        System.out.println("Author 4: " + author4);
-        System.out.println("Author 5: " + author5);
 
         // Add new inputs to ComboBoxes if they are not already in the list
         addNewInputToComboBox(journalLanguageComboBoxLibrarian);
@@ -135,8 +129,6 @@ public class CreateJournalLibrarianController {
         addNewInputToComboBox(journalAuthorComboBoxLibrarian1);
         addNewInputToComboBox(journalAuthorComboBoxLibrarian2);
         addNewInputToComboBox(journalAuthorComboBoxLibrarian3);
-        addNewInputToComboBox(journalAuthorComboBoxLibrarian4);
-        addNewInputToComboBox(journalAuthorComboBoxLibrarian5);
     }
 
     /**
@@ -176,8 +168,7 @@ public class CreateJournalLibrarianController {
         journalAuthorComboBoxLibrarian1.setItems(authors);
         journalAuthorComboBoxLibrarian2.setItems(authors);
         journalAuthorComboBoxLibrarian3.setItems(authors);
-        journalAuthorComboBoxLibrarian4.setItems(authors);
-        journalAuthorComboBoxLibrarian5.setItems(authors);
+
     }
 
     /**

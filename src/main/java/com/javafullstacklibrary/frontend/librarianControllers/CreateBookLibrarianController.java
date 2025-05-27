@@ -35,7 +35,6 @@ public class CreateBookLibrarianController {
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian1;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian3;
-    @FXML private ComboBox<String> bookKeywordComboBoxLibrarian4;
 
     // Top menu icons
     @FXML private void clickedHomeMenuLibrarian(MouseEvent event) {
@@ -105,7 +104,6 @@ public class CreateBookLibrarianController {
         String keyword1 = bookKeywordComboBoxLibrarian1.getValue();
         String keyword2 = bookKeywordComboBoxLibrarian2.getValue();
         String keyword3 = bookKeywordComboBoxLibrarian3.getValue();
-        String keyword4 = bookKeywordComboBoxLibrarian4.getValue();
 
         // Print all values to the console
         System.out.println("Save New Book button clicked. Input values:");
@@ -127,7 +125,6 @@ public class CreateBookLibrarianController {
         System.out.println("Keyword 1: " + keyword1);
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Keyword 4: " + keyword4);
 
         // Add new inputs to ComboBoxes if they are not already in the list
         addNewInputToComboBox(bookLanguageComboBoxLibrarian);
@@ -144,7 +141,6 @@ public class CreateBookLibrarianController {
         addNewInputToComboBox(bookKeywordComboBoxLibrarian1);
         addNewInputToComboBox(bookKeywordComboBoxLibrarian2);
         addNewInputToComboBox(bookKeywordComboBoxLibrarian3);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian4);
     }
 
     /**
@@ -180,7 +176,6 @@ public class CreateBookLibrarianController {
         bookKeywordComboBoxLibrarian1.setItems(keywords);
         bookKeywordComboBoxLibrarian2.setItems(keywords);
         bookKeywordComboBoxLibrarian3.setItems(keywords);
-        bookKeywordComboBoxLibrarian4.setItems(keywords);
     }
 
     /**

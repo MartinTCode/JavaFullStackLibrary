@@ -35,7 +35,6 @@ public class CreateCourseLitLibrarianController {
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian1;
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian3;
-    @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian4;
 
     /**
      * This method is called when the controller is initialized.
@@ -116,7 +115,6 @@ public class CreateCourseLitLibrarianController {
         String keyword1 = CourseLitKeywordComboBoxLibrarian1.getValue();
         String keyword2 = CourseLitKeywordComboBoxLibrarian2.getValue();
         String keyword3 = CourseLitKeywordComboBoxLibrarian3.getValue();
-        String keyword4 = CourseLitKeywordComboBoxLibrarian4.getValue();
 
         // Print all values to the console
         System.out.println("Save New Course Literature button clicked. Input values:");
@@ -138,7 +136,6 @@ public class CreateCourseLitLibrarianController {
         System.out.println("Keyword 1: " + keyword1);
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Keyword 4: " + keyword4);
 
         addNewInputToComboBox(CourseLitLanguageComboBoxLibrarian);
         addNewInputToComboBox(CourseLitFloorComboBoxLibrarian);
@@ -154,7 +151,6 @@ public class CreateCourseLitLibrarianController {
         addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian1);
         addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian2);
         addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian3);
-        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian4);
     }
 
     /**
@@ -190,7 +186,6 @@ public class CreateCourseLitLibrarianController {
         CourseLitKeywordComboBoxLibrarian1.setItems(keywords);
         CourseLitKeywordComboBoxLibrarian2.setItems(keywords);
         CourseLitKeywordComboBoxLibrarian3.setItems(keywords);
-        CourseLitKeywordComboBoxLibrarian4.setItems(keywords);
     }
 
     /**
