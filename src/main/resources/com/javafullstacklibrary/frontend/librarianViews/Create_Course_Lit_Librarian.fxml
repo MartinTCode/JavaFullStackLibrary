@@ -417,14 +417,6 @@
                                            prefWidth="150.0"
                                            promptText="keyword"
                                        />
-                                       <ComboBox
-                                           fx:id="CourseLitKeywordComboBoxLibrarian4"
-                                           editable="true"
-                                           layoutX="10.0"
-                                           layoutY="80.0"
-                                           prefWidth="150.0"
-                                           promptText="keyword"
-                                       />
                                     </children>
                                     <GridPane.margin>
                                        <Insets top="30.0" />
