@@ -27,6 +27,11 @@ public class Creator {
 
     public Creator() {}
 
+    public Creator(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Creator(String firstName, String lastName, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;

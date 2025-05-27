@@ -1,6 +1,18 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import java.util.Set;
+
+import com.javafullstacklibrary.dao.ItemDAO;
+import com.javafullstacklibrary.model.Actor;
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.model.Location;
+import com.javafullstacklibrary.services.ItemHandlerService;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+import jakarta.persistence.EntityManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -88,7 +100,7 @@ public class CreateBookLibrarianController {
         String isbn10 = bookIsbn10TextFieldLibrarian.getText();
         String publisher = bookPublisherTextFieldLibrarian.getText();
 
-        String language = bookLanguageComboBoxLibrarian.getValue();
+        String languageName = bookLanguageComboBoxLibrarian.getValue();
         String floor = bookFloorComboBoxLibrarian.getValue();
         String section = bookSectionComboBoxLibrarian.getValue();
         String shelf = bookShelfComboBoxLibrarian.getValue();
@@ -107,44 +119,30 @@ public class CreateBookLibrarianController {
         String keyword3 = bookKeywordComboBoxLibrarian3.getValue();
         String keyword4 = bookKeywordComboBoxLibrarian4.getValue();
 
-        // Print all values to the console
-        System.out.println("Save New Book button clicked. Input values:");
-        System.out.println("Title: " + title);
-        System.out.println("ISBN13: " + isbn13);
-        System.out.println("ISBN10: " + isbn10);
-        System.out.println("Publisher: " + publisher);
-        System.out.println("Language: " + language);
-        System.out.println("Floor: " + floor);
-        System.out.println("Section: " + section);
-        System.out.println("Shelf: " + shelf);
-        System.out.println("Position: " + position);
-        System.out.println("Author 1: " + author1);
-        System.out.println("Author 2: " + author2);
-        System.out.println("Author 3: " + author3);
-        System.out.println("Genre 1: " + genre1);
-        System.out.println("Genre 2: " + genre2);
-        System.out.println("Genre 3: " + genre3);
-        System.out.println("Keyword 1: " + keyword1);
-        System.out.println("Keyword 2: " + keyword2);
-        System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Keyword 4: " + keyword4);
+        // --- Pass raw input values to the service ---
+        ItemDAO itemDAO = new ItemDAO(new EntityManager()););
+        ItemHandlerService itemHandlerService = new ItemHandlerService(itemDAO);
 
-        // Add new inputs to ComboBoxes if they are not already in the list
-        addNewInputToComboBox(bookLanguageComboBoxLibrarian);
-        addNewInputToComboBox(bookFloorComboBoxLibrarian);
-        addNewInputToComboBox(bookSectionComboBoxLibrarian);
-        addNewInputToComboBox(bookShelfComboBoxLibrarian);
-        addNewInputToComboBox(bookPositionComboBoxLibrarian);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian1);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian2);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian3);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian1);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian2);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian3);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian1);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian2);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian3);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian4);
+        itemHandlerService.addBook(
+            "book",
+            floor,
+            section,
+            shelf,
+            position,
+            languageName,
+            keyword1, keyword2, keyword3, keyword4,
+            author1, author2, author3,
+            genre1, genre2, genre3,
+            isbn13,
+            isbn10,
+            title,
+            publisher,
+            null, // ageLimit
+            null  // countryOfProduction
+        );
+
+        // Optionally, show a confirmation or clear the form
+        System.out.println("Book saved to database.");
     }
 
     /**
