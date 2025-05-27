@@ -122,6 +122,21 @@ public class CreateJournalLibrarianController {
         System.out.println("Author 3: " + author3);
         System.out.println("Author 4: " + author4);
         System.out.println("Author 5: " + author5);
+
+        // Add new inputs to ComboBoxes if they are not already in the list
+        addNewInputToComboBox(journalLanguageComboBoxLibrarian);
+        addNewInputToComboBox(journalFloorComboBoxLibrarian);
+        addNewInputToComboBox(journalSectionComboBoxLibrarian);
+        addNewInputToComboBox(journalShelfComboBoxLibrarian);
+        addNewInputToComboBox(journalPositionComboBoxLibrarian);
+        addNewInputToComboBox(journalKeywordComboBoxLibrarian1);
+        addNewInputToComboBox(journalKeywordComboBoxLibrarian2);
+        addNewInputToComboBox(journalKeywordComboBoxLibrarian3);
+        addNewInputToComboBox(journalAuthorComboBoxLibrarian1);
+        addNewInputToComboBox(journalAuthorComboBoxLibrarian2);
+        addNewInputToComboBox(journalAuthorComboBoxLibrarian3);
+        addNewInputToComboBox(journalAuthorComboBoxLibrarian4);
+        addNewInputToComboBox(journalAuthorComboBoxLibrarian5);
     }
 
     /**
@@ -163,5 +178,18 @@ public class CreateJournalLibrarianController {
         journalAuthorComboBoxLibrarian3.setItems(authors);
         journalAuthorComboBoxLibrarian4.setItems(authors);
         journalAuthorComboBoxLibrarian5.setItems(authors);
+    }
+
+    /**
+     * Adds the value from the ComboBox to its items if it is a new user input.
+     * @param comboBox The ComboBox to check and add to.
+     * #TODO Implement actual logic to save the new input to the database.
+     */
+    private void addNewInputToComboBox(ComboBox<String> comboBox) {
+        String value = comboBox.getValue();
+        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
+            comboBox.getItems().add(value);
+            System.out.println("Added new value to ComboBox: " + value);
+        }
     }
 }

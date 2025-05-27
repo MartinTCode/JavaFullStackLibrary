@@ -176,5 +176,35 @@ public class CreateDvdLibrarianController {
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
         System.out.println("Keyword 4: " + keyword4);
+
+        // Add new inputs to ComboBoxes if they are not already present
+        addNewInputToComboBox(dvdLanguageComboBoxLibrarian);
+        addNewInputToComboBox(dvdActorComboBox1);
+        addNewInputToComboBox(dvdActorComboBox2);
+        addNewInputToComboBox(dvdActorComboBox3);
+        addNewInputToComboBox(dvdActorComboBox4);
+        addNewInputToComboBox(dvdDirectorComboBox1);
+        addNewInputToComboBox(dvdDirectorComboBox2);
+        addNewInputToComboBox(dvdDirectorComboBox3);
+        addNewInputToComboBox(dvdGenreComboBox1);
+        addNewInputToComboBox(dvdGenreComboBox2);
+        addNewInputToComboBox(dvdGenreComboBox3);
+        addNewInputToComboBox(dvdKeywordComboBox1);
+        addNewInputToComboBox(dvdKeywordComboBox2);
+        addNewInputToComboBox(dvdKeywordComboBox3);
+        addNewInputToComboBox(dvdKeywordComboBox4);
+    }
+
+    /**
+     * Adds the value from the ComboBox to its items if it is a new user input.
+     * @param comboBox The ComboBox to check and add to.
+     * #TODO: Add logic to save the new input to the database
+     */
+    private void addNewInputToComboBox(ComboBox<String> comboBox) {
+        String value = comboBox.getValue();
+        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
+            comboBox.getItems().add(value);
+            System.out.println("Added new value to ComboBox: " + value);
+        }
     }
 }

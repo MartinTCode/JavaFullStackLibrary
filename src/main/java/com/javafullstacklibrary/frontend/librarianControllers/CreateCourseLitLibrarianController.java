@@ -139,6 +139,22 @@ public class CreateCourseLitLibrarianController {
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
         System.out.println("Keyword 4: " + keyword4);
+
+        addNewInputToComboBox(CourseLitLanguageComboBoxLibrarian);
+        addNewInputToComboBox(CourseLitFloorComboBoxLibrarian);
+        addNewInputToComboBox(CourseLitSectionComboBoxLibrarian);
+        addNewInputToComboBox(CourseLitShelfComboBoxLibrarian);
+        addNewInputToComboBox(CourseLitPositionComboBoxLibrarian);
+        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian1);
+        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian2);
+        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian3);
+        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian1);
+        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian2);
+        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian3);
+        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian1);
+        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian2);
+        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian3);
+        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian4);
     }
 
     /**
@@ -176,4 +192,24 @@ public class CreateCourseLitLibrarianController {
         CourseLitKeywordComboBoxLibrarian3.setItems(keywords);
         CourseLitKeywordComboBoxLibrarian4.setItems(keywords);
     }
+
+    /**
+     * Adds the value from the ComboBox to its items if it is a new user input.
+     * @param comboBox The ComboBox to check and add to.
+     * #TODO: Change this to save the new input to the database when implemented.
+     */
+    private void addNewInputToComboBox(ComboBox<String> comboBox) {
+        String value = comboBox.getValue();
+        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
+            comboBox.getItems().add(value);
+            // Print for now, change to actual save logic later
+            System.out.println("Added new value to ComboBox: " + value);
+        }
+    }
+
+    // Example usage (call this after reading input, for each editable ComboBox):
+    // addNewInputToComboBox(CourseLitLanguageComboBoxLibrarian);
+    // addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian1);
+    // addNewInputToComboBox(CourseLitGenreComboBoxLibrarian1);
+    // ...etc.
 }

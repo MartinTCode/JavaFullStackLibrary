@@ -128,6 +128,23 @@ public class CreateBookLibrarianController {
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
         System.out.println("Keyword 4: " + keyword4);
+
+        // Add new inputs to ComboBoxes if they are not already in the list
+        addNewInputToComboBox(bookLanguageComboBoxLibrarian);
+        addNewInputToComboBox(bookFloorComboBoxLibrarian);
+        addNewInputToComboBox(bookSectionComboBoxLibrarian);
+        addNewInputToComboBox(bookShelfComboBoxLibrarian);
+        addNewInputToComboBox(bookPositionComboBoxLibrarian);
+        addNewInputToComboBox(bookAuthorComboBoxLibrarian1);
+        addNewInputToComboBox(bookAuthorComboBoxLibrarian2);
+        addNewInputToComboBox(bookAuthorComboBoxLibrarian3);
+        addNewInputToComboBox(bookGenreComboBoxLibrarian1);
+        addNewInputToComboBox(bookGenreComboBoxLibrarian2);
+        addNewInputToComboBox(bookGenreComboBoxLibrarian3);
+        addNewInputToComboBox(bookKeywordComboBoxLibrarian1);
+        addNewInputToComboBox(bookKeywordComboBoxLibrarian2);
+        addNewInputToComboBox(bookKeywordComboBoxLibrarian3);
+        addNewInputToComboBox(bookKeywordComboBoxLibrarian4);
     }
 
     /**
@@ -164,5 +181,19 @@ public class CreateBookLibrarianController {
         bookKeywordComboBoxLibrarian2.setItems(keywords);
         bookKeywordComboBoxLibrarian3.setItems(keywords);
         bookKeywordComboBoxLibrarian4.setItems(keywords);
+    }
+
+    /**
+     * Adds the value from the ComboBox to its items if it is a new user input.
+     * @param comboBox The ComboBox to check and add to.
+     * #TODO: Implement actual database save logic when database integration is done.
+     */
+    private void addNewInputToComboBox(ComboBox<String> comboBox) {
+        String value = comboBox.getValue();
+        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
+            comboBox.getItems().add(value);
+            System.out.println("Added new value to ComboBox: " + value);
+            // Add logic to save to database here when implemented
+        }
     }
 }
