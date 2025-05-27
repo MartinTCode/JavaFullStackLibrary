@@ -15,11 +15,22 @@ import jakarta.persistence.JoinTable; // Importing JoinTable for many-to-many re
 
 import java.util.ArrayList; // Importing ArrayList for one-to-many relationship
 import java.util.List; // Importing List for one-to-many relationship
+import java.util.Map;
+
 import jakarta.persistence.CascadeType;
 import java.util.Set; // Importing Set for many-to-many relationship
 
+// Importing necessary packages for JPA inheritance and discriminator column
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+
 @Entity
-public class Item {
+// Specifying inheritance strategy and discriminator column for polymorphic behavior
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "item_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Item {
 
     // #region Attributes
     @Id
@@ -27,8 +38,11 @@ public class Item {
     @Column(name = "item_id") // Maps to the SQL column name
     private Integer id;
 
+    /* Handled by the discriminator column instead
+    
     @Column(name = "item_type", nullable = false, length = 50) // Matches SQL: VARCHAR(50) NOT NULL
     private String type;
+    */
 
     @Column(length = 17) // Matches SQL: VARCHAR(17)
     private String identifier;
@@ -125,7 +139,8 @@ public class Item {
                 Set<Creator> creators, // m2m relationship (creator shouldn't be duplicated in item)
                 Set<Actor> actors, // m2m relationship (actor shouldn't be duplicated in item)
                 Set<Genre> genres, // m2m relationship (genre shouldn't be duplicated in item)
-                String type, String identifier,
+                //String type, handled by discriminator column
+                String identifier,
                 String identifier2, String title,
                 String publisher, Short ageLimit,
                 String countryOfProduction) {
@@ -135,7 +150,7 @@ public class Item {
         this.creators = creators;
         this.actors = actors;
         this.genres = genres;
-        this.type = type;
+        // this.type = type; handled by discriminator column
         this.identifier = identifier;
         this.identifier2 = identifier2;
         this.title = title;
@@ -143,6 +158,12 @@ public class Item {
         this.ageLimit = ageLimit;
         this.countryOfProduction = countryOfProduction;
     }
+
+    public abstract Map<String, String> getParameterMap(); 
+        // This method should be implemented by subclasses to return a map of parameters
+        // specific to the item type, e.g., Book, Journal, DVD, etc.
+        // The map should contain parameter names and their corresponding values.
+        
 
     // #endregion
 
@@ -154,7 +175,7 @@ public class Item {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    /* // Abstracted to discriminator column and iherited classes
     public String getType() {
         return type;
     }
@@ -162,7 +183,7 @@ public class Item {
     public void setType(String type) {
         this.type = type;
     }
-
+    */
     public String getIdentifier() {
         return identifier;
     }
@@ -288,5 +309,43 @@ public class Item {
         this.genres = genres;
     }
 
+    // #endregion
+
+    // #region Object overrides
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        
+        Item item = (Item) o;
+        
+        // First compare by ID if available (for database-persisted entities)
+        if (id != null && item.id != null) {
+            return id.equals(item.id);
+        }
+        
+        // If ID is not available (not persisted yet), compare key fields
+        if (identifier != null ? !identifier.equals(item.identifier) : item.identifier != null) return false;
+        if (identifier2 != null ? !identifier2.equals(item.identifier2) : item.identifier2 != null) return false;
+        if (title != null ? !title.equals(item.title) : item.title != null) return false; 
+        return publisher != null ? publisher.equals(item.publisher) : item.publisher == null;
+    }
+    
+    @Override
+    public int hashCode() {
+        // Use ID if available for consistent hashing
+        if (id != null) {
+            return id.hashCode();
+        }
+        
+        // Otherwise use combination of key fields
+        int result = identifier != null ? identifier.hashCode() : 0;
+        result = 31 * result + (identifier2 != null ? identifier2.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
+        return result;
+    }
+    
     // #endregion
 }

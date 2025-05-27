@@ -25,8 +25,8 @@ public class ItemCopy {
     private String barcode;
     
     @Column(name = "is_reference", nullable = false)
-    private Boolean isReference;
-    
+    private boolean isReference;
+
     @Column(name = "date_added", nullable = false)
     private LocalDate dateAdded;
 
