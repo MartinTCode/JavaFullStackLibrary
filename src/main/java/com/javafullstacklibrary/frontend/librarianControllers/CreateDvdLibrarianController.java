@@ -36,6 +36,7 @@ public class CreateDvdLibrarianController {
     @FXML private ComboBox<String> dvdKeywordComboBox1;
     @FXML private ComboBox<String> dvdKeywordComboBox2;
     @FXML private ComboBox<String> dvdKeywordComboBox3;
+    @FXML private ComboBox<String> dvdKeywordComboBox4;
 
     /**
      * This method is called when the controller is initialized.
@@ -75,6 +76,7 @@ public class CreateDvdLibrarianController {
         dvdKeywordComboBox1.setItems(keywords);
         dvdKeywordComboBox2.setItems(keywords);
         dvdKeywordComboBox3.setItems(keywords);
+        dvdKeywordComboBox4.setItems(keywords);
     }
 
     // --- Top Menu Navigation Handlers ---
@@ -150,6 +152,7 @@ public class CreateDvdLibrarianController {
         String keyword1 = dvdKeywordComboBox1.getValue();
         String keyword2 = dvdKeywordComboBox2.getValue();
         String keyword3 = dvdKeywordComboBox3.getValue();
+        String keyword4 = dvdKeywordComboBox4.getValue();
 
         // Print all values to the console, switch this out to actual save logic later
         System.out.println("Save New DVD button clicked. Input values:");
@@ -172,6 +175,7 @@ public class CreateDvdLibrarianController {
         System.out.println("Keyword 1: " + keyword1);
         System.out.println("Keyword 2: " + keyword2);
         System.out.println("Keyword 3: " + keyword3);
+        System.out.println("Keyword 4: " + keyword4);
 
         // Add new inputs to ComboBoxes if they are not already present
         addNewInputToComboBox(dvdLanguageComboBoxLibrarian);
@@ -188,6 +192,7 @@ public class CreateDvdLibrarianController {
         addNewInputToComboBox(dvdKeywordComboBox1);
         addNewInputToComboBox(dvdKeywordComboBox2);
         addNewInputToComboBox(dvdKeywordComboBox3);
+        addNewInputToComboBox(dvdKeywordComboBox4);
     }
 
     /**

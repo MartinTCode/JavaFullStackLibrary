@@ -308,6 +308,14 @@
                                            prefWidth="150.0"
                                            promptText="actor"
                                        />
+                                       <ComboBox
+                                           fx:id="dvdActorComboBox4"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="71.0"
+                                           prefWidth="150.0"
+                                           promptText="actor"
+                                       />
                                     </children>
                                     <GridPane.margin>
                                        <Insets />
@@ -409,6 +417,14 @@
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox3"
                                            editable="true"
+                                           prefWidth="150.0"
+                                           promptText="keyword"
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdKeywordComboBox4"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="80.0"
                                            prefWidth="150.0"
                                            promptText="keyword"
                                        />

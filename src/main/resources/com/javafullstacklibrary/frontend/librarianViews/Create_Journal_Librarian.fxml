@@ -381,6 +381,22 @@
                                            prefWidth="150.0"
                                            promptText="author"
                                        />
+                                       <ComboBox
+                                           fx:id="journalAuthorComboBoxLibrarian4"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="80.0"
+                                           prefWidth="150.0"
+                                           promptText="author"
+                                       />
+                                       <ComboBox
+                                           fx:id="journalAuthorComboBoxLibrarian5"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="106.0"
+                                           prefWidth="150.0"
+                                           promptText="author"
+                                       />
                                     </children>
                                     <GridPane.margin>
                                        <Insets top="30.0" />

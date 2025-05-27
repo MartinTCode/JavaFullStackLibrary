@@ -47,6 +47,7 @@ public class CreateBookLibrarianController {
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian1;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian3;
+    @FXML private ComboBox<String> bookKeywordComboBoxLibrarian4;
 
     // Top menu icons
     @FXML private void clickedHomeMenuLibrarian(MouseEvent event) {
@@ -116,19 +117,20 @@ public class CreateBookLibrarianController {
         String keyword1 = bookKeywordComboBoxLibrarian1.getValue();
         String keyword2 = bookKeywordComboBoxLibrarian2.getValue();
         String keyword3 = bookKeywordComboBoxLibrarian3.getValue();
+        String keyword4 = bookKeywordComboBoxLibrarian4.getValue();
 
         // --- Pass raw input values to the service ---
         ItemDAO itemDAO = new ItemDAO(new EntityManager()););
         ItemHandlerService itemHandlerService = new ItemHandlerService(itemDAO);
 
-        itemHandlerService.addRawItem(
+        itemHandlerService.addBook(
             "book",
             floor,
             section,
             shelf,
             position,
             languageName,
-            keyword1, keyword2, keyword3,
+            keyword1, keyword2, keyword3, keyword4,
             author1, author2, author3,
             genre1, genre2, genre3,
             isbn13,
@@ -176,6 +178,7 @@ public class CreateBookLibrarianController {
         bookKeywordComboBoxLibrarian1.setItems(keywords);
         bookKeywordComboBoxLibrarian2.setItems(keywords);
         bookKeywordComboBoxLibrarian3.setItems(keywords);
+        bookKeywordComboBoxLibrarian4.setItems(keywords);
     }
 
     /**
