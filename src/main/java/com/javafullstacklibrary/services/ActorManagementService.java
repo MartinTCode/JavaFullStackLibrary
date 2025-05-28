@@ -1,0 +1,76 @@
+package com.javafullstacklibrary.services;
+
+import com.javafullstacklibrary.dao.ActorDAO;
+import com.javafullstacklibrary.model.Actor;
+
+import java.util.List;
+
+public class ActorManagementService {
+
+    private final ActorDAO actorDAO;
+
+    public ActorManagementService(ActorDAO actorDAO) {
+        this.actorDAO = actorDAO;
+    }
+
+    /**
+     * Adds a new actor.
+     * @param actor The actor to add.
+     * @return The saved actor with generated ID.
+     */
+    public Actor addActor(Actor actor) {
+        return actorDAO.save(actor);
+    }
+
+    /**
+     * Updates an existing actor.
+     * @param actor The actor with updated fields.
+     * @return The updated actor.
+     */
+    public Actor updateActor(Actor actor) {
+        return actorDAO.save(actor);
+    }
+
+    /**
+     * Deletes an actor by its ID.
+     * @param id The ID of the actor to delete.
+     * @return true if deleted, false if not found.
+     */
+    public boolean deleteActorById(Integer id) {
+        return actorDAO.deleteById(id);
+    }
+
+    /**
+     * Finds an actor by its ID.
+     * @param id The actor ID.
+     * @return The found actor or null if not found.
+     */
+    public Actor findById(Integer id) {
+        return actorDAO.findById(id);
+    }
+
+    /**
+     * Finds all actors.
+     * @return List of all actors.
+     */
+    public List<Actor> findAll() {
+        return actorDAO.findAll();
+    }
+
+    /**
+     * Finds or creates an actor by first and last name.
+     * @param firstName The actor's first name.
+     * @param lastName The actor's last name.
+     * @return The found or newly created actor.
+     */
+    public Actor findOrCreate(String firstName, String lastName) {
+        Actor actor = actorDAO.findByName(firstName, lastName);
+        if (actor == null) {
+            actor = new Actor();
+            actor.setFirstName(firstName);
+            actor.setLastName(lastName);
+            actor = actorDAO.save(actor);
+        }
+        return actor;
+    }
+}
