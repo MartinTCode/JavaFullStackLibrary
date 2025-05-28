@@ -43,15 +43,14 @@ public class LibraryUser {
     @Check(constraints = "user_role IN ('public', 'student', 'researcher', 'university employee')")
     private String userRole;
 
-    @Transient
-    private static final Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
     
-    // One LibraryUser can have one UserProfile (optional for admin/librarian)
+    
+    // One LibraryUser must have one UserProfile (should not have for admin/librarian)
     // Owning side of the relationship
     // If a LibraryUser is deleted, the UserProfile is also deleted
     @OneToOne(optional = true, cascade = CascadeType.ALL) 
     @JoinColumn(name = "profile_id")
-    private UserProfile userProfile;
+    private BorrowerProfile userProfile;
         
     // One LibraryUser can have multiple loans
     @OneToMany(mappedBy = "user")
@@ -127,15 +126,11 @@ public class LibraryUser {
         this.loans = loans;
     }
     
-    public UserProfile getUserProfile() {
+    public BorrowerProfile getUserProfile() {
         return userProfile;
     }
     
-    public void setUserProfile(UserProfile userProfile) {
+    public void setUserProfile(BorrowerProfile userProfile) {
         this.userProfile = userProfile;
-    }
-
-    public int getMaxLoansForRole() {
-        return userRole2MaxLoans.getOrDefault(this.userRole, null);
     }
 }

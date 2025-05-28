@@ -1,5 +1,9 @@
 package com.javafullstacklibrary.model;
 
+import java.util.Map;
+
+import org.hibernate.annotations.Check;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,10 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "user_profile")
-public class UserProfile {
+public class BorrowerProfile {
+
+    @Transient
+    private static final Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +43,7 @@ public class UserProfile {
     private String address;
     
     @Column(name = "profile_type")
+    @Check(constraints = "profile_type IN ('admin', 'librarian', 'borrower')")
     private String profileType;
     
     // Getters and setters
@@ -92,5 +101,9 @@ public class UserProfile {
     
     public void setProfileType(String profileType) {
         this.profileType = profileType;
+    }
+
+    public int getMaxLoansForRole() {
+        return userRole2MaxLoans.getOrDefault(this.profileType, null);
     }
 }
