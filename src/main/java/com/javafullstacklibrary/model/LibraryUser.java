@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.model;
 
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,6 +13,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+import org.hibernate.annotations.Check;
+
 
 @Entity
 @Table(name = "library_user")
@@ -35,7 +40,11 @@ public class LibraryUser {
     private String email;
     
     @Column(name = "user_role", length = 20, nullable = false)
+    @Check(constraints = "user_role IN ('public', 'student', 'researcher', 'university employee')")
     private String userRole;
+
+    @Transient
+    private static final Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
     
     // One LibraryUser can have one UserProfile (optional for admin/librarian)
     // Owning side of the relationship
@@ -47,6 +56,19 @@ public class LibraryUser {
     // One LibraryUser can have multiple loans
     @OneToMany(mappedBy = "user")
     private List<Loan> loans;
+
+    // No-arg constructor required by JPA
+    public LibraryUser() {
+    }
+    // Constructor for convenience
+    public LibraryUser(String ssn, String username, String passwordHash, String email, String userRole) {
+        this.ssn = ssn;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.userRole = userRole;
+    }
+    
     
     // Getters and setters
     public Integer getId() {
@@ -111,5 +133,9 @@ public class LibraryUser {
     
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public int getMaxLoansForRole() {
+        return userRole2MaxLoans.getOrDefault(this.userRole, null);
     }
 }
