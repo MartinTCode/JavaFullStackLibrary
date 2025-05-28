@@ -3,14 +3,24 @@ package com.javafullstacklibrary.services;
 import com.javafullstacklibrary.dao.KeywordDAO;
 import com.javafullstacklibrary.model.Keyword;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 import java.util.List;
 
 public class KeywordManagementService {
 
+    private final EntityManagerFactory emf;
     private final KeywordDAO keywordDAO;
 
-    public KeywordManagementService(KeywordDAO keywordDAO) {
-        this.keywordDAO = keywordDAO;
+    /**
+     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     */
+    public KeywordManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.keywordDAO = new KeywordDAO(em);
     }
 
     /**
@@ -55,6 +65,20 @@ public class KeywordManagementService {
      */
     public List<Keyword> findAll() {
         return keywordDAO.findAll();
+    }
+
+    /**
+     * Gets a list of all keyword strings.
+     * This method retrieves all keywords and returns their string representations.
+     * @return List of all keyword strings.
+     */
+    public List<String> getAllStrings() {
+        List<Keyword> keywords = findAll();
+        List<String> keywordStrings = new java.util.ArrayList<>();
+        for (Keyword keyword : keywords) {
+            keywordStrings.add(keyword.getKeyword());
+        }
+        return keywordStrings;
     }
 
     /**

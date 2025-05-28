@@ -1,16 +1,28 @@
 package com.javafullstacklibrary.services;
 
 import com.javafullstacklibrary.dao.CreatorDAO;
+import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.model.Creator;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 import java.util.List;
 
 public class CreatorManagementService {
 
+    private final EntityManagerFactory emf;
     private final CreatorDAO creatorDAO;
+    
 
-    public CreatorManagementService(CreatorDAO creatorDAO) {
-        this.creatorDAO = creatorDAO;
+    /**
+     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     */
+    public CreatorManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.creatorDAO = new CreatorDAO(em);
     }
 
     /**
@@ -47,6 +59,20 @@ public class CreatorManagementService {
      */
     public Creator findById(Integer id) {
         return creatorDAO.findById(id);
+    }
+
+    /**
+     * Get list of all creators' full names.
+     * @return List of all creators' full names.
+     */
+    public List<String> getAllCreatorsFullNames() {
+        List<Creator> creators = creatorDAO.findAll();
+        List<String> fullNames = new java.util.ArrayList<>();
+        for (Creator creator : creators) {
+            String fullName = (creator.getFirstName() + " " + creator.getLastName()).trim();
+            fullNames.add(fullName);
+        }
+        return fullNames;
     }
 
     /**

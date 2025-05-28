@@ -1,25 +1,28 @@
 package com.javafullstacklibrary.services;
 
 import com.javafullstacklibrary.dao.ActorDAO;
+import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.model.Actor;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 import java.util.List;
 
 public class ActorManagementService {
 
+    private final EntityManagerFactory emf;
     private final ActorDAO actorDAO;
-
-    public ActorManagementService(ActorDAO actorDAO) {
-        this.actorDAO = actorDAO;
-    }
+    
 
     /**
-     * Adds a new actor.
-     * @param actor The actor to add.
-     * @return The saved actor with generated ID.
+     * Constructor that initializes the EntityManagerFactory and GenreDAO.
      */
-    public Actor addActor(Actor actor) {
-        return actorDAO.save(actor);
+    public ActorManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.actorDAO = new ActorDAO(em);
     }
 
     /**
@@ -47,6 +50,19 @@ public class ActorManagementService {
      */
     public Actor findById(Integer id) {
         return actorDAO.findById(id);
+    }
+
+    /**
+     * Get list of all actors full names.
+     * @return List of all actors' full names.
+     */
+    public List<String> getAllActorsFullNames() {
+        List<Actor> actors = findAll();
+        List<String> fullNames = new java.util.ArrayList<>();
+        for (Actor actor : actors) {
+            fullNames.add(actor.getFullName());
+        }
+        return fullNames;
     }
 
     /**

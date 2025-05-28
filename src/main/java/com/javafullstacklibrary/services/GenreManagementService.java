@@ -3,14 +3,26 @@ package com.javafullstacklibrary.services;
 import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.model.Genre;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class GenreManagementService {
-
+    private final EntityManagerFactory emf;
     private final GenreDAO genreDAO;
+    
 
-    public GenreManagementService(GenreDAO genreDAO) {
-        this.genreDAO = genreDAO;
+    /**
+     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     */
+    public GenreManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.genreDAO = new GenreDAO(em);
     }
 
     /**
@@ -55,6 +67,23 @@ public class GenreManagementService {
      */
     public List<Genre> findAll() {
         return genreDAO.findAll();
+    }
+
+    /**
+     * Gets a list of all genre strings.
+     * This method retrieves all genres from the database
+     * and returns their string representations.
+     * @return List of all genre strings.
+     */
+    public ObservableList<String> getAllStrings() {
+        List<Genre> genres = genreDAO.findAll();
+        List<String> genreStrings = new java.util.ArrayList<>();
+        for (Genre genre : genres) {
+            genreStrings.add(genre.getGenre());
+        }
+        ObservableList<String> observableGenreStrings = FXCollections.observableArrayList(genreStrings);
+
+        return observableGenreStrings;
     }
 
     /**

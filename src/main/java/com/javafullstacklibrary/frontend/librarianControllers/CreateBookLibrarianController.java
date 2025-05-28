@@ -9,6 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import org.hibernate.mapping.List;
+
+import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.services.GenreManagementService;
+
 public class CreateBookLibrarianController {
 
     @FXML
@@ -35,6 +40,10 @@ public class CreateBookLibrarianController {
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian1;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian3;
+
+    //Services
+    private final GenreManagementService genreManagementService = new GenreManagementService();
+    
 
     // Top menu icons
     @FXML private void clickedHomeMenuLibrarian(MouseEvent event) {
@@ -158,6 +167,7 @@ public class CreateBookLibrarianController {
         ObservableList<String> authors = FXCollections.observableArrayList("Author A", "Author B", "Author C");
         ObservableList<String> genres = FXCollections.observableArrayList("Fiction", "Non-fiction", "Science", "History");
         ObservableList<String> keywords = FXCollections.observableArrayList("Keyword1", "Keyword2", "Keyword3", "Keyword4");
+        ObservableList<String> genresReal = genreManagementService.getAllStrings();
 
         bookLanguageComboBoxLibrarian.setItems(languages);
         bookFloorComboBoxLibrarian.setItems(floors);
@@ -169,9 +179,9 @@ public class CreateBookLibrarianController {
         bookAuthorComboBoxLibrarian2.setItems(authors);
         bookAuthorComboBoxLibrarian3.setItems(authors);
 
-        bookGenreComboBoxLibrarian1.setItems(genres);
-        bookGenreComboBoxLibrarian2.setItems(genres);
-        bookGenreComboBoxLibrarian3.setItems(genres);
+        bookGenreComboBoxLibrarian1.setItems(genresReal);
+        bookGenreComboBoxLibrarian2.setItems(genresReal);
+        bookGenreComboBoxLibrarian3.setItems(genresReal);
 
         bookKeywordComboBoxLibrarian1.setItems(keywords);
         bookKeywordComboBoxLibrarian2.setItems(keywords);

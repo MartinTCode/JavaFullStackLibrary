@@ -2,6 +2,7 @@ package com.javafullstacklibrary.services;
 
 import java.util.Set;
 
+import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.dao.ItemDAO;
 import com.javafullstacklibrary.model.Actor;
 import com.javafullstacklibrary.model.Book;
@@ -15,12 +16,23 @@ import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 public class ItemManagementService {
 
+    private final EntityManagerFactory emf;
     private final ItemDAO itemDAO;
+    
 
-    public ItemManagementService(ItemDAO itemDAO) {
-        this.itemDAO = itemDAO;
+    /**
+     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     */
+    public ItemManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.itemDAO = new ItemDAO(em);
     }
 
     /**

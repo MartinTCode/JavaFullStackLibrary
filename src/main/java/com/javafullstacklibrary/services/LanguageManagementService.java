@@ -1,16 +1,27 @@
 package com.javafullstacklibrary.services;
 
+import com.javafullstacklibrary.dao.KeywordDAO;
 import com.javafullstacklibrary.dao.LanguageDAO;
 import com.javafullstacklibrary.model.Language;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 import java.util.List;
 
 public class LanguageManagementService {
 
     private final LanguageDAO languageDAO;
+    private final EntityManagerFactory emf;
 
-    public LanguageManagementService(LanguageDAO languageDAO) {
-        this.languageDAO = languageDAO;
+    /**
+     * Constructor that initializes the EntityManagerFactory and LanguageDAO.
+     */
+    public LanguageManagementService() {
+        this.emf = Persistence.createEntityManagerFactory("libraryPU");
+        EntityManager em = emf.createEntityManager();
+        this.languageDAO = new LanguageDAO(em);
     }
 
     /**
@@ -47,6 +58,20 @@ public class LanguageManagementService {
      */
     public Language findById(Integer id) {
         return languageDAO.findById(id);
+    }
+
+    /**
+     * Gets a list of all language strings.
+     * This method retrieves all languages and returns their string values.
+     * @return List of all language strings.
+     */
+    public List<String> getAllStrings(){
+        List<Language> languages = findAll();
+        List<String> languageValues = new java.util.ArrayList<>();
+        for (Language language : languages) {
+            languageValues.add(language.getLanguage());
+        }
+        return languageValues;
     }
 
     /**
