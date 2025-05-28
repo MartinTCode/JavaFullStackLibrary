@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -10,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import com.javafullstacklibrary.model.Creator;
@@ -58,6 +58,7 @@ public class CreateBookLibrarianController {
     
 
     // Top menu icons
+    // #region Top Menu Methods
     @FXML private void clickedHomeMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
     }
@@ -76,6 +77,7 @@ public class CreateBookLibrarianController {
     @FXML private void clickedSignOutMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
+    // #endregion
 
     // Cancel button handler
     @FXML
@@ -86,7 +88,7 @@ public class CreateBookLibrarianController {
     /** 
      * Initializes the controller after the FXML file has been loaded.
      * This method is called by the FXMLLoader when the controller is created.
-     * It populates the combo boxes with mock data for demonstration purposes.
+     * It populates the combo boxes with data.
      */
     @FXML
     public void initialize() {
@@ -114,12 +116,6 @@ public class CreateBookLibrarianController {
         String shelf = bookShelfComboBoxLibrarian.getValue();
         String position = bookPositionComboBoxLibrarian.getValue();
 
-        // Add new input to combo boxes if not already present
-        addNewInputToComboBox(bookFloorComboBoxLibrarian);
-        addNewInputToComboBox(bookSectionComboBoxLibrarian);
-        addNewInputToComboBox(bookShelfComboBoxLibrarian);
-        addNewInputToComboBox(bookPositionComboBoxLibrarian);
-
         // Get lists of related entities
         List<Genre> genres = collectGenres();
         List<Keyword> keywords = collectKeywords();
@@ -127,6 +123,7 @@ public class CreateBookLibrarianController {
         List<Creator> authors = collectAuthors();
         
         // TODO: Add logic to save book to database using collected values
+
     }
 
     /**
@@ -179,7 +176,7 @@ public class CreateBookLibrarianController {
      * Helper method to add a value to a list if the value is not null or empty.
      * @param <T> The type of object to be added to the list
      * @param value The string value to check
-     * @param list The list to add the converted value to
+     * @param list The list to add the converted value to (pseudo output parameter)
      * @param finder The function to convert the string value to type T
      */
     private <T> void addIfNotEmpty(String value, List<T> list, Function<String, T> finder) {
@@ -189,16 +186,16 @@ public class CreateBookLibrarianController {
     }
 
     /**
-     * Populates the combo boxes with mock data.
+     * Populates the combo boxes with DOA data.
      * This method is called during the initialization of the controller.
-     * #TODO: Replace mock data with actual data from the database when implemented.
      */
     private void populateComboBoxes() {
-        // Mock data for demonstration
-        ObservableList<String> floors = FXCollections.observableArrayList("1", "2", "3", "4");
-        ObservableList<String> sections = FXCollections.observableArrayList("A", "B", "C", "D");
-        ObservableList<String> shelves = FXCollections.observableArrayList("Shelf 1", "Shelf 2", "Shelf 3");
-        ObservableList<String> positions = FXCollections.observableArrayList("1", "2", "3", "4", "5");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
 
         // Fetching data from services
         ObservableList<String> languages = languageManagementService.getAllStrings();
@@ -223,19 +220,5 @@ public class CreateBookLibrarianController {
         bookKeywordComboBoxLibrarian1.setItems(keywords);
         bookKeywordComboBoxLibrarian2.setItems(keywords);
         bookKeywordComboBoxLibrarian3.setItems(keywords);
-    }
-
-    /**
-     * Adds the value from the ComboBox to its items if it is a new user input.
-     * @param comboBox The ComboBox to check and add to.
-     * #TODO: Implement actual database save logic when database integration is done.
-     */
-    private void addNewInputToComboBox(ComboBox<String> comboBox) {
-        String value = comboBox.getValue();
-        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
-            comboBox.getItems().add(value);
-            System.out.println("Added new value to ComboBox: " + value);
-            // Add logic to save to database here when implemented
-        }
     }
 }
