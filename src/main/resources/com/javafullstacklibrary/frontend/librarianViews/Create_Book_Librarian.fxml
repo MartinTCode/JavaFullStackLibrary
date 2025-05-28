@@ -258,6 +258,13 @@
                                                     <TextField
                                                         fx:id="bookIsbn13TextFieldLibrarian"
                                                     />
+                                                    <!-- Error label placeholder -->
+                                                    <Label 
+                                                        fx:id="isbn13ErrorLabel" 
+                                                        style="-fx-text-fill: red; -fx-font-size: 10px;" 
+                                                        visible="false" 
+                                                        wrapText="true"
+                                                    />
                                                 </children>
                                             </VBox>
                                             <VBox
@@ -271,6 +278,13 @@
                                                     />
                                                     <TextField
                                                         fx:id="bookIsbn10TextFieldLibrarian"
+                                                    />
+                                                    <!-- Error label placeholder -->
+                                                    <Label 
+                                                        fx:id="isbn10ErrorLabel" 
+                                                        style="-fx-text-fill: red; -fx-font-size: 10px;" 
+                                                        visible="false" 
+                                                        wrapText="true"
                                                     />
                                                 </children>
                                             </VBox>
@@ -460,6 +474,17 @@
                                             />
                                         </padding>
                                     </GridPane>
+                                    
+                                    <!-- General error message label -->
+                                    <Label 
+                                        fx:id="generalErrorLabel" 
+                                        style="-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 12px;" 
+                                        visible="false" 
+                                        wrapText="true"
+                                        alignment="CENTER"
+                                        maxWidth="500"
+                                    />
+                                    
                                     <HBox
                                         alignment="CENTER"
                                         spacing="80.0"

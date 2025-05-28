@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,12 +21,14 @@ import com.javafullstacklibrary.model.Genre;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
+import com.javafullstacklibrary.model.Item; // ADD THIS IMPORT
 import com.javafullstacklibrary.services.CreatorManagementService;
 import com.javafullstacklibrary.services.GenreManagementService;
 import com.javafullstacklibrary.services.ItemManagementService;
 import com.javafullstacklibrary.services.KeywordManagementService;
 import com.javafullstacklibrary.services.LanguageManagementService;
 import com.javafullstacklibrary.services.LocationManagementService;
+import com.javafullstacklibrary.services.ValidationResult;
 
 public class CreateBookLibrarianController {
 
@@ -37,6 +40,11 @@ public class CreateBookLibrarianController {
     @FXML private TextField bookIsbn13TextFieldLibrarian;
     @FXML private TextField bookIsbn10TextFieldLibrarian;
     @FXML private TextField bookPublisherTextFieldLibrarian;
+
+    // Error Labels:
+    @FXML private Label isbn13ErrorLabel;
+    @FXML private Label isbn10ErrorLabel;
+    @FXML private Label generalErrorLabel;
 
     // Comboboxes
     @FXML private ComboBox<String> bookLanguageComboBoxLibrarian;
@@ -110,6 +118,9 @@ public class CreateBookLibrarianController {
      */
     @FXML
     private void clickedSaveNewBookButtonLibrarian(MouseEvent event) {
+        // Clear previous error states
+        clearValidationErrors();
+        
         try {
             // Get text field values
             String title = bookTitleTextFieldLibrarian.getText();
@@ -124,8 +135,8 @@ public class CreateBookLibrarianController {
             Language language = collectLanguage();
             Location location = collectLocation();       
 
-            // Create a new book and save it to database
-            itemManagementService.createAndSaveItem(
+            // Create a new book and save it to database with validation
+            ValidationResult<Item> result = itemManagementService.createAndSaveItemWithValidation(
                 "book",
                 location,
                 language,
@@ -139,28 +150,102 @@ public class CreateBookLibrarianController {
                 publisher,
                 null, // ageLimit for Book is not applicable
                 null  // countryOfProduction for Book is not applicable
-            );  
+            );
 
-            // Show success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText("Book Created");
-            alert.setContentText("The book \"" + title + "\" has been successfully created and saved.");
-            alert.showAndWait();
+            if (result.isSuccess()) {
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Book Created");
+                alert.setContentText("The book \"" + title + "\" has been successfully created and saved.");
+                alert.showAndWait();
 
-            // Navigate back to manage library view
-            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+                // Navigate back to manage library view
+                MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+            } else {
+                // Handle validation errors
+                handleValidationErrors(result);
+            }
 
         } catch (Exception e) {
-            // Show error message if something goes wrong
+            // Show general error message
+            showGeneralError("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Handles validation errors by updating the UI
+     */
+    private void handleValidationErrors(ValidationResult<Item> result) {
+        Map<String, String> fieldErrors = result.getFieldErrors();
+        
+        // Handle field-specific errors
+        if (fieldErrors.containsKey("identifier")) {
+            markFieldAsInvalid(bookIsbn13TextFieldLibrarian, isbn13ErrorLabel, fieldErrors.get("identifier"));
+        }
+        if (fieldErrors.containsKey("identifier2")) {
+            markFieldAsInvalid(bookIsbn10TextFieldLibrarian, isbn10ErrorLabel, fieldErrors.get("identifier2"));
+        }
+        
+        // Show general error message if no field-specific errors
+        if (fieldErrors.isEmpty() && result.getMessage() != null) {
+            showGeneralError(result.getMessage());
+        }
+    }
+    
+    /**
+     * Marks a field as invalid with red styling and shows error message
+     */
+    private void markFieldAsInvalid(TextField field, Label errorLabel, String errorMessage) {
+        // Add red border to the field
+        field.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+        
+        // Show error message in label
+        if (errorLabel != null) {
+            errorLabel.setText(errorMessage);
+            errorLabel.setStyle("-fx-text-fill: red;");
+            errorLabel.setVisible(true);
+        }
+    }
+    
+    /**
+     * Shows a general error message
+     */
+    private void showGeneralError(String message) {
+        if (generalErrorLabel != null) {
+            generalErrorLabel.setText(message);
+            generalErrorLabel.setStyle("-fx-text-fill: red;");
+            generalErrorLabel.setVisible(true);
+        } else {
+            // Fallback to alert if no error label
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to Create Book");
-            alert.setContentText("An error occurred while creating the book: " + e.getMessage());
+            alert.setContentText(message);
             alert.showAndWait();
         }
     }
-
+    
+    /**
+     * Clears all validation error states
+     */
+    private void clearValidationErrors() {
+        // Reset field styles
+        bookIsbn13TextFieldLibrarian.setStyle("");
+        bookIsbn10TextFieldLibrarian.setStyle("");
+        
+        // Hide error labels
+        if (isbn13ErrorLabel != null) {
+            isbn13ErrorLabel.setVisible(false);
+        }
+        if (isbn10ErrorLabel != null) {
+            isbn10ErrorLabel.setVisible(false);
+        }
+        if (generalErrorLabel != null) {
+            generalErrorLabel.setVisible(false);
+        }
+    }
+    
     /**
      * Collects all genres selected in the genre combo boxes.
      * @return List of Genre objects from the selected values

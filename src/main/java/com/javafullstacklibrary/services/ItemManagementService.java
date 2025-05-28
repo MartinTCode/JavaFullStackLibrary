@@ -3,6 +3,7 @@ package com.javafullstacklibrary.services;
 import java.util.Set;
 
 import com.javafullstacklibrary.dao.ItemDAO;
+import com.javafullstacklibrary.exception.ValidationException;
 import com.javafullstacklibrary.model.Actor;
 import com.javafullstacklibrary.model.Book;
 import com.javafullstacklibrary.model.CourseLitterature;
@@ -67,6 +68,37 @@ public class ItemManagementService {
      */
     public void deleteItem(Item item) {
         itemDAO.delete(item);
+    }
+
+    /**
+     * Creates and adds a new item with validation.
+     * @return ValidationResult containing the saved item or validation errors
+     */
+    public ValidationResult<Item> createAndSaveItemWithValidation(
+            String type,
+            Location location,
+            Language language,
+            Set<Keyword> keywords,
+            Set<Creator> creators,
+            Set<Actor> actors,
+            Set<Genre> genres,
+            String identifier1,
+            String identifier2,
+            String title,
+            String publisher,
+            Short ageLimit,
+            String countryOfProduction
+    ) {
+        try {
+            Item item = createAndSaveItem(type, location, language, keywords, creators, actors, 
+                                        genres, identifier1, identifier2, title, publisher, 
+                                        ageLimit, countryOfProduction);
+            return ValidationResult.success(item);
+        } catch (ValidationException e) {
+            return ValidationResult.failure(e.getFieldErrors(), e.getMessage());
+        } catch (Exception e) {
+            return ValidationResult.failure("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     /**
