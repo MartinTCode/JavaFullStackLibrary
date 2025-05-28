@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -18,32 +19,34 @@ public class LibraryUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "library_user_id")
+    @Column(name = "user_id")
     private Integer id;
     
     @Column(name = "ssn", length = 12, unique = true)
     private String ssn;
     
-    @Column(name = "l_name", length = 100)
-    private String lastName;
+    @Column(name = "u_name", length = 50, unique = true)
+    private String username;
     
-    @Column(name = "f_name", length = 100)
-    private String firstName;
-    
-    @Column(name = "p_hashed_encrypt", length = 60, unique = true)
+    @Column(name = "p_hashed_bcrypt", length = 255, nullable = false)
     private String passwordHash;
     
-    @Column(name = "email", length = 100, unique = true)
+    @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
     
-    @Column(name = "user_role", length = 20)
+    @Column(name = "user_role", length = 20, nullable = false)
     private String userRole;
     
-    @OneToMany(mappedBy = "libraryUser")
-    private List<Loan> loans;
-    
-    @OneToOne(mappedBy = "libraryUser", cascade = CascadeType.ALL)
+    // One LibraryUser can have one UserProfile (optional for admin/librarian)
+    // Owning side of the relationship
+    // If a LibraryUser is deleted, the UserProfile is also deleted
+    @OneToOne(optional = true, cascade = CascadeType.ALL) 
+    @JoinColumn(name = "profile_id")
     private UserProfile userProfile;
+        
+    // One LibraryUser can have multiple loans
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans;
     
     // Getters and setters
     public Integer getId() {
@@ -62,20 +65,12 @@ public class LibraryUser {
         this.ssn = ssn;
     }
     
-    public String getLastName() {
-        return lastName;
+    public String getUsername() {
+        return username;
     }
     
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUsername(String username) {
+        this.username = username;
     }
     
     public String getPasswordHash() {
