@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.model;
 
 import java.util.List;
-import java.util.Map;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,15 +12,27 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 import org.hibernate.annotations.Check;
-
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @Entity
 @Table(name = "library_user")
 public class LibraryUser {
 
+    // No-arg constructor required by JPA
+    public LibraryUser() {
+    }
+    
+    // Constructor for convenience - automatically hashes raw password
+    public LibraryUser(String ssn, String username, String rawPassword, String email, String userRole) {
+        this.ssn = ssn;
+        this.username = username;
+        this.passwordHash = hashPassword(rawPassword);
+        this.email = email;
+        this.userRole = userRole;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -40,34 +51,40 @@ public class LibraryUser {
     private String email;
     
     @Column(name = "user_role", length = 20, nullable = false)
-    @Check(constraints = "user_role IN ('public', 'student', 'researcher', 'university employee')")
+    @Check(constraints = "user_role IN ('admin', 'librarian', 'borrower')")
     private String userRole;
-
-    
     
     // One LibraryUser must have one UserProfile (should not have for admin/librarian)
     // Owning side of the relationship
     // If a LibraryUser is deleted, the UserProfile is also deleted
-    @OneToOne(optional = true, cascade = CascadeType.ALL) 
+    // orphanRemoval = true means that if the UserProfile is no longer referenced by any LibraryUser, it will be deleted
+    @OneToOne(optional = true, cascade = CascadeType.ALL, orphanRemoval = true) 
     @JoinColumn(name = "profile_id")
-    private BorrowerProfile userProfile;
+    private BorrowerProfile borrowerProfile;
         
     // One LibraryUser can have multiple loans
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "libraryUser")
     private List<Loan> loans;
 
-    // No-arg constructor required by JPA
-    public LibraryUser() {
-    }
-    // Constructor for convenience
-    public LibraryUser(String ssn, String username, String passwordHash, String email, String userRole) {
-        this.ssn = ssn;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.email = email;
-        this.userRole = userRole;
+    // Password utility methods
+    public static String hashPassword(String rawPassword) {
+        if (rawPassword == null || rawPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+        return BCrypt.withDefaults().hashToString(12, rawPassword.toCharArray());
     }
     
+    public boolean verifyPassword(String rawPassword) {
+        if (rawPassword == null || this.passwordHash == null) {
+            return false;
+        }
+        BCrypt.Result result = BCrypt.verifyer().verify(rawPassword.toCharArray(), this.passwordHash);
+        return result.verified;
+    }
+    
+    public void setRawPassword(String rawPassword) {
+        this.passwordHash = hashPassword(rawPassword);
+    }
     
     // Getters and setters
     public Integer getId() {
@@ -126,11 +143,11 @@ public class LibraryUser {
         this.loans = loans;
     }
     
-    public BorrowerProfile getUserProfile() {
-        return userProfile;
+    public BorrowerProfile getBorrowerProfile() {
+        return borrowerProfile;
     }
     
-    public void setUserProfile(BorrowerProfile userProfile) {
-        this.userProfile = userProfile;
+    public void setBorrowerProfile(BorrowerProfile borrowerProfile) {
+        this.borrowerProfile = borrowerProfile;
     }
 }
