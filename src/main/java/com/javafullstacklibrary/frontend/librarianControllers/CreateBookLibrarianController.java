@@ -8,16 +8,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.model.Location;
 import com.javafullstacklibrary.services.CreatorManagementService;
 import com.javafullstacklibrary.services.GenreManagementService;
+import com.javafullstacklibrary.services.ItemManagementService;
 import com.javafullstacklibrary.services.KeywordManagementService;
 import com.javafullstacklibrary.services.LanguageManagementService;
 import com.javafullstacklibrary.services.LocationManagementService;
@@ -50,6 +54,7 @@ public class CreateBookLibrarianController {
     @FXML private ComboBox<String> bookKeywordComboBoxLibrarian3;
 
     //Services
+    private final ItemManagementService itemManagementService = new ItemManagementService();
     private final GenreManagementService genreManagementService = new GenreManagementService();
     private final CreatorManagementService creatorManagementService = new CreatorManagementService();
     private final KeywordManagementService keywordManagementService = new KeywordManagementService();
@@ -110,20 +115,29 @@ public class CreateBookLibrarianController {
         String isbn10 = bookIsbn10TextFieldLibrarian.getText();
         String publisher = bookPublisherTextFieldLibrarian.getText();
         
-        // Get location values
-        String floor = bookFloorComboBoxLibrarian.getValue();
-        String section = bookSectionComboBoxLibrarian.getValue();
-        String shelf = bookShelfComboBoxLibrarian.getValue();
-        String position = bookPositionComboBoxLibrarian.getValue();
+        // Convert Lists to Sets
+        Set<Creator> authors = new HashSet<>(collectAuthors());
+        Set<Genre> genres = new HashSet<>(collectGenres());
+        Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+        Language language = collectLanguage();
+        Location location = collectLocation();       
 
-        // Get lists of related entities
-        List<Genre> genres = collectGenres();
-        List<Keyword> keywords = collectKeywords();
-        List<Language> languages = collectLanguages();
-        List<Creator> authors = collectAuthors();
-        
-        // TODO: Add logic to save book to database using collected values
-
+        // Create a new book and save it to database
+        itemManagementService.createItem(
+            "book",
+            location,
+            language,
+            keywords,
+            authors,
+            null, // actors for Book is not applicable
+            genres,
+            isbn13,
+            isbn10,
+            title,
+            publisher,
+            null, // ageLimit for Book is not applicable
+            null  // countryOfProduction for Book is not applicable
+        );  
     }
 
     /**
@@ -154,10 +168,14 @@ public class CreateBookLibrarianController {
      * Collects the language selected in the language combo box.
      * @return List of Language objects from the selected value
      */
-    private List<Language> collectLanguages() {
-        List<Language> languages = new java.util.ArrayList<>();
-        addIfNotEmpty(bookLanguageComboBoxLibrarian.getValue(), languages, languageManagementService::findByName);
-        return languages;
+    private Language collectLanguage() {
+        String languageName = bookLanguageComboBoxLibrarian.getValue();
+        if (languageName != null && !languageName.isEmpty()) {
+            return languageManagementService.findByName(languageName);
+        }
+        else {
+            throw new IllegalArgumentException("Language cannot be null or empty");
+        }
     }
 
     /**
@@ -170,6 +188,19 @@ public class CreateBookLibrarianController {
         addIfNotEmpty(bookAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
         addIfNotEmpty(bookAuthorComboBoxLibrarian3.getValue(), authors, creatorManagementService::findByFullName);
         return authors;
+    }
+
+    /**
+     * 
+     */
+    private Location collectLocation() {
+        String floor = bookFloorComboBoxLibrarian.getValue();
+        String section = bookSectionComboBoxLibrarian.getValue();
+        String shelf = bookShelfComboBoxLibrarian.getValue();
+        String position = bookPositionComboBoxLibrarian.getValue();
+
+        // Create a new Location object with the collected values
+        return locationManagementService.findOrCreate(floor, section, shelf, position);
     }
 
     /**

@@ -81,7 +81,7 @@ public class ActorManagementService {
      * @param lastName The actor's last name.
      * @return The found or newly created actor.
      */
-    public Actor findOrCreate(String firstName, String lastName) {
+    public Actor findByNames(String firstName, String lastName) {
         Actor actor = actorDAO.findByName(firstName, lastName);
         if (actor == null) {
             actor = new Actor();
@@ -97,13 +97,17 @@ public class ActorManagementService {
      * @param fullName The actor's full name (e.g., "John Smith").
      * @return The found or newly created actor.
      */
-    public Actor findOrByFullName(String fullName) {
+    public Actor findByFullName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
             return null;
         }
         String[] parts = fullName.trim().split("\\s+", 2);
         String firstName = parts[0];
         String lastName = parts.length > 1 ? parts[1] : "";
-        return findOrCreate(firstName, lastName);
+        Actor actor = actorDAO.findByName(firstName, lastName);
+        if (actor == null) {
+            return null; // If the actor is not found, return null. Could add creation logic here if needed.
+        }
+        return actor;
     }
 }

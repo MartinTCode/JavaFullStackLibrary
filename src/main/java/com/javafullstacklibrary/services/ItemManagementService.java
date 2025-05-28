@@ -86,7 +86,7 @@ public class ItemManagementService {
      * @param countryOfProduction Country of production (for DVD)
      * @return The saved item
      */
-    private Item createItem(
+    public Item createItem(
             String type,
             Location location,
             Language language,
@@ -118,6 +118,8 @@ public class ItemManagementService {
             default:
                 throw new IllegalArgumentException("Unknown item type: " + type);
         }
+        itemDAO.save(item);
+
         return item;
     }
  
