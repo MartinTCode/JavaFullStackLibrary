@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -18,8 +17,9 @@ public class UserProfile {
     @Column(name = "profile_id")
     private Integer id;
     
-    @OneToOne (optional = false)
-    @JoinColumn(name = "library_user_id", nullable = false, unique = true)
+    // Non-owning side of the relationship
+    // A UserProfile is linked to exactly one LibraryUser
+    @OneToOne(mappedBy = "userProfile") // All entries in UserProfile are linked to a LibraryUser
     private LibraryUser libraryUser;
     
     @Column(name = "f_name")
