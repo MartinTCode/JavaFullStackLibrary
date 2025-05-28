@@ -10,6 +10,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
+import jakarta.persistence.OneToMany;
+
+
+import java.util.List;
+
 @Entity
 @Table(name = "item_copy")
 public class ItemCopy {
@@ -33,6 +38,9 @@ public class ItemCopy {
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false) // Foreign key to item table
     private Item item;
+
+    @OneToMany(mappedBy = "itemCopy")
+    private List<Loan> loans;
     
     // #endregion
     

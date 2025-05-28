@@ -110,7 +110,7 @@ CREATE UNIQUE INDEX unique_user_profile ON user_profile
 CREATE TABLE library_user (
     user_id SERIAL PRIMARY KEY, 
     profile_id INT REFERENCES user_profile(profile_id) 
-        ON UPDATE CASCADE ON DELETE RESTRICT,
+        ON UPDATE CASCADE ON DELETE RESTRICT UNIQUE,
     ssn VARCHAR(12) UNIQUE,
     u_name VARCHAR(50) UNIQUE,
     p_hashed_bcrypt VARCHAR(255) NOT NULL,

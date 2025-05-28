@@ -10,17 +10,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.services.ItemQueryService;
 import com.javafullstacklibrary.model.Item;
-import com.javafullstacklibrary.frontend.components.SearchResultItemComponentLibrarian;
+import com.javafullstacklibrary.frontend.components.SearchResultItemComponent;
+import java.util.List;
 
 public class SearchViewLibrarianController implements Initializable {
 
-    public static String initialQuery = null; // <-- Add this line
+    public static String initialQuery = null;
 
     @FXML
     private Pane mainPane;
@@ -43,6 +43,7 @@ public class SearchViewLibrarianController implements Initializable {
     @FXML
     private Button loadMoreButton;
 
+    // --- Real search state ---
     private final ItemQueryService queryService = new ItemQueryService();
     private static final int RESULTS_PER_PAGE = 5;
     private int currentPage = 0;
@@ -92,6 +93,10 @@ public class SearchViewLibrarianController implements Initializable {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
+    /**
+     * Handles the search button click event for the librarian view.
+     * Validates the search query, performs the search, and updates the results.
+     */
     @FXML
     private void clickedSearchButtonLibrarian() {
         String query = searchField.getText();
@@ -101,42 +106,51 @@ public class SearchViewLibrarianController implements Initializable {
             loadMoreButton.setVisible(false);
             return;
         }
-        
+
         System.out.println("Librarian searching for: " + query);
         currentQuery = query;
         currentPage = 0;
-        
+
         // Query total result count
         totalResults = queryService.countSearchResults(query);
         setResultsCountLabel((int) totalResults);
-        
+
         // Clear previous results
         resultsContainer.getChildren().clear();
-        
+
         // Perform search with pagination
         loadSearchResults(query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
-        
-        // Determine if we need a "load more" button
+
+        // Show/hide load more button
         loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
     }
 
+    /**
+     * Loads search results from the database and displays them in the results container.
+     * 
+     * @param query The search query
+     * @param offset The offset for pagination
+     * @param limit The maximum number of results to load
+     */
     private void loadSearchResults(String query, int offset, int limit) {
-        // Get search results from the service
         List<Item> items = queryService.searchItems(query, offset, limit);
-        
-        // Display results using SearchResultItemComponentLibrarian
+
         for (Item item : items) {
-            SearchResultItemComponentLibrarian resultComponent = new SearchResultItemComponentLibrarian(item);
+            SearchResultItemComponent resultComponent = new SearchResultItemComponent(item);
             resultsContainer.getChildren().add(resultComponent);
         }
-        
-        // If no results were found and this is the first page
+
         if (items.isEmpty() && offset == 0) {
             Label noResultsLabel = new Label("No results found for query: " + query);
             resultsContainer.getChildren().add(noResultsLabel);
         }
     }
 
+    /**
+     * Sets the results count label based on the number of matches found.
+     * Displays a message indicating how many matches were found.
+     * @param count
+     */
     private void setResultsCountLabel(int count) {
         String resultText;
         if (count == 0) {
@@ -149,15 +163,18 @@ public class SearchViewLibrarianController implements Initializable {
         resultsCountLabel.setText(resultText);
     }
 
+    /**
+     * Handles the "Load More Results" button click event.  
+     * Loads the next page of search results and updates the UI accordingly.
+     */
     @FXML
     private void handleLoadMoreResults() {
         System.out.println("Loading more results...");
         currentPage++;
-        
+
         int offset = currentPage * RESULTS_PER_PAGE;
         loadSearchResults(currentQuery, offset, RESULTS_PER_PAGE);
-        
-        // Hide the button if we've loaded all results
+
         if (offset + RESULTS_PER_PAGE >= totalResults) {
             loadMoreButton.setVisible(false);
         }
@@ -168,6 +185,7 @@ public class SearchViewLibrarianController implements Initializable {
         clickedSearchButtonLibrarian();
     }
 
+    // Optionally, add a cleanup method to close the service
     public void cleanup() {
         queryService.close();
     }

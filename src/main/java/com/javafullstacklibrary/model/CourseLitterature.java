@@ -12,6 +12,8 @@ import java.util.Map;
 @DiscriminatorValue("course_litterature")
 public class CourseLitterature extends Item {
 
+    private static final int maxLoanTimeDays = 14;
+
     private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
     private static boolean PARAMETERIZED = false;
     
@@ -185,6 +187,10 @@ public class CourseLitterature extends Item {
         super.getGenres().remove(genre);
     }
     
+    public int getMaxLoanTimeDays() {
+        return maxLoanTimeDays; 
+    }
+
     // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
     @Override
     public boolean equals(Object o) {

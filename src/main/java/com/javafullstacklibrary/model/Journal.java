@@ -14,6 +14,9 @@ public class Journal extends Item {
 
     private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
     private static boolean PARAMETERIZED = false;
+
+    
+    private static final int maxLoanTimeDays = 0; // Journals are not loanable, so set to 0
     
     // No-arg constructor required by JPA
     public Journal() {
@@ -177,6 +180,10 @@ public class Journal extends Item {
     
     public void removeGenre(Genre genre) {
         super.getGenres().remove(genre);
+    }
+
+    public int getMaxLoanTimeDays() {
+        return maxLoanTimeDays; // Journals are not loanable, so this is always 0
     }
     
     // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
