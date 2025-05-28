@@ -9,10 +9,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import org.hibernate.mapping.List;
+import java.util.List;
+import java.util.function.Function;
 
+import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.services.CreatorManagementService;
 import com.javafullstacklibrary.services.GenreManagementService;
+import com.javafullstacklibrary.services.KeywordManagementService;
+import com.javafullstacklibrary.services.LanguageManagementService;
+import com.javafullstacklibrary.services.LocationManagementService;
 
 public class CreateBookLibrarianController {
 
@@ -43,6 +51,10 @@ public class CreateBookLibrarianController {
 
     //Services
     private final GenreManagementService genreManagementService = new GenreManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
     
 
     // Top menu icons
@@ -85,71 +97,95 @@ public class CreateBookLibrarianController {
      * Handles the click event for the "Save New Book" button.
      * This method reads input from text fields and combo boxes,
      * prints the values to the console for now 
-     * #TODO: Replace with actual save logic when database integration is implemented.
+     * #TODO: Replace with actual save logic when database integration is implemented
      * @param event the mouse event that triggered this method
      */
     @FXML
     private void clickedSaveNewBookButtonLibrarian(MouseEvent event) {
-        // Read all input from textfields and comboboxes
+        // Get text field values
         String title = bookTitleTextFieldLibrarian.getText();
         String isbn13 = bookIsbn13TextFieldLibrarian.getText();
         String isbn10 = bookIsbn10TextFieldLibrarian.getText();
         String publisher = bookPublisherTextFieldLibrarian.getText();
-
-        String language = bookLanguageComboBoxLibrarian.getValue();
+        
+        // Get location values
         String floor = bookFloorComboBoxLibrarian.getValue();
         String section = bookSectionComboBoxLibrarian.getValue();
         String shelf = bookShelfComboBoxLibrarian.getValue();
         String position = bookPositionComboBoxLibrarian.getValue();
 
-        String author1 = bookAuthorComboBoxLibrarian1.getValue();
-        String author2 = bookAuthorComboBoxLibrarian2.getValue();
-        String author3 = bookAuthorComboBoxLibrarian3.getValue();
-
-        String genre1 = bookGenreComboBoxLibrarian1.getValue();
-        String genre2 = bookGenreComboBoxLibrarian2.getValue();
-        String genre3 = bookGenreComboBoxLibrarian3.getValue();
-
-        String keyword1 = bookKeywordComboBoxLibrarian1.getValue();
-        String keyword2 = bookKeywordComboBoxLibrarian2.getValue();
-        String keyword3 = bookKeywordComboBoxLibrarian3.getValue();
-
-        // Print all values to the console
-        System.out.println("Save New Book button clicked. Input values:");
-        System.out.println("Title: " + title);
-        System.out.println("ISBN13: " + isbn13);
-        System.out.println("ISBN10: " + isbn10);
-        System.out.println("Publisher: " + publisher);
-        System.out.println("Language: " + language);
-        System.out.println("Floor: " + floor);
-        System.out.println("Section: " + section);
-        System.out.println("Shelf: " + shelf);
-        System.out.println("Position: " + position);
-        System.out.println("Author 1: " + author1);
-        System.out.println("Author 2: " + author2);
-        System.out.println("Author 3: " + author3);
-        System.out.println("Genre 1: " + genre1);
-        System.out.println("Genre 2: " + genre2);
-        System.out.println("Genre 3: " + genre3);
-        System.out.println("Keyword 1: " + keyword1);
-        System.out.println("Keyword 2: " + keyword2);
-        System.out.println("Keyword 3: " + keyword3);
-
-        // Add new inputs to ComboBoxes if they are not already in the list
-        addNewInputToComboBox(bookLanguageComboBoxLibrarian);
+        // Add new input to combo boxes if not already present
         addNewInputToComboBox(bookFloorComboBoxLibrarian);
         addNewInputToComboBox(bookSectionComboBoxLibrarian);
         addNewInputToComboBox(bookShelfComboBoxLibrarian);
         addNewInputToComboBox(bookPositionComboBoxLibrarian);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian1);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian2);
-        addNewInputToComboBox(bookAuthorComboBoxLibrarian3);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian1);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian2);
-        addNewInputToComboBox(bookGenreComboBoxLibrarian3);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian1);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian2);
-        addNewInputToComboBox(bookKeywordComboBoxLibrarian3);
+
+        // Get lists of related entities
+        List<Genre> genres = collectGenres();
+        List<Keyword> keywords = collectKeywords();
+        List<Language> languages = collectLanguages();
+        List<Creator> authors = collectAuthors();
+        
+        // TODO: Add logic to save book to database using collected values
+    }
+
+    /**
+     * Collects all genres selected in the genre combo boxes.
+     * @return List of Genre objects from the selected values
+     */
+    private List<Genre> collectGenres() {
+        List<Genre> genres = new java.util.ArrayList<>();
+        addIfNotEmpty(bookGenreComboBoxLibrarian1.getValue(), genres, genreManagementService::findByName);
+        addIfNotEmpty(bookGenreComboBoxLibrarian2.getValue(), genres, genreManagementService::findByName);
+        addIfNotEmpty(bookGenreComboBoxLibrarian3.getValue(), genres, genreManagementService::findByName);
+        return genres;
+    }
+
+    /**
+     * Collects all keywords selected in the keyword combo boxes.
+     * @return List of Keyword objects from the selected values
+     */
+    private List<Keyword> collectKeywords() {
+        List<Keyword> keywords = new java.util.ArrayList<>();
+        addIfNotEmpty(bookKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(bookKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(bookKeywordComboBoxLibrarian3.getValue(), keywords, keywordManagementService::findByName);
+        return keywords;
+    }
+
+    /**
+     * Collects the language selected in the language combo box.
+     * @return List of Language objects from the selected value
+     */
+    private List<Language> collectLanguages() {
+        List<Language> languages = new java.util.ArrayList<>();
+        addIfNotEmpty(bookLanguageComboBoxLibrarian.getValue(), languages, languageManagementService::findByName);
+        return languages;
+    }
+
+    /**
+     * Collects all authors selected in the author combo boxes.
+     * @return List of Creator objects from the selected values
+     */
+    private List<Creator> collectAuthors() {
+        List<Creator> authors = new java.util.ArrayList<>();
+        addIfNotEmpty(bookAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(bookAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(bookAuthorComboBoxLibrarian3.getValue(), authors, creatorManagementService::findByFullName);
+        return authors;
+    }
+
+    /**
+     * Helper method to add a value to a list if the value is not null or empty.
+     * @param <T> The type of object to be added to the list
+     * @param value The string value to check
+     * @param list The list to add the converted value to
+     * @param finder The function to convert the string value to type T
+     */
+    private <T> void addIfNotEmpty(String value, List<T> list, Function<String, T> finder) {
+        if (value != null && !value.isEmpty()) {
+            list.add(finder.apply(value));
+        }
     }
 
     /**
@@ -159,15 +195,16 @@ public class CreateBookLibrarianController {
      */
     private void populateComboBoxes() {
         // Mock data for demonstration
-        ObservableList<String> languages = FXCollections.observableArrayList("English", "Swedish", "German", "French");
         ObservableList<String> floors = FXCollections.observableArrayList("1", "2", "3", "4");
         ObservableList<String> sections = FXCollections.observableArrayList("A", "B", "C", "D");
         ObservableList<String> shelves = FXCollections.observableArrayList("Shelf 1", "Shelf 2", "Shelf 3");
         ObservableList<String> positions = FXCollections.observableArrayList("1", "2", "3", "4", "5");
-        ObservableList<String> authors = FXCollections.observableArrayList("Author A", "Author B", "Author C");
-        ObservableList<String> genres = FXCollections.observableArrayList("Fiction", "Non-fiction", "Science", "History");
-        ObservableList<String> keywords = FXCollections.observableArrayList("Keyword1", "Keyword2", "Keyword3", "Keyword4");
-        ObservableList<String> genresReal = genreManagementService.getAllStrings();
+
+        // Fetching data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> authors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+        ObservableList<String> genres = genreManagementService.getAllStrings();
 
         bookLanguageComboBoxLibrarian.setItems(languages);
         bookFloorComboBoxLibrarian.setItems(floors);
@@ -179,9 +216,9 @@ public class CreateBookLibrarianController {
         bookAuthorComboBoxLibrarian2.setItems(authors);
         bookAuthorComboBoxLibrarian3.setItems(authors);
 
-        bookGenreComboBoxLibrarian1.setItems(genresReal);
-        bookGenreComboBoxLibrarian2.setItems(genresReal);
-        bookGenreComboBoxLibrarian3.setItems(genresReal);
+        bookGenreComboBoxLibrarian1.setItems(genres);
+        bookGenreComboBoxLibrarian2.setItems(genres);
+        bookGenreComboBoxLibrarian3.setItems(genres);
 
         bookKeywordComboBoxLibrarian1.setItems(keywords);
         bookKeywordComboBoxLibrarian2.setItems(keywords);
