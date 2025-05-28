@@ -20,6 +20,18 @@ public class BorrowerProfile {
     @Transient
     private static final Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
 
+    // contructor required by JPA
+    public BorrowerProfile() {
+    }
+    // Constructor for convenience
+    public BorrowerProfile(String firstName, String lastName, String phone, String address, String profileType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.address = address;
+        this.profileType = profileType;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
@@ -27,7 +39,7 @@ public class BorrowerProfile {
     
     // Non-owning side of the relationship
     // A UserProfile is linked to exactly one LibraryUser
-    @OneToOne(mappedBy = "userProfile") // All entries in UserProfile are linked to a LibraryUser
+    @OneToOne(mappedBy = "borrowerProfile") // All entries in borrowerProfile are linked to a LibraryUser
     private LibraryUser libraryUser;
     
     @Column(name = "f_name")
@@ -43,7 +55,7 @@ public class BorrowerProfile {
     private String address;
     
     @Column(name = "profile_type")
-    @Check(constraints = "profile_type IN ('admin', 'librarian', 'borrower')")
+    @Check(constraints = "profile_type IN ('public', 'student', 'researcher', 'university employee')")
     private String profileType;
     
     // Getters and setters
