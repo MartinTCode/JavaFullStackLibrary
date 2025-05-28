@@ -2,7 +2,6 @@ package com.javafullstacklibrary.services;
 
 import java.util.Set;
 
-import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.dao.ItemDAO;
 import com.javafullstacklibrary.model.Actor;
 import com.javafullstacklibrary.model.Book;

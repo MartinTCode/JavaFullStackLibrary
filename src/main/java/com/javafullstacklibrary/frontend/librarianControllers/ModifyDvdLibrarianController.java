@@ -165,6 +165,13 @@ public class ModifyDvdLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
+    @FXML 
+    private void clickedDeleteDvdButtonLibrarian(MouseEvent event) {
+        // Logic to delete the DVD entry
+        // This could involve confirmation dialog and then removing the entry from the database
+        System.out.println("Delete DVD button clicked.");
+    }
+
     /**
      * Initializes the controller after the root element has been completely processed.
      * Calls the method to populate combo boxes.

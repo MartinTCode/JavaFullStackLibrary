@@ -383,23 +383,33 @@
                                spacing="80.0"
                            >
                               <children>
-                                 <Button
-                                     fx:id="cancelChangeJournalButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelChangeJournalButtonLibrarian"
-                                     text="Cancel"
-                                 />
                                  <VBox>
                                     <children>
-                                       <Label text="* = Mandatory fields" />
-                                       <Label />
+                                          <Label
+                                             text="* = Mandatory fields"
+                                          />
+                                          <Label
+                                             text="** = One of marked fields mandatory"
+                                          />
                                     </children>
                                  </VBox>
                                  <Button
-                                     fx:id="saveChangesJournalButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedsaveChangesJournalButtonLibrarian"
-                                     text="Save Changes"
+                                    fx:id="cancelChangeJournalButtonLibrarian"
+                                    mnemonicParsing="false"
+                                    onMouseClicked="#clickedCancelChangeJournalButtonLibrarian"
+                                    text="Cancel"
+                                 />
+                                 <Button
+                                    fx:id="deleteJournalButtonLibrarian"
+                                    mnemonicParsing="false"
+                                    onMouseClicked="#clickedDeleteJournalButtonLibrarian"
+                                    text="Delete Journal"
+                                 />
+                                 <Button
+                                    fx:id="saveChangesJournalButtonLibrarian"
+                                    mnemonicParsing="false"
+                                    onMouseClicked="#clickedSaveChangesJournalButtonLibrarian"
+                                    text="Save Changes"
                                  />
                               </children>
                               <padding>

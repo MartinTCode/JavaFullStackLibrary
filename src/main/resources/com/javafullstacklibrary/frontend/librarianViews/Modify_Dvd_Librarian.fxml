@@ -476,25 +476,35 @@
                                spacing="80.0"
                            >
                               <children>
-                                 <Button
-                                     fx:id="cancelChangeDvdButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelChangeDvdButtonLibrarian"
-                                     text="Cancel"
-                                 />
-                                 <VBox>
-                                    <children>
-                                       <Label text="* = Mandatory fields" />
-                                       <Label />
-                                    </children>
-                                 </VBox>
-                                 <Button
-                                     fx:id="saveChangesDvdButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedSaveChangesDvdButtonLibrarian"
-                                     text="Create and Save"
-                                 />
-                              </children>
+                                            <VBox>
+                                                <children>
+                                                    <Label
+                                                        text="* = Mandatory fields"
+                                                    />
+                                                    <Label
+                                                        text="** = One of marked fields mandatory"
+                                                    />
+                                                </children>
+                                            </VBox>
+                                            <Button
+                                                fx:id="cancelChangeDvdButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedCancelChangeDvdButtonLibrarian"
+                                                text="Cancel"
+                                            />
+                                            <Button
+                                                fx:id="deleteDvdButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedDeleteDvdButtonLibrarian"
+                                                text="Delete Dvd"
+                                            />
+                                            <Button
+                                                fx:id="saveChangesDvdButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedSaveChangesDvdButtonLibrarian"
+                                                text="Save Changes"
+                                            />
+                                        </children>
                               <padding>
                                  <Insets top="20.0" />
                               </padding>

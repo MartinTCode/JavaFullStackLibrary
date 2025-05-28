@@ -389,25 +389,35 @@
                            </GridPane>
                            <HBox alignment="CENTER" spacing="80.0">
                               <children>
-                                 <Button
-                                     fx:id="cancelChangeCourseLitButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelChangeCourseLitButtonLibrarian"
-                                     text="Cancel"
-                                 />
-                                 <VBox>
-                                    <children>
-                                       <Label text="* = Mandatory fields" />
-                                       <Label text="** = One of marked fields mandatory" />
-                                    </children>
-                                 </VBox>
-                                 <Button
-                                     fx:id="saveChangesCourseLitButtonLibrarian"
-                                     mnemonicParsing="false"
-                                     onMouseClicked="#clickedSaveChangesCourseLitButtonLibrarian"
-                                     text="Create and Save"
-                                 />
-                              </children>
+                                            <VBox>
+                                                <children>
+                                                    <Label
+                                                        text="* = Mandatory fields"
+                                                    />
+                                                    <Label
+                                                        text="** = One of marked fields mandatory"
+                                                    />
+                                                </children>
+                                            </VBox>
+                                            <Button
+                                                fx:id="cancelChangeCourseLitButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedCancelChangeCourseLitButtonLibrarian"
+                                                text="Cancel"
+                                            />
+                                            <Button
+                                                fx:id="deleteCourseLitButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedDeleteCourseLitButtonLibrarian"
+                                                text="Delete Course Litterature"
+                                            />
+                                            <Button
+                                                fx:id="saveChangesCourseLitButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedSaveChangesCourseLitButtonLibrarian"
+                                                text="Save Changes"
+                                            />
+                                        </children>
                               <padding>
                                  <Insets top="20.0" />
                               </padding>

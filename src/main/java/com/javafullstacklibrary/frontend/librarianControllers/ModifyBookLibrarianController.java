@@ -154,6 +154,16 @@ public class ModifyBookLibrarianController {
     }
 
     /**
+     * Handles click on the Delete Book button.
+     * @param event
+     */
+    @FXML
+    private void clickedDeleteBookButtonLibrarian(MouseEvent event) {
+        // Logic to delete the book (confirmation dialog, delete from DB, etc.)
+        System.out.println("Delete Book button clicked");
+    }
+
+    /**
      * Initializes the controller after the root element has been completely processed.
      * Calls the method to populate combo boxes.
      */

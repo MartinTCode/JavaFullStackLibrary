@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.services;
 
 import com.javafullstacklibrary.dao.ActorDAO;
-import com.javafullstacklibrary.dao.GenreDAO;
 import com.javafullstacklibrary.model.Actor;
 
 import jakarta.persistence.EntityManager;

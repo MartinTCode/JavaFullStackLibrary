@@ -138,6 +138,13 @@ public class ModifyJournalLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
+    @FXML
+    private void clickedDeleteJournalButtonLibrarian(MouseEvent event) {
+        // Logic to delete the journal entry
+        // This could involve confirmation dialog and then removing the entry from the database
+        System.out.println("Delete Journal button clicked");
+    }
+
     /**
      * Initializes the controller after the root element has been completely processed.
      * Calls the method to populate combo boxes.

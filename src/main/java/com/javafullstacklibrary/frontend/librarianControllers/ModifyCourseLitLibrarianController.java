@@ -153,6 +153,13 @@ public class ModifyCourseLitLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
+    @FXML
+    private void clickedDeleteCourseLitButtonLibrarian(MouseEvent event) {
+        // Logic to delete the course literature entry
+        // This could involve confirmation dialog and then deletion from the database
+        System.out.println("Delete Course Literature button clicked.");
+    }
+
     /**
      * Initializes the controller after the root element has been completely processed.
      * Calls the method to populate combo boxes.

@@ -465,12 +465,6 @@
                                         spacing="80.0"
                                     >
                                         <children>
-                                            <Button
-                                                fx:id="cancelChangeBookButtonLibrarian"
-                                                mnemonicParsing="false"
-                                                onMouseClicked="#clickedCancelChangeBookButtonLibrarian"
-                                                text="Cancel"
-                                            />
                                             <VBox>
                                                 <children>
                                                     <Label
@@ -482,10 +476,22 @@
                                                 </children>
                                             </VBox>
                                             <Button
+                                                fx:id="cancelChangeBookButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedCancelChangeBookButtonLibrarian"
+                                                text="Cancel"
+                                            />
+                                            <Button
+                                                fx:id="deleteBookButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedDeleteBookButtonLibrarian"
+                                                text="Delete Book"
+                                            />
+                                            <Button
                                                 fx:id="saveChangesBookButtonLibrarian"
                                                 mnemonicParsing="false"
                                                 onMouseClicked="#clickedSaveChangesBookButtonLibrarian"
-                                                text="Create and Save"
+                                                text="Save Changes"
                                             />
                                         </children>
                                         <padding>
