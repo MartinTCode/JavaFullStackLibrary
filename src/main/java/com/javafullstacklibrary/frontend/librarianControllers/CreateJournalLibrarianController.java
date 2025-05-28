@@ -6,8 +6,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.model.Location;
+import com.javafullstacklibrary.services.CreatorManagementService;
+import com.javafullstacklibrary.services.ItemManagementService;
+import com.javafullstacklibrary.services.KeywordManagementService;
+import com.javafullstacklibrary.services.LanguageManagementService;
+import com.javafullstacklibrary.services.LocationManagementService;
 
 public class CreateJournalLibrarianController {
 
@@ -32,6 +47,12 @@ public class CreateJournalLibrarianController {
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian2;
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian3;
 
+    // Services
+    private final ItemManagementService itemManagementService = new ItemManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
 
     // --- Top Menu Navigation Handlers ---
 
@@ -65,74 +86,55 @@ public class CreateJournalLibrarianController {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
-    // --- Form Button Handlers ---
-
+    /**
+     * Handles the click event for the Cancel button.
+     * Returns to the Manage Library view.
+     * @param event The mouse event that triggered this method
+     */
     @FXML
     private void clickedCancelNewJournalButtonLibrarian(MouseEvent event) {
-        // Go back to Manage Library view
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
     /**
-     * Handler for the "Save New Journal" button.
-     * Reads input from the form fields and currently prints them to the console.
-     * #TODO Replace with actual save logic later.
-     * @param event
+     * Handles the click event for the "Save New Journal" button.
+     * Creates and saves a new journal to the database using the form input.
+     * @param event The mouse event that triggered this method
      */
     @FXML
     private void clickedSaveNewJournalButtonLibrarian(MouseEvent event) {
-        // Read all input from textfields and comboboxes
+        // Get text field values
         String title = journalTitleTextFieldLibrarian.getText();
         String issn = journalIssnTextFieldLibrarian.getText();
         String publisher = journalPublisherTextFieldLibrarian.getText();
 
-        String language = journalLanguageComboBoxLibrarian.getValue();
-        String floor = journalFloorComboBoxLibrarian.getValue();
-        String section = journalSectionComboBoxLibrarian.getValue();
-        String shelf = journalShelfComboBoxLibrarian.getValue();
-        String position = journalPositionComboBoxLibrarian.getValue();
+        // Convert Lists to Sets
+        Set<Creator> authors = new HashSet<>(collectAuthors());
+        Set<Keyword> keywords = new HashSet<>(collectKeywords());
+        Language language = collectLanguage();
+        Location location = collectLocation();
 
-        String keyword1 = journalKeywordComboBoxLibrarian1.getValue();
-        String keyword2 = journalKeywordComboBoxLibrarian2.getValue();
-        String keyword3 = journalKeywordComboBoxLibrarian3.getValue();
-
-        String author1 = journalAuthorComboBoxLibrarian1.getValue();
-        String author2 = journalAuthorComboBoxLibrarian2.getValue();
-        String author3 = journalAuthorComboBoxLibrarian3.getValue();
-
-        // Print all values to the console, changed to actual save logic later
-        System.out.println("Save New Journal button clicked. Input values:");
-        System.out.println("Title: " + title);
-        System.out.println("ISSN: " + issn);
-        System.out.println("Publisher: " + publisher);
-        System.out.println("Language: " + language);
-        System.out.println("Floor: " + floor);
-        System.out.println("Section: " + section);
-        System.out.println("Shelf: " + shelf);
-        System.out.println("Position: " + position);
-        System.out.println("Keyword 1: " + keyword1);
-        System.out.println("Keyword 2: " + keyword2);
-        System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Author 1: " + author1);
-        System.out.println("Author 2: " + author2);
-        System.out.println("Author 3: " + author3);
-
-        // Add new inputs to ComboBoxes if they are not already in the list
-        addNewInputToComboBox(journalLanguageComboBoxLibrarian);
-        addNewInputToComboBox(journalFloorComboBoxLibrarian);
-        addNewInputToComboBox(journalSectionComboBoxLibrarian);
-        addNewInputToComboBox(journalShelfComboBoxLibrarian);
-        addNewInputToComboBox(journalPositionComboBoxLibrarian);
-        addNewInputToComboBox(journalKeywordComboBoxLibrarian1);
-        addNewInputToComboBox(journalKeywordComboBoxLibrarian2);
-        addNewInputToComboBox(journalKeywordComboBoxLibrarian3);
-        addNewInputToComboBox(journalAuthorComboBoxLibrarian1);
-        addNewInputToComboBox(journalAuthorComboBoxLibrarian2);
-        addNewInputToComboBox(journalAuthorComboBoxLibrarian3);
+        // Create a new journal and save it to database
+        itemManagementService.createAndSaveItem(
+            "journal",
+            location,
+            language,
+            keywords,
+            authors,
+            null, // actors not applicable for journals
+            null, // genres not applicable for journals
+            issn,
+            null, // secondary identifier not applicable for journals
+            title,
+            publisher,
+            null, // age limit not applicable for journals
+            null  // country of production not applicable for journals
+        );
     }
 
     /**
-     * Initializes the controller and calls applicable methods
+     * Initializes the controller after the FXML file has been loaded.
+     * Populates all combo boxes with data from the database.
      */
     @FXML
     public void initialize() {
@@ -140,21 +142,88 @@ public class CreateJournalLibrarianController {
     }
 
     /**
-     * Populates the combo boxes with mock data.
-     * This method is called during the initialization of the controller.
-     * #TODO Change this to fetch actual data from the database when implemented
+     * Collects all keywords selected in the keyword combo boxes.
+     * @return List of Keyword objects from the selected values
+     */
+    private List<Keyword> collectKeywords() {
+        List<Keyword> keywords = new java.util.ArrayList<>();
+        addIfNotEmpty(journalKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(journalKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(journalKeywordComboBoxLibrarian3.getValue(), keywords, keywordManagementService::findByName);
+        return keywords;
+    }
+
+    /**
+     * Collects the language selected in the language combo box.
+     * @return Language object from the selected value
+     * @throws IllegalArgumentException if no language is selected
+     */
+    private Language collectLanguage() {
+        String languageName = journalLanguageComboBoxLibrarian.getValue();
+        if (languageName != null && !languageName.isEmpty()) {
+            return languageManagementService.findByName(languageName);
+        }
+        else {
+            throw new IllegalArgumentException("Language cannot be null or empty");
+        }
+    }
+
+    /**
+     * Collects all authors selected in the author combo boxes.
+     * @return List of Creator objects from the selected values
+     */
+    private List<Creator> collectAuthors() {
+        List<Creator> authors = new java.util.ArrayList<>();
+        addIfNotEmpty(journalAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(journalAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(journalAuthorComboBoxLibrarian3.getValue(), authors, creatorManagementService::findByFullName);
+        return authors;
+    }
+
+    /**
+     * Collects location information from the location combo boxes.
+     * @return Location object created from the selected values
+     */
+    private Location collectLocation() {
+        String floor = journalFloorComboBoxLibrarian.getValue();
+        String section = journalSectionComboBoxLibrarian.getValue();
+        String shelf = journalShelfComboBoxLibrarian.getValue();
+        String position = journalPositionComboBoxLibrarian.getValue();
+
+        return locationManagementService.findOrCreate(floor, section, shelf, position);
+    }
+
+    /**
+     * Helper method to add a value to a list if the value is not null or empty.
+     * @param <T> The type of object to be added to the list
+     * @param value The string value to check
+     * @param list The list to add the converted value to
+     * @param finder The function to convert the string value to type T
+     */
+    private <T> void addIfNotEmpty(String value, List<T> list, Function<String, T> finder) {
+        if (value != null && !value.isEmpty()) {
+            list.add(finder.apply(value));
+        }
+    }
+
+    /**
+     * Populates all combo boxes with data from the database.
+     * Called during controller initialization.
      */
     private void populateComboBoxes() {
-        // Mock data for demonstration, change to fetch actual data later
-        ObservableList<String> languages = FXCollections.observableArrayList("English", "Swedish", "German", "French");
-        ObservableList<String> floors = FXCollections.observableArrayList("1", "2", "3", "4");
-        ObservableList<String> sections = FXCollections.observableArrayList("A", "B", "C", "D");
-        ObservableList<String> shelves = FXCollections.observableArrayList("Shelf 1", "Shelf 2", "Shelf 3");
-        ObservableList<String> positions = FXCollections.observableArrayList("1", "2", "3", "4", "5");
-        ObservableList<String> keywords = FXCollections.observableArrayList("Keyword1", "Keyword2", "Keyword3", "Keyword4");
-        ObservableList<String> authors = FXCollections.observableArrayList("Author A", "Author B", "Author C", "Author D", "Author E");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
 
-        // Set the items for each ComboBox
+        // Fetch data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> authors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+
+        // Set items for each ComboBox
         journalLanguageComboBoxLibrarian.setItems(languages);
         journalFloorComboBoxLibrarian.setItems(floors);
         journalSectionComboBoxLibrarian.setItems(sections);
@@ -169,18 +238,5 @@ public class CreateJournalLibrarianController {
         journalAuthorComboBoxLibrarian2.setItems(authors);
         journalAuthorComboBoxLibrarian3.setItems(authors);
 
-    }
-
-    /**
-     * Adds the value from the ComboBox to its items if it is a new user input.
-     * @param comboBox The ComboBox to check and add to.
-     * #TODO Implement actual logic to save the new input to the database.
-     */
-    private void addNewInputToComboBox(ComboBox<String> comboBox) {
-        String value = comboBox.getValue();
-        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
-            comboBox.getItems().add(value);
-            System.out.println("Added new value to ComboBox: " + value);
-        }
     }
 }

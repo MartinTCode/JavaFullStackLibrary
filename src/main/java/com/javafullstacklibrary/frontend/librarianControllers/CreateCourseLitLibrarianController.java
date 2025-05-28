@@ -153,7 +153,7 @@ public class CreateCourseLitLibrarianController {
         Location location = collectLocation();       
 
         // Create a new course literature and save it to database
-        itemManagementService.createItem(
+        itemManagementService.createAndSaveItem(
             "course_litterature",
             location,
             language,

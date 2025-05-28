@@ -86,7 +86,7 @@ public class ItemManagementService {
      * @param countryOfProduction Country of production (for DVD)
      * @return The saved item
      */
-    public Item createItem(
+    public Item createAndSaveItem(
             String type,
             Location location,
             Language language,

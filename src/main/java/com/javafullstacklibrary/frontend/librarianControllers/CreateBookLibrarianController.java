@@ -123,7 +123,7 @@ public class CreateBookLibrarianController {
         Location location = collectLocation();       
 
         // Create a new book and save it to database
-        itemManagementService.createItem(
+        itemManagementService.createAndSaveItem(
             "book",
             location,
             language,
