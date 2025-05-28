@@ -13,6 +13,8 @@ import java.util.Set;
 @DiscriminatorValue("dvd")
 public class DVD extends Item {
 
+    private static final int maxLoanTimeDays = 7; // DVDs can be loaned for 7 days
+
     private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
     private static boolean PARAMETERIZED = false;
     
@@ -215,6 +217,10 @@ public class DVD extends Item {
     
     public void setCountryOfProduction(String countryOfProduction) {
         super.setCountryOfProduction(countryOfProduction);
+    }
+
+    public int getMaxLoanTimeDays() {
+        return maxLoanTimeDays; 
     }
     
     // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.

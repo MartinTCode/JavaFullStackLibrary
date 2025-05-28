@@ -15,6 +15,8 @@ public class Book extends Item {
     private static final Map<String, String> PARAMETER_NAMES = new HashMap<String, String>();
     private static boolean PARAMETERIZED = false;
     
+    private static final int maxLoanTimeDays = 30; // Books can be loaned for 30 days
+
     // No-arg constructor required by JPA
     public Book() {
         super();
@@ -183,6 +185,10 @@ public class Book extends Item {
     
     public void removeGenre(Genre genre) {
         super.getGenres().remove(genre);
+    }
+
+    public int getMaxLoanTimeDays() {
+        return maxLoanTimeDays; 
     }
     
     // Override equals and hashCode to ensure correct behavior in Sets, Maps, and JPA operations.
