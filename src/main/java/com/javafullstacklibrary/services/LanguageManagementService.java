@@ -1,5 +1,73 @@
 package com.javafullstacklibrary.services;
 
+import com.javafullstacklibrary.dao.LanguageDAO;
+import com.javafullstacklibrary.model.Language;
+
+import java.util.List;
+
 public class LanguageManagementService {
-    
+
+    private final LanguageDAO languageDAO;
+
+    public LanguageManagementService(LanguageDAO languageDAO) {
+        this.languageDAO = languageDAO;
+    }
+
+    /**
+     * Adds a new language.
+     * @param language The language to add.
+     * @return The saved language with generated ID.
+     */
+    public Language addLanguage(Language language) {
+        return languageDAO.save(language);
+    }
+
+    /**
+     * Updates an existing language.
+     * @param language The language with updated fields.
+     * @return The updated language.
+     */
+    public Language updateLanguage(Language language) {
+        return languageDAO.save(language);
+    }
+
+    /**
+     * Deletes a language by its ID.
+     * @param id The ID of the language to delete.
+     * @return true if deleted, false if not found.
+     */
+    public boolean deleteLanguageById(Integer id) {
+        return languageDAO.deleteById(id);
+    }
+
+    /**
+     * Finds a language by its ID.
+     * @param id The language ID.
+     * @return The found language or null if not found.
+     */
+    public Language findById(Integer id) {
+        return languageDAO.findById(id);
+    }
+
+    /**
+     * Finds all languages.
+     * @return List of all languages.
+     */
+    public List<Language> findAll() {
+        return languageDAO.findAll();
+    }
+
+    /**
+     * Finds or creates a language by its value.
+     * @param languageValue The language string.
+     * @return The found or newly created language.
+     */
+    public Language findOrCreate(String languageValue) {
+        Language language = languageDAO.findByLanguage(languageValue);
+        if (language == null) {
+            language = new Language(languageValue);
+            language = languageDAO.save(language);
+        }
+        return language;
+    }
 }
