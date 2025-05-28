@@ -1,6 +1,6 @@
 package com.javafullstacklibrary.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,11 +9,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "loan")
 public class Loan {
+
+    // Empty constructor required by JPA
+    public Loan() {
+    }
+
+    // Constructor with all fields except ID
+    public Loan(ItemCopy itemCopy, LibraryUser libraryUser, LocalDate startDate, LocalDate returnDate) {
+        this.itemCopy = itemCopy;
+        this.libraryUser = libraryUser;
+        this.startDate = startDate;
+        this.returnDate = returnDate;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loan_id")
@@ -31,17 +44,14 @@ public class Loan {
     @JoinColumn(name = "user_id", nullable = false)
     private LibraryUser libraryUser;
     
-    @Column(name = "start_date")
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
     
-    @Column(name = "return_date")
-    @Temporal(TemporalType.DATE)
-    private Date returnDate;
+    @Column(name = "return_date", nullable = false)
+    private LocalDate returnDate;
     
     @Column(name = "returned_date")
-    @Temporal(TemporalType.DATE)
-    private Date returnedDate;
+    private LocalDate returnedDate;
     
     // Getters and setters
     public Integer getId() {
@@ -68,27 +78,27 @@ public class Loan {
         this.libraryUser = libraryUser;
     }
     
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
     
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
     
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
     
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
     
-    public Date getReturnedDate() {
+    public LocalDate getReturnedDate() {
         return returnedDate;
     }
     
-    public void setReturnedDate(Date returnedDate) {
+    public void setReturnedDate(LocalDate returnedDate) {
         this.returnedDate = returnedDate;
     }
 }
