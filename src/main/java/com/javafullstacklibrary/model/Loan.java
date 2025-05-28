@@ -19,10 +19,14 @@ public class Loan {
     @Column(name = "loan_id")
     private Integer id;
     
+    // Many Loans can be associated with one ItemCopy and 
+    // must have at least one LibraryUser
     @ManyToOne (optional = false)
     @JoinColumn(name = "item_copy_id", nullable = false)
     private ItemCopy itemCopy;
     
+    // Many Loans can be associated with one LibraryUser and
+    // must have at least one LibraryUser
     @ManyToOne (optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private LibraryUser libraryUser;
