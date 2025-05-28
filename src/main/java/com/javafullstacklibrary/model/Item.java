@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable; // Importing JoinTable for many-to-many relationship
 
-
 import java.util.ArrayList; // Importing ArrayList for one-to-many relationship
 import java.util.List; // Importing List for one-to-many relationship
 import java.util.Map;
@@ -124,6 +123,10 @@ public abstract class Item {
         inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres;
+
+    protected int maxLoanTimeDays; // This will be set by the discriminator column
+    abstract public int getMaxLoanTimeDays(); // Abstract method to be implemented by subclasses
+
 
     // #endregion
 

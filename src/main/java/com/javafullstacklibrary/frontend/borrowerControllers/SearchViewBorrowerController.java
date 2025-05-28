@@ -21,9 +21,6 @@ import com.javafullstacklibrary.frontend.components.SearchResultItemComponent;
 
 public class SearchViewBorrowerController implements Initializable {
 
-    // Singleton instance to store and fetch search query
-    private DataSingleton dataSingleton = DataSingleton.getInstance();
-
     @FXML
     private Pane mainPane;
 
