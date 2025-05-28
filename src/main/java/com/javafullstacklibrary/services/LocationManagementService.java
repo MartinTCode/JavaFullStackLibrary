@@ -6,8 +6,15 @@ import com.javafullstacklibrary.model.Location;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 public class LocationManagementService {
 
@@ -125,11 +132,57 @@ public class LocationManagementService {
     }
 
     /**
+     * Gets a map of all location attributes (floors, sections, shelves, positions).
+     * This method retrieves all locations and returns their attributes in a map.
+     * @return Map with keys "floors", "sections", "shelves", "positions" and their corresponding observable lists.
+     */
+    public Map< String, ObservableList<String> > getLocationDetails() {
+        // Get all Locations <-- List<Location> locations = locationDAO.findAll();
+
+        // Retrieve all locations from the DAO
+        List<Location> locations = locationDAO.findAll();
+
+        // Create a map to hold the attributes
+        Map< String, ObservableList<String> > locationsAttributesList = new HashMap<>();
+
+        // Create Sets to hold unique values
+        Set<String> floorsSet = new HashSet<>();
+        Set<String> sectionsSet = new HashSet<>();
+        Set<String> shelvesSet = new HashSet<>();
+        Set<String> positionsSet = new HashSet<>();
+
+        // Populate the Sets with unique values from locations
+        for (Location l: locations) {
+            floorsSet.add(l.getFloor());
+            sectionsSet.add(l.getSection());
+            shelvesSet.add(l.getShelf());
+            positionsSet.add(l.getPosition());
+        }
+
+        // Convert Sets to Lists
+        List<String> floors = new ArrayList<>(floorsSet);
+        List<String> sections = new ArrayList<>(sectionsSet);
+        List<String> shelves = new ArrayList<>(shelvesSet);
+        List<String> positions = new ArrayList<>(positionsSet);
+        // now we have all the attributes in lists of all locations
+        locationsAttributesList.put("floors", FXCollections.observableArrayList(floors));
+        locationsAttributesList.put("sections", FXCollections.observableArrayList(sections));
+        locationsAttributesList.put("shelves", FXCollections.observableArrayList(shelves));
+        locationsAttributesList.put("positions", FXCollections.observableArrayList(positions));
+        
+        return locationsAttributesList;
+    }
+
+    /**
      * Finds all locations.
      * @return List of all locations.
      */
     public List<Location> findAll() {
         return locationDAO.findAll();
+    }
+
+    public Location findByFields(String floor, String section, String shelf, String position) {
+        return locationDAO.findByFields(floor, section, shelf, position);
     }
 
     /**
