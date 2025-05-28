@@ -1,13 +1,10 @@
 package com.javafullstacklibrary.frontend.components;
 
 import com.javafullstacklibrary.model.Item;
-import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;

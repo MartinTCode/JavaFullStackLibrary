@@ -3,7 +3,6 @@ package com.javafullstacklibrary.frontend.components;
 import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
