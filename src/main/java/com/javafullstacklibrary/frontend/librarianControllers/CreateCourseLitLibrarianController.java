@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
@@ -139,35 +140,55 @@ public class CreateCourseLitLibrarianController {
      */
     @FXML
     private void clickedSaveNewCourseLitButtonLibrarian(MouseEvent event) {
-        // Get text field values
-        String title = CourseLitTitleTextFieldLibrarian.getText();
-        String isbn13 = CourseLitIsbn13TextFieldLibrarian.getText();
-        String isbn10 = CourseLitIsbn10TextFieldLibrarian.getText();
-        String publisher = CourseLitPublisherTextFieldLibrarian.getText();
-        
-        // Convert Lists to Sets
-        Set<Creator> authors = new HashSet<>(collectAuthors());
-        Set<Genre> genres = new HashSet<>(collectGenres());
-        Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-        Language language = collectLanguage();
-        Location location = collectLocation();       
+        try {
+            // Get text field values
+            String title = CourseLitTitleTextFieldLibrarian.getText();
+            String isbn13 = CourseLitIsbn13TextFieldLibrarian.getText();
+            String isbn10 = CourseLitIsbn10TextFieldLibrarian.getText();
+            String publisher = CourseLitPublisherTextFieldLibrarian.getText();
+            
+            // Convert Lists to Sets
+            Set<Creator> authors = new HashSet<>(collectAuthors());
+            Set<Genre> genres = new HashSet<>(collectGenres());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+            Language language = collectLanguage();
+            Location location = collectLocation();       
 
-        // Create a new course literature and save it to database
-        itemManagementService.createAndSaveItem(
-            "course_litterature",
-            location,
-            language,
-            keywords,
-            authors,
-            null, // actors not applicable
-            genres,
-            isbn13,
-            isbn10,
-            title,
-            publisher,
-            null, // ageLimit not applicable
-            null  // countryOfProduction not applicable
-        );
+            // Create a new course literature and save it to database
+            itemManagementService.createAndSaveItem(
+                "course_litterature",
+                location,
+                language,
+                keywords,
+                authors,
+                null, // actors not applicable
+                genres,
+                isbn13,
+                isbn10,
+                title,
+                publisher,
+                null, // ageLimit not applicable
+                null  // countryOfProduction not applicable
+            );
+
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Course Literature Created");
+            alert.setContentText("The course literature \"" + title + "\" has been successfully created and saved.");
+            alert.showAndWait();
+
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Create Course Literature");
+            alert.setContentText("An error occurred while creating the course literature: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**

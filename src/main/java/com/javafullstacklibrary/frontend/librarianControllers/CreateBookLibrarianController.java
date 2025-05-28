@@ -3,6 +3,7 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -109,35 +110,55 @@ public class CreateBookLibrarianController {
      */
     @FXML
     private void clickedSaveNewBookButtonLibrarian(MouseEvent event) {
-        // Get text field values
-        String title = bookTitleTextFieldLibrarian.getText();
-        String isbn13 = bookIsbn13TextFieldLibrarian.getText();
-        String isbn10 = bookIsbn10TextFieldLibrarian.getText();
-        String publisher = bookPublisherTextFieldLibrarian.getText();
-        
-        // Convert Lists to Sets
-        Set<Creator> authors = new HashSet<>(collectAuthors());
-        Set<Genre> genres = new HashSet<>(collectGenres());
-        Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-        Language language = collectLanguage();
-        Location location = collectLocation();       
+        try {
+            // Get text field values
+            String title = bookTitleTextFieldLibrarian.getText();
+            String isbn13 = bookIsbn13TextFieldLibrarian.getText();
+            String isbn10 = bookIsbn10TextFieldLibrarian.getText();
+            String publisher = bookPublisherTextFieldLibrarian.getText();
+            
+            // Convert Lists to Sets
+            Set<Creator> authors = new HashSet<>(collectAuthors());
+            Set<Genre> genres = new HashSet<>(collectGenres());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+            Language language = collectLanguage();
+            Location location = collectLocation();       
 
-        // Create a new book and save it to database
-        itemManagementService.createAndSaveItem(
-            "book",
-            location,
-            language,
-            keywords,
-            authors,
-            null, // actors for Book is not applicable
-            genres,
-            isbn13,
-            isbn10,
-            title,
-            publisher,
-            null, // ageLimit for Book is not applicable
-            null  // countryOfProduction for Book is not applicable
-        );  
+            // Create a new book and save it to database
+            itemManagementService.createAndSaveItem(
+                "book",
+                location,
+                language,
+                keywords,
+                authors,
+                null, // actors for Book is not applicable
+                genres,
+                isbn13,
+                isbn10,
+                title,
+                publisher,
+                null, // ageLimit for Book is not applicable
+                null  // countryOfProduction for Book is not applicable
+            );  
+
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Book Created");
+            alert.setContentText("The book \"" + title + "\" has been successfully created and saved.");
+            alert.showAndWait();
+
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Create Book");
+            alert.setContentText("An error occurred while creating the book: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**

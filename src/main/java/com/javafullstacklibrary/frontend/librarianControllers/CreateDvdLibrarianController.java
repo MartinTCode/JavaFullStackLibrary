@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import javafx.scene.control.Alert;
 
 public class CreateDvdLibrarianController {
 
@@ -163,37 +164,57 @@ public class CreateDvdLibrarianController {
      */
     @FXML
     private void clickedSaveNewDvdButtonLibrarian(MouseEvent event) {
-        // Get text field values
-        String title = dvdTitleTextFieldLibrarian.getText();
-        String imdbc = dvdImdbcTextFieldLibrarian.getText();
-        String publisher = dvdPublisherTextFieldLibrarian.getText();
-        String country = dvdCountryTextFieldLibrarian.getText();
-        Short ageLimit = Short.parseShort(dvdAgeLimitTextFieldLibrarian.getText());
-        
-        // Convert Lists to Sets
-        Set<Creator> directors = new HashSet<>(collectDirectors());
-        Set<Actor> actors = new HashSet<>(collectActors());
-        Set<Genre> genres = new HashSet<>(collectGenres());
-        Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-        Language language = collectLanguage();
-        Location location = collectLocation();       
+        try {
+            // Get text field values
+            String title = dvdTitleTextFieldLibrarian.getText();
+            String imdbc = dvdImdbcTextFieldLibrarian.getText();
+            String publisher = dvdPublisherTextFieldLibrarian.getText();
+            String country = dvdCountryTextFieldLibrarian.getText();
+            Short ageLimit = Short.parseShort(dvdAgeLimitTextFieldLibrarian.getText());
+            
+            // Convert Lists to Sets
+            Set<Creator> directors = new HashSet<>(collectDirectors());
+            Set<Actor> actors = new HashSet<>(collectActors());
+            Set<Genre> genres = new HashSet<>(collectGenres());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+            Language language = collectLanguage();
+            Location location = collectLocation();       
 
-        // Create a new DVD and save it to database
-        itemManagementService.createAndSaveItem(
-            "dvd",
-            location,
-            language,
-            keywords,
-            directors,
-            actors,
-            genres,
-            imdbc, // identifier1
-            null,  // identifier2 not applicable for DVD
-            title,
-            publisher,
-            ageLimit,
-            country
-        );
+            // Create a new DVD and save it to database
+            itemManagementService.createAndSaveItem(
+                "dvd",
+                location,
+                language,
+                keywords,
+                directors,
+                actors,
+                genres,
+                imdbc, // identifier1
+                null,  // identifier2 not applicable for DVD
+                title,
+                publisher,
+                ageLimit,
+                country
+            );
+
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("DVD Created");
+            alert.setContentText("The DVD \"" + title + "\" has been successfully created and saved.");
+            alert.showAndWait();
+
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Create DVD");
+            alert.setContentText("An error occurred while creating the DVD: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**

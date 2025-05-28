@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -103,33 +104,53 @@ public class CreateJournalLibrarianController {
      */
     @FXML
     private void clickedSaveNewJournalButtonLibrarian(MouseEvent event) {
-        // Get text field values
-        String title = journalTitleTextFieldLibrarian.getText();
-        String issn = journalIssnTextFieldLibrarian.getText();
-        String publisher = journalPublisherTextFieldLibrarian.getText();
+        try {
+            // Get text field values
+            String title = journalTitleTextFieldLibrarian.getText();
+            String issn = journalIssnTextFieldLibrarian.getText();
+            String publisher = journalPublisherTextFieldLibrarian.getText();
 
-        // Convert Lists to Sets
-        Set<Creator> authors = new HashSet<>(collectAuthors());
-        Set<Keyword> keywords = new HashSet<>(collectKeywords());
-        Language language = collectLanguage();
-        Location location = collectLocation();
+            // Convert Lists to Sets
+            Set<Creator> authors = new HashSet<>(collectAuthors());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());
+            Language language = collectLanguage();
+            Location location = collectLocation();
 
-        // Create a new journal and save it to database
-        itemManagementService.createAndSaveItem(
-            "journal",
-            location,
-            language,
-            keywords,
-            authors,
-            null, // actors not applicable for journals
-            null, // genres not applicable for journals
-            issn,
-            null, // secondary identifier not applicable for journals
-            title,
-            publisher,
-            null, // age limit not applicable for journals
-            null  // country of production not applicable for journals
-        );
+            // Create a new journal and save it to database
+            itemManagementService.createAndSaveItem(
+                "journal",
+                location,
+                language,
+                keywords,
+                authors,
+                null, // actors not applicable for journals
+                null, // genres not applicable for journals
+                issn,
+                null, // secondary identifier not applicable for journals
+                title,
+                publisher,
+                null, // age limit not applicable for journals
+                null  // country of production not applicable for journals
+            );
+
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Journal Created");
+            alert.setContentText("The journal \"" + title + "\" has been successfully created and saved.");
+            alert.showAndWait();
+
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Create Journal");
+            alert.setContentText("An error occurred while creating the journal: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**
