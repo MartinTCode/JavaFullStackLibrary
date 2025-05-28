@@ -73,4 +73,19 @@ public class ActorManagementService {
         }
         return actor;
     }
+
+    /**
+     * Finds or creates an actor by a single full name string.
+     * @param fullName The actor's full name (e.g., "John Smith").
+     * @return The found or newly created actor.
+     */
+    public Actor findOrCreateByFullName(String fullName) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            return null;
+        }
+        String[] parts = fullName.trim().split("\\s+", 2);
+        String firstName = parts[0];
+        String lastName = parts.length > 1 ? parts[1] : "";
+        return findOrCreate(firstName, lastName);
+    }
 }
