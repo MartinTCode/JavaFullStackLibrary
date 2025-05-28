@@ -144,32 +144,37 @@
             <children>
                <VBox styleClass="results-box">
                   <padding>
-                     <Insets bottom="20.0" left="10.0" right="10.0" />
+                     <Insets
+                         bottom="20.0"
+                         left="10.0"
+                         right="10.0"
+                     />
                   </padding>
                   <children>
-                     <VBox prefWidth="390.0" spacing="8.0">
+                     <VBox
+                         prefWidth="390.0"
+                         spacing="5.0"
+                     >
                         <children>
                            <Label
                                alignment="TOP_LEFT"
                                styleClass="label-title"
-                               text="Add Item: Course Litterature"
+                               text="Modify Item: DVD"
                            />
-                           <GridPane hgap="15.0" vgap="15.0">
+                           <GridPane
+                               hgap="15.0"
+                               vgap="30.0"
+                           >
                              <columnConstraints>
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
                                    minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                                <ColumnConstraints
                                    hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0"
                                />
                              </columnConstraints>
                              <rowConstraints>
@@ -198,53 +203,70 @@
                                    prefHeight="30.0"
                                    vgrow="SOMETIMES"
                                />
+                               <RowConstraints
+                                   minHeight="10.0"
+                                   prefHeight="30.0"
+                                   vgrow="SOMETIMES"
+                               />
+                               <RowConstraints
+                                   minHeight="10.0"
+                                   prefHeight="30.0"
+                                   vgrow="SOMETIMES"
+                               />
                              </rowConstraints>
                               <children>
-                                 <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                 >
                                     <children>
                                        <Label text="Title *" />
                                        <TextField
-                                           fx:id="CourseLitTitleTextFieldLibrarian"
+                                           fx:id="dvdTitleTextFieldLibrarian"
                                            VBox.vgrow="ALWAYS"
                                        >
-                                           <VBox.margin>
-                                               <Insets />
-                                           </VBox.margin>
+                                          <VBox.margin>
+                                             <Insets />
+                                          </VBox.margin>
                                        </TextField>
                                     </children>
                                     <GridPane.margin>
                                        <Insets />
                                     </GridPane.margin>
                                  </VBox>
-                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     GridPane.rowIndex="1"
+                                 >
                                     <children>
-                                       <Label text="ISBN13 **" />
+                                       <Label text="IMDBC" />
                                        <TextField
-                                           fx:id="CourseLitIsbn13TextFieldLibrarian"
+                                           fx:id="dvdImdbcTextFieldLibrarian"
                                        />
                                     </children>
                                  </VBox>
-                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
-                                    <children>
-                                       <Label text="ISBN10 **" />
-                                       <TextField
-                                           fx:id="CourseLitIsbn10TextFieldLibrarian"
-                                       />
-                                    </children>
-                                 </VBox>
-                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     GridPane.rowIndex="2"
+                                 >
                                     <children>
                                        <Label text="Publisher" />
                                        <TextField
-                                           fx:id="CourseLitPublisherTextFieldLibrarian"
+                                           fx:id="dvdPublisherTextFieldLibrarian"
                                        />
                                     </children>
                                  </VBox>
-                                 <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     GridPane.rowIndex="5"
+                                 >
                                     <children>
                                        <Label text="Language *" />
                                        <ComboBox
-                                           fx:id="CourseLitLanguageComboBoxLibrarian"
+                                           fx:id="dvdLanguageComboBoxLibrarian"
                                            editable="false"
                                            VBox.vgrow="ALWAYS"
                                        />
@@ -255,37 +277,33 @@
                                      prefWidth="100.0"
                                      spacing="3.0"
                                      GridPane.columnIndex="1"
-                                     GridPane.rowIndex="1"
+                                     GridPane.rowIndex="5"
                                  >
                                     <children>
-                                       <Label text="Location" />
+                                       <Label text="Actor(s)" />
                                        <ComboBox
-                                           fx:id="CourseLitFloorComboBoxLibrarian"
-                                           editable="true"
-                                           promptText="Floor "
+                                           fx:id="dvdActorComboBox1"
+                                           editable="false"
+                                           promptText="actor *"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitSectionComboBoxLibrarian"
-                                           editable="true"
+                                           fx:id="dvdActorComboBox2"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
-                                           promptText="Section "
+                                           promptText="actor"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitShelfComboBoxLibrarian"
-                                           editable="true"
+                                           fx:id="dvdActorComboBox3"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
-                                           promptText="Shelf "
-                                       />
-                                       <ComboBox
-                                           fx:id="CourseLitPositionComboBoxLibrarian"
-                                           editable="true"
-                                           layoutX="10.0"
-                                           layoutY="71.0"
-                                           promptText="Position "
+                                           promptText="actor"
                                        />
                                     </children>
+                                    <GridPane.margin>
+                                       <Insets top="50.0" />
+                                    </GridPane.margin>
                                  </VBox>
                                  <VBox
                                      prefHeight="200.0"
@@ -295,32 +313,32 @@
                                      GridPane.rowIndex="3"
                                  >
                                     <children>
-                                       <Label text="Author(s)" />
+                                       <Label text="Director(s)" />
                                        <ComboBox
-                                           fx:id="CourseLitAuthorComboBoxLibrarian1"
+                                           fx:id="dvdDirectorComboBox1"
                                            editable="false"
-                                           promptText="author *"
+                                           promptText="director *"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitAuthorComboBoxLibrarian2"
+                                           fx:id="dvdDirectorComboBox2"
                                            editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
-                                           promptText="co-author"
+                                           promptText="co-director"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitAuthorComboBoxLibrarian3"
+                                           fx:id="dvdDirectorComboBox3"
                                            editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
-                                           promptText="co-author"
+                                           promptText="co-director"
                                        />
                                     </children>
                                     <opaqueInsets>
                                        <Insets />
                                     </opaqueInsets>
                                     <GridPane.margin>
-                                       <Insets top="55.0" />
+                                       <Insets />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -332,23 +350,23 @@
                                     <children>
                                        <Label text="Genre(s)" />
                                        <ComboBox
-                                           fx:id="CourseLitGenreComboBoxLibrarian1"
+                                           fx:id="dvdGenreComboBox1"
                                            editable="false"
                                            promptText="genre *"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitGenreComboBoxLibrarian2"
+                                           fx:id="dvdGenreComboBox2"
                                            editable="false"
                                            promptText="genre"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitGenreComboBoxLibrarian3"
+                                           fx:id="dvdGenreComboBox3"
                                            editable="false"
                                            promptText="genre"
                                        />
                                     </children>
                                     <GridPane.margin>
-                                       <Insets top="60.0" />
+                                       <Insets top="45.0" />
                                     </GridPane.margin>
                                  </VBox>
                                  <VBox
@@ -363,48 +381,117 @@
                                     <children>
                                        <Label text="Keyword(s)" />
                                        <ComboBox
-                                           fx:id="CourseLitKeywordComboBoxLibrarian1"
+                                           fx:id="dvdKeywordComboBox1"
                                            editable="false"
                                            promptText="keyword *"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitKeywordComboBoxLibrarian2"
+                                           fx:id="dvdKeywordComboBox2"
                                            editable="false"
                                            promptText="keyword"
                                        />
                                        <ComboBox
-                                           fx:id="CourseLitKeywordComboBoxLibrarian3"
+                                           fx:id="dvdKeywordComboBox3"
                                            editable="false"
                                            promptText="keyword"
                                        />
                                     </children>
                                     <GridPane.margin>
-                                       <Insets top="30.0" />
+                                       <Insets />
+                                    </GridPane.margin>
+                                 </VBox>
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     GridPane.rowIndex="3"
+                                 >
+                                    <children>
+                                       <Label text="Country of Origin" />
+                                       <TextField
+                                           fx:id="dvdCountryTextFieldLibrarian"
+                                       />
+                                    </children>
+                                 </VBox>
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     GridPane.rowIndex="4"
+                                 >
+                                    <children>
+                                       <Label text="Age Limit" />
+                                       <TextField
+                                           fx:id="dvdAgeLimitTextFieldLibrarian"
+                                       />
+                                    </children>
+                                 </VBox>
+                                 <VBox
+                                     prefHeight="200.0"
+                                     prefWidth="100.0"
+                                     spacing="3.0"
+                                     GridPane.columnIndex="1"
+                                 >
+                                    <children>
+                                       <Label text="Location" />
+                                       <ComboBox
+                                           fx:id="dvdFloorComboBoxLibrarian"
+                                           editable="true"
+                                           promptText="Floor "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdSectionComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="25.0"
+                                           promptText="Section "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdShelfComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="48.0"
+                                           promptText="Shelf "
+                                       />
+                                       <ComboBox
+                                           fx:id="dvdPositionComboBoxLibrarian"
+                                           editable="true"
+                                           layoutX="10.0"
+                                           layoutY="71.0"
+                                           promptText="Position "
+                                       />
+                                    </children>
+                                    <GridPane.margin>
+                                       <Insets top="70.0" />
                                     </GridPane.margin>
                                  </VBox>
                               </children>
                               <padding>
-                                 <Insets bottom="5.0" top="5.0" />
+                                 <Insets
+                                     bottom="5.0"
+                                     top="5.0"
+                                 />
                               </padding>
                            </GridPane>
-                           <HBox alignment="CENTER" spacing="80.0">
+                           <HBox
+                               alignment="CENTER"
+                               spacing="80.0"
+                           >
                               <children>
                                  <Button
-                                     fx:id="cancelNewCourseLitButtonLibrarian"
+                                     fx:id="cancelChangeDvdButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedCancelNewCourseLitButtonLibrarian"
+                                     onMouseClicked="#clickedCancelChangeDvdButtonLibrarian"
                                      text="Cancel"
                                  />
                                  <VBox>
                                     <children>
                                        <Label text="* = Mandatory fields" />
-                                       <Label text="** = One of marked fields mandatory" />
+                                       <Label />
                                     </children>
                                  </VBox>
                                  <Button
-                                     fx:id="saveNewCourseLitButtonLibrarian"
+                                     fx:id="saveChangesDvdButtonLibrarian"
                                      mnemonicParsing="false"
-                                     onMouseClicked="#clickedSaveNewCourseLitButtonLibrarian"
+                                     onMouseClicked="#clickedSaveChangesDvdButtonLibrarian"
                                      text="Create and Save"
                                  />
                               </children>
@@ -416,7 +503,11 @@
                      </VBox>
                   </children>
                   <StackPane.margin>
-                     <Insets bottom="10.0" left="10.0" right="10.0" />
+                     <Insets
+                         bottom="10.0"
+                         left="10.0"
+                         right="10.0"
+                     />
                   </StackPane.margin>
                </VBox>
             </children>

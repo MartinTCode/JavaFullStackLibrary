@@ -262,7 +262,7 @@
                                        <Label text="Language *" />
                                        <ComboBox
                                            fx:id="journalLanguageComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            VBox.vgrow="ALWAYS"
                                        />
                                     </children>
@@ -315,19 +315,19 @@
                                        <Label text="Keyword(s)" />
                                        <ComboBox
                                            fx:id="journalKeywordComboBoxLibrarian1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="keyword *"
                                        />
                                        <ComboBox
                                            fx:id="journalKeywordComboBoxLibrarian2"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
                                            promptText="keyword"
                                        />
                                        <ComboBox
                                            fx:id="journalKeywordComboBoxLibrarian3"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
                                            promptText="keyword"
@@ -352,17 +352,17 @@
                                        <Label text="Author (s)" />
                                        <ComboBox
                                            fx:id="journalAuthorComboBoxLibrarian1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="author *"
                                        />
                                        <ComboBox
                                            fx:id="journalAuthorComboBoxLibrarian2"
-                                           editable="true"
+                                           editable="false"
                                            promptText="author"
                                        />
                                        <ComboBox
                                            fx:id="journalAuthorComboBoxLibrarian3"
-                                           editable="true"
+                                           editable="false"
                                            promptText="author"
                                        />
                                     </children>

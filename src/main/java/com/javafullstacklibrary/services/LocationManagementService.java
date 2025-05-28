@@ -1,6 +1,5 @@
 package com.javafullstacklibrary.services;
 
-import com.javafullstacklibrary.dao.KeywordDAO;
 import com.javafullstacklibrary.dao.LocationDAO;
 import com.javafullstacklibrary.model.Location;
 

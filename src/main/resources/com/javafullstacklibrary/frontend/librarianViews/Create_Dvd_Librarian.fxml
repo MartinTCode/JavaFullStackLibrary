@@ -267,7 +267,7 @@
                                        <Label text="Language *" />
                                        <ComboBox
                                            fx:id="dvdLanguageComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            VBox.vgrow="ALWAYS"
                                        />
                                     </children>
@@ -283,19 +283,19 @@
                                        <Label text="Actor(s)" />
                                        <ComboBox
                                            fx:id="dvdActorComboBox1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="actor *"
                                        />
                                        <ComboBox
                                            fx:id="dvdActorComboBox2"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
                                            promptText="actor"
                                        />
                                        <ComboBox
                                            fx:id="dvdActorComboBox3"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
                                            promptText="actor"
@@ -316,19 +316,19 @@
                                        <Label text="Director(s)" />
                                        <ComboBox
                                            fx:id="dvdDirectorComboBox1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="director *"
                                        />
                                        <ComboBox
                                            fx:id="dvdDirectorComboBox2"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
                                            promptText="co-director"
                                        />
                                        <ComboBox
                                            fx:id="dvdDirectorComboBox3"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
                                            promptText="co-director"
@@ -351,17 +351,17 @@
                                        <Label text="Genre(s)" />
                                        <ComboBox
                                            fx:id="dvdGenreComboBox1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="genre *"
                                        />
                                        <ComboBox
                                            fx:id="dvdGenreComboBox2"
-                                           editable="true"
+                                           editable="false"
                                            promptText="genre"
                                        />
                                        <ComboBox
                                            fx:id="dvdGenreComboBox3"
-                                           editable="true"
+                                           editable="false"
                                            promptText="genre"
                                        />
                                     </children>
@@ -382,17 +382,17 @@
                                        <Label text="Keyword(s)" />
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox1"
-                                           editable="true"
+                                           editable="false"
                                            promptText="keyword *"
                                        />
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox2"
-                                           editable="true"
+                                           editable="false"
                                            promptText="keyword"
                                        />
                                        <ComboBox
                                            fx:id="dvdKeywordComboBox3"
-                                           editable="true"
+                                           editable="false"
                                            promptText="keyword"
                                        />
                                     </children>

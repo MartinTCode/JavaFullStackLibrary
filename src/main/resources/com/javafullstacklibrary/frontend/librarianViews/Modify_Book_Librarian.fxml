@@ -169,7 +169,7 @@
                                     <Label
                                         alignment="TOP_LEFT"
                                         styleClass="label-title"
-                                        text="Add Item: Book (not Course Litterature)"
+                                        text="Modify Item: Book (not Course Litterature)"
                                     />
                                     <GridPane
                                         hgap="15.0"
@@ -466,9 +466,9 @@
                                     >
                                         <children>
                                             <Button
-                                                fx:id="cancelNewBookButtonLibrarian"
+                                                fx:id="cancelChangeBookButtonLibrarian"
                                                 mnemonicParsing="false"
-                                                onMouseClicked="#clickedCancelNewBookButtonLibrarian"
+                                                onMouseClicked="#clickedCancelChangeBookButtonLibrarian"
                                                 text="Cancel"
                                             />
                                             <VBox>
@@ -482,9 +482,9 @@
                                                 </children>
                                             </VBox>
                                             <Button
-                                                fx:id="saveNewBookButtonLibrarian"
+                                                fx:id="saveChangesBookButtonLibrarian"
                                                 mnemonicParsing="false"
-                                                onMouseClicked="#clickedSaveNewBookButtonLibrarian"
+                                                onMouseClicked="#clickedSaveChangesBookButtonLibrarian"
                                                 text="Create and Save"
                                             />
                                         </children>
