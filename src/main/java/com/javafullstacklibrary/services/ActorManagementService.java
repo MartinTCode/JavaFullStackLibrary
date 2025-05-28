@@ -7,6 +7,8 @@ import com.javafullstacklibrary.model.Actor;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -54,15 +56,16 @@ public class ActorManagementService {
 
     /**
      * Get list of all actors full names.
-     * @return List of all actors' full names.
+     * @return Observable List of all actors' full names.
      */
-    public List<String> getAllActorsFullNames() {
+    public ObservableList<String> getAllActorsFullNames() {
         List<Actor> actors = findAll();
         List<String> fullNames = new java.util.ArrayList<>();
         for (Actor actor : actors) {
             fullNames.add(actor.getFullName());
         }
-        return fullNames;
+        ObservableList<String> observableFullNames = FXCollections.observableArrayList(fullNames);
+        return observableFullNames;
     }
 
     /**
@@ -95,7 +98,7 @@ public class ActorManagementService {
      * @param fullName The actor's full name (e.g., "John Smith").
      * @return The found or newly created actor.
      */
-    public Actor findOrCreateByFullName(String fullName) {
+    public Actor findOrByFullName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
             return null;
         }

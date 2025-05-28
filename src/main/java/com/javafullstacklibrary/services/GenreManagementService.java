@@ -73,7 +73,7 @@ public class GenreManagementService {
      * Gets a list of all genre strings.
      * This method retrieves all genres from the database
      * and returns their string representations.
-     * @return List of all genre strings.
+     * @return Observable List of all genre strings.
      */
     public ObservableList<String> getAllStrings() {
         List<Genre> genres = genreDAO.findAll();
@@ -87,15 +87,15 @@ public class GenreManagementService {
     }
 
     /**
-     * Finds or creates a genre by its value.
-     * @param genreValue The genre string.
-     * @return The found or newly created genre.
+     * Finds a genre by its name.
+     * This method is used to retrieve a genre based on its name.
+     * @param genreName
+     * @return Genre object if found, null otherwise.
      */
-    public Genre findOrCreate(String genreValue) {
-        Genre genre = genreDAO.findByGenre(genreValue);
+    public Genre findByName(String genreName) {
+        Genre genre = genreDAO.findByGenre(genreName);
         if (genre == null) {
-            genre = new Genre(genreValue);
-            genre = genreDAO.save(genre);
+            return null; // Return null if the genre is not found, could add creation logic here if needed
         }
         return genre;
     }

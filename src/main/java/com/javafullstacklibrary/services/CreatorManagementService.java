@@ -7,6 +7,8 @@ import com.javafullstacklibrary.model.Creator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -63,16 +65,18 @@ public class CreatorManagementService {
 
     /**
      * Get list of all creators' full names.
-     * @return List of all creators' full names.
+     * @return Observable List of all creators' full names.
      */
-    public List<String> getAllCreatorsFullNames() {
+    public ObservableList<String> getAllFullNames() {
         List<Creator> creators = creatorDAO.findAll();
         List<String> fullNames = new java.util.ArrayList<>();
         for (Creator creator : creators) {
             String fullName = (creator.getFirstName() + " " + creator.getLastName()).trim();
             fullNames.add(fullName);
         }
-        return fullNames;
+        ObservableList<String> observableFullNames = FXCollections.observableArrayList(fullNames);
+
+        return observableFullNames;
     }
 
     /**
@@ -89,11 +93,10 @@ public class CreatorManagementService {
      * @param lastName The creator's last name.
      * @return The found or newly created creator.
      */
-    public Creator findOrCreate(String firstName, String lastName) {
+    public Creator findByName(String firstName, String lastName) {
         Creator creator = creatorDAO.findByName(firstName, lastName);
         if (creator == null) {
-            creator = new Creator(firstName, lastName);
-            creator = creatorDAO.save(creator);
+            return null;
         }
         return creator;
     }
@@ -101,15 +104,16 @@ public class CreatorManagementService {
     /**
      * Finds or creates a creator by a single full name string.
      * @param fullName The creator's full name (e.g., "Jane Doe").
-     * @return The found or newly created creator.
+     * @return 
      */
-    public Creator findOrCreateByFullName(String fullName) {
-        if (fullName == null || fullName.trim().isEmpty()) {
-            return null;
-        }
+    public Creator findByFullName(String fullName) {
         String[] parts = fullName.trim().split("\\s+", 2);
         String firstName = parts[0];
         String lastName = parts.length > 1 ? parts[1] : "";
-        return findOrCreate(firstName, lastName);
+        Creator creator = creatorDAO.findByName(firstName, lastName);
+        if (creator == null) {
+            return null; // Creator not found, could add creation logic here if needed
+        }
+        return creator;
     }
 }

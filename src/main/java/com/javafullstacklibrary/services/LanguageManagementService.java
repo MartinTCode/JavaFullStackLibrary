@@ -7,6 +7,8 @@ import com.javafullstacklibrary.model.Language;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -63,15 +65,17 @@ public class LanguageManagementService {
     /**
      * Gets a list of all language strings.
      * This method retrieves all languages and returns their string values.
-     * @return List of all language strings.
+     * @return Observable List of all language strings.
      */
-    public List<String> getAllStrings(){
+    public ObservableList<String> getAllStrings(){
         List<Language> languages = findAll();
         List<String> languageValues = new java.util.ArrayList<>();
         for (Language language : languages) {
             languageValues.add(language.getLanguage());
         }
-        return languageValues;
+        ObservableList<String> observableLanguageValues = FXCollections.observableArrayList(languageValues);
+
+        return observableLanguageValues;
     }
 
     /**
@@ -83,15 +87,14 @@ public class LanguageManagementService {
     }
 
     /**
-     * Finds or creates a language by its value.
+     * Finds language by its value.
      * @param languageValue The language string.
-     * @return The found or newly created language.
+     * @return The found language or null if not found.
      */
-    public Language findOrCreate(String languageValue) {
+    public Language findByName(String languageValue) {
         Language language = languageDAO.findByLanguage(languageValue);
         if (language == null) {
-            language = new Language(languageValue);
-            language = languageDAO.save(language);
+            return null; // Return null if not found, could add creation logic here if needed
         }
         return language;
     }

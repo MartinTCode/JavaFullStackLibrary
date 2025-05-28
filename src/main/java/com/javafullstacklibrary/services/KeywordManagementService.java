@@ -6,6 +6,8 @@ import com.javafullstacklibrary.model.Keyword;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -70,27 +72,28 @@ public class KeywordManagementService {
     /**
      * Gets a list of all keyword strings.
      * This method retrieves all keywords and returns their string representations.
-     * @return List of all keyword strings.
+     * @return Observable List of all keyword strings.
      */
-    public List<String> getAllStrings() {
+    public ObservableList<String> getAllStrings() {
         List<Keyword> keywords = findAll();
         List<String> keywordStrings = new java.util.ArrayList<>();
         for (Keyword keyword : keywords) {
             keywordStrings.add(keyword.getKeyword());
         }
-        return keywordStrings;
+        ObservableList<String> observableKeywordStrings = FXCollections.observableArrayList(keywordStrings);
+
+        return observableKeywordStrings;
     }
 
     /**
-     * Finds or creates a keyword by its value.
+     * Finds keyword by its value.
      * @param keywordValue The keyword string.
-     * @return The found or newly created keyword.
+     * @return The found keyword or null if not found.
      */
-    public Keyword findOrCreate(String keywordValue) {
+    public Keyword findByName(String keywordValue) {
         Keyword keyword = keywordDAO.findByKeyword(keywordValue);
         if (keyword == null) {
-            keyword = new Keyword(keywordValue);
-            keyword = keywordDAO.save(keyword);
+            return null; // Return null if not found, could add creation logic here if needed
         }
         return keyword;
     }
