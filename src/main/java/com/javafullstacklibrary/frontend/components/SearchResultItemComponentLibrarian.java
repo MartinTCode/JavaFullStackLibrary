@@ -56,11 +56,11 @@ public class SearchResultItemComponentLibrarian extends VBox {
 
             String itemType = item.getParameterMap().get("type");
             String viewAction = switch (itemType.toLowerCase()) {
-                case "journal", "journals" -> "ModifyJournal";
-                case "dvd", "dvds" -> "ModifyDvd";
-                case "course literature", "course lit", "CourseLitterature" -> "ModifyCourseLit";
-                case "book", "books" -> "ModifyBook";
-                default -> "ModifyBook"; // fallback to book if unknown type
+                case "journal" -> "ModifyJournal";
+                case "dvd" -> "ModifyDvd";
+                case "course_litterature" -> "ModifyCourseLit";
+                case "book" -> "ModifyBook";
+                default -> "ModifyBook"; // fallback to book if un 56known type
             };
 
             MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), viewAction);
