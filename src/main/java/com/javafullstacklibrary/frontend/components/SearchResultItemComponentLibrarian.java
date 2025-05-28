@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Component to display search result items in a standardized format.
  */
-public class SearchResultItemComponent extends VBox {
+public class SearchResultItemComponentLibrarian extends VBox {
     
     private final Item item;
     
@@ -27,7 +27,7 @@ public class SearchResultItemComponent extends VBox {
      * 
      * @param item The item to display
      */
-    public SearchResultItemComponent(Item item) {
+    public SearchResultItemComponentLibrarian(Item item) {
         this.item = item;
         
         // Set up styling
@@ -48,8 +48,22 @@ public class SearchResultItemComponent extends VBox {
         
         // Add click handler that uses MenuNavigationHelper
         setOnMouseClicked(event -> {
-            //Add thing to happen when you click on the item
-            // For exampel to navigate to a detailed view, not implemented in this initial version
+            if (item.getParameterMap() == null || !item.getParameterMap().containsKey("type")) {
+                // Default to ModifyBook if no type is specified
+                MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), "ModifyBook");
+                return;
+            }
+
+            String itemType = item.getParameterMap().get("type");
+            String viewAction = switch (itemType.toLowerCase()) {
+                case "journal", "journals" -> "ModifyJournal";
+                case "dvd", "dvds" -> "ModifyDvd";
+                case "course literature", "course lit", "CourseLitterature" -> "ModifyCourseLit";
+                case "book", "books" -> "ModifyBook";
+                default -> "ModifyBook"; // fallback to book if unknown type
+            };
+
+            MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), viewAction);
         });
 
 

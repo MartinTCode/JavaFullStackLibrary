@@ -14,6 +14,10 @@ import com.javafullstacklibrary.frontend.librarianControllers.CreateUserLibraria
 import com.javafullstacklibrary.frontend.librarianControllers.EditUsersLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.ManageLibraryLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.ManageUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyBookLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyCourseLitLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyDvdLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyJournalLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.OverdueViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibrarianController;
@@ -245,6 +249,18 @@ public class MenuNavigationHelper {
                 break;
             case "CreateUser":
                 navigateToView(mainPane, "librarianViews", "Create_User_Librarian.fxml", new CreateUserLibrarianController());
+                break;
+            case "ModifyBook":
+                navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", new ModifyBookLibrarianController());
+                break;
+            case "ModifyJournal":
+                navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", new ModifyJournalLibrarianController());
+                break;
+            case "ModifyDvd":
+                navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", new ModifyDvdLibrarianController());
+                break;
+            case "ModifyCourseLit":
+                navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", new ModifyCourseLitLibrarianController());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);
