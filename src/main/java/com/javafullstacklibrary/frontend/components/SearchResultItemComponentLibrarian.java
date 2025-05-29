@@ -46,7 +46,7 @@ public class SearchResultItemComponentLibrarian extends VBox {
         });
         
         // Add click handler that uses MenuNavigationHelper
-        setOnMouseClicked(event -> {
+        setOnMouseClicked(event -> {  
             if (item.getParameterMap() == null || !item.getParameterMap().containsKey("type")) {
                 // Default to ModifyBook if no type is specified
                 MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), "ModifyBook");
