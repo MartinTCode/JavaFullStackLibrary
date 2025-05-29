@@ -40,9 +40,10 @@ public class ItemDAO {
             validateIdentifierUnique(item);
             
             if (item.getId() == null) {
+                validateIdentifierUnique(item); // Validate before persisting
                 entityManager.persist(item);
             } else {
-                item = entityManager.merge(item);
+                item = entityManager.merge(item); // No valitation of unique identifiers for updates since they will already exist
             }
             
             entityManager.getTransaction().commit();
@@ -349,6 +350,18 @@ public class ItemDAO {
      */
     private void validateIdentifierUnique(Item item) {
         Map<String, String> errors = new HashMap<>();
+
+        // check that at least one identifier is set
+        if (item.getIdentifier() == null || item.getIdentifier().trim().isEmpty()) {
+            if (item.getIdentifier2() == null || item.getIdentifier2().isEmpty()) {
+                errors.put("identifier", "At least one identifier must be set");
+            }
+        }
+        if (item.getIdentifier2() == null || item.getIdentifier2().isEmpty()) {
+            if (item.getIdentifier() == null || item.getIdentifier().isEmpty()) {
+                errors.put("identifier2", "At least one identifier must be set");
+            }
+        }
         
         // Check identifier uniqueness within the same item type
         if (item.getIdentifier() != null && !item.getIdentifier().isEmpty()) {

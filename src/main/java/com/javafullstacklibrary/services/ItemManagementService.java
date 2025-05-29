@@ -45,7 +45,7 @@ public class ItemManagementService {
     }
 
     /**
-     * Modifies an existing item.
+     * Modifies an existing item. The DOA method handles both new and existing items, updating if necessary.
      * @param item The item with updated fields.
      * @return The updated item.
      */
@@ -153,6 +153,50 @@ public class ItemManagementService {
         itemDAO.save(item);
 
         return item;
+    }
+
+    public Item createItem(
+            String type,
+            Location location,
+            Language language,
+            Set<Keyword> keywords,
+            Set<Creator> creators,
+            Set<Actor> actors,
+            Set<Genre> genres,
+            String identifier1,
+            String identifier2,
+            String title,
+            String publisher,
+            Short ageLimit,
+            String countryOfProduction
+    ) {
+        Item item;
+        switch (type.toLowerCase()) {
+            case "book":
+                item = new Book(location, language, keywords, creators, genres, identifier1, identifier2, title, publisher);
+                break;
+            case "journal":
+                item = new Journal(location, language, keywords, creators, identifier1, title, publisher);
+                break;
+            case "dvd":
+                item = new DVD(location, language, keywords, creators, actors, genres, identifier1, title, publisher, ageLimit, countryOfProduction);
+                break;
+            case "course_litterature":
+                item = new CourseLitterature(location, language, keywords, creators, genres, identifier1, identifier2, title, publisher);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + type);
+        }
+        return item;
+    }
+
+    /**
+     * Closes the EntityManagerFactory.
+     */
+    public void close() {
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
  
 }

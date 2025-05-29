@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
@@ -154,8 +155,8 @@ public class CreateCourseLitLibrarianController {
             Language language = collectLanguage();
             Location location = collectLocation();       
 
-            // Create a new course literature and save it to database
-            itemManagementService.createAndSaveItem(
+            // Create a new course literature item
+            Item newCourseLit = itemManagementService.createItem(
                 "course_litterature",
                 location,
                 language,
@@ -170,6 +171,8 @@ public class CreateCourseLitLibrarianController {
                 null, // ageLimit not applicable
                 null  // countryOfProduction not applicable
             );
+            // Save the item to database
+            itemManagementService.addItem(newCourseLit);
 
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

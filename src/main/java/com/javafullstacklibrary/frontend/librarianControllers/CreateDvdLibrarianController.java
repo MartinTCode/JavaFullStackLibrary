@@ -17,6 +17,7 @@ import com.javafullstacklibrary.services.ActorManagementService;
 import com.javafullstacklibrary.model.Actor;
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
@@ -170,7 +171,14 @@ public class CreateDvdLibrarianController {
             String imdbc = dvdImdbcTextFieldLibrarian.getText();
             String publisher = dvdPublisherTextFieldLibrarian.getText();
             String country = dvdCountryTextFieldLibrarian.getText();
-            Short ageLimit = Short.parseShort(dvdAgeLimitTextFieldLibrarian.getText());
+
+            // Age limit handling
+            String ageLimitText = dvdAgeLimitTextFieldLibrarian.getText();
+            Short ageLimit = null; // Default to null if not provided
+            if (ageLimitText != null && !ageLimitText.isEmpty()) {
+                ageLimit = Short.parseShort(ageLimitText);
+            }
+
             
             // Convert Lists to Sets
             Set<Creator> directors = new HashSet<>(collectDirectors());
@@ -180,8 +188,8 @@ public class CreateDvdLibrarianController {
             Language language = collectLanguage();
             Location location = collectLocation();       
 
-            // Create a new DVD and save it to database
-            itemManagementService.createAndSaveItem(
+            // Create a new DVD
+            Item newDvd = itemManagementService.createItem(
                 "dvd",
                 location,
                 language,
@@ -196,6 +204,8 @@ public class CreateDvdLibrarianController {
                 ageLimit,
                 country
             );
+            // Save the item to the database
+            itemManagementService.addItem(newDvd);
 
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
