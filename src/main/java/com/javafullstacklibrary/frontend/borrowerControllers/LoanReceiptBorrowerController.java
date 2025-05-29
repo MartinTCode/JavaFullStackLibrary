@@ -109,31 +109,37 @@ public class LoanReceiptBorrowerController {
 
     @FXML
     private void clickedHomeMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
