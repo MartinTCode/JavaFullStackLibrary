@@ -65,7 +65,8 @@ INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 (3, 'KD9T7P6R', FALSE, '2025-01-04'),
 (4, 'R5BX0Q29', FALSE, '2025-01-05'), -- item_copy_id 5 --> dvd 
 (5, 'R5BX0Q30', TRUE, '2025-01-04'), -- item_copy_id 6 --> journal (reference copy)
-(5, 'R5BX0Q31', FALSE, '2025-01-06'),
+(5, 'R5BX0Q31', FALSE, '2025-01-06');
+
 INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 (4, 'R5BX0Q32', FALSE, '2025-03-03'), 
 (4, 'R5BX0Q33', FALSE, '2025-03-03'),
