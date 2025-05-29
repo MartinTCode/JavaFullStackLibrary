@@ -1,7 +1,9 @@
 package com.javafullstacklibrary.frontend.components;
 
 import com.javafullstacklibrary.model.Item;
+
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -30,6 +32,22 @@ public class SearchResultItemComponent extends VBox {
         setSpacing(5);
         getStyleClass().add("search-result-item");
         setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-color: #f9f9f9;");
+        
+        // Add hover effect
+        setOnMouseEntered(e -> {
+            setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-color: #f0f0f0;");
+            setCursor(Cursor.HAND);
+        });
+        
+        setOnMouseExited(e -> {
+            setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-color: #f9f9f9;");
+        });
+        
+        // Add click handler that uses MenuNavigationHelper
+        setOnMouseClicked(event -> {
+            //Add thing to happen when you click on the item
+            // For exampel to navigate to a detailed view, not implemented in this initial version
+        });
 
 
         // Title with bold font
@@ -120,7 +138,7 @@ public class SearchResultItemComponent extends VBox {
         }
         getChildren().addAll(//TypeLabel, 
         detailsLabel, locationLabel, availabilityLabel);
-            }
+    }
     
     /**
      * @return The item represented by this component

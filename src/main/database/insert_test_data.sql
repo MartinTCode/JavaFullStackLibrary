@@ -50,24 +50,35 @@ INSERT INTO keyword (keyword) VALUES
 
 -- Insert data into item table
 INSERT INTO item (location_id, language_id, item_type, identifier, identifier2, title, publisher, age_limit, country_of_production) VALUES
-(1, 1, 'book', '1234567890123', '9781234567890', 'Book Title 1', 'Publisher 1', 12, 'USA'),
-(2, 2, 'book', '2234567890123', '9782234567890', 'Book Title 2', 'Publisher 2', 15, 'Sweden'),
-(3, 3, 'course_litterature', '3234567890123', '9783234567890', 'Course Book 1', 'Publisher 3', 18, 'France'),
-(4, 4, 'dvd', NULL, NULL, 'DVD Title 1', 'Publisher 4', NULL, 'Germany'),
-(5, 5, 'journal', '5234567890123', NULL, 'Journal Title 1', 'Publisher 5', NULL, 'Spain');
+(1, 1, 'book', '1234567890123', '9781234567890', 'Book Title 1', 'Publisher 1', NULL, NULL),
+(2, 2, 'book', '2234567890123', '9782234567890', 'Book Title 2', 'Publisher 2', NULL, NULL),
+(3, 3, 'course_litterature', '3234567890123', '9783234567890', 'Course Book 1', 'Publisher 3', NULL, NULL),
+(4, 1, 'dvd', 'tt0120338', NULL, 'Titanic', '20th Century Fox', 13, 'USA'),
+(5, 5, 'journal', '5234567890123', NULL, 'Journal Title 1', 'Publisher 5', NULL, NULL);
 -- Add 15 more items with varying attributes...
 
 -- Insert data into item_copy table
 INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 (1, 'X82DMJQ1', FALSE, '2025-01-01'),
-(3, '7PTK3A94', FALSE, '2025-01-02'),
+(3, '7PTK3A94', FALSE, '2025-01-02'), -- item_copy_id 2 --> course_litterature
 (2, 'QW8Z4NME2L', FALSE, '2025-01-03'),
 (3, 'KD9T7P6R', FALSE, '2025-01-04'),
-(4, 'R5BX0Q29', FALSE, '2025-01-05'),
-(5, 'R5BX0Q30', TRUE, '2025-01-04');
+(4, 'R5BX0Q29', FALSE, '2025-01-05'), -- item_copy_id 5 --> dvd 
+(5, 'R5BX0Q30', TRUE, '2025-01-04'), -- item_copy_id 6 --> journal (reference copy)
+(5, 'R5BX0Q31', FALSE, '2025-01-06');
+
+INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
+(4, 'R5BX0Q32', FALSE, '2025-03-03'), 
+(4, 'R5BX0Q33', FALSE, '2025-03-03'),
+(4, 'R5BX0Q34', FALSE, '2025-03-04'),
+(4, 'R5BX0Q35', FALSE, '2025-03-05'),
+(4, 'R5BX0Q36', FALSE, '2025-03-06'),
+(4, 'R5BX0Q37', FALSE, '2025-03-07'),
+(4, 'R5BX0Q38', FALSE, '2025-03-08');
 -- Add more copies ensuring at least double the number of items and max 10% borrowed...
 
 -- Insert data into user_profile table
+-- ("public", 3, "student", 5, "researcher", 10, "university employee", 15);
 INSERT INTO user_profile (user_type, f_name, l_name, phone, full_address) VALUES
 ('public', 'Alice', 'Wonderland', '1234567890', '123 Main St'),
 ('student', 'Bob', 'Builder', '0987654321', '456 Elm St'),
@@ -78,9 +89,9 @@ INSERT INTO user_profile (user_type, f_name, l_name, phone, full_address) VALUES
 INSERT INTO library_user (profile_id, ssn, u_name, p_hashed_bcrypt, email, user_role) VALUES
 (NULL, NULL, 'admin1', 'hashed_password1', 'admin1@example.com', 'admin'),
 (NULL, NULL, 'librarian1', 'hashed_password2', 'librarian1@example.com', 'librarian'),
-(1, '123456789012', NULL, 'hashed_password3', 'borrower1@example.com', 'borrower'),
-(2, '234567890123', NULL, 'hashed_password4', 'borrower2@example.com', 'borrower'),
-(3, '345678901234', NULL, 'hashed_password5', 'borrower3@example.com', 'borrower');
+(1, '199912121234', NULL, 'hashed_password3', 'borrower1@example.com', 'borrower'),
+(2, '200012121234', NULL, 'hashed_password4', 'borrower2@example.com', 'borrower'),
+(3, '200112121234', NULL, 'hashed_password5', 'borrower3@example.com', 'borrower');
 -- Add more users ensuring no more than 50% have loans...
 
 -- Insert data into loan table

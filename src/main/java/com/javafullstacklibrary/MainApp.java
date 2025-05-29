@@ -1,6 +1,8 @@
 package com.javafullstacklibrary;
 
+import com.javafullstacklibrary.exception.ValidationException;
 import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+import com.javafullstacklibrary.services.AuthenticationService;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
+    @Override
+    public void init() throws Exception {
+        // This method is called before start() - perfect for initialization
+        super.init();
+        initializeApplication();
+    }
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -31,6 +40,46 @@ public class MainApp extends Application {
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Initializes the application by setting up test data passwords
+     */
+    private void initializeApplication() {
+        try {
+            System.out.println("Initializing JavaFX Library Application...");
+            
+            AuthenticationService authService = new AuthenticationService();
+            
+            // Initialize test data passwords
+            boolean initialized = authService.initializeAndVerifyTestData();
+            
+            if (initialized) {
+                System.out.println("✓ Test data passwords have been initialized and hashed");
+            } else {
+                System.out.println("✓ Passwords were already properly hashed - no initialization needed");
+            }
+            
+            System.out.println("✓ Application initialization completed successfully");
+            System.out.println("----------------------------------------");
+            
+        } catch (ValidationException e) {
+            System.err.println("✗ Failed to initialize application:");
+            System.err.println("  Error: " + e.getMessage());
+            
+            if (e.hasFieldErrors()) {
+                e.getFieldErrors().forEach((field, error) -> 
+                    System.err.println("  " + field + ": " + error));
+            }
+            
+            System.err.println("----------------------------------------");
+            System.err.println("Application will continue, but login may not work properly");
+            
+        } catch (Exception e) {
+            System.err.println("✗ Unexpected error during application initialization:");
+            e.printStackTrace();
+            System.err.println("Application will continue, but there may be issues");
         }
     }
 

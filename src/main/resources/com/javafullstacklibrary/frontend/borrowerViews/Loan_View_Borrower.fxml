@@ -116,6 +116,12 @@
                               text="Add" />
                         </children>
                      </HBox>
+                     <!-- Error/Status Message Label -->
+                     <Label 
+                        fx:id="statusLabel" 
+                        styleClass="error-label" 
+                        visible="false"
+                        managed="false" />
                   </children>
                   <opaqueInsets>
                      <Insets />
@@ -162,7 +168,7 @@
                         </content>
                      </ScrollPane>
 
-                     <!-- Load more button -->
+                     <!-- Confirm button -->
                      <HBox 
                         alignment="BOTTOM_CENTER">
                         <children>
@@ -170,6 +176,7 @@
                               fx:id="confirmLoansButtonBorrower" 
                               mnemonicParsing="false" 
                               onMouseClicked="#clickedConfirmLoansButtonBorrower" 
+                              styleClass="button"
                               text="Confirm Loans" />
                         </children>
                         <padding>

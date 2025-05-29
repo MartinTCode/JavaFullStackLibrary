@@ -56,7 +56,7 @@ public class ManageLibraryLibrarianController {
         // Populate itemTypeComboBox with item types
         itemTypeComboBox.getItems().addAll(
             "Book",
-            "Course Literature",
+            "Course Litterature",
             "Journal",
             "DVD"
         );
@@ -78,7 +78,7 @@ public class ManageLibraryLibrarianController {
             case "Book":
                 MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateBook");
                 break;
-            case "Course Literature":
+            case "Course Litterature":
                 MenuNavigationHelper.buttonClickLibrarian(mainPane, "CreateCourseLit");
                 break;
             case "Journal":

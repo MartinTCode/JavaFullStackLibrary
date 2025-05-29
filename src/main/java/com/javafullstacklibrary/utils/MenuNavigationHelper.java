@@ -14,12 +14,17 @@ import com.javafullstacklibrary.frontend.librarianControllers.CreateUserLibraria
 import com.javafullstacklibrary.frontend.librarianControllers.EditUsersLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.ManageLibraryLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.ManageUsersLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyBookLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyCourseLitLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyDvdLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ModifyJournalLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.OverdueViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SearchMenuLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.UserInfoLibrarianController;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -27,8 +32,11 @@ import com.javafullstacklibrary.frontend.borrowerControllers.StartViewBorrowerCo
 import com.javafullstacklibrary.frontend.borrowerControllers.SearchMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.SearchViewBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.LoanReceiptBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
+
+import com.javafullstacklibrary.frontend.borrowerControllers.LoanViewBorrowerController;
 
 
 import javafx.scene.layout.Pane;
@@ -146,10 +154,10 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "borrowerViews", "Change_Password_Borrower.fxml", new AccountMenuBorrowerController());
                 break;
             case "LoanView":
-                navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanViewBorrowerController());
                 break;
             case "LoanReceipt":
-                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanReceiptBorrowerController());
                 break;
             case "ReturnView":
                 navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
@@ -246,6 +254,18 @@ public class MenuNavigationHelper {
             case "CreateUser":
                 navigateToView(mainPane, "librarianViews", "Create_User_Librarian.fxml", new CreateUserLibrarianController());
                 break;
+            case "ModifyBook":
+                navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", new ModifyBookLibrarianController());
+                break;
+            case "ModifyJournal":
+                navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", new ModifyJournalLibrarianController());
+                break;
+            case "ModifyDvd":
+                navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", new ModifyDvdLibrarianController());
+                break;
+            case "ModifyCourseLit":
+                navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", new ModifyCourseLitLibrarianController());
+                break;
             default:
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);
         }
@@ -260,13 +280,36 @@ public class MenuNavigationHelper {
      * @param query        The search query to be used in the search view.
      * @throws IllegalArgumentException if the buttonAction value is invalid.
      */
-    public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
+public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
     switch (buttonAction) {
         case "SearchView":
             SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
             navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
             break;
         // ...other cases...
+        default:
+            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+    }
+}
+
+public static void buttonClickLibrarian(Pane mainPane, String buttonAction, Item item) {
+    switch (buttonAction) {
+        case "ModifyBook":
+            navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", 
+                new ModifyBookLibrarianController(item));
+            break;
+        case "ModifyCourseLit":
+            navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", 
+                new ModifyCourseLitLibrarianController(item));
+            break;
+        case "ModifyJournal":
+            navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", 
+                new ModifyJournalLibrarianController(item));
+            break;
+        case "ModifyDvd":
+            navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", 
+                new ModifyDvdLibrarianController(item));
+            break;
         default:
             throw new IllegalArgumentException("Invalid button action: " + buttonAction);
     }

@@ -378,3 +378,44 @@
     padding: 0 30px 0 0;
     -fx-padding: 0 30 0 0;
 }
+
+/* Loan Item Container Styles */
+.loan-item-container {
+    -fx-padding: 10px;
+    -fx-border-color: lightgray;
+    -fx-border-width: 1px;
+    -fx-background-color: #f9f9f9;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-spacing: 10px;
+}
+
+.loan-item-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.remove-button {
+    -fx-background-color: #ff6b6b;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-padding: 5px 10px;
+}
+
+.remove-button:hover {
+    -fx-background-color: #ff5252;
+}
+
+/* Error label styling */
+.error-label {
+    -fx-text-fill: #d32f2f;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Success label styling */
+.success-label {
+    -fx-text-fill: #388e3c;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}

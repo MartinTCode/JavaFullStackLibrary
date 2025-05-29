@@ -7,22 +7,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+
+import jakarta.persistence.OneToMany;
+
 
 import java.util.List;
 
 @Entity
 @Table(name = "item_copy")
 public class ItemCopy {
-
-    /**
-     * Represents a copy of an item in the library system.
-     * Each ItemCopy is associated with a specific Item and has a unique barcode.
-     * It can be marked as a reference item, which means it cannot be checked out.
-     */
-    
 
     // #region Attributes
     
