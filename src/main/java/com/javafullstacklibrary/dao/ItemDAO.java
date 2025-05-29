@@ -349,6 +349,18 @@ public class ItemDAO {
      */
     private void validateIdentifierUnique(Item item) {
         Map<String, String> errors = new HashMap<>();
+
+        // check that at least one identifier is set
+        if (item.getIdentifier().trim().isEmpty() || item.getIdentifier() == null) {
+            if (item.getIdentifier2().trim().isEmpty() || item.getIdentifier2() == null) {
+                errors.put("identifier", "At least one identifier must be set");
+            }
+        }
+        if (item.getIdentifier2().trim().isEmpty() || item.getIdentifier2() == null) {
+            if (item.getIdentifier().trim().isEmpty() || item.getIdentifier() == null) {
+                errors.put("identifier2", "At least one identifier must be set");
+            }
+        }
         
         // Check identifier uniqueness within the same item type
         if (item.getIdentifier() != null && !item.getIdentifier().isEmpty()) {
