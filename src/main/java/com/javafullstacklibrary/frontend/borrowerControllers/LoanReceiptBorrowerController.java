@@ -7,11 +7,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.ItemCopy;
+import com.javafullstacklibrary.model.LibraryUser;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.utils.LoanList;
 import com.javafullstacklibrary.dao.LoanDAO;
-import com.javafullstacklibrary.model.Loan;
 import com.javafullstacklibrary.utils.UserSession;
 
 import jakarta.persistence.EntityManager;
@@ -55,7 +56,10 @@ public class LoanReceiptBorrowerController {
         loanContainer.getChildren().add(dateLabel);
 
         // Add borrower information
-        Label borrowerLabel = new Label("Borrower: " + UserSession.getCurrentUser().getUsername());
+        Label borrowerLabel = new Label("Borrower: " + 
+        UserSession.getCurrentUser().getBorrowerProfile().getFirstName() + " " +
+        UserSession.getCurrentUser().getBorrowerProfile().getLastName());
+        
         borrowerLabel.getStyleClass().add("loan-item-label");
         loanContainer.getChildren().add(borrowerLabel);
 
@@ -65,12 +69,12 @@ public class LoanReceiptBorrowerController {
         loanContainer.getChildren().add(itemsHeader);
 
         // Add each loaned item to the receipt
-        for (ItemCopy item : loanedItems) {
+        for (ItemCopy itemCopy : loanedItems) {
             Label itemLabel = new Label(
                 String.format("- %s\n  Barcode: %s\n  Due Date: %s", 
-                    item.getItem().getTitle(), 
-                    item.getBarcode(),
-                    LocalDate.now().plusWeeks(2).toString()
+                    itemCopy.getItem().getTitle(), 
+                    itemCopy.getBarcode(),
+                    getReturnDateByItemCopy(itemCopy).toString()
                 )
             );
             itemLabel.getStyleClass().add("loan-item-label");
@@ -81,30 +85,21 @@ public class LoanReceiptBorrowerController {
         processLoans(loanedItems);
     }
 
-    private void processLoans(List<ItemCopy> items) {
-        try {
-            entityManager.getTransaction().begin();
-            
-            for (ItemCopy item : items) {
-                Loan loan = new Loan();
-                loan.setItemCopy(item);
-                loan.setLibraryUser(UserSession.getCurrentUser());
-                loan.setStartDate(LocalDate.now());
-                loan.setReturnDate(LocalDate.now().plusWeeks(2));
-                loanDAO.save(loan);
-            }
-            
-            entityManager.getTransaction().commit();
-            
-            // Clear the pending loans list after successful processing
-            LoanList.getInstance().clearPendingLoans();
-            
-        } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            System.err.println("Error processing loans: " + e.getMessage());
+    private void processLoans(List<ItemCopy> itemCopies) {
+        // do this with the DOA:
+        LibraryUser loaner = UserSession.getCurrentUser();
+        for (ItemCopy itemCopy : itemCopies) {
+            loanDAO.save(itemCopy, loaner, getReturnDateByItemCopy(itemCopy));
         }
+        // Clear the pending loans list after successful processing
+        LoanList.getInstance().clearPendingLoans();
+    }
+
+    private LocalDate getReturnDateByItemCopy(ItemCopy itemCopy) {
+        // First extract the item from the ItemCopy
+        Item item = itemCopy.getItem();
+        int days2add2now = item.getMaxLoanTimeDays();
+        return LocalDate.now().plusDays(days2add2now);
     }
 
     @FXML
