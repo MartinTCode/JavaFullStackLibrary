@@ -79,7 +79,7 @@ public class ManageUsersLibrarianController {
             "Public",
             "Student",
             "Researcher",
-            "University_Employee"
+            "University Employee"
         );
     }
 }

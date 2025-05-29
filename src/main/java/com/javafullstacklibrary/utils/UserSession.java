@@ -30,6 +30,6 @@ public class UserSession {
     }
     
     public static String getCurrentUsername() {
-        return currentUser != null ? currentUser.getUsername() : null;
+        return currentUser.getUsername() != null ? currentUser.getUsername() : currentUser.getSsn();
     }
 }
