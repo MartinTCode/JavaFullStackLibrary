@@ -1,5 +1,6 @@
 package com.javafullstacklibrary.dao;
 
+import com.javafullstacklibrary.exception.ValidationException;
 import com.javafullstacklibrary.model.*;
 
 import jakarta.persistence.EntityManager;
@@ -10,6 +11,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +29,15 @@ public class ItemDAO {
      * Saves a new or updates an existing item
      * @param item The item to save
      * @return The saved item with generated ID (if new)
+     * @throws ValidationException if validation fails
+     * @throws RuntimeException if any other error occurs during save
      */
     public Item save(Item item) {
         try {
             entityManager.getTransaction().begin();
+            
+            // Validate uniqueness before saving
+            validateIdentifierUnique(item);
             
             if (item.getId() == null) {
                 entityManager.persist(item);
@@ -40,11 +47,16 @@ public class ItemDAO {
             
             entityManager.getTransaction().commit();
             return item;
+        } catch (ValidationException e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw e; // Re-throw validation exceptions as-is
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            throw e;
+            throw new RuntimeException("Failed to save item", e);
         }
     }
 
@@ -325,5 +337,64 @@ public class ItemDAO {
         return "LIB-" + System.currentTimeMillis();
     }
     
+    // #endregion
+
+    // #region validation methods
+    /**
+     * Validates that the identifier and identifier2 fields of an item are unique
+     * within the same item type (e.g., Book, Journal, etc.)
+     * 
+     * @param item The item to validate
+     * @throws ValidationException if validation fails
+     */
+    private void validateIdentifierUnique(Item item) {
+        Map<String, String> errors = new HashMap<>();
+        
+        // Check identifier uniqueness within the same item type
+        if (item.getIdentifier() != null && !item.getIdentifier().isEmpty()) {
+            String query = "SELECT COUNT(i) FROM Item i WHERE i.identifier = :identifier AND i.id <> :id AND TYPE(i) = :itemType";
+            Long count = entityManager.createQuery(query, Long.class)
+                    .setParameter("identifier", item.getIdentifier())
+                    .setParameter("id", item.getId() != null ? item.getId() : -1)
+                    .setParameter("itemType", item.getClass())
+                    .getSingleResult();
+            if (count > 0) {
+                errors.put("identifier", "This identifier already exists for " + item.getClass().getSimpleName() + " items");
+            }
+        }
+        
+        // Check identifier2 uniqueness within the same item type
+        if (item.getIdentifier2() != null && !item.getIdentifier2().isEmpty()) {
+            String query = "SELECT COUNT(i) FROM Item i WHERE i.identifier2 = :identifier2 AND i.id <> :id AND TYPE(i) = :itemType";
+            Long count = entityManager.createQuery(query, Long.class)
+                    .setParameter("identifier2", item.getIdentifier2())
+                    .setParameter("id", item.getId() != null ? item.getId() : -1)
+                    .setParameter("itemType", item.getClass())
+                    .getSingleResult();
+            if (count > 0) {
+                errors.put("identifier2", "This identifier already exists for " + item.getClass().getSimpleName() + " items");
+            }
+        }
+        if (item.getTitle() == null || item.getTitle().trim().isEmpty()) {
+            throw new ValidationException("Title cannot be empty", errors);
+        }
+        if (item.getLanguage() == null) {
+            throw new ValidationException("Language cannot be empty", errors);
+        }
+        if (item.getCreators() == null || item.getCreators().isEmpty()) {
+            throw new ValidationException("At least one creator must be specified", errors);
+        }
+        if (item.getKeywords() == null || item.getKeywords().isEmpty()) {
+            throw new ValidationException("At least one keyword must be specified", errors);
+        }
+        if (item.getGenres() == null || item.getGenres().isEmpty()) {
+            throw new ValidationException("At least one genre must be specified", errors);
+        }
+        
+        // Throw exception if any validation errors found
+        if (!errors.isEmpty()) {
+            throw new ValidationException("Validation failed", errors);
+        }
+    }
     // #endregion
 }

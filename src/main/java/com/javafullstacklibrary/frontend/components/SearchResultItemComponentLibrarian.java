@@ -1,10 +1,12 @@
 package com.javafullstacklibrary.frontend.components;
 
 import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -15,7 +17,7 @@ import java.util.Map;
 /**
  * Component to display search result items in a standardized format.
  */
-public class SearchResultItemComponent extends VBox {
+public class SearchResultItemComponentLibrarian extends VBox {
     
     private final Item item;
     
@@ -24,7 +26,7 @@ public class SearchResultItemComponent extends VBox {
      * 
      * @param item The item to display
      */
-    public SearchResultItemComponent(Item item) {
+    public SearchResultItemComponentLibrarian(Item item) {
         this.item = item;
         
         // Set up styling
@@ -44,9 +46,23 @@ public class SearchResultItemComponent extends VBox {
         });
         
         // Add click handler that uses MenuNavigationHelper
-        setOnMouseClicked(event -> {
-            //Add thing to happen when you click on the item
-            // For exampel to navigate to a detailed view, not implemented in this initial version
+        setOnMouseClicked(event -> {  
+            if (item.getParameterMap() == null || !item.getParameterMap().containsKey("type")) {
+                // Default to ModifyBook if no type is specified
+                MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), "ModifyBook");
+                return;
+            }
+
+            String itemType = item.getParameterMap().get("type");
+            String viewAction = switch (itemType.toLowerCase()) {
+                case "journal" -> "ModifyJournal";
+                case "dvd" -> "ModifyDvd";
+                case "course_litterature" -> "ModifyCourseLit";
+                case "book" -> "ModifyBook";
+                default -> "ModifyBook"; // fallback to book if un 56known type
+            };
+
+            MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), viewAction);
         });
 
 

@@ -15,7 +15,8 @@ import java.util.ResourceBundle;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.services.ItemQueryService;
 import com.javafullstacklibrary.model.Item;
-import com.javafullstacklibrary.frontend.components.SearchResultItemComponent;
+import com.javafullstacklibrary.frontend.components.SearchResultItemComponentLibrarian;
+
 import java.util.List;
 
 public class SearchViewLibrarianController implements Initializable {
@@ -136,7 +137,7 @@ public class SearchViewLibrarianController implements Initializable {
         List<Item> items = queryService.searchItems(query, offset, limit);
 
         for (Item item : items) {
-            SearchResultItemComponent resultComponent = new SearchResultItemComponent(item);
+            SearchResultItemComponentLibrarian resultComponent = new SearchResultItemComponentLibrarian(item);
             resultsContainer.getChildren().add(resultComponent);
         }
 

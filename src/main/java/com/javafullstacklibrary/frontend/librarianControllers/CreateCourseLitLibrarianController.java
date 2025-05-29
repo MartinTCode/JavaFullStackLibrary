@@ -6,8 +6,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.model.Location;
+import com.javafullstacklibrary.services.*;
+import java.util.*;
+import java.util.function.Function;
 
 public class CreateCourseLitLibrarianController {
 
@@ -35,51 +44,89 @@ public class CreateCourseLitLibrarianController {
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian1;
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian3;
-    @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian4;
+
+    // Add these service declarations after the ComboBox declarations
+    private final ItemManagementService itemManagementService = new ItemManagementService();
+    private final GenreManagementService genreManagementService = new GenreManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
 
     /**
      * This method is called when the controller is initialized.
-     * It calls the applicable methods to initialize the view.
+     * It calls the applicable methods to initialize the view by populating all combo boxes.
      */
     @FXML
     public void initialize() {
         populateComboBoxes();
     }
 
-    // --- Top Menu Navigation Handlers ---
-
+    /**
+     * Handles click event on the Home menu item.
+     * Navigates to the Home view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedHomeMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
     }
 
+    /**
+     * Handles click event on the Search menu item.
+     * Navigates to the Search view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedSearchMenyLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Search");
     }
 
+    /**
+     * Handles click event on the Overdue menu item.
+     * Navigates to the Overdue view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedOverdueMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Overdue");
     }
 
+    /**
+     * Handles click event on the Manage Users menu item.
+     * Navigates to the Manage Users view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedManageUsersMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageUsers");
     }
 
+    /**
+     * Handles click event on the Account menu item.
+     * Navigates to the Account view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedAccountMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
     }
 
+    /**
+     * Handles click event on the Sign Out menu item.
+     * Navigates to the Sign Out view for librarians.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedSignOutMenuLibrarian(MouseEvent event) {
         MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
     }
 
-    // --- Form Button Handlers ---
-
+    /**
+     * Handles click event on the Cancel button.
+     * Returns to the Manage Library view without saving any changes.
+     * @param event The mouse event that triggered this handler
+     */
     @FXML
     private void clickedCancelNewCourseLitButtonLibrarian(MouseEvent event) {
         // Go back to Manage Library view
@@ -87,91 +134,81 @@ public class CreateCourseLitLibrarianController {
     }
 
     /**
-     * This method is called when the "Save New Course Literature" button is clicked.
-     * It reads all input from the text fields and combo boxes, and prints them to the console.
-     * #TODO Change this to save the course literature to the database.
+     * Handles click event on the Save button.
+     * Collects all form data and creates a new course literature item in the database.
+     * @param event The mouse event that triggered this handler
      */
     @FXML
     private void clickedSaveNewCourseLitButtonLibrarian(MouseEvent event) {
-        // Read all input from textfields and comboboxes
-        String title = CourseLitTitleTextFieldLibrarian.getText();
-        String isbn13 = CourseLitIsbn13TextFieldLibrarian.getText();
-        String isbn10 = CourseLitIsbn10TextFieldLibrarian.getText();
-        String publisher = CourseLitPublisherTextFieldLibrarian.getText();
+        try {
+            // Get text field values
+            String title = CourseLitTitleTextFieldLibrarian.getText();
+            String isbn13 = CourseLitIsbn13TextFieldLibrarian.getText();
+            String isbn10 = CourseLitIsbn10TextFieldLibrarian.getText();
+            String publisher = CourseLitPublisherTextFieldLibrarian.getText();
+            
+            // Convert Lists to Sets
+            Set<Creator> authors = new HashSet<>(collectAuthors());
+            Set<Genre> genres = new HashSet<>(collectGenres());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+            Language language = collectLanguage();
+            Location location = collectLocation();       
 
-        String language = CourseLitLanguageComboBoxLibrarian.getValue();
-        String floor = CourseLitFloorComboBoxLibrarian.getValue();
-        String section = CourseLitSectionComboBoxLibrarian.getValue();
-        String shelf = CourseLitShelfComboBoxLibrarian.getValue();
-        String position = CourseLitPositionComboBoxLibrarian.getValue();
+            // Create a new course literature and save it to database
+            itemManagementService.createAndSaveItem(
+                "course_litterature",
+                location,
+                language,
+                keywords,
+                authors,
+                null, // actors not applicable
+                genres,
+                isbn13,
+                isbn10,
+                title,
+                publisher,
+                null, // ageLimit not applicable
+                null  // countryOfProduction not applicable
+            );
 
-        String author1 = CourseLitAuthorComboBoxLibrarian1.getValue();
-        String author2 = CourseLitAuthorComboBoxLibrarian2.getValue();
-        String author3 = CourseLitAuthorComboBoxLibrarian3.getValue();
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Course Literature Created");
+            alert.setContentText("The course literature \"" + title + "\" has been successfully created and saved.");
+            alert.showAndWait();
 
-        String genre1 = CourseLitGenreComboBoxLibrarian1.getValue();
-        String genre2 = CourseLitGenreComboBoxLibrarian2.getValue();
-        String genre3 = CourseLitGenreComboBoxLibrarian3.getValue();
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
-        String keyword1 = CourseLitKeywordComboBoxLibrarian1.getValue();
-        String keyword2 = CourseLitKeywordComboBoxLibrarian2.getValue();
-        String keyword3 = CourseLitKeywordComboBoxLibrarian3.getValue();
-        String keyword4 = CourseLitKeywordComboBoxLibrarian4.getValue();
-
-        // Print all values to the console
-        System.out.println("Save New Course Literature button clicked. Input values:");
-        System.out.println("Title: " + title);
-        System.out.println("ISBN13: " + isbn13);
-        System.out.println("ISBN10: " + isbn10);
-        System.out.println("Publisher: " + publisher);
-        System.out.println("Language: " + language);
-        System.out.println("Floor: " + floor);
-        System.out.println("Section: " + section);
-        System.out.println("Shelf: " + shelf);
-        System.out.println("Position: " + position);
-        System.out.println("Author 1: " + author1);
-        System.out.println("Author 2: " + author2);
-        System.out.println("Author 3: " + author3);
-        System.out.println("Genre 1: " + genre1);
-        System.out.println("Genre 2: " + genre2);
-        System.out.println("Genre 3: " + genre3);
-        System.out.println("Keyword 1: " + keyword1);
-        System.out.println("Keyword 2: " + keyword2);
-        System.out.println("Keyword 3: " + keyword3);
-        System.out.println("Keyword 4: " + keyword4);
-
-        addNewInputToComboBox(CourseLitLanguageComboBoxLibrarian);
-        addNewInputToComboBox(CourseLitFloorComboBoxLibrarian);
-        addNewInputToComboBox(CourseLitSectionComboBoxLibrarian);
-        addNewInputToComboBox(CourseLitShelfComboBoxLibrarian);
-        addNewInputToComboBox(CourseLitPositionComboBoxLibrarian);
-        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian1);
-        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian2);
-        addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian3);
-        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian1);
-        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian2);
-        addNewInputToComboBox(CourseLitGenreComboBoxLibrarian3);
-        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian1);
-        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian2);
-        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian3);
-        addNewInputToComboBox(CourseLitKeywordComboBoxLibrarian4);
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to Create Course Literature");
+            alert.setContentText("An error occurred while creating the course literature: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**
-     * Populates the combo boxes with mock data.
-     * This method is called during the initialization of the controller.
-     * #TODO Change this to fetch actual data from the database when implemented
+     * Populates all combo boxes with data from the database.
+     * This includes languages, locations, authors, genres, and keywords.
+     * Called during controller initialization.
      */
     private void populateComboBoxes() {
-        // Mock data for demonstration
-        ObservableList<String> languages = FXCollections.observableArrayList("English", "Swedish", "German", "French");
-        ObservableList<String> floors = FXCollections.observableArrayList("1", "2", "3", "4");
-        ObservableList<String> sections = FXCollections.observableArrayList("A", "B", "C", "D");
-        ObservableList<String> shelves = FXCollections.observableArrayList("Shelf 1", "Shelf 2", "Shelf 3");
-        ObservableList<String> positions = FXCollections.observableArrayList("1", "2", "3", "4", "5");
-        ObservableList<String> authors = FXCollections.observableArrayList("Author A", "Author B", "Author C");
-        ObservableList<String> genres = FXCollections.observableArrayList("Fiction", "Non-fiction", "Science", "History");
-        ObservableList<String> keywords = FXCollections.observableArrayList("Keyword1", "Keyword2", "Keyword3", "Keyword4");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
+
+        // Fetching data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> authors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+        ObservableList<String> genres = genreManagementService.getAllStrings();
 
         CourseLitLanguageComboBoxLibrarian.setItems(languages);
         CourseLitFloorComboBoxLibrarian.setItems(floors);
@@ -190,26 +227,83 @@ public class CreateCourseLitLibrarianController {
         CourseLitKeywordComboBoxLibrarian1.setItems(keywords);
         CourseLitKeywordComboBoxLibrarian2.setItems(keywords);
         CourseLitKeywordComboBoxLibrarian3.setItems(keywords);
-        CourseLitKeywordComboBoxLibrarian4.setItems(keywords);
     }
 
     /**
-     * Adds the value from the ComboBox to its items if it is a new user input.
-     * @param comboBox The ComboBox to check and add to.
-     * #TODO: Change this to save the new input to the database when implemented.
+     * Collects all selected genres from the genre combo boxes.
+     * @return List of Genre objects corresponding to the selected values
      */
-    private void addNewInputToComboBox(ComboBox<String> comboBox) {
-        String value = comboBox.getValue();
-        if (value != null && !value.isEmpty() && !comboBox.getItems().contains(value)) {
-            comboBox.getItems().add(value);
-            // Print for now, change to actual save logic later
-            System.out.println("Added new value to ComboBox: " + value);
+    private List<Genre> collectGenres() {
+        List<Genre> genres = new java.util.ArrayList<>();
+        addIfNotEmpty(CourseLitGenreComboBoxLibrarian1.getValue(), genres, genreManagementService::findByName);
+        addIfNotEmpty(CourseLitGenreComboBoxLibrarian2.getValue(), genres, genreManagementService::findByName);
+        addIfNotEmpty(CourseLitGenreComboBoxLibrarian3.getValue(), genres, genreManagementService::findByName);
+        return genres;
+    }
+
+    /**
+     * Collects all selected keywords from the keyword combo boxes.
+     * @return List of Keyword objects corresponding to the selected values
+     */
+    private List<Keyword> collectKeywords() {
+        List<Keyword> keywords = new java.util.ArrayList<>();
+        addIfNotEmpty(CourseLitKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(CourseLitKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(CourseLitKeywordComboBoxLibrarian3.getValue(), keywords, keywordManagementService::findByName);
+        return keywords;
+    }
+
+    /**
+     * Collects the selected language from the language combo box.
+     * @return Language object corresponding to the selected value
+     * @throws IllegalArgumentException if no language is selected
+     */
+    private Language collectLanguage() {
+        String languageName = CourseLitLanguageComboBoxLibrarian.getValue();
+        if (languageName != null && !languageName.isEmpty()) {
+            return languageManagementService.findByName(languageName);
+        }
+        else {
+            throw new IllegalArgumentException("Language cannot be null or empty");
         }
     }
 
-    // Example usage (call this after reading input, for each editable ComboBox):
-    // addNewInputToComboBox(CourseLitLanguageComboBoxLibrarian);
-    // addNewInputToComboBox(CourseLitAuthorComboBoxLibrarian1);
-    // addNewInputToComboBox(CourseLitGenreComboBoxLibrarian1);
-    // ...etc.
+    /**
+     * Collects all selected authors from the author combo boxes.
+     * @return List of Creator objects corresponding to the selected values
+     */
+    private List<Creator> collectAuthors() {
+        List<Creator> authors = new java.util.ArrayList<>();
+        addIfNotEmpty(CourseLitAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(CourseLitAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(CourseLitAuthorComboBoxLibrarian3.getValue(), authors, creatorManagementService::findByFullName);
+        return authors;
+    }
+
+    /**
+     * Collects the selected location details from all location combo boxes.
+     * Creates a new location if the combination doesn't exist.
+     * @return Location object representing the selected floor, section, shelf, and position
+     */
+    private Location collectLocation() {
+        String floor = CourseLitFloorComboBoxLibrarian.getValue();
+        String section = CourseLitSectionComboBoxLibrarian.getValue();
+        String shelf = CourseLitShelfComboBoxLibrarian.getValue();
+        String position = CourseLitPositionComboBoxLibrarian.getValue();
+
+        return locationManagementService.findOrCreate(floor, section, shelf, position);
+    }
+
+    /**
+     * Helper method to add an item to a list if the value exists.
+     * @param <T> The type of object to create from the string value
+     * @param value The string value to check
+     * @param list The list to add the created object to
+     * @param finder Function to convert the string value to type T
+     */
+    private <T> void addIfNotEmpty(String value, List<T> list, Function<String, T> finder) {
+        if (value != null && !value.isEmpty()) {
+            list.add(finder.apply(value));
+        }
+    }
 }

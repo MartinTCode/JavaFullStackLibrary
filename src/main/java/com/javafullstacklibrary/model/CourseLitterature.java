@@ -60,7 +60,7 @@ public class CourseLitterature extends Item {
     if (PARAMETERIZED) {
             return; // Avoid re-creating the map if already done
         }
-        PARAMETER_NAMES.put("type", "CourseLitterature");
+        PARAMETER_NAMES.put("type", "course_litterature");
         PARAMETER_NAMES.put("location", "location");
         PARAMETER_NAMES.put("language", "language");
         PARAMETER_NAMES.put("keywords", "keywords");

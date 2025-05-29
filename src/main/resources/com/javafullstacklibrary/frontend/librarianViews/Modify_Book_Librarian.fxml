@@ -169,7 +169,7 @@
                                     <Label
                                         alignment="TOP_LEFT"
                                         styleClass="label-title"
-                                        text="Add Item: Book (not Course Litterature)"
+                                        text="Modify Item: Book (not Course Litterature)"
                                     />
                                     <GridPane
                                         hgap="15.0"
@@ -258,13 +258,6 @@
                                                     <TextField
                                                         fx:id="bookIsbn13TextFieldLibrarian"
                                                     />
-                                                    <!-- Error label placeholder -->
-                                                    <Label 
-                                                        fx:id="isbn13ErrorLabel" 
-                                                        style="-fx-text-fill: red; -fx-font-size: 10px;" 
-                                                        visible="false" 
-                                                        wrapText="true"
-                                                    />
                                                 </children>
                                             </VBox>
                                             <VBox
@@ -278,13 +271,6 @@
                                                     />
                                                     <TextField
                                                         fx:id="bookIsbn10TextFieldLibrarian"
-                                                    />
-                                                    <!-- Error label placeholder -->
-                                                    <Label 
-                                                        fx:id="isbn10ErrorLabel" 
-                                                        style="-fx-text-fill: red; -fx-font-size: 10px;" 
-                                                        visible="false" 
-                                                        wrapText="true"
                                                     />
                                                 </children>
                                             </VBox>
@@ -474,28 +460,11 @@
                                             />
                                         </padding>
                                     </GridPane>
-                                    
-                                    <!-- General error message label -->
-                                    <Label 
-                                        fx:id="generalErrorLabel" 
-                                        style="-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 12px;" 
-                                        visible="false" 
-                                        wrapText="true"
-                                        alignment="CENTER"
-                                        maxWidth="500"
-                                    />
-                                    
                                     <HBox
                                         alignment="CENTER"
                                         spacing="80.0"
                                     >
                                         <children>
-                                            <Button
-                                                fx:id="cancelNewBookButtonLibrarian"
-                                                mnemonicParsing="false"
-                                                onMouseClicked="#clickedCancelNewBookButtonLibrarian"
-                                                text="Cancel"
-                                            />
                                             <VBox>
                                                 <children>
                                                     <Label
@@ -507,10 +476,22 @@
                                                 </children>
                                             </VBox>
                                             <Button
-                                                fx:id="saveNewBookButtonLibrarian"
+                                                fx:id="cancelChangeBookButtonLibrarian"
                                                 mnemonicParsing="false"
-                                                onMouseClicked="#clickedSaveNewBookButtonLibrarian"
-                                                text="Create and Save"
+                                                onMouseClicked="#clickedCancelChangeBookButtonLibrarian"
+                                                text="Cancel"
+                                            />
+                                            <Button
+                                                fx:id="deleteBookButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedDeleteBookButtonLibrarian"
+                                                text="Delete Book"
+                                            />
+                                            <Button
+                                                fx:id="saveChangesBookButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedSaveChangesBookButtonLibrarian"
+                                                text="Save Changes"
                                             />
                                         </children>
                                         <padding>
