@@ -14,8 +14,6 @@ import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.utils.UserSession;
 import com.javafullstacklibrary.utils.LoanList;
 
-import com.javafullstacklibrary.dao.BorrowerProfileDAO;
-
 public class LoanMenuBorrowerController {
 
     private LoanValidationService loanValidationService;
@@ -105,9 +103,10 @@ public class LoanMenuBorrowerController {
             // Check if the user can loan more items with null safety
             boolean allowed2loan = false;
             try {
-                if (UserSession.getCurrentUser() != null && 
-                    UserSession.getCurrentUser().getBorrowerProfile() != null) {
-                    allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser().getBorrowerProfile());
+                if (UserSession.getCurrentUser() != null) {
+                    
+                    allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser());
+                    System.out.println("User can loan more items: " + allowed2loan);
                 } else {
                     System.out.println("User session or borrower profile is null");
                     String errorMessage = "User session error. Please log in again.";
@@ -117,6 +116,7 @@ public class LoanMenuBorrowerController {
                 }
             } catch (Exception e) {
                 System.out.println("Error checking loan eligibility: " + e.getMessage());
+                e.printStackTrace();
                 String errorMessage = "Error checking loan eligibility. Please try again.";
                 errorLabelBarcodeSearch.setText(errorMessage);
                 errorLabelBarcodeSearch.setVisible(true);

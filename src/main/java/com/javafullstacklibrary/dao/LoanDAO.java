@@ -10,6 +10,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class LoanDAO {
@@ -244,6 +245,19 @@ public class LoanDAO {
             Long.class);
         query.setParameter("libraryUser", libraryUser);
         return query.getSingleResult();
+    }
+
+    public int getMaxLoansByUser(LibraryUser libraryUser) {
+        Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
+        // get the profileType from the libraryUser's BorrowerProfile
+        TypedQuery<String> query = entityManager.createQuery(
+            "SELECT l.profileType FROM BorrowerProfile l WHERE l.libraryUser = :libraryUser", 
+            String.class);
+        query.setParameter("libraryUser", libraryUser);
+        System.out.println("LibraryUser profileType: " + query.getSingleResult());
+        // fetch max loans from final map with the profileType
+        Integer maxLoans = userRole2MaxLoans.get(query.getSingleResult());
+        return maxLoans != null ? maxLoans : -1; // Return -1 if no max loans found
     }
     
     public long countOverdueLoans() {

@@ -119,7 +119,7 @@ public class LoanViewBorrowerController {
             }
             
             // Check if the user can loan more items
-            boolean allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser().getBorrowerProfile());
+            boolean allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser());
             if (allowed2loan) {
                 // Add to LoanList
                 LoanList.getInstance().addItemToLoan(itemCopy);
