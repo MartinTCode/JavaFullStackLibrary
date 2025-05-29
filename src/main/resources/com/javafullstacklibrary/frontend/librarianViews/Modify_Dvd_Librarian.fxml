@@ -240,7 +240,7 @@
                                      GridPane.rowIndex="1"
                                  >
                                     <children>
-                                       <Label text="IMDBC" />
+                                       <Label text="IMDBC *" />
                                        <TextField
                                            fx:id="dvdImdbcTextFieldLibrarian"
                                        />
