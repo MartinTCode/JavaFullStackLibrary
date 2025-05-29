@@ -53,7 +53,7 @@ INSERT INTO item (location_id, language_id, item_type, identifier, identifier2, 
 (1, 1, 'book', '1234567890123', '9781234567890', 'Book Title 1', 'Publisher 1', NULL, NULL),
 (2, 2, 'book', '2234567890123', '9782234567890', 'Book Title 2', 'Publisher 2', NULL, NULL),
 (3, 3, 'course_litterature', '3234567890123', '9783234567890', 'Course Book 1', 'Publisher 3', NULL, NULL),
-(4, 4, 'dvd', 'tt0120338', NULL, 'Titanic', '20th Century Fox', 13, 'USA'),
+(4, 1, 'dvd', 'tt0120338', NULL, 'Titanic', '20th Century Fox', 13, 'USA'),
 (5, 5, 'journal', '5234567890123', NULL, 'Journal Title 1', 'Publisher 5', NULL, NULL);
 -- Add 15 more items with varying attributes...
 
