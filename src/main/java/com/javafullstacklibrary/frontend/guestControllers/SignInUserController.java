@@ -56,6 +56,14 @@ public class SignInUserController {
     private void clickedSignInButton() {
         String loginInput = ssnField.getText();
         String password = passwordField.getText();
+
+        // Validate SSN format first before attempting authentication
+        if (!isValidSSNFormat(loginInput)) {
+            showErrorAlert("Invalid SSN Format", 
+                "SSN must be in the format 'yyyymmdd-xxxx' (e.g., 19991212-1234)");
+            highlightField(ssnField);
+            return;
+        }
         
         try {
             // Use the authentication service
@@ -176,6 +184,39 @@ public class SignInUserController {
     @FXML
     private void clickedStaffButton() {
         MenuNavigationHelper.menuClickGuest(mainPane,"SignInStaff");
+    }
+
+        /**
+     * Validates SSN format: yyyymmdd-xxxx
+     * @param ssn The SSN string to validate
+     * @return true if format is valid, false otherwise
+     */
+    private boolean isValidSSNFormat(String ssn) {
+        if (ssn == null || ssn.trim().isEmpty()) {
+            return false;
+        }
+        
+        // Check if it matches the pattern: 8 digits, hyphen, 4 digits
+        if (!ssn.matches("\\d{8}-\\d{4}")) {
+            return false;
+        }
+        
+        // Additional validation: check if the date part is reasonable
+        String datePart = ssn.substring(0, 8);
+        try {
+            int year = Integer.parseInt(datePart.substring(0, 4));
+            int month = Integer.parseInt(datePart.substring(4, 6));
+            int day = Integer.parseInt(datePart.substring(6, 8));
+            
+            // Basic date validation
+            if (year < 1900 || year > 2100) return false;
+            if (month < 1 || month > 12) return false;
+            if (day < 1 || day > 31) return false;
+            
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
     
     private void showErrorAlert(String title, String message) {
