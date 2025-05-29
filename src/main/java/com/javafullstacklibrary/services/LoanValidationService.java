@@ -3,6 +3,8 @@ package com.javafullstacklibrary.services;
 import com.javafullstacklibrary.dao.ItemCopyDAO;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.model.Journal;
+import com.javafullstacklibrary.model.BorrowerProfile;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -18,6 +20,14 @@ public class LoanValidationService {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
         EntityManager em = emf.createEntityManager();
         this.itemCopyDAO = new ItemCopyDAO(em);
+    }
+
+    // Check if user can loan another item copy based on the number of their current loans and 
+    // the maximum allowed loans for their user type
+    public boolean canLoanMore(BorrowerProfile borrowerProfile) {
+        int maxLoans = borrowerProfile.getMaxLoansForRole();
+        int currentLoans = borrowerProfile.getLibraryUser().getLoans().size();
+        return currentLoans < maxLoans;
     }
     
     /**
