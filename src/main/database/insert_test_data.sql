@@ -64,7 +64,8 @@ INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 (2, 'QW8Z4NME2L', FALSE, '2025-01-03'),
 (3, 'KD9T7P6R', FALSE, '2025-01-04'),
 (4, 'R5BX0Q29', FALSE, '2025-01-05'), -- item_copy_id 5 --> dvd 
-(5, 'R5BX0Q30', TRUE, '2025-01-04');
+(5, 'R5BX0Q30', TRUE, '2025-01-04'), -- item_copy_id 6 --> journal (reference copy)
+(5, 'R5BX0Q31', FALSE, '2025-01-06'); -- item_copy_id 6 --> journal
 -- Add more copies ensuring at least double the number of items and max 10% borrowed...
 
 -- Insert data into user_profile table
