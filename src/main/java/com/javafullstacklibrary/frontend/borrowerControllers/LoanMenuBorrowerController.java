@@ -53,97 +53,90 @@ public class LoanMenuBorrowerController {
 
     @FXML
     private void clickedHomeMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
     @FXML
-    // This method is called when the inital "Loan" button is clicked
+    // This method is called when the initial "Loan" button is clicked
     private void clickedLoanButtonBorrower() {
         String barcode = barcodeFieldBorrower.getText();
-        System.out.println("Loan button clicked with barcode: " + barcode);
         
         // Clear previous error message
-        errorLabelBarcodeSearch.setVisible(false);
-        errorLabelBarcodeSearch.setText("");
+        clearErrorMessage();
         
         // Validate barcode for loan eligibility
         ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
         
-        if (result.isSuccess()) {
-            // Barcode is valid for loan
-            ItemCopy itemCopy = result.getData();
-            System.out.println("Valid item found: " + itemCopy.getItem().getTitle());
-            
-
-            // Check if the user can loan more items with null safety
-            boolean allowed2loan = false;
-            try {
-                if (UserSession.getCurrentUser() != null) {
-                    
-                    allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser());
-                    System.out.println("User can loan more items: " + allowed2loan);
-                } else {
-                    System.out.println("User session or borrower profile is null");
-                    String errorMessage = "User session error. Please log in again.";
-                    errorLabelBarcodeSearch.setText(errorMessage);
-                    errorLabelBarcodeSearch.setVisible(true);
-                    return;
-                }
-            } catch (Exception e) {
-                System.out.println("Error checking loan eligibility: " + e.getMessage());
-                e.printStackTrace();
-                String errorMessage = "Error checking loan eligibility. Please try again.";
-                errorLabelBarcodeSearch.setText(errorMessage);
-                errorLabelBarcodeSearch.setVisible(true);
-                return;
-            }
-            
-            if (allowed2loan) {
-                // put the item copy into the LoanList
-                LoanList.getInstance().addItemToLoan(itemCopy);
-                System.out.println("Item added to pending loans: " + itemCopy.getItem().getTitle());
-                // Navigate to the LoanView
-                MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
-            } else {
-                // User has reached the maximum number of loans allowed
-                String errorMessage = "You have reached the maximum number of loans allowed for your user type.";
-                System.out.println("Loan validation failed: " + errorMessage);
-                errorLabelBarcodeSearch.setText(errorMessage);
-                errorLabelBarcodeSearch.setVisible(true);
-            }
-        } else {
-            // Barcode is not valid - show error message
-            String errorMessage = result.getMessage();
-            System.out.println("Loan validation failed: " + errorMessage);
-            errorLabelBarcodeSearch.setText(errorMessage);
-            errorLabelBarcodeSearch.setVisible(true);
-            // For now, don't navigate to LoanView
+        if (!result.isSuccess()) {
+            showErrorMessage(result.getMessage());
+            return;
         }
+        
+        ItemCopy itemCopy = result.getData();
+        
+        // Validate user session
+        if (UserSession.getCurrentUser() == null) {
+            showErrorMessage("User session error. Please log in again.");
+            return;
+        }
+        
+        // Check if user can loan more items
+        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser())) {
+            showErrorMessage("You have reached the maximum number of loans allowed for your user type.");
+            return;
+        }
+        
+        // Add item to loan list and navigate to loan view
+        LoanList.getInstance().addItemToLoan(itemCopy);
+        
+        MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
+    }
+    
+    private void clearErrorMessage() {
+        errorLabelBarcodeSearch.setVisible(false);
+        errorLabelBarcodeSearch.setText("");
+    }
+    
+    private void showErrorMessage(String message) {
+        errorLabelBarcodeSearch.setText(message);
+        errorLabelBarcodeSearch.setVisible(true);
     }
 
     @FXML
