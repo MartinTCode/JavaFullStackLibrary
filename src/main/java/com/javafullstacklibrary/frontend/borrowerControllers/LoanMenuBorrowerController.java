@@ -10,6 +10,12 @@ import com.javafullstacklibrary.services.LoanValidationService;
 import com.javafullstacklibrary.services.ValidationResult;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+import com.javafullstacklibrary.utils.UserSession;
+import com.javafullstacklibrary.utils.LoanList;
+
+import com.javafullstacklibrary.dao.BorrowerProfileDAO;
+
 public class LoanMenuBorrowerController {
 
     private LoanValidationService loanValidationService;
@@ -83,15 +89,53 @@ public class LoanMenuBorrowerController {
         String barcode = barcodeFieldBorrower.getText();
         System.out.println("Loan button clicked with barcode: " + barcode);
         
+        // Clear previous error message
+        errorLabelBarcodeSearch.setVisible(false);
+        errorLabelBarcodeSearch.setText("");
+        
         // Validate barcode for loan eligibility
         ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
         
         if (result.isSuccess()) {
-            // Barcode is valid for loan - proceed to loan view
+            // Barcode is valid for loan
             ItemCopy itemCopy = result.getData();
             System.out.println("Valid item found: " + itemCopy.getItem().getTitle());
-            // TODO: Pass the validated ItemCopy to the LoanView
-            MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
+            
+
+            // Check if the user can loan more items with null safety
+            boolean allowed2loan = false;
+            try {
+                if (UserSession.getCurrentUser() != null && 
+                    UserSession.getCurrentUser().getBorrowerProfile() != null) {
+                    allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser().getBorrowerProfile());
+                } else {
+                    System.out.println("User session or borrower profile is null");
+                    String errorMessage = "User session error. Please log in again.";
+                    errorLabelBarcodeSearch.setText(errorMessage);
+                    errorLabelBarcodeSearch.setVisible(true);
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println("Error checking loan eligibility: " + e.getMessage());
+                String errorMessage = "Error checking loan eligibility. Please try again.";
+                errorLabelBarcodeSearch.setText(errorMessage);
+                errorLabelBarcodeSearch.setVisible(true);
+                return;
+            }
+            
+            if (allowed2loan) {
+                // put the item copy into the LoanList
+                LoanList.getInstance().addItemToLoan(itemCopy);
+                System.out.println("Item added to pending loans: " + itemCopy.getItem().getTitle());
+                // Navigate to the LoanView
+                MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
+            } else {
+                // User has reached the maximum number of loans allowed
+                String errorMessage = "You have reached the maximum number of loans allowed for your user type.";
+                System.out.println("Loan validation failed: " + errorMessage);
+                errorLabelBarcodeSearch.setText(errorMessage);
+                errorLabelBarcodeSearch.setVisible(true);
+            }
         } else {
             // Barcode is not valid - show error message
             String errorMessage = result.getMessage();
