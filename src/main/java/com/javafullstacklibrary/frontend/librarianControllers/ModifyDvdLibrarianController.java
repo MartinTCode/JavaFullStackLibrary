@@ -286,9 +286,50 @@ public class ModifyDvdLibrarianController {
 
     @FXML 
     private void clickedDeleteDvdButtonLibrarian(MouseEvent event) {
-        // Logic to delete the DVD entry
-        // This could involve confirmation dialog and then removing the entry from the database
-        System.out.println("Delete DVD button clicked.");
+        if (itemToModify == null) {
+            // Can't delete an item that doesn't exist yet
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot Delete");
+            alert.setHeaderText("No DVD Selected");
+            alert.setContentText("Cannot delete a DVD that hasn't been saved yet.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Show confirmation dialog
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Confirm Deletion");
+        confirmDialog.setHeaderText("Delete DVD");
+        confirmDialog.setContentText("Are you sure you want to delete the DVD \"" + 
+                           itemToModify.getTitle() + "\"? This action cannot be undone.");
+
+        // Get user's response, proceed if OK is clicked
+        if (confirmDialog.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
+            try {
+                // User clicked OK, proceed with deletion
+                itemManagementService.deleteItem(itemToModify);
+
+                // Show success message
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText("DVD Deleted");
+                successAlert.setContentText("The DVD \"" + itemToModify.getTitle() + 
+                                     "\" has been successfully deleted.");
+                successAlert.showAndWait();
+
+                // Navigate back to manage library view
+                MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+            } catch (Exception e) {
+                // Show error message if deletion fails
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Failed to Delete DVD");
+                errorAlert.setContentText("An error occurred while deleting the DVD: " + 
+                                    e.getMessage());
+                errorAlert.showAndWait();
+            }
+        }
     }
 
     /**

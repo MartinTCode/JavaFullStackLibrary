@@ -270,9 +270,50 @@ public class ModifyCourseLitLibrarianController {
 
     @FXML
     private void clickedDeleteCourseLitButtonLibrarian(MouseEvent event) {
-        // Logic to delete the course literature entry
-        // This could involve confirmation dialog and then deletion from the database
-        System.out.println("Delete Course Literature button clicked.");
+        if (itemToModify == null) {
+            // Can't delete an item that doesn't exist yet
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot Delete");
+            alert.setHeaderText("No Course Literature Selected");
+            alert.setContentText("Cannot delete course literature that hasn't been saved yet.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Show confirmation dialog
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Confirm Deletion");
+        confirmDialog.setHeaderText("Delete Course Literature");
+        confirmDialog.setContentText("Are you sure you want to delete the course literature \"" + 
+                           itemToModify.getTitle() + "\"? This action cannot be undone.");
+
+        // Get user's response, proceed if OK is clicked
+        if (confirmDialog.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
+            try {
+                // User clicked OK, proceed with deletion
+                itemManagementService.deleteItem(itemToModify);
+
+                // Show success message
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText("Course Literature Deleted");
+                successAlert.setContentText("The course literature \"" + itemToModify.getTitle() + 
+                                     "\" has been successfully deleted.");
+                successAlert.showAndWait();
+
+                // Navigate back to manage library view
+                MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+            } catch (Exception e) {
+                // Show error message if deletion fails
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Failed to Delete Course Literature");
+                errorAlert.setContentText("An error occurred while deleting the course literature: " + 
+                                    e.getMessage());
+                errorAlert.showAndWait();
+            }
+        }
     }
 
     /**

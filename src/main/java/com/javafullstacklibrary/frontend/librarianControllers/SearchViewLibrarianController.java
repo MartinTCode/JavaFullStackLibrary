@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.services.ItemQueryService;
 import com.javafullstacklibrary.model.Item;
-import com.javafullstacklibrary.frontend.components.SearchResultItemComponent;
 import com.javafullstacklibrary.frontend.components.SearchResultItemComponentLibrarian;
 
 import java.util.List;
