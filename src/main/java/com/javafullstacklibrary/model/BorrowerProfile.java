@@ -59,7 +59,7 @@ public class BorrowerProfile {
     @Column(name = "address")
     private String address;
     
-    @Column(name = "profile_type")
+    @Column(name = "user_type")
     @Check(constraints = "profile_type IN ('public', 'student', 'researcher', 'university employee')")
     private String profileType;
 
