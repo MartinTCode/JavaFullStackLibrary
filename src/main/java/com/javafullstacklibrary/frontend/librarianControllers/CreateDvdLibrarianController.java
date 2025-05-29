@@ -223,8 +223,6 @@ public class CreateDvdLibrarianController {
             alert.setTitle("Error");
             alert.setHeaderText("Failed to Create DVD");
             alert.setContentText("An error occurred while creating the DVD: " + e.getMessage());
-            System.err.println("Error creating DVD: " + e.getMessage());
-            e.printStackTrace();
             alert.showAndWait();
         }
     }
