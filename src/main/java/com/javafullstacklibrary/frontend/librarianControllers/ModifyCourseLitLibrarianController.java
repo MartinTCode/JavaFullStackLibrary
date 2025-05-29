@@ -206,72 +206,94 @@ public class ModifyCourseLitLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
-        
         if (itemToModify != null) {
-            // Populate fields with item data
-            CourseLitTitleTextFieldLibrarian.setText(itemToModify.getTitle());
-            CourseLitPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
-            
-            // Cast to CourseLiterature to access ISBN getters
-            if (itemToModify instanceof CourseLitterature courseLit) {
-                CourseLitIsbn13TextFieldLibrarian.setText(courseLit.getISBN13());
-                CourseLitIsbn10TextFieldLibrarian.setText(courseLit.getISBN10());
-            }
+            populateBasicFields();
+            populateLocationFields();
+            populateAuthorFields();
+            populateGenreFields();
+            populateKeywordFields();
+        }
+    }
 
-            // Set language if it exists
-            if (itemToModify.getLanguage() != null) {
-                CourseLitLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
-            }
+    /**
+     * Populates the basic fields (title, publisher, ISBN) with item data
+     */
+    private void populateBasicFields() {
+        CourseLitTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+        CourseLitPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+        
+        if (itemToModify instanceof CourseLitterature courseLit) {
+            CourseLitIsbn13TextFieldLibrarian.setText(courseLit.getISBN13());
+            CourseLitIsbn10TextFieldLibrarian.setText(courseLit.getISBN10());
+        }
 
-            // Set location if it exists
-            if (itemToModify.getLocation() != null) {
-                CourseLitFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
-                CourseLitSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
-                CourseLitShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
-                CourseLitPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
-            }
+        if (itemToModify.getLanguage() != null) {
+            CourseLitLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+        }
+    }
 
-            // Set authors, genres, and keywords if they exist
-            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
-                Set<Creator> creators = itemToModify.getCreators();
-                List<Creator> creatorList = creators.stream().toList();
-                if (creatorList.size() > 0) {
-                    CourseLitAuthorComboBoxLibrarian1.setValue(creatorList.get(0).getFullName());
-                }
-                if (creatorList.size() > 1) {
-                    CourseLitAuthorComboBoxLibrarian2.setValue(creatorList.get(1).getFullName());
-                }
-                if (creatorList.size() > 2) {
-                    CourseLitAuthorComboBoxLibrarian2.setValue(creatorList.get(2).getFullName());
-                }
-            }
+    /**
+     * Populates the location fields with item data
+     */
+    private void populateLocationFields() {
+        if (itemToModify.getLocation() != null) {
+            CourseLitFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+            CourseLitSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+            CourseLitShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+            CourseLitPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+        }
+    }
 
-            if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
-                Set<Genre> genres = itemToModify.getGenres();
-                List<Genre> genreList = genres.stream().toList();
-                if (genreList.size() > 0) {
-                    CourseLitGenreComboBoxLibrarian1.setValue(genreList.get(0).getGenre());
-                }
-                if (genreList.size() > 1) {
-                    CourseLitGenreComboBoxLibrarian2.setValue(genreList.get(1).getGenre());
-                }
-                if (genreList.size() > 2) {
-                    CourseLitGenreComboBoxLibrarian3.setValue(genreList.get(2).getGenre());
-                }
+    /**
+     * Populates the author fields with item data
+     */
+    private void populateAuthorFields() {
+        if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+            List<Creator> creatorList = itemToModify.getCreators().stream().toList();
+            if (creatorList.size() > 0) {
+                CourseLitAuthorComboBoxLibrarian1.setValue(creatorList.get(0).getFullName());
             }
+            if (creatorList.size() > 1) {
+                CourseLitAuthorComboBoxLibrarian2.setValue(creatorList.get(1).getFullName());
+            }
+            if (creatorList.size() > 2) {
+                CourseLitAuthorComboBoxLibrarian3.setValue(creatorList.get(2).getFullName());
+            }
+        }
+    }
 
-            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
-                Set<Keyword> keywords = itemToModify.getKeywords();
-                List<Keyword> keywordList = keywords.stream().toList();
-                if (keywordList.size() > 0) {
-                    CourseLitKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
-                }
-                if (keywordList.size() > 1) {
-                    CourseLitKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
-                }
-                if (keywordList.size() > 2) {
-                    CourseLitKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
-                }
+    /**
+     * Populates the genre fields with item data
+     */
+    private void populateGenreFields() {
+        if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
+            List<Genre> genreList = itemToModify.getGenres().stream().toList();
+            if (genreList.size() > 0) {
+                CourseLitGenreComboBoxLibrarian1.setValue(genreList.get(0).getGenre());
+            }
+            if (genreList.size() > 1) {
+                CourseLitGenreComboBoxLibrarian2.setValue(genreList.get(1).getGenre());
+            }
+            if (genreList.size() > 2) {
+                CourseLitGenreComboBoxLibrarian3.setValue(genreList.get(2).getGenre());
+            }
+        }
+    }
+
+    /**
+     * Populates the keyword fields with item data
+     */
+    private void populateKeywordFields() {
+        if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+            List<Keyword> keywordList = itemToModify.getKeywords().stream().toList();
+            if (keywordList.size() > 0) {
+                CourseLitKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
+            }
+            if (keywordList.size() > 1) {
+                CourseLitKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
+            }
+            if (keywordList.size() > 2) {
+                CourseLitKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
             }
         }
     }

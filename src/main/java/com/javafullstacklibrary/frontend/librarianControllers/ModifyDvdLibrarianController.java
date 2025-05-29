@@ -220,91 +220,92 @@ public class ModifyDvdLibrarianController {
         populateComboBoxes();
         
         if (itemToModify != null) {
-            // Populate fields with item data
-            dvdTitleTextFieldLibrarian.setText(itemToModify.getTitle());
-            dvdPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
-            
-            // Cast to DVD to access DVD-specific getters
-            if (itemToModify instanceof DVD dvd) {
-                dvdImdbcTextFieldLibrarian.setText(dvd.getIMDBC());
-                dvdCountryTextFieldLibrarian.setText(dvd.getCountryOfProduction());
-                if (dvd.getAgeLimit() != null) {
-                    dvdAgeLimitTextFieldLibrarian.setText(dvd.getAgeLimit().toString());
-                }
-            }
+            populateBasicFields();
+            populateLocationFields();
+            populateGenres();
+            populateKeywords();
+            populateActors();
+            populateDirectors();
+        }
+    }
 
-            // Set language if it exists
-            if (itemToModify.getLanguage() != null) {
-                dvdLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+    /**
+     * Populates the basic DVD information fields
+     */
+    private void populateBasicFields() {
+        dvdTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+        dvdPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+        
+        if (itemToModify instanceof DVD dvd) {
+            dvdImdbcTextFieldLibrarian.setText(dvd.getIMDBC());
+            dvdCountryTextFieldLibrarian.setText(dvd.getCountryOfProduction());
+            if (dvd.getAgeLimit() != null) {
+                dvdAgeLimitTextFieldLibrarian.setText(dvd.getAgeLimit().toString());
             }
+        }
 
-            // Set location if it exists
-            if (itemToModify.getLocation() != null) {
-                dvdFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
-                dvdSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
-                dvdShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
-                dvdPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
-            }
+        if (itemToModify.getLanguage() != null) {
+            dvdLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+        }
+    }
 
-            // Populate genres
-            if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
-                Set<Genre> genres = itemToModify.getGenres();
-                List<Genre> genreList = genres.stream().toList();
-                if (genreList.size() > 0) {
-                    dvdGenreComboBox1.setValue(genreList.get(0).getGenre());
-                }
-                if (genreList.size() > 1) {
-                    dvdGenreComboBox2.setValue(genreList.get(1).getGenre());
-                }
-                if (genreList.size() > 2) {
-                    dvdGenreComboBox3.setValue(genreList.get(2).getGenre());
-                }
-            }
+    /**
+     * Populates the location fields
+     */
+    private void populateLocationFields() {
+        if (itemToModify.getLocation() != null) {
+            dvdFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+            dvdSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+            dvdShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+            dvdPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+        }
+    }
 
-            // Populate keywords
-            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
-                Set<Keyword> keywords = itemToModify.getKeywords();
-                List<Keyword> keywordList = keywords.stream().toList();
-                if (keywordList.size() > 0) {
-                    dvdKeywordComboBox1.setValue(keywordList.get(0).getKeyword());
-                }
-                if (keywordList.size() > 1) {
-                    dvdKeywordComboBox2.setValue(keywordList.get(1).getKeyword());
-                }
-                if (keywordList.size() > 2) {
-                    dvdKeywordComboBox3.setValue(keywordList.get(2).getKeyword());
-                }
-            }
+    /**
+     * Populates the genre combo boxes
+     */
+    private void populateGenres() {
+        if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
+            List<Genre> genreList = itemToModify.getGenres().stream().toList();
+            if (genreList.size() > 0) dvdGenreComboBox1.setValue(genreList.get(0).getGenre());
+            if (genreList.size() > 1) dvdGenreComboBox2.setValue(genreList.get(1).getGenre());
+            if (genreList.size() > 2) dvdGenreComboBox3.setValue(genreList.get(2).getGenre());
+        }
+    }
 
-            // Populate actors
-            if (itemToModify.getActors() != null && !itemToModify.getActors().isEmpty()) {
-                Set<Actor> actors = itemToModify.getActors();
-                List<Actor> actorList = actors.stream().toList();
-                if (actorList.size() > 0) {
-                    dvdActorComboBox1.setValue(actorList.get(0).getFullName());
-                }
-                if (actorList.size() > 1) {
-                    dvdActorComboBox2.setValue(actorList.get(1).getFullName());
-                }
-                if (actorList.size() > 2) {
-                    dvdActorComboBox3.setValue(actorList.get(2).getFullName());
-                }
-            }
+    /**
+     * Populates the keyword combo boxes
+     */
+    private void populateKeywords() {
+        if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+            List<Keyword> keywordList = itemToModify.getKeywords().stream().toList();
+            if (keywordList.size() > 0) dvdKeywordComboBox1.setValue(keywordList.get(0).getKeyword());
+            if (keywordList.size() > 1) dvdKeywordComboBox2.setValue(keywordList.get(1).getKeyword());
+            if (keywordList.size() > 2) dvdKeywordComboBox3.setValue(keywordList.get(2).getKeyword());
+        }
+    }
 
-            // Populate directors
-            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
-                Set<Creator> directors = itemToModify.getCreators();
-                List<Creator> directorList = directors.stream().toList();
-                if (directorList.size() > 0) {
-                    dvdDirectorComboBox1.setValue(directorList.get(0).getFullName());
-                }
-                if (directorList.size() > 1) {
-                    dvdDirectorComboBox2.setValue(directorList.get(1).getFullName());
-                }
-                if (directorList.size() > 2) {
-                    dvdDirectorComboBox3.setValue(directorList.get(2).getFullName());
-                }
-            }
+    /**
+     * Populates the actor combo boxes
+     */
+    private void populateActors() {
+        if (itemToModify.getActors() != null && !itemToModify.getActors().isEmpty()) {
+            List<Actor> actorList = itemToModify.getActors().stream().toList();
+            if (actorList.size() > 0) dvdActorComboBox1.setValue(actorList.get(0).getFullName());
+            if (actorList.size() > 1) dvdActorComboBox2.setValue(actorList.get(1).getFullName());
+            if (actorList.size() > 2) dvdActorComboBox3.setValue(actorList.get(2).getFullName());
+        }
+    }
+
+    /**
+     * Populates the director combo boxes
+     */
+    private void populateDirectors() {
+        if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+            List<Creator> directorList = itemToModify.getCreators().stream().toList();
+            if (directorList.size() > 0) dvdDirectorComboBox1.setValue(directorList.get(0).getFullName());
+            if (directorList.size() > 1) dvdDirectorComboBox2.setValue(directorList.get(1).getFullName());
+            if (directorList.size() > 2) dvdDirectorComboBox3.setValue(directorList.get(2).getFullName());
         }
     }
 

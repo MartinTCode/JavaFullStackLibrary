@@ -195,58 +195,74 @@ public class ModifyJournalLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
-
         if (itemToModify != null) {
-            // Populate fields with item data
-            journalTitleTextFieldLibrarian.setText(itemToModify.getTitle());
-            journalPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+            populateBasicFields();
+            populateLocationFields();
+            populateKeywordFields();
+            populateAuthorFields();
+        }
+    }
 
-            // Cast to Journal to access Journal-specific getters
-            if (itemToModify instanceof Journal journal) {
-                journalIssnTextFieldLibrarian.setText(journal.getISSN());
+    /**
+     * Populates the basic fields (title, publisher, ISSN, language) with item data
+     */
+    private void populateBasicFields() {
+        journalTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+        journalPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+
+        if (itemToModify instanceof Journal journal) {
+            journalIssnTextFieldLibrarian.setText(journal.getISSN());
+        }
+
+        if (itemToModify.getLanguage() != null) {
+            journalLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+        }
+    }
+
+    /**
+     * Populates the location fields with item data
+     */
+    private void populateLocationFields() {
+        if (itemToModify.getLocation() != null) {
+            journalFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+            journalSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+            journalShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+            journalPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+        }
+    }
+
+    /**
+     * Populates the keyword fields with item data
+     */
+    private void populateKeywordFields() {
+        if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+            List<Keyword> keywordList = itemToModify.getKeywords().stream().toList();
+            if (keywordList.size() > 0) {
+                journalKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
             }
-
-            // Set language if it exists
-            if (itemToModify.getLanguage() != null) {
-                journalLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+            if (keywordList.size() > 1) {
+                journalKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
             }
-
-            // Set location if it exists
-            if (itemToModify.getLocation() != null) {
-                journalFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
-                journalSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
-                journalShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
-                journalPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+            if (keywordList.size() > 2) {
+                journalKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
             }
+        }
+    }
 
-            // Set keywords if they exist
-            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
-                Set<Keyword> keywords = itemToModify.getKeywords();
-                List<Keyword> keywordList = keywords.stream().toList();
-                if (keywordList.size() > 0) {
-                    journalKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
-                }
-                if (keywordList.size() > 1) {
-                    journalKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
-                }
-                if (keywordList.size() > 2) {
-                    journalKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
-                }
+    /**
+     * Populates the author fields with item data
+     */
+    private void populateAuthorFields() {
+        if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+            List<Creator> authorList = itemToModify.getCreators().stream().toList();
+            if (authorList.size() > 0) {
+                journalAuthorComboBoxLibrarian1.setValue(authorList.get(0).getFullName());
             }
-
-            // Set authors if they exist
-            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
-                Set<Creator> authors = itemToModify.getCreators();
-                List<Creator> authorList = authors.stream().toList();
-                if (authorList.size() > 0) {
-                    journalAuthorComboBoxLibrarian1.setValue(authorList.get(0).getFullName());
-                }
-                if (authorList.size() > 1) {
-                    journalAuthorComboBoxLibrarian2.setValue(authorList.get(1).getFullName());
-                }
-                if (authorList.size() > 2) {
-                    journalAuthorComboBoxLibrarian3.setValue(authorList.get(2).getFullName());
-                }
+            if (authorList.size() > 1) {
+                journalAuthorComboBoxLibrarian2.setValue(authorList.get(1).getFullName());
+            }
+            if (authorList.size() > 2) {
+                journalAuthorComboBoxLibrarian3.setValue(authorList.get(2).getFullName());
             }
         }
     }
