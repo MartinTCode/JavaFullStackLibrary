@@ -211,7 +211,13 @@ public class ModifyDvdLibrarianController {
             String imdbc = dvdImdbcTextFieldLibrarian.getText();
             String publisher = dvdPublisherTextFieldLibrarian.getText();
             String countryOfProduction = dvdCountryTextFieldLibrarian.getText();
-            Short ageLimit = dvdAgeLimitTextFieldLibrarian.getText().isEmpty() ? null : Short.valueOf(dvdAgeLimitTextFieldLibrarian.getText());
+
+            // Age limit handling
+            String ageLimitText = dvdAgeLimitTextFieldLibrarian.getText();
+            Short ageLimit = null; // Default to null if not provided
+            if (ageLimitText != null && !ageLimitText.isEmpty()) {
+                ageLimit = Short.parseShort(ageLimitText);
+            }
             
             // Convert Lists to Sets
             Set<Creator> directors = new HashSet<>(collectDirectors());

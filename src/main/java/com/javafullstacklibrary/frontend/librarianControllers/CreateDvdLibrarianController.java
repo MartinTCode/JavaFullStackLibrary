@@ -171,7 +171,14 @@ public class CreateDvdLibrarianController {
             String imdbc = dvdImdbcTextFieldLibrarian.getText();
             String publisher = dvdPublisherTextFieldLibrarian.getText();
             String country = dvdCountryTextFieldLibrarian.getText();
-            Short ageLimit = Short.parseShort(dvdAgeLimitTextFieldLibrarian.getText());
+
+            // Age limit handling
+            String ageLimitText = dvdAgeLimitTextFieldLibrarian.getText();
+            Short ageLimit = null; // Default to null if not provided
+            if (ageLimitText != null && !ageLimitText.isEmpty()) {
+                ageLimit = Short.parseShort(ageLimitText);
+            }
+
             
             // Convert Lists to Sets
             Set<Creator> directors = new HashSet<>(collectDirectors());
@@ -216,6 +223,8 @@ public class CreateDvdLibrarianController {
             alert.setTitle("Error");
             alert.setHeaderText("Failed to Create DVD");
             alert.setContentText("An error occurred while creating the DVD: " + e.getMessage());
+            System.err.println("Error creating DVD: " + e.getMessage());
+            e.printStackTrace();
             alert.showAndWait();
         }
     }
