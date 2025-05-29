@@ -69,6 +69,7 @@ INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 -- Add more copies ensuring at least double the number of items and max 10% borrowed...
 
 -- Insert data into user_profile table
+-- ("public", 3, "student", 5, "researcher", 10, "university employee", 15);
 INSERT INTO user_profile (user_type, f_name, l_name, phone, full_address) VALUES
 ('public', 'Alice', 'Wonderland', '1234567890', '123 Main St'),
 ('student', 'Bob', 'Builder', '0987654321', '456 Elm St'),
