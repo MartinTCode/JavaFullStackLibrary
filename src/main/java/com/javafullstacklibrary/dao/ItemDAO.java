@@ -349,13 +349,13 @@ public class ItemDAO {
         Map<String, String> errors = new HashMap<>();
 
         // check that at least one identifier is set
-        if (item.getIdentifier().trim().isEmpty() || item.getIdentifier() == null) {
-            if (item.getIdentifier2().trim().isEmpty() || item.getIdentifier2() == null) {
+        if (item.getIdentifier() == null || item.getIdentifier().trim().isEmpty()) {
+            if (item.getIdentifier2() == null || item.getIdentifier2().isEmpty()) {
                 errors.put("identifier", "At least one identifier must be set");
             }
         }
-        if (item.getIdentifier2().trim().isEmpty() || item.getIdentifier2() == null) {
-            if (item.getIdentifier().trim().isEmpty() || item.getIdentifier() == null) {
+        if (item.getIdentifier2() == null || item.getIdentifier2().isEmpty()) {
+            if (item.getIdentifier() == null || item.getIdentifier().isEmpty()) {
                 errors.put("identifier2", "At least one identifier must be set");
             }
         }
