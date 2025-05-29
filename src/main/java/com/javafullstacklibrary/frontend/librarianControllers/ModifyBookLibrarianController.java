@@ -7,6 +7,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import com.javafullstacklibrary.services.*; // Importing all services at once
+import javafx.collections.ObservableList;
+import java.util.Map;
 
 /**
  * Controller for the Modify Book (not Course Literature) view for librarians.
@@ -16,6 +19,7 @@ public class ModifyBookLibrarianController {
     @FXML
     private Pane mainPane;
 
+    // --- TextFields for forms ---
     @FXML
     private TextField bookTitleTextFieldLibrarian;
 
@@ -28,6 +32,7 @@ public class ModifyBookLibrarianController {
     @FXML
     private TextField bookPublisherTextFieldLibrarian;
 
+    // --- ComboBoxes for form ---
     @FXML
     private ComboBox<String> bookLanguageComboBoxLibrarian;
 
@@ -70,11 +75,20 @@ public class ModifyBookLibrarianController {
     @FXML
     private ComboBox<String> bookKeywordComboBoxLibrarian3;
 
+    // --- Button declarations ---
     @FXML
     private Button cancelChangeBookButtonLibrarian;
 
     @FXML
     private Button saveChangesBookButtonLibrarian;
+
+    // --- Service declarations ---
+    private final ItemManagementService itemManagementService = new ItemManagementService();
+    private final GenreManagementService genreManagementService = new GenreManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
 
     // --- Top Menu Handlers ---
 
@@ -173,23 +187,43 @@ public class ModifyBookLibrarianController {
     }
 
     /**
-     * Populates all ComboBox fields with sample data.
+     * Populates all ComboBox fields with data from the services.
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        bookLanguageComboBoxLibrarian.getItems().setAll("English", "French", "German", "Spanish");
-        bookFloorComboBoxLibrarian.getItems().setAll("1", "2", "3");
-        bookSectionComboBoxLibrarian.getItems().setAll("A", "B", "C");
-        bookShelfComboBoxLibrarian.getItems().setAll("Shelf 1", "Shelf 2", "Shelf 3");
-        bookPositionComboBoxLibrarian.getItems().setAll("1", "2", "3");
-        bookAuthorComboBoxLibrarian1.getItems().setAll("Author A", "Author B", "Author C");
-        bookAuthorComboBoxLibrarian2.getItems().setAll("Author D", "Author E", "Author F");
-        bookAuthorComboBoxLibrarian3.getItems().setAll("Author G", "Author H", "Author I");
-        bookGenreComboBoxLibrarian1.getItems().setAll("Fiction", "Non-Fiction", "Science", "Biography");
-        bookGenreComboBoxLibrarian2.getItems().setAll("Fantasy", "Mystery", "Romance");
-        bookGenreComboBoxLibrarian3.getItems().setAll("History", "Children", "Young Adult");
-        bookKeywordComboBoxLibrarian1.getItems().setAll("Classic", "Bestseller", "Award-winning");
-        bookKeywordComboBoxLibrarian2.getItems().setAll("New", "Recommended", "Popular");
-        bookKeywordComboBoxLibrarian3.getItems().setAll("Reference", "Textbook", "Guide");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
+
+        // Fetching data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> authors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+        ObservableList<String> genres = genreManagementService.getAllStrings();
+
+        // Populate location comboboxes
+        bookLanguageComboBoxLibrarian.setItems(languages);
+        bookFloorComboBoxLibrarian.setItems(floors);
+        bookSectionComboBoxLibrarian.setItems(sections);
+        bookShelfComboBoxLibrarian.setItems(shelves);
+        bookPositionComboBoxLibrarian.setItems(positions);
+
+        // Populate author comboboxes
+        bookAuthorComboBoxLibrarian1.setItems(authors);
+        bookAuthorComboBoxLibrarian2.setItems(authors);
+        bookAuthorComboBoxLibrarian3.setItems(authors);
+
+        // Populate genre comboboxes
+        bookGenreComboBoxLibrarian1.setItems(genres);
+        bookGenreComboBoxLibrarian2.setItems(genres);
+        bookGenreComboBoxLibrarian3.setItems(genres);
+
+        // Populate keyword comboboxes
+        bookKeywordComboBoxLibrarian1.setItems(keywords);
+        bookKeywordComboBoxLibrarian2.setItems(keywords);
+        bookKeywordComboBoxLibrarian3.setItems(keywords);
     }
 }

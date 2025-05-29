@@ -1,12 +1,18 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import java.util.Map;
+
+import com.javafullstacklibrary.services.*; // Importing all services
 
 /**
  * Controller for the Modify DVD view for librarians.
@@ -16,6 +22,7 @@ public class ModifyDvdLibrarianController {
     @FXML
     private Pane mainPane;
 
+    // --- TextFields for forms ---
     @FXML
     private TextField dvdTitleTextFieldLibrarian;
 
@@ -31,6 +38,7 @@ public class ModifyDvdLibrarianController {
     @FXML
     private TextField dvdAgeLimitTextFieldLibrarian;
 
+    // --- ComboBoxes for form ---
     @FXML
     private ComboBox<String> dvdLanguageComboBoxLibrarian;
 
@@ -82,11 +90,21 @@ public class ModifyDvdLibrarianController {
     @FXML
     private ComboBox<String> dvdPositionComboBoxLibrarian;
 
+    // --- Button declarations ---
     @FXML
     private Button cancelChangeDvdButtonLibrarian;
 
     @FXML
     private Button saveChangesDvdButtonLibrarian;
+
+    // --- Service declarations ---
+    private final ItemManagementService itemManagementService = new ItemManagementService();
+    private final GenreManagementService genreManagementService = new GenreManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
+    private final ActorManagementService actorManagementService = new ActorManagementService();
 
     // --- Top Menu Handlers ---
 
@@ -182,26 +200,49 @@ public class ModifyDvdLibrarianController {
     }
 
     /**
-     * Populates all ComboBox fields with sample data.
+     * Populates all ComboBox fields with data from the services.
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        dvdLanguageComboBoxLibrarian.getItems().setAll("English", "French", "German", "Spanish");
-        dvdActorComboBox1.getItems().setAll("Actor A", "Actor B", "Actor C");
-        dvdActorComboBox2.getItems().setAll("Actor D", "Actor E", "Actor F");
-        dvdActorComboBox3.getItems().setAll("Actor G", "Actor H", "Actor I");
-        dvdDirectorComboBox1.getItems().setAll("Director X", "Director Y", "Director Z");
-        dvdDirectorComboBox2.getItems().setAll("Co-Director M", "Co-Director N");
-        dvdDirectorComboBox3.getItems().setAll("Co-Director O", "Co-Director P");
-        dvdGenreComboBox1.getItems().setAll("Action", "Comedy", "Drama", "Documentary");
-        dvdGenreComboBox2.getItems().setAll("Sci-Fi", "Romance", "Thriller");
-        dvdGenreComboBox3.getItems().setAll("Animation", "Horror", "Adventure");
-        dvdKeywordComboBox1.getItems().setAll("Classic", "Award-winning", "Family");
-        dvdKeywordComboBox2.getItems().setAll("New Release", "Cult", "Blockbuster");
-        dvdKeywordComboBox3.getItems().setAll("Foreign", "Indie", "Musical");
-        dvdFloorComboBoxLibrarian.getItems().setAll("1", "2", "3");
-        dvdSectionComboBoxLibrarian.getItems().setAll("A", "B", "C");
-        dvdShelfComboBoxLibrarian.getItems().setAll("Shelf 1", "Shelf 2", "Shelf 3");
-        dvdPositionComboBoxLibrarian.getItems().setAll("1", "2", "3");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
+
+        // Fetching data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> actors = actorManagementService.getAllActorsFullNames();
+        ObservableList<String> directors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+        ObservableList<String> genres = genreManagementService.getAllStrings();
+
+        // Populate location comboboxes
+        dvdLanguageComboBoxLibrarian.setItems(languages);
+        dvdFloorComboBoxLibrarian.setItems(floors);
+        dvdSectionComboBoxLibrarian.setItems(sections);
+        dvdShelfComboBoxLibrarian.setItems(shelves);
+        dvdPositionComboBoxLibrarian.setItems(positions);
+
+        // Populate actor comboboxes
+        dvdActorComboBox1.setItems(actors);
+        dvdActorComboBox2.setItems(actors);
+        dvdActorComboBox3.setItems(actors);
+
+        // Populate director comboboxes
+        dvdDirectorComboBox1.setItems(directors);
+        dvdDirectorComboBox2.setItems(directors);
+        dvdDirectorComboBox3.setItems(directors);
+
+        // Populate genre comboboxes
+        dvdGenreComboBox1.setItems(genres);
+        dvdGenreComboBox2.setItems(genres);
+        dvdGenreComboBox3.setItems(genres);
+
+        // Populate keyword comboboxes
+        dvdKeywordComboBox1.setItems(keywords);
+        dvdKeywordComboBox2.setItems(keywords);
+        dvdKeywordComboBox3.setItems(keywords);
     }
 }

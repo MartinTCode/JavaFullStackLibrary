@@ -1,6 +1,15 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import java.util.Map;
+
+import com.javafullstacklibrary.services.CreatorManagementService;
+import com.javafullstacklibrary.services.ItemManagementService;
+import com.javafullstacklibrary.services.KeywordManagementService;
+import com.javafullstacklibrary.services.LanguageManagementService;
+import com.javafullstacklibrary.services.LocationManagementService;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,6 +22,7 @@ public class ModifyJournalLibrarianController {
     @FXML
     private Pane mainPane;
 
+    // --- TextFields for forms ---
     @FXML
     private TextField journalTitleTextFieldLibrarian;
 
@@ -22,6 +32,7 @@ public class ModifyJournalLibrarianController {
     @FXML
     private TextField journalPublisherTextFieldLibrarian;
 
+    // --- ComboBoxes for form ---
     @FXML
     private ComboBox<String> journalLanguageComboBoxLibrarian;
 
@@ -55,11 +66,21 @@ public class ModifyJournalLibrarianController {
     @FXML
     private ComboBox<String> journalAuthorComboBoxLibrarian3;
 
+    // --- Buttons for actions ---
     @FXML
     private Button cancelChangeJournalButtonLibrarian;
 
     @FXML
     private Button saveChangesJournalButtonLibrarian;
+
+    
+    // --- Services for data management ---
+    private final ItemManagementService itemManagementService = new ItemManagementService();
+    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
+    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
+    private final LanguageManagementService languageManagementService = new LanguageManagementService();
+    private final LocationManagementService locationManagementService = new LocationManagementService();
+
 
     // --- Top Menu Handlers ---
 
@@ -155,20 +176,35 @@ public class ModifyJournalLibrarianController {
     }
 
     /**
-     * Populates all ComboBox fields with sample data.
+     * Populates all ComboBox fields with data from the services.
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        journalLanguageComboBoxLibrarian.getItems().setAll("English", "French", "German", "Spanish");
-        journalFloorComboBoxLibrarian.getItems().setAll("1", "2", "3");
-        journalSectionComboBoxLibrarian.getItems().setAll("A", "B", "C");
-        journalShelfComboBoxLibrarian.getItems().setAll("Shelf 1", "Shelf 2", "Shelf 3");
-        journalPositionComboBoxLibrarian.getItems().setAll("1", "2", "3");
-        journalKeywordComboBoxLibrarian1.getItems().setAll("Science", "Medicine", "Engineering");
-        journalKeywordComboBoxLibrarian2.getItems().setAll("Biology", "Physics", "Chemistry");
-        journalKeywordComboBoxLibrarian3.getItems().setAll("AI", "Robotics", "Ecology");
-        journalAuthorComboBoxLibrarian1.getItems().setAll("Author A", "Author B", "Author C");
-        journalAuthorComboBoxLibrarian2.getItems().setAll("Author D", "Author E", "Author F");
-        journalAuthorComboBoxLibrarian3.getItems().setAll("Author G", "Author H", "Author I");
+        // Get location details from the service
+        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+        ObservableList<String> floors = locationDetails.get("floors");
+        ObservableList<String> sections = locationDetails.get("sections");
+        ObservableList<String> shelves = locationDetails.get("shelves");
+        ObservableList<String> positions = locationDetails.get("positions");
+
+        // Fetch data from services
+        ObservableList<String> languages = languageManagementService.getAllStrings();
+        ObservableList<String> authors = creatorManagementService.getAllFullNames();
+        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+
+        // Set items for each ComboBox
+        journalLanguageComboBoxLibrarian.setItems(languages);
+        journalFloorComboBoxLibrarian.setItems(floors);
+        journalSectionComboBoxLibrarian.setItems(sections);
+        journalShelfComboBoxLibrarian.setItems(shelves);
+        journalPositionComboBoxLibrarian.setItems(positions);
+
+        journalKeywordComboBoxLibrarian1.setItems(keywords);
+        journalKeywordComboBoxLibrarian2.setItems(keywords);
+        journalKeywordComboBoxLibrarian3.setItems(keywords);
+
+        journalAuthorComboBoxLibrarian1.setItems(authors);
+        journalAuthorComboBoxLibrarian2.setItems(authors);
+        journalAuthorComboBoxLibrarian3.setItems(authors);
     }
 }
