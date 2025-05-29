@@ -375,6 +375,21 @@ public class ItemDAO {
                 errors.put("identifier2", "This identifier already exists for " + item.getClass().getSimpleName() + " items");
             }
         }
+        if (item.getTitle() == null || item.getTitle().trim().isEmpty()) {
+            throw new ValidationException("Title cannot be empty", errors);
+        }
+        if (item.getLanguage() == null) {
+            throw new ValidationException("Language cannot be empty", errors);
+        }
+        if (item.getCreators() == null || item.getCreators().isEmpty()) {
+            throw new ValidationException("At least one creator must be specified", errors);
+        }
+        if (item.getKeywords() == null || item.getKeywords().isEmpty()) {
+            throw new ValidationException("At least one keyword must be specified", errors);
+        }
+        if (item.getGenres() == null || item.getGenres().isEmpty()) {
+            throw new ValidationException("At least one genre must be specified", errors);
+        }
         
         // Throw exception if any validation errors found
         if (!errors.isEmpty()) {
