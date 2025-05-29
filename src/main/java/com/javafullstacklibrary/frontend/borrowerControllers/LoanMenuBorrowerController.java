@@ -29,8 +29,7 @@ public class LoanMenuBorrowerController {
         // barcode already on loan:
         // 7PTK3A94
         // barcode for a journal not allowd to loan:
-        // R5BX0Q29
-        // FIXME: BREAKS!
+        // R5BX0Q31
         // barcode for a reference item not allowed to loan:
         // R5BX0Q30
         // barcode for a valid item copy:
