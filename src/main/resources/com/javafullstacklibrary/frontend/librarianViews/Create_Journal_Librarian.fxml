@@ -278,11 +278,7 @@
                                        <Label text="Location *" />
                                        <ComboBox
                                            fx:id="journalFloorComboBoxLibrarian"
-<<<<<<< HEAD
-                                           editable="true"
-=======
                                            editable="false"
->>>>>>> feature/item-management
                                            promptText="Floor "
                                        />
                                        <ComboBox

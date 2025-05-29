@@ -315,50 +315,30 @@
                                             >
                                                 <children>
                                                     <Label
-<<<<<<< HEAD
-                                                        text="Location"
-                                                    />
-                                                    <ComboBox
-                                                        fx:id="bookFloorComboBoxLibrarian"
-                                                        editable="true"
-=======
                                                         text="Location *"
                                                     />
                                                     <ComboBox
                                                         fx:id="bookFloorComboBoxLibrarian"
                                                         editable="false"
->>>>>>> feature/item-management
                                                         promptText="Floor "
                                                     />
                                                     <ComboBox
                                                         fx:id="bookSectionComboBoxLibrarian"
-<<<<<<< HEAD
-                                                        editable="true"
-=======
                                                         editable="false"
->>>>>>> feature/item-management
                                                         layoutX="10.0"
                                                         layoutY="25.0"
                                                         promptText="Section "
                                                     />
                                                     <ComboBox
                                                         fx:id="bookShelfComboBoxLibrarian"
-<<<<<<< HEAD
-                                                        editable="true"
-=======
                                                         editable="false"
->>>>>>> feature/item-management
                                                         layoutX="10.0"
                                                         layoutY="48.0"
                                                         promptText="Shelf "
                                                     />
                                                     <ComboBox
                                                         fx:id="bookPositionComboBoxLibrarian"
-<<<<<<< HEAD
-                                                        editable="true"
-=======
                                                         editable="false"
->>>>>>> feature/item-management
                                                         layoutX="10.0"
                                                         layoutY="71.0"
                                                         promptText="Position "
