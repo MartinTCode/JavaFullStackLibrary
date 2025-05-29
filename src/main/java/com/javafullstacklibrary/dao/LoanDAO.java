@@ -10,6 +10,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class LoanDAO {
@@ -20,17 +21,62 @@ public class LoanDAO {
         this.entityManager = entityManager;
     }
     
-    public Loan save(Loan loan) {
+    public Loan save(ItemCopy itemCopy, LibraryUser libraryUser, LocalDate returnDate) {
+        if (libraryUser == null) {
+        throw new IllegalArgumentException("LibraryUser is required for creating a loan");
+        }
+        if (itemCopy == null) {
+            throw new IllegalArgumentException("ItemCopy is required for creating a loan");
+        }
+        
+        // Check if item is already on loan
+        if (hasActiveLoan(itemCopy)) {
+            throw new IllegalStateException("ItemCopy is already on active loan");
+        }
+        
+        // Check if user has reached their loan limit
+        long currentActiveLoans = countActiveLoansByUser(libraryUser);
+        int maxLoans = getMaxLoansByUser(libraryUser);
+        if (maxLoans != -1 && currentActiveLoans >= maxLoans) {
+            throw new IllegalStateException("User has reached maximum loan limit of " + maxLoans);
+        }
+        
+        LocalDate startDate = LocalDate.now();
+        
+        Loan loan = new Loan(itemCopy, libraryUser, startDate, returnDate);
+        
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            Loan result;
-            if (loan.getId() == null) {
-                entityManager.persist(loan);
-                result = loan;
-            } else {
-                result = entityManager.merge(loan);
+            entityManager.persist(loan);
+            transaction.commit();
+            return loan;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
+            throw e;
+        }
+    }
+
+    public Loan replaceLoan(Loan loan) {
+        if (loan == null) {
+            throw new IllegalArgumentException("Loan cannot be null");
+        }
+        if (loan.getId() == null) {
+            throw new IllegalArgumentException("Cannot update loan without ID. Use createLoan() for new loans.");
+        }
+        if (loan.getLibraryUser() == null) {
+            throw new IllegalArgumentException("Loan must have a LibraryUser");
+        }
+        if (loan.getItemCopy() == null) {
+            throw new IllegalArgumentException("Loan must have an ItemCopy");
+        }
+        
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Loan result = entityManager.merge(loan);
             transaction.commit();
             return result;
         } catch (Exception e) {
@@ -244,6 +290,19 @@ public class LoanDAO {
             Long.class);
         query.setParameter("libraryUser", libraryUser);
         return query.getSingleResult();
+    }
+
+    public int getMaxLoansByUser(LibraryUser libraryUser) {
+        Map<String, Integer> userRole2MaxLoans = Map.of("public", 3, "student", 5, "researcher", 10, "university employee", 15);
+        // get the profileType from the libraryUser's BorrowerProfile
+        TypedQuery<String> query = entityManager.createQuery(
+            "SELECT l.profileType FROM BorrowerProfile l WHERE l.libraryUser = :libraryUser", 
+            String.class);
+        query.setParameter("libraryUser", libraryUser);
+        System.out.println("LibraryUser profileType: " + query.getSingleResult());
+        // fetch max loans from final map with the profileType
+        Integer maxLoans = userRole2MaxLoans.get(query.getSingleResult());
+        return maxLoans != null ? maxLoans : -1; // Return -1 if no max loans found
     }
     
     public long countOverdueLoans() {

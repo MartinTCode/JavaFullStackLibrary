@@ -2,6 +2,11 @@ package com.javafullstacklibrary.utils;
 
 import com.javafullstacklibrary.model.LibraryUser;
 
+/**
+ * UserSession  signleton class to manage the current user session in the library system.
+ * This class provides methods to set, get, and check the current user,
+ * as well as to log out the user and retrieve user details.
+ */
 public class UserSession {
     private static LibraryUser currentUser;
     
