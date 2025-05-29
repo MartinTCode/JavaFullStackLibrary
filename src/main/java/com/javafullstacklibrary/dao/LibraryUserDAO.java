@@ -192,6 +192,66 @@ public class LibraryUserDAO {
         query.setParameter("ssn", ssn);
         return query.getSingleResult() > 0;
     }
+
+    /**
+     * Initializes password hashes for all users who have placeholder passwords.
+     * Moves placeholder passwords from passwordHash to rawPassword field and 
+     * properly hashes them using BCrypt.
+     * 
+     * This method should be called once to migrate test data from placeholder 
+     * passwords to properly hashed passwords.
+     * 
+     * @return Number of users whose passwords were initialized
+     */
+    public int initializeAllPasswords() {
+        EntityTransaction transaction = entityManager.getTransaction();
+        int updatedCount = 0;
+        
+        try {
+            transaction.begin();
+            
+            // Find all users who have placeholder passwords (not properly hashed)
+            TypedQuery<LibraryUser> query = entityManager.createQuery(
+                "SELECT u FROM LibraryUser u WHERE u.passwordHash LIKE 'hashed_password%'", 
+                LibraryUser.class);
+            List<LibraryUser> usersToUpdate = query.getResultList();
+            
+            for (LibraryUser user : usersToUpdate) {
+                // Move the placeholder password to rawPassword field
+                String placeholderPassword = user.getPasswordHash();
+                user.setRawPassword(placeholderPassword);
+                
+                // Hash the placeholder password and store it properly
+                String hashedPassword = user.hashPassword(placeholderPassword);
+                user.setPasswordHash(hashedPassword);
+                
+                // Merge the updated user
+                entityManager.merge(user);
+                updatedCount++;
+            }
+            
+            transaction.commit();
+            return updatedCount;
+            
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Failed to initialize passwords: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Checks how many users still have placeholder passwords that need initialization.
+     * 
+     * @return Number of users with placeholder passwords
+     */
+    public long countUsersWithPlaceholderPasswords() {
+        TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(u) FROM LibraryUser u WHERE u.passwordHash LIKE 'hashed_password%'", 
+            Long.class);
+        return query.getSingleResult();
+    }
     
     /**
      * Authenticates a user based on their role:

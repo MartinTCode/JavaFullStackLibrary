@@ -3,6 +3,7 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.UserSession;
 
 public class SignOutLibrarianController {
 
@@ -58,13 +59,25 @@ public class SignOutLibrarianController {
 
     @FXML
     private void clickedConfirmSignOutButtonLibrarian() {
-        // Go to guest view after sign out
+        // Get current user info for logging
+        String currentUser = UserSession.getCurrentUsername();
+        String currentRole = UserSession.getCurrentUserRole();
+        
+        // Clear the user session
+        UserSession.logout();
+        
+        // Log the logout action
+        System.out.println("Librarian logged out: " + currentUser + " (Role: " + currentRole + ")");
+        
+        // Navigate to guest home page
         MenuNavigationHelper.menuClickGuest(mainPane, "Home");
     }
 
     // Cancel sign out, go back to librarian start view
     @FXML
     private void clickedCancelSignOutButtonLibrarian() {
+        // No session changes needed - just navigate back
+        System.out.println("Sign out cancelled");
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
     }
 }

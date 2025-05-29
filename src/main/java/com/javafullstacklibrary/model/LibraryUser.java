@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import org.hibernate.annotations.Check;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -28,9 +29,10 @@ public class LibraryUser {
     public LibraryUser(String ssn, String username, String rawPassword, String email, String userRole) {
         this.ssn = ssn;
         this.username = username;
-        this.passwordHash = hashPassword(rawPassword);
+        this.passwordHash = hashPassword(rawPassword); // Hash the raw password immediately
         this.email = email;
         this.userRole = userRole;
+        this.rawPassword = rawPassword; // Store raw password for development convenience, but not persisted in the database
     }
     
     @Id
@@ -53,6 +55,10 @@ public class LibraryUser {
     @Column(name = "user_role", length = 20, nullable = false)
     @Check(constraints = "user_role IN ('admin', 'librarian', 'borrower')")
     private String userRole;
+
+    @Transient
+    // This field is not persisted in the database, only to be used during development or testing. Remove in production.
+    private String rawPassword;
     
     // One LibraryUser must have one UserProfile (should not have for admin/librarian)
     // Owning side of the relationship
@@ -66,11 +72,19 @@ public class LibraryUser {
     @OneToMany(mappedBy = "libraryUser")
     private List<Loan> loans;
 
-    // Password utility methods
-    public static String hashPassword(String rawPassword) {
+    // Password utility methods 
+
+    public String hashPassword(String rawPassword) {
         if (rawPassword == null || rawPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
+        if (rawPassword.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+        if (rawPassword.length() > 255) {
+            throw new IllegalArgumentException("Password cannot be longer than 255 characters");
+        }
+        // Use BCrypt to hash the password with a work factor of 12
         return BCrypt.withDefaults().hashToString(12, rawPassword.toCharArray());
     }
     
@@ -81,10 +95,8 @@ public class LibraryUser {
         BCrypt.Result result = BCrypt.verifyer().verify(rawPassword.toCharArray(), this.passwordHash);
         return result.verified;
     }
+
     
-    public void setRawPassword(String rawPassword) {
-        this.passwordHash = hashPassword(rawPassword);
-    }
     
     // Getters and setters
     public Integer getId() {
@@ -117,6 +129,14 @@ public class LibraryUser {
     
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getRawPassword() {
+        return rawPassword;
+    }
+    
+    public void setRawPassword(String rawPassword) {
+        this.rawPassword = rawPassword;
     }
     
     public String getEmail() {

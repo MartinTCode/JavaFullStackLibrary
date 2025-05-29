@@ -78,9 +78,9 @@ INSERT INTO user_profile (user_type, f_name, l_name, phone, full_address) VALUES
 INSERT INTO library_user (profile_id, ssn, u_name, p_hashed_bcrypt, email, user_role) VALUES
 (NULL, NULL, 'admin1', 'hashed_password1', 'admin1@example.com', 'admin'),
 (NULL, NULL, 'librarian1', 'hashed_password2', 'librarian1@example.com', 'librarian'),
-(1, '123456789012', NULL, 'hashed_password3', 'borrower1@example.com', 'borrower'),
-(2, '234567890123', NULL, 'hashed_password4', 'borrower2@example.com', 'borrower'),
-(3, '345678901234', NULL, 'hashed_password5', 'borrower3@example.com', 'borrower');
+(1, '199912121234', NULL, 'hashed_password3', 'borrower1@example.com', 'borrower'),
+(2, '200012121234', NULL, 'hashed_password4', 'borrower2@example.com', 'borrower'),
+(3, '200112121234', NULL, 'hashed_password5', 'borrower3@example.com', 'borrower');
 -- Add more users ensuring no more than 50% have loans...
 
 -- Insert data into loan table

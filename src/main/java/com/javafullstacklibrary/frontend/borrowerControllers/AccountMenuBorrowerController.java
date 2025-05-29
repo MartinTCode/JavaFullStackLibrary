@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.UserSession;
 
 public class AccountMenuBorrowerController {
 
@@ -79,15 +80,24 @@ public class AccountMenuBorrowerController {
 
     @FXML
     private void clickedConfirmSignOutButtonBorrower() {
-        //Implementation for siogning out
-        System.out.println("Confirm Sign Out button clicked");
+        // Get current user info for logging
+        String currentUser = UserSession.getCurrentUsername();
+        String currentRole = UserSession.getCurrentUserRole();
+        
+        // Clear the user session
+        UserSession.logout();
+        
+        // Log the logout action
+        System.out.println("User logged out: " + currentUser + " (Role: " + currentRole + ")");
+        
+        // Navigate to guest home page
         MenuNavigationHelper.menuClickGuest(mainPane, "Home");
     }
 
     @FXML
     private void clickedCancelSignOutButtonBorrower() {
-        //Implementation for canceling sign out
-        System.out.println("Cancel Sign Out button clicked");
+        // No session changes needed - just navigate back
+        System.out.println("Sign out cancelled");
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 }

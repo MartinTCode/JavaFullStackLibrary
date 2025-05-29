@@ -1,9 +1,6 @@
 package com.javafullstacklibrary.frontend;
 
 // Importing necessary classes for JavaFX testing
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 // Importing necessary classes for junit testing
@@ -35,8 +32,9 @@ import java.util.logging.Logger;
 import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_GUESTVIEWS;
 import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_BORROWERVIEWS;
 
+import com.javafullstacklibrary.TestMainApp;
 // import start controller class
-import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
+//import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 
 // import class responsible for changing the view to monitor current controller.
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
@@ -53,6 +51,8 @@ import com.javafullstacklibrary.utils.MenuNavigationHelper;
 public class StartViewGuestControllerTest extends ApplicationTest {
 
     private static final Logger logger = LoggerUtil.getFileLogger(StartViewGuestControllerTest.class, "StartViewGuestControllerTest.log");
+
+    private static final int SLEEP_TIME = 100; // milliseconds
 
     @Test
     @Order(1)
@@ -87,23 +87,9 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            // Create an instance of FXMLLoader
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafullstacklibrary/frontend/guestViews/Start_View_Guest.fxml"));
-            
-            // Set the controller programmatically
-            loader.setController(new StartViewGuestController());
-            
-            // Load the FXML file
-            Parent root = loader.load();
-            
-            // Set up the stage
-            primaryStage.setScene(new Scene(root));
-            // Set minimum width and height for the stage (window)
-            primaryStage.setMinWidth(600);
-            primaryStage.setMinHeight(400);
-            // set title of window.
-            primaryStage.setTitle("JavaFX Library App");
-            primaryStage.show();
+        //Use TestMainApp instead of manual FXML loading
+        TestMainApp testApp = new TestMainApp();
+        testApp.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,14 +98,14 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     // Helper to navigate to a view by clicking the menu button
     private void navigateTo(String buttonId) {
         clickOn(buttonId);
-        sleep(5);
+        sleep(SLEEP_TIME);
     }
 
     // Helper to click a menu button and verify the expected node is visible
     private void clickMenuAndVerify(String buttonId, String expectedFieldId, String testName) {
         logger.info("[" + testName + "] : " + "Clicking + " + buttonId + ", expecting " + expectedFieldId);
         clickOn(buttonId);
-        sleep(5);
+        sleep(SLEEP_TIME);
         verifyThat(expectedFieldId, isVisible());
     }
 
