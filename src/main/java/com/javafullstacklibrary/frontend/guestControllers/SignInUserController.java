@@ -55,6 +55,11 @@ public class SignInUserController {
     @FXML
     private void clickedSignInButton() {
         String loginInput = ssnField.getText();
+
+        // Could use PasswordField for better security
+        // Note: PasswordField is more secure than TextField for passwords (not visible in plain text)
+        // Using TextField here for simplicity, but consider using PasswordField in production
+        // if used, should have a pressable eye icon to toggle password text visibility
         String password = passwordField.getText();
 
         // Validate SSN format first before attempting authentication
