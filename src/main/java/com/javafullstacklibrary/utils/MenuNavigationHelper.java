@@ -32,6 +32,7 @@ import com.javafullstacklibrary.frontend.borrowerControllers.StartViewBorrowerCo
 import com.javafullstacklibrary.frontend.borrowerControllers.SearchMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.SearchViewBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.LoanReceiptBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
 
@@ -156,7 +157,7 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "borrowerViews", "Loan_View_Borrower.fxml", new LoanViewBorrowerController());
                 break;
             case "LoanReceipt":
-                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanReceiptBorrowerController());
                 break;
             case "ReturnView":
                 navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
