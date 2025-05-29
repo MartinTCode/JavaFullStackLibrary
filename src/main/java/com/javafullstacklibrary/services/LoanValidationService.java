@@ -6,6 +6,7 @@ import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.model.Journal;
 import com.javafullstacklibrary.model.LibraryUser;
+import com.javafullstacklibrary.utils.LoanList;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -28,10 +29,30 @@ public class LoanValidationService {
 
     // Check if user can loan another item copy based on the number of their current loans and 
     // the maximum allowed loans for their user type
+    /**
+     * Checks if a LibraryUser can loan more items based on their current loans and max allowed loans.
+     * 
+     * @param libraryUser The LibraryUser to check
+     * @return true if the user can loan more items, false otherwise
+     */
     public boolean canLoanMore(LibraryUser libraryUser) {
         int maxLoans = loanDAO.getMaxLoansByUser(libraryUser);
         int currentLoans = Math.toIntExact(loanDAO.countActiveLoansByUser(libraryUser));
         return currentLoans < maxLoans;
+    }
+
+    /**
+     * Overloaded method to check if a LibraryUser can loan more items based on their current loans
+     * and the pending loans in the LoanList.
+     * 
+     * @param libraryUser The LibraryUser to check
+     * @param loanList The LoanList containing pending loans
+     * @return true if the user can loan more items, false otherwise
+     */
+    public boolean canLoanMore(LibraryUser libraryUser, LoanList loanList) {
+        int maxLoans = loanDAO.getMaxLoansByUser(libraryUser);
+        int currentLoans = Math.toIntExact(loanDAO.countActiveLoansByUser(libraryUser));
+        return (currentLoans + loanList.getPendingLoans().size()) <= maxLoans;
     }
     
     /**
