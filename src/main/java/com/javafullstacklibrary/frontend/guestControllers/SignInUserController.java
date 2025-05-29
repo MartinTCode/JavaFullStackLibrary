@@ -9,6 +9,7 @@ import com.javafullstacklibrary.exception.ValidationException;
 import com.javafullstacklibrary.services.AuthenticationService;
 import com.javafullstacklibrary.services.AuthenticationService.AuthenticationResult;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.UserSession;
 
 import java.util.Map;
 
@@ -55,11 +56,6 @@ public class SignInUserController {
     @FXML
     private void clickedSignInButton() {
         String loginInput = ssnField.getText();
-
-        // Could use PasswordField for better security
-        // Note: PasswordField is more secure than TextField for passwords (not visible in plain text)
-        // Using TextField here for simplicity, but consider using PasswordField in production
-        // if used, should have a pressable eye icon to toggle password text visibility
         String password = passwordField.getText();
 
         // Validate SSN format first before attempting authentication
@@ -75,9 +71,14 @@ public class SignInUserController {
             AuthenticationResult result = authService.authenticate(loginInput, password);
             
             if (result.isSuccess()) {
+                // Store user in session
+                UserSession.setCurrentUser(result.getUser());
+                
                 // Login successful - navigate based on user role
                 String userRole = result.getUserRole();
-                System.out.println("User logged in successfully: " + result.getUser().getUsername() + 
+                String userName = result.getUser().getUsername() != null ? result.getUser().getUsername() : result.getUser().getSsn();
+
+                System.out.println("User logged in successfully: " + userName + 
                                  " (Role: " + userRole + ")");
                 
                 navigateToUserHome(userRole);
