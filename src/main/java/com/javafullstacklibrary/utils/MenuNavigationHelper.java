@@ -24,6 +24,7 @@ import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibraria
 import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.UserInfoLibrarianController;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
 import com.javafullstacklibrary.frontend.guestControllers.SearchViewGuestController;
@@ -276,13 +277,36 @@ public class MenuNavigationHelper {
      * @param query        The search query to be used in the search view.
      * @throws IllegalArgumentException if the buttonAction value is invalid.
      */
-    public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
+public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
     switch (buttonAction) {
         case "SearchView":
             SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
             navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
             break;
         // ...other cases...
+        default:
+            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+    }
+}
+
+public static void buttonClickLibrarian(Pane mainPane, String buttonAction, Item item) {
+    switch (buttonAction) {
+        case "ModifyBook":
+            navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", 
+                new ModifyBookLibrarianController(item));
+            break;
+        case "ModifyCourseLit":
+            navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", 
+                new ModifyCourseLitLibrarianController(item));
+            break;
+        case "ModifyJournal":
+            navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", 
+                new ModifyJournalLibrarianController(item));
+            break;
+        case "ModifyDvd":
+            navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", 
+                new ModifyDvdLibrarianController(item));
+            break;
         default:
             throw new IllegalArgumentException("Invalid button action: " + buttonAction);
     }

@@ -1,7 +1,13 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.model.Journal;
+import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.services.CreatorManagementService;
 import com.javafullstacklibrary.services.ItemManagementService;
 import com.javafullstacklibrary.services.KeywordManagementService;
@@ -18,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class ModifyJournalLibrarianController {
+    private final Item itemToModify; // The item to modify, passed from the previous view
 
     @FXML
     private Pane mainPane;
@@ -73,7 +80,6 @@ public class ModifyJournalLibrarianController {
     @FXML
     private Button saveChangesJournalButtonLibrarian;
 
-    
     // --- Services for data management ---
     private final ItemManagementService itemManagementService = new ItemManagementService();
     private final CreatorManagementService creatorManagementService = new CreatorManagementService();
@@ -81,6 +87,21 @@ public class ModifyJournalLibrarianController {
     private final LanguageManagementService languageManagementService = new LanguageManagementService();
     private final LocationManagementService locationManagementService = new LocationManagementService();
 
+    
+
+    /**
+     * Constructor to initialize the controller with an item to modify.
+     * This constructor is used when navigating from the Manage Library view to modify a specific journal item.
+     * @param item
+     */
+    public ModifyJournalLibrarianController(Item item) {
+        this.itemToModify = item;
+    }
+
+    // No-arg constructor for FXML loader
+    public ModifyJournalLibrarianController() {
+        this.itemToModify = null;
+    }
 
     // --- Top Menu Handlers ---
 
@@ -154,8 +175,9 @@ public class ModifyJournalLibrarianController {
      * Saves the changes and navigates back to the Manage Library view.
      */
     @FXML
-    private void clickedsaveChangesJournalButtonLibrarian(MouseEvent event) {
+    private void clickedSaveChangesJournalButtonLibrarian(MouseEvent event) {
         // Save logic here (validation, update DB, etc.)
+        System.out.println("Save Changes Journal button clicked");
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
@@ -173,6 +195,60 @@ public class ModifyJournalLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
+
+        if (itemToModify != null) {
+            // Populate fields with item data
+            journalTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+            journalPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+
+            // Cast to Journal to access Journal-specific getters
+            if (itemToModify instanceof Journal journal) {
+                journalIssnTextFieldLibrarian.setText(journal.getISSN());
+            }
+
+            // Set language if it exists
+            if (itemToModify.getLanguage() != null) {
+                journalLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+            }
+
+            // Set location if it exists
+            if (itemToModify.getLocation() != null) {
+                journalFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+                journalSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+                journalShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+                journalPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+            }
+
+            // Set keywords if they exist
+            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+                Set<Keyword> keywords = itemToModify.getKeywords();
+                List<Keyword> keywordList = keywords.stream().toList();
+                if (keywordList.size() > 0) {
+                    journalKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
+                }
+                if (keywordList.size() > 1) {
+                    journalKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
+                }
+                if (keywordList.size() > 2) {
+                    journalKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
+                }
+            }
+
+            // Set authors if they exist
+            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+                Set<Creator> authors = itemToModify.getCreators();
+                List<Creator> authorList = authors.stream().toList();
+                if (authorList.size() > 0) {
+                    journalAuthorComboBoxLibrarian1.setValue(authorList.get(0).getFullName());
+                }
+                if (authorList.size() > 1) {
+                    journalAuthorComboBoxLibrarian2.setValue(authorList.get(1).getFullName());
+                }
+                if (authorList.size() > 2) {
+                    journalAuthorComboBoxLibrarian3.setValue(authorList.get(2).getFullName());
+                }
+            }
+        }
     }
 
     /**

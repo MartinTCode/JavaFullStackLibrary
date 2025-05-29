@@ -7,14 +7,25 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import com.javafullstacklibrary.model.Book;
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.services.*; // Importing all services at once
 import javafx.collections.ObservableList;
+
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controller for the Modify Book (not Course Literature) view for librarians.
  */
 public class ModifyBookLibrarianController {
+    private final Item itemToModify;
+
 
     @FXML
     private Pane mainPane;
@@ -90,6 +101,16 @@ public class ModifyBookLibrarianController {
     private final LanguageManagementService languageManagementService = new LanguageManagementService();
     private final LocationManagementService locationManagementService = new LocationManagementService();
 
+    //Constructor
+    public ModifyBookLibrarianController(Item item) {
+        this.itemToModify = item;
+    }
+
+    // Add a no-arg constructor for FXML loader
+    public ModifyBookLibrarianController() {
+        this.itemToModify = null;
+    }
+
     // --- Top Menu Handlers ---
 
     /**
@@ -164,7 +185,8 @@ public class ModifyBookLibrarianController {
     @FXML
     private void clickedSaveChangesBookButtonLibrarian(MouseEvent event) {
         // Save logic here (validation, update DB, etc.)
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+        System.out.println("Save Changes button clicked");
+        // Navigate back to Manage Library
     }
 
     /**
@@ -184,6 +206,76 @@ public class ModifyBookLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
+        
+        if (itemToModify != null) {
+            // Populate fields with item data
+            bookTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+            bookPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+            
+            // Cast to Book to access Book-specific getters
+            if (itemToModify instanceof Book book) {
+                bookIsbn13TextFieldLibrarian.setText(book.getISBN13());
+                bookIsbn10TextFieldLibrarian.setText(book.getISBN10());
+            }
+
+            // Set language if it exists
+            if (itemToModify.getLanguage() != null) {
+                bookLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+            }
+
+            // Set location if it exists
+            if (itemToModify.getLocation() != null) {
+                bookFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+                bookSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+                bookShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+                bookPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+            }
+
+            // Set authors, genres, and keywords if they exist
+            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+                Set<Creator> creators = itemToModify.getCreators();
+                List<Creator> creatorList = creators.stream().toList();
+                if (creatorList.size() > 0) {
+                    bookAuthorComboBoxLibrarian1.setValue(creatorList.get(0).getFullName());
+                }
+                if (creatorList.size() > 1) {
+                    bookAuthorComboBoxLibrarian2.setValue(creatorList.get(1).getFullName());
+                }
+                if (creatorList.size() > 2) {
+                    bookAuthorComboBoxLibrarian3.setValue(creatorList.get(2).getFullName());
+                }
+            }
+
+            if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
+                Set<Genre> genres = itemToModify.getGenres();
+                List<Genre> genreList = genres.stream().toList();
+                if (genreList.size() > 0) {
+                    bookGenreComboBoxLibrarian1.setValue(genreList.get(0).getGenre());
+                }
+                if (genreList.size() > 1) {
+                    bookGenreComboBoxLibrarian2.setValue(genreList.get(1).getGenre());
+                }
+                if (genreList.size() > 2) {
+                    bookGenreComboBoxLibrarian3.setValue(genreList.get(2).getGenre());
+                }
+            }
+
+            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+                Set<Keyword> keywords = itemToModify.getKeywords();
+                List<Keyword> keywordList = keywords.stream().toList();
+                if (keywordList.size() > 0) {
+                    bookKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
+                }
+                if (keywordList.size() > 1) {
+                    bookKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
+                }
+                if (keywordList.size() > 2) {
+                    bookKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
+                }
+            }
+
+            
+        }
     }
 
     /**

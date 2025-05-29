@@ -7,14 +7,24 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import com.javafullstacklibrary.model.CourseLitterature;
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.services.*; // Importing all services at once
 import javafx.collections.ObservableList;
+
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controller for the Modify Course Literature view for librarians.
  */
 public class ModifyCourseLitLibrarianController {
+    private final Item itemToModify;
 
     @FXML
     private Pane mainPane;
@@ -90,6 +100,20 @@ public class ModifyCourseLitLibrarianController {
     private final LanguageManagementService languageManagementService = new LanguageManagementService();
     private final LocationManagementService locationManagementService = new LocationManagementService();
 
+    /**
+     * Constructor for ModifyCourseLitLibrarianController.
+     * Initializes the controller with an Item to modify.
+     * @param item
+     */
+    public ModifyCourseLitLibrarianController(Item item) {
+        this.itemToModify = item;
+    }
+
+    // No-arg constructor for FXML loader
+    public ModifyCourseLitLibrarianController() {
+        this.itemToModify = null;
+    }
+
     // --- Top Menu Handlers ---
 
     /**
@@ -164,7 +188,8 @@ public class ModifyCourseLitLibrarianController {
     @FXML
     private void clickedSaveChangesCourseLitButtonLibrarian(MouseEvent event) {
         // Save logic here (validation, update DB, etc.)
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+        System.out.println("Save Changes button clicked");
+        //Navigate back to Manage Library
     }
 
     @FXML
@@ -181,6 +206,74 @@ public class ModifyCourseLitLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
+        
+        if (itemToModify != null) {
+            // Populate fields with item data
+            CourseLitTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+            CourseLitPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+            
+            // Cast to CourseLiterature to access ISBN getters
+            if (itemToModify instanceof CourseLitterature courseLit) {
+                CourseLitIsbn13TextFieldLibrarian.setText(courseLit.getISBN13());
+                CourseLitIsbn10TextFieldLibrarian.setText(courseLit.getISBN10());
+            }
+
+            // Set language if it exists
+            if (itemToModify.getLanguage() != null) {
+                CourseLitLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+            }
+
+            // Set location if it exists
+            if (itemToModify.getLocation() != null) {
+                CourseLitFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+                CourseLitSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+                CourseLitShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+                CourseLitPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+            }
+
+            // Set authors, genres, and keywords if they exist
+            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+                Set<Creator> creators = itemToModify.getCreators();
+                List<Creator> creatorList = creators.stream().toList();
+                if (creatorList.size() > 0) {
+                    CourseLitAuthorComboBoxLibrarian1.setValue(creatorList.get(0).getFullName());
+                }
+                if (creatorList.size() > 1) {
+                    CourseLitAuthorComboBoxLibrarian2.setValue(creatorList.get(1).getFullName());
+                }
+                if (creatorList.size() > 2) {
+                    CourseLitAuthorComboBoxLibrarian2.setValue(creatorList.get(2).getFullName());
+                }
+            }
+
+            if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
+                Set<Genre> genres = itemToModify.getGenres();
+                List<Genre> genreList = genres.stream().toList();
+                if (genreList.size() > 0) {
+                    CourseLitGenreComboBoxLibrarian1.setValue(genreList.get(0).getGenre());
+                }
+                if (genreList.size() > 1) {
+                    CourseLitGenreComboBoxLibrarian2.setValue(genreList.get(1).getGenre());
+                }
+                if (genreList.size() > 2) {
+                    CourseLitGenreComboBoxLibrarian3.setValue(genreList.get(2).getGenre());
+                }
+            }
+
+            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+                Set<Keyword> keywords = itemToModify.getKeywords();
+                List<Keyword> keywordList = keywords.stream().toList();
+                if (keywordList.size() > 0) {
+                    CourseLitKeywordComboBoxLibrarian1.setValue(keywordList.get(0).getKeyword());
+                }
+                if (keywordList.size() > 1) {
+                    CourseLitKeywordComboBoxLibrarian2.setValue(keywordList.get(1).getKeyword());
+                }
+                if (keywordList.size() > 2) {
+                    CourseLitKeywordComboBoxLibrarian3.setValue(keywordList.get(2).getKeyword());
+                }
+            }
+        }
     }
 
     /**

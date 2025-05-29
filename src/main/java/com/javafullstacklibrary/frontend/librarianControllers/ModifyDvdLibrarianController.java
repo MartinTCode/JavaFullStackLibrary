@@ -10,14 +10,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Actor;
+import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.DVD;
+import com.javafullstacklibrary.model.Genre;
 import com.javafullstacklibrary.services.*; // Importing all services
 
 /**
  * Controller for the Modify DVD view for librarians.
  */
 public class ModifyDvdLibrarianController {
+    private final Item itemToModify;
 
     @FXML
     private Pane mainPane;
@@ -106,6 +115,17 @@ public class ModifyDvdLibrarianController {
     private final LocationManagementService locationManagementService = new LocationManagementService();
     private final ActorManagementService actorManagementService = new ActorManagementService();
 
+    // Constructor to initialize the controller with the item to modify
+    public ModifyDvdLibrarianController(Item item) {
+        this.itemToModify = item;
+    }
+
+    // Empty constructor for FXML loading
+    public ModifyDvdLibrarianController() {
+        this.itemToModify = null; // No item to modify, used for FXML loading
+    }
+    
+    
     // --- Top Menu Handlers ---
 
     /**
@@ -180,6 +200,7 @@ public class ModifyDvdLibrarianController {
     @FXML
     private void clickedSaveChangesDvdButtonLibrarian(MouseEvent event) {
         // Save logic here (validation, update DB, etc.)
+        System.out.println("Save Changes button clicked");
         MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
     }
 
@@ -197,6 +218,94 @@ public class ModifyDvdLibrarianController {
     @FXML
     private void initialize() {
         populateComboBoxes();
+        
+        if (itemToModify != null) {
+            // Populate fields with item data
+            dvdTitleTextFieldLibrarian.setText(itemToModify.getTitle());
+            dvdPublisherTextFieldLibrarian.setText(itemToModify.getPublisher());
+            
+            // Cast to DVD to access DVD-specific getters
+            if (itemToModify instanceof DVD dvd) {
+                dvdImdbcTextFieldLibrarian.setText(dvd.getIMDBC());
+                dvdCountryTextFieldLibrarian.setText(dvd.getCountryOfProduction());
+                if (dvd.getAgeLimit() != null) {
+                    dvdAgeLimitTextFieldLibrarian.setText(dvd.getAgeLimit().toString());
+                }
+            }
+
+            // Set language if it exists
+            if (itemToModify.getLanguage() != null) {
+                dvdLanguageComboBoxLibrarian.setValue(itemToModify.getLanguage().getLanguage());
+            }
+
+            // Set location if it exists
+            if (itemToModify.getLocation() != null) {
+                dvdFloorComboBoxLibrarian.setValue(itemToModify.getLocation().getFloor());
+                dvdSectionComboBoxLibrarian.setValue(itemToModify.getLocation().getSection());
+                dvdShelfComboBoxLibrarian.setValue(itemToModify.getLocation().getShelf());
+                dvdPositionComboBoxLibrarian.setValue(itemToModify.getLocation().getPosition());
+            }
+
+            // Populate genres
+            if (itemToModify.getGenres() != null && !itemToModify.getGenres().isEmpty()) {
+                Set<Genre> genres = itemToModify.getGenres();
+                List<Genre> genreList = genres.stream().toList();
+                if (genreList.size() > 0) {
+                    dvdGenreComboBox1.setValue(genreList.get(0).getGenre());
+                }
+                if (genreList.size() > 1) {
+                    dvdGenreComboBox2.setValue(genreList.get(1).getGenre());
+                }
+                if (genreList.size() > 2) {
+                    dvdGenreComboBox3.setValue(genreList.get(2).getGenre());
+                }
+            }
+
+            // Populate keywords
+            if (itemToModify.getKeywords() != null && !itemToModify.getKeywords().isEmpty()) {
+                Set<Keyword> keywords = itemToModify.getKeywords();
+                List<Keyword> keywordList = keywords.stream().toList();
+                if (keywordList.size() > 0) {
+                    dvdKeywordComboBox1.setValue(keywordList.get(0).getKeyword());
+                }
+                if (keywordList.size() > 1) {
+                    dvdKeywordComboBox2.setValue(keywordList.get(1).getKeyword());
+                }
+                if (keywordList.size() > 2) {
+                    dvdKeywordComboBox3.setValue(keywordList.get(2).getKeyword());
+                }
+            }
+
+            // Populate actors
+            if (itemToModify.getActors() != null && !itemToModify.getActors().isEmpty()) {
+                Set<Actor> actors = itemToModify.getActors();
+                List<Actor> actorList = actors.stream().toList();
+                if (actorList.size() > 0) {
+                    dvdActorComboBox1.setValue(actorList.get(0).getFullName());
+                }
+                if (actorList.size() > 1) {
+                    dvdActorComboBox2.setValue(actorList.get(1).getFullName());
+                }
+                if (actorList.size() > 2) {
+                    dvdActorComboBox3.setValue(actorList.get(2).getFullName());
+                }
+            }
+
+            // Populate directors
+            if (itemToModify.getCreators() != null && !itemToModify.getCreators().isEmpty()) {
+                Set<Creator> directors = itemToModify.getCreators();
+                List<Creator> directorList = directors.stream().toList();
+                if (directorList.size() > 0) {
+                    dvdDirectorComboBox1.setValue(directorList.get(0).getFullName());
+                }
+                if (directorList.size() > 1) {
+                    dvdDirectorComboBox2.setValue(directorList.get(1).getFullName());
+                }
+                if (directorList.size() > 2) {
+                    dvdDirectorComboBox3.setValue(directorList.get(2).getFullName());
+                }
+            }
+        }
     }
 
     /**

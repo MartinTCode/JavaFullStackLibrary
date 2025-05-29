@@ -49,7 +49,7 @@ public class SearchResultItemComponentLibrarian extends VBox {
         setOnMouseClicked(event -> {  
             if (item.getParameterMap() == null || !item.getParameterMap().containsKey("type")) {
                 // Default to ModifyBook if no type is specified
-                MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), "ModifyBook");
+                MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), "ModifyBook", item);
                 return;
             }
 
@@ -59,10 +59,10 @@ public class SearchResultItemComponentLibrarian extends VBox {
                 case "dvd" -> "ModifyDvd";
                 case "course_litterature" -> "ModifyCourseLit";
                 case "book" -> "ModifyBook";
-                default -> "ModifyBook"; // fallback to book if un 56known type
+                default -> "ModifyBook"; // fallback to book if unknown type
             };
 
-            MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), viewAction);
+            MenuNavigationHelper.buttonClickLibrarian((Pane) getScene().getRoot(), viewAction, item);
         });
 
 
