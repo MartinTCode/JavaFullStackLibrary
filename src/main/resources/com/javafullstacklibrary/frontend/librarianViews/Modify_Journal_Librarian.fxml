@@ -275,29 +275,29 @@
                                      GridPane.rowIndex="1"
                                  >
                                     <children>
-                                       <Label text="Location" />
+                                       <Label text="Location *" />
                                        <ComboBox
                                            fx:id="journalFloorComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            promptText="Floor "
                                        />
                                        <ComboBox
                                            fx:id="journalSectionComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="25.0"
                                            promptText="Section "
                                        />
                                        <ComboBox
                                            fx:id="journalShelfComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="48.0"
                                            promptText="Shelf "
                                        />
                                        <ComboBox
                                            fx:id="journalPositionComboBoxLibrarian"
-                                           editable="true"
+                                           editable="false"
                                            layoutX="10.0"
                                            layoutY="71.0"
                                            promptText="Position "
