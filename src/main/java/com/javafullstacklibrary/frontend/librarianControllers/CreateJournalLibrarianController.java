@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import com.javafullstacklibrary.model.Creator;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
@@ -116,8 +117,8 @@ public class CreateJournalLibrarianController {
             Language language = collectLanguage();
             Location location = collectLocation();
 
-            // Create a new journal and save it to database
-            itemManagementService.createAndSaveItem(
+            // Create a new journal
+            Item newJournal = itemManagementService.createItem(
                 "journal",
                 location,
                 language,
@@ -132,6 +133,8 @@ public class CreateJournalLibrarianController {
                 null, // age limit not applicable for journals
                 null  // country of production not applicable for journals
             );
+            // Save the new journal item to the database
+            itemManagementService.addItem(newJournal);
 
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -1,13 +1,18 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Journal;
 import com.javafullstacklibrary.model.Keyword;
+import com.javafullstacklibrary.model.Language;
+import com.javafullstacklibrary.model.Location;
 import com.javafullstacklibrary.services.CreatorManagementService;
 import com.javafullstacklibrary.services.ItemManagementService;
 import com.javafullstacklibrary.services.KeywordManagementService;
@@ -17,6 +22,7 @@ import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -176,9 +182,75 @@ public class ModifyJournalLibrarianController {
      */
     @FXML
     private void clickedSaveChangesJournalButtonLibrarian(MouseEvent event) {
-        // Save logic here (validation, update DB, etc.)
-        System.out.println("Save Changes Journal button clicked");
-        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+        try {
+            // Get text field values
+            String title = journalTitleTextFieldLibrarian.getText();
+            String issn = journalIssnTextFieldLibrarian.getText();
+            String publisher = journalPublisherTextFieldLibrarian.getText();
+            
+            // Convert Lists to Sets
+            Set<Creator> authors = new HashSet<>(collectAuthors());
+            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
+            Language language = collectLanguage();
+            Location location = collectLocation();       
+
+            // Update existing journal instead of creating new one
+            if (itemToModify != null) {
+                // Update the existing item's fields
+                itemToModify.setTitle(title);
+                itemToModify.setPublisher(publisher);
+                itemToModify.setLocation(location);
+                itemToModify.setLanguage(language);
+                itemToModify.setKeywords(keywords);
+                itemToModify.setCreators(authors);
+
+                // If it's a Journal, update ISSN
+                if (itemToModify instanceof Journal journal) {
+                    journal.setISSN(issn);
+                }
+
+                // Update item in database
+                itemManagementService.updateItem(itemToModify);
+            } else {
+                // Create new journal if itemToModify is null
+                Item newJournal = itemManagementService.createItem(
+                    "journal",
+                    location,
+                    language,
+                    keywords,
+                    authors,
+                    null, // actors not applicable
+                    null, // genres not applicable
+                    issn,
+                    null, // identifier2 not applicable
+                    title,
+                    publisher,
+                    null, // ageLimit not applicable
+                    null  // countryOfProduction not applicable
+                );
+                // Save new item in database
+                itemManagementService.addItem(newJournal);
+            }
+
+            // Show success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText(itemToModify != null ? "Journal Updated" : "Journal Created");
+            alert.setContentText("The journal \"" + title + "\" has been successfully " + 
+                               (itemToModify != null ? "updated" : "created") + ".");
+            alert.showAndWait();
+
+            // Navigate back to manage library view
+            MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
+
+        } catch (Exception e) {
+            // Show error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(itemToModify != null ? "Failed to Update Journal" : "Failed to Create Journal");
+            alert.setContentText("An error occurred: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -298,5 +370,58 @@ public class ModifyJournalLibrarianController {
         journalAuthorComboBoxLibrarian1.setItems(authors);
         journalAuthorComboBoxLibrarian2.setItems(authors);
         journalAuthorComboBoxLibrarian3.setItems(authors);
+    }
+
+    /**
+     * Collects all keywords selected in the keyword combo boxes.
+     */
+    private List<Keyword> collectKeywords() {
+        List<Keyword> keywords = new ArrayList<>();
+        addIfNotEmpty(journalKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(journalKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
+        addIfNotEmpty(journalKeywordComboBoxLibrarian3.getValue(), keywords, keywordManagementService::findByName);
+        return keywords;
+    }
+
+    /**
+     * Collects the language selected in the language combo box.
+     */
+    private Language collectLanguage() {
+        String languageName = journalLanguageComboBoxLibrarian.getValue();
+        if (languageName != null && !languageName.isEmpty()) {
+            return languageManagementService.findByName(languageName);
+        }
+        throw new IllegalArgumentException("Language cannot be null or empty");
+    }
+
+    /**
+     * Collects all authors selected in the author combo boxes.
+     */
+    private List<Creator> collectAuthors() {
+        List<Creator> authors = new ArrayList<>();
+        addIfNotEmpty(journalAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(journalAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
+        addIfNotEmpty(journalAuthorComboBoxLibrarian3.getValue(), authors, creatorManagementService::findByFullName);
+        return authors;
+    }
+
+    /**
+     * Collects the location from the location combo boxes.
+     */
+    private Location collectLocation() {
+        String floor = journalFloorComboBoxLibrarian.getValue();
+        String section = journalSectionComboBoxLibrarian.getValue();
+        String shelf = journalShelfComboBoxLibrarian.getValue();
+        String position = journalPositionComboBoxLibrarian.getValue();
+        return locationManagementService.findOrCreate(floor, section, shelf, position);
+    }
+
+    /**
+     * Helper method to add a value to a list if the value is not null or empty.
+     */
+    private <T> void addIfNotEmpty(String value, List<T> list, Function<String, T> finder) {
+        if (value != null && !value.isEmpty()) {
+            list.add(finder.apply(value));
+        }
     }
 }

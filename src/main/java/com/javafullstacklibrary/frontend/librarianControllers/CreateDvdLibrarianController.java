@@ -17,6 +17,7 @@ import com.javafullstacklibrary.services.ActorManagementService;
 import com.javafullstacklibrary.model.Actor;
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Genre;
+import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
@@ -180,8 +181,8 @@ public class CreateDvdLibrarianController {
             Language language = collectLanguage();
             Location location = collectLocation();       
 
-            // Create a new DVD and save it to database
-            itemManagementService.createAndSaveItem(
+            // Create a new DVD
+            Item newDvd = itemManagementService.createItem(
                 "dvd",
                 location,
                 language,
@@ -196,6 +197,8 @@ public class CreateDvdLibrarianController {
                 ageLimit,
                 country
             );
+            // Save the item to the database
+            itemManagementService.addItem(newDvd);
 
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

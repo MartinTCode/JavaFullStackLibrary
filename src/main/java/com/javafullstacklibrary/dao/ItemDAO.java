@@ -36,13 +36,11 @@ public class ItemDAO {
         try {
             entityManager.getTransaction().begin();
             
-            // Validate uniqueness before saving
-            validateIdentifierUnique(item);
-            
             if (item.getId() == null) {
+                validateIdentifierUnique(item); // Validate before persisting
                 entityManager.persist(item);
             } else {
-                item = entityManager.merge(item);
+                item = entityManager.merge(item); // No valitation of unique identifiers for updates since they will already exist
             }
             
             entityManager.getTransaction().commit();
