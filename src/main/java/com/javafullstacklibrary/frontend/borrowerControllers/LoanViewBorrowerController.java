@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -22,14 +23,6 @@ public class LoanViewBorrowerController {
 
     private LoanValidationService loanValidationService;
 
-    public void initialize() {
-        // Initialize the loan validation service
-        this.loanValidationService = new LoanValidationService();
-        
-        // Load existing pending loans from LoanList
-        loadPendingLoans();
-    }
-
     @FXML
     private Pane mainPane;
 
@@ -48,148 +41,175 @@ public class LoanViewBorrowerController {
     @FXML
     private Button confirmLoansButtonBorrower;
 
+    @FXML
+    private Label statusLabel;
+
+    public void initialize() {
+        this.loanValidationService = new LoanValidationService();
+        loadPendingLoans();
+    }
+
     /**
      * Load existing pending loans from the LoanList into the UI
      */
     private void loadPendingLoans() {
         List<ItemCopy> pendingLoans = LoanList.getInstance().getPendingLoans();
-        loanContainer.getChildren().clear(); // Clear existing items
+        loanContainer.getChildren().clear();
         
         for (ItemCopy itemCopy : pendingLoans) {
             addItemToLoanContainer(itemCopy);
         }
-        
-        System.out.println("Loaded " + pendingLoans.size() + " pending loans");
     }
 
     // Top menu navigation methods
     @FXML
     private void clickedHomeMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
+        // Flush the LoanList to clear any pending loans
+        LoanList.getInstance().clearPendingLoans();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
-    // Action methods for the loan functionality
     @FXML
+    // THESE BARCODES CAN BE USED TO LOAN ITEMS:
+    // QW8Z4NME2L, KD9T7P6R, R5BX0Q32, R5BX0Q33, R5BX0Q34, R5BX0Q35, R5BX0Q36, R5BX0Q37, R5BX0Q38 
     private void clickedAddLoanButton() {
         String barcode = barcodeField.getText();
-        System.out.println("Add Loan button clicked with barcode: " + barcode);
+        
+        // Clear previous status messages
+        clearStatusMessage();
         
         if (barcode == null || barcode.trim().isEmpty()) {
-            System.out.println("Please enter a barcode");
+            showErrorMessage("Please enter a barcode");
             return;
         }
 
-        // Validate barcode for loan eligibility
         ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
         
-        if (result.isSuccess()) {
-            ItemCopy itemCopy = result.getData();
-            System.out.println("Adding item to loan list: " + itemCopy.getItem().getTitle());
-            
-            // Check if item is already in the pending loans list
-            if (LoanList.getInstance().getPendingLoans().contains(itemCopy)) {
-                System.out.println("Item already in loan list");
-                // TODO: Show message to user that item is already added
-                return;
-            }
-            
-            // Check if the user can loan more items
-            boolean allowed2loan = loanValidationService.canLoanMore(UserSession.getCurrentUser());
-            if (allowed2loan) {
-                // Add to LoanList
-                LoanList.getInstance().addItemToLoan(itemCopy);
-                
-                // Add to UI
-                addItemToLoanContainer(itemCopy);
-                
-                // Clear the barcode field for next entry
-                barcodeField.clear();
-                
-                System.out.println("Item successfully added to pending loans");
-            } else {
-                // User has reached the maximum number of loans allowed
-                System.out.println("User has reached maximum loan limit");
-                // TODO: Show error message to user
-            }
-        } else {
-            // Show error message
-            String errorMessage = result.getMessage();
-            System.out.println("Validation failed: " + errorMessage);
-            // TODO: Show error message to user (e.g., using Alert dialog or status label)
+        // Show error if validation for given barcode fails
+        if (!result.isSuccess()) {
+            showErrorMessage(result.getMessage());
+            return;
         }
+        
+        ItemCopy itemCopy = result.getData();
+        
+        // Check if the item is already in the pending loans
+        if (LoanList.getInstance().getPendingLoans().contains(itemCopy)) {
+            showErrorMessage("Item is already in your loan list");
+            return;
+        }
+        
+        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), LoanList.getInstance())) {
+            showErrorMessage("You have reached the maximum number of pending loans allowed for your user type.");
+            return;
+        }
+        
+        LoanList.getInstance().addItemToLoan(itemCopy);
+        addItemToLoanContainer(itemCopy);
+        barcodeField.clear();
+        showSuccessMessage("Item added to loan list");
     }
 
     @FXML
     private void clickedConfirmLoansButtonBorrower() {
         List<ItemCopy> pendingLoans = LoanList.getInstance().getPendingLoans();
-        System.out.println("Confirm Loans button clicked for " + pendingLoans.size() + " items");
         
         if (pendingLoans.isEmpty()) {
-            System.out.println("No items to loan");
-            // TODO: Show message to user that no items are selected
+            showErrorMessage("No items selected for loan");
             return;
         }
         
-        // TODO: Process all items in the loan list
-        // TODO: Create loan records in the database
-        // TODO: Navigate to loan receipt view
         MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanReceipt");
     }
 
     /**
      * Adds an item to the loan container for display
-     * @param itemCopy The item to add to the loan list display
      */
     private void addItemToLoanContainer(ItemCopy itemCopy) {
-        // Create a container for the item with remove functionality
-        HBox itemContainer = new HBox(10);
-        itemContainer.setStyle("-fx-padding: 10px; -fx-border-color: lightgray; -fx-border-width: 1px; -fx-background-color: #f9f9f9; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+        HBox itemContainer = new HBox();
+        itemContainer.getStyleClass().add("loan-item-container");
         
-        // Create item details label
         Label itemLabel = new Label(
             itemCopy.getItem().getTitle() + " (Barcode: " + itemCopy.getBarcode() + ")"
         );
-        itemLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+        itemLabel.getStyleClass().add("loan-item-label");
         itemLabel.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(itemLabel, javafx.scene.layout.Priority.ALWAYS);
         
-        // Create remove button
         Button removeButton = new Button("Remove");
-        removeButton.setStyle("-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-font-size: 10px;");
+        removeButton.getStyleClass().add("remove-button");
         removeButton.setOnAction(e -> {
-            // Remove from LoanList
             LoanList.getInstance().removeItemFromLoan(itemCopy);
-            // Remove from UI
             loanContainer.getChildren().remove(itemContainer);
-            System.out.println("Removed item from loan list: " + itemCopy.getItem().getTitle());
+            showSuccessMessage("Item removed from loan list");
         });
         
         itemContainer.getChildren().addAll(itemLabel, removeButton);
         loanContainer.getChildren().add(itemContainer);
+    }
+    
+    private void clearStatusMessage() {
+        statusLabel.setVisible(false);
+        statusLabel.setManaged(false);
+        statusLabel.setText("");
+    }
+    
+    private void showErrorMessage(String message) {
+        statusLabel.setText(message);
+        statusLabel.getStyleClass().clear();
+        statusLabel.getStyleClass().add("error-label");
+        statusLabel.setVisible(true);
+        statusLabel.setManaged(true);
+    }
+    
+    private void showSuccessMessage(String message) {
+        statusLabel.setText(message);
+        statusLabel.getStyleClass().clear();
+        statusLabel.getStyleClass().add("success-label");
+        statusLabel.setVisible(true);
+        statusLabel.setManaged(true);
+    }
+    
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
