@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
 
 <BorderPane 
     fx:id="mainPane" 
@@ -136,8 +137,16 @@
                               <TextField 
                                   fx:id="barcodeFieldBorrower" 
                                   styleClass="text-field" />
+                                
                            </children>
                         </HBox>
+                        <!-- Search Barcode error message -->
+                        <Label 
+                            fx:id="errorLabelBarcodeSearch" 
+                            style="-fx-text-fill: red; -fx-font-size: 10px;" 
+                            visible="false" 
+                            wrapText="true"
+                        />
                      </children>
                   </VBox>
 
