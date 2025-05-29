@@ -60,10 +60,10 @@ INSERT INTO item (location_id, language_id, item_type, identifier, identifier2, 
 -- Insert data into item_copy table
 INSERT INTO item_copy (item_id, barcode, is_reference, date_added) VALUES
 (1, 'X82DMJQ1', FALSE, '2025-01-01'),
-(3, '7PTK3A94', FALSE, '2025-01-02'),
+(3, '7PTK3A94', FALSE, '2025-01-02'), -- item_copy_id 2 --> course_litterature
 (2, 'QW8Z4NME2L', FALSE, '2025-01-03'),
 (3, 'KD9T7P6R', FALSE, '2025-01-04'),
-(4, 'R5BX0Q29', FALSE, '2025-01-05'),
+(4, 'R5BX0Q29', FALSE, '2025-01-05'), -- item_copy_id 5 --> dvd 
 (5, 'R5BX0Q30', TRUE, '2025-01-04');
 -- Add more copies ensuring at least double the number of items and max 10% borrowed...
 
