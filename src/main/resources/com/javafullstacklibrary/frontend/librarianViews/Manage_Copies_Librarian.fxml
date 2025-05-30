@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.CheckBox?>
 
 <BorderPane 
    fx:id="mainPane" 
@@ -237,6 +238,13 @@
                               onMouseClicked="#clickedAddCopyButton" 
                               styleClass="button" 
                               text="Add" 
+                           />
+                           <Label 
+                              text="Is reference:" 
+                           />
+                           <CheckBox 
+                              fx:id="checkBoxIsReference" 
+                              selected="false" 
                            />
                         </children>
                      </HBox>
