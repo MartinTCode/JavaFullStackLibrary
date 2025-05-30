@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "item_copy")
@@ -103,4 +104,22 @@ public class ItemCopy {
     }
     
     // #endregion
+
+    // #region Utility Methods
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ItemCopy itemCopy = (ItemCopy) obj;
+        return Objects.equals(id, itemCopy.id) || 
+            Objects.equals(barcode, itemCopy.barcode); // Use barcode since it's unique
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(barcode); // Use barcode since it's unique
+    }
+
+    //#endregion
 }
