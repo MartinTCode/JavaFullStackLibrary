@@ -75,7 +75,7 @@ public class ManageCopiesLibrarianController  {
         // Reset the status label visibility and text
         statusLabel.setVisible(false);
         statusLabel.setText("");
-        
+
         // Initialize the controller with the item to modify if provided
         setLabelsForItem(itemToModify);
     }
@@ -150,7 +150,7 @@ public class ManageCopiesLibrarianController  {
         // Set labels based on the provided item
         if (item != null) {
             itemTitleText.setText(item.getTitle());
-            itemTypeText.setText(item.getClass().getSimpleName());
+            itemTypeText.setText("ItemType: " + item.getClass().getSimpleName());
             
             // Get first creator's full name if available
             String creatorName = "No creator";
@@ -159,7 +159,7 @@ public class ManageCopiesLibrarianController  {
                 creatorName = firstCreator.getFullName();
             }
             
-            itemCreatorText.setText(creatorName);
+            itemCreatorText.setText("Creator: " + creatorName);
             itemIdText.setText("ItemId: " + String.valueOf(item.getId()));
         } else {
             itemTitleText.setText("No item selected");
