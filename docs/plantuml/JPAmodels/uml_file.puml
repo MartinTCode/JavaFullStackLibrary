@@ -3,6 +3,13 @@
 !define ENTITY class
 !define ABSTRACT abstract class
 
+skinparam dpi 300
+skinparam defaultFontSize 12
+skinparam minClassWidth 120
+skinparam classFontSize 11
+skinparam classAttributeFontSize 10
+
+
 package "Domain Model" {
 
     ABSTRACT Item {
