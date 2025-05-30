@@ -499,6 +499,12 @@
                                                 text="Delete Dvd"
                                             />
                                             <Button
+                                                fx:id="manageCopiesButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedManageCopiesButtonLibrarian"
+                                                text="Manage Copies"
+                                            />
+                                            <Button
                                                 fx:id="saveChangesDvdButtonLibrarian"
                                                 mnemonicParsing="false"
                                                 onMouseClicked="#clickedSaveChangesDvdButtonLibrarian"

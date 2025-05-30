@@ -406,6 +406,12 @@
                                     text="Delete Journal"
                                  />
                                  <Button
+                                    fx:id="manageCopiesButtonLibrarian"
+                                    mnemonicParsing="false"
+                                    onMouseClicked="#clickedManageCopiesButtonLibrarian"
+                                    text="Manage Copies"
+                                 />
+                                 <Button
                                     fx:id="saveChangesJournalButtonLibrarian"
                                     mnemonicParsing="false"
                                     onMouseClicked="#clickedSaveChangesJournalButtonLibrarian"
