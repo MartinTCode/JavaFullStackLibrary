@@ -24,6 +24,7 @@ import com.javafullstacklibrary.frontend.librarianControllers.SearchViewLibraria
 import com.javafullstacklibrary.frontend.librarianControllers.SignOutLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.StartViewLibrarianController;
 import com.javafullstacklibrary.frontend.librarianControllers.UserInfoLibrarianController;
+import com.javafullstacklibrary.frontend.librarianControllers.ManageCopiesLibrarianController;
 import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.frontend.guestControllers.SearchMenuGuestController;
 import com.javafullstacklibrary.frontend.guestControllers.SignInStaffController;
@@ -43,6 +44,11 @@ import com.javafullstacklibrary.frontend.borrowerControllers.LoanViewBorrowerCon
 
 import javafx.scene.layout.Pane;
 
+/**
+ * MenuNavigationHelper is a utility class that provides methods for handling menu navigation
+ * and button actions in the Java Full Stack Library application.
+ * It allows for easy navigation between different views based on user roles (guest, borrower, librarian).
+ */
 public class MenuNavigationHelper {
 
     private static String currentControllerName = null;
@@ -56,7 +62,7 @@ public class MenuNavigationHelper {
     public static String getCurrentControllerName() {
         return currentControllerName;
     }
-
+    //#region Menu Click Handlers for Guest.
     /**
      * Handles the action when a guest menu button is clicked.
      * Navigates the user to the specified view based on the menu option selected.
@@ -96,6 +102,9 @@ public class MenuNavigationHelper {
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
         }
     }
+    //#endregion 
+
+    //#region Menu Click Handlers for Borrower.
 
     /**
      * Handles navigation for borrower menu bar clicks (top navigation).
@@ -129,6 +138,9 @@ public class MenuNavigationHelper {
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
         }
     }
+    //#endregion
+
+    //#region Submenu Click Handlers for Borrower.
 
     /**
      * Handles navigation for borrower button clicks (side panel or content buttons).
@@ -171,6 +183,9 @@ public class MenuNavigationHelper {
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);  
         }
     }
+    //#endregion
+
+    //#region Menu Click Handlers for Librarian.
 
     /**
      * Handles navigation for librarian menu bar clicks.
@@ -215,6 +230,10 @@ public class MenuNavigationHelper {
                 throw new IllegalArgumentException("Invalid menu type: " + menuChange);
         }
     }
+
+    //#endregion
+
+    //#region Submenu Click Handlers for Librarian.
 
     /**
      * Handles navigation for librarian button clicks.
@@ -272,6 +291,9 @@ public class MenuNavigationHelper {
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);
         }
     }
+    //#endregion
+
+    //#region Submenu Click Handlers for Librarian with Search Query.
 
     /**
      * Handles navigation for librarian button clicks with a search query.
@@ -283,41 +305,59 @@ public class MenuNavigationHelper {
      * @throws IllegalArgumentException if the buttonAction value is invalid.
      */
 public static void buttonClickLibrarian(Pane mainPane, String buttonAction, String query) {
-    switch (buttonAction) {
-        case "SearchView":
-            SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
-            navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
-            break;
-        // ...other cases...
-        default:
-            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+        switch (buttonAction) {
+            case "SearchView":
+                SearchViewLibrarianController.initialQuery = query; // <-- Set static variable
+                navigateToView(mainPane, "librarianViews", "Search_View_Librarian.fxml", new SearchViewLibrarianController());
+                break;
+            // ...other cases...
+            default:
+                throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+        }
     }
-}
 
-public static void buttonClickLibrarian(Pane mainPane, String buttonAction, Item item) {
-    switch (buttonAction) {
-        case "ModifyBook":
-            navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", 
-                new ModifyBookLibrarianController(item));
-            break;
-        case "ModifyCourseLit":
-            navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", 
-                new ModifyCourseLitLibrarianController(item));
-            break;
-        case "ModifyJournal":
-            navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", 
-                new ModifyJournalLibrarianController(item));
-            break;
-        case "ModifyDvd":
-            navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", 
-                new ModifyDvdLibrarianController(item));
-            break;
-        default:
-            throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+    //#endregion
+
+
+    //#region Submenu Click Handlers for Librarian with Item.
+
+    /**
+     * Handles navigation for librarian button clicks with an item.
+     * Navigates the user to the appropriate librarian view based on the button action and item.
+     *
+     * @param mainPane     The main pane where the new view will be loaded.
+     * @param buttonAction The action associated with the button clicked by the librarian (e.g., "ModifyBook").
+     * @param item         The item to be modified or viewed.
+     * @throws IllegalArgumentException if the buttonAction value is invalid.
+     */
+    public static void buttonClickLibrarian(Pane mainPane, String buttonAction, Item item) {
+        switch (buttonAction) {
+            case "ModifyBook":
+                navigateToView(mainPane, "librarianViews", "Modify_Book_Librarian.fxml", 
+                    new ModifyBookLibrarianController(item));
+                break;
+            case "ModifyCourseLit":
+                navigateToView(mainPane, "librarianViews", "Modify_Course_Lit_Librarian.fxml", 
+                    new ModifyCourseLitLibrarianController(item));
+                break;
+            case "ModifyJournal":
+                navigateToView(mainPane, "librarianViews", "Modify_Journal_Librarian.fxml", 
+                    new ModifyJournalLibrarianController(item));
+                break;
+            case "ModifyDvd":
+                navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", 
+                    new ModifyDvdLibrarianController(item));
+                break;
+            case "ModifyCopy":
+                navigateToView(mainPane, "librarianViews", "Manage_Copies_Librarian.fxml", 
+                    new ManageCopiesLibrarianController(item));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid button action: " + buttonAction);
+        }
     }
-}
 
-
+    //#endregion
 
     /**
      * Handles navigation to a specified view.
