@@ -2,6 +2,8 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.model.Item;
 
+// MenuNavigationHelper keyword: ModifyCopy via buttonClickLibrarian(Pane mainPane, String buttonAction, Item item)
+
 public class ManageCopiesLibrarianController  {
     private final Item itemToModify;
 
