@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 public class ManageCopiesLibrarianController  {
     private final Item itemToModify;
+
 
     // Service for managing item copies
     ItemCopyService itemCopyService = new ItemCopyService();
@@ -69,6 +71,10 @@ public class ManageCopiesLibrarianController  {
     private Button addLoanButton;
     @FXML
     private Label statusLabel;
+
+    //checkbox for reference item copies
+    @FXML
+    private CheckBox checkBoxIsReference;
 
     // Results display
     @FXML
@@ -141,12 +147,18 @@ public class ManageCopiesLibrarianController  {
             setStatusLabel("Please enter a barcode.");
             return;
         }
+
+        // Get the reference status from the checkbox
+        boolean isReference = checkBoxIsReference.isSelected();
         
         if (itemCopyService.validateNewBarcode(barcode)) {
             try {
-                itemCopyService.createItemCopy(itemToModify, barcode);
+                itemCopyService.createItemCopy(itemToModify, barcode, isReference);
                 setStatusLabel("Item copy added successfully.");
                 barcodeField.clear();
+
+                // Reset the checkbox to unchecked after adding
+                checkBoxIsReference.setSelected(false);
                 
                 // Refresh the item copies display
                 loadItemCopies();
@@ -208,6 +220,16 @@ public class ManageCopiesLibrarianController  {
             statusItemLabel.getStyleClass().add("status-on-loan");
         }
         
+        // Create reference status label
+        String referenceStatus = itemCopy.getIsReference() ? "Reference Copy" : "Loanable Copy";
+        Label referenceLabel = new Label(referenceStatus);
+        referenceLabel.getStyleClass().add("item-copy-reference");
+        if (itemCopy.getIsReference()) {
+            referenceLabel.getStyleClass().add("reference-item");
+        } else {
+            referenceLabel.getStyleClass().add("regular-item");
+        }
+        
         // Spacer to push delete button to the right
         Label spacer = new Label();
         spacer.setMaxWidth(Double.MAX_VALUE);
@@ -233,7 +255,8 @@ public class ManageCopiesLibrarianController  {
             }
         });
         
-        itemContainer.getChildren().addAll(barcodeLabel, statusItemLabel, spacer, deleteButton);
+        // Add all elements to the container (including the new reference label)
+        itemContainer.getChildren().addAll(barcodeLabel, statusItemLabel, referenceLabel, spacer, deleteButton);
         ItemCopyContainer.getChildren().add(itemContainer);
     }
 

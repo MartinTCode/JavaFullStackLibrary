@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.services;
 
 import com.javafullstacklibrary.dao.ItemCopyDAO;
-import com.javafullstacklibrary.dao.ItemDAO;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.model.Item;
 import jakarta.persistence.EntityManager;
@@ -25,7 +24,7 @@ public class ItemCopyService {
         this.itemCopyDAO = new ItemCopyDAO(em);
     }
     
-    public ItemCopy createItemCopy(Item item, String barcode) {
+    public ItemCopy createItemCopy(Item item, String barcode, boolean isReference) {
         if (barcode == null || barcode.trim().isEmpty()) {
             throw new IllegalArgumentException("Barcode cannot be null or empty");
         }
@@ -37,7 +36,7 @@ public class ItemCopyService {
         itemCopy.setBarcode(barcode);
         itemCopy.setItem(item);
         itemCopy.setDateAdded(LocalDate.now());
-        itemCopy.setIsReference(false);
+        itemCopy.setIsReference(isReference);
         return itemCopyDAO.save(itemCopy);
     }
     
