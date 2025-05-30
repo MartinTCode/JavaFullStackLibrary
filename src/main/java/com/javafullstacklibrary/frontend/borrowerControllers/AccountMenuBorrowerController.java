@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
@@ -49,6 +50,7 @@ public class AccountMenuBorrowerController {
     @FXML
     private void clickedActiveLoansButtonBorrower() {
         MenuNavigationHelper.buttonClickBorrower(mainPane, "ActiveLoans");
+        notImplementedAlert();
     }
 
     @FXML
@@ -64,18 +66,18 @@ public class AccountMenuBorrowerController {
     @FXML
     private void clickedChangeUserInfoButtonBorrower() {
         MenuNavigationHelper.buttonClickBorrower(mainPane, "ChangeInfo");
+        notImplementedAlert();
     }
 
     @FXML
     private void clickedSaveUserInfoButtonBorrower() {
-        //Implementation for saving user info
         MenuNavigationHelper.buttonClickBorrower(mainPane, "UserInfo");
+        notImplementedAlert();
     }
 
     @FXML
     private void clickedConfirmNewPasswordButtonBorrower() {
-        //Implementation for changing password
-        System.out.println("Confirm New Password button clicked");
+        notImplementedAlert();
     }
 
     @FXML
@@ -99,5 +101,17 @@ public class AccountMenuBorrowerController {
         // No session changes needed - just navigate back
         System.out.println("Sign out cancelled");
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
+    }
+
+    private void notImplementedAlert(){
+        showInfoAlert("Not Implemented", "This feature is not available in this version.");
+    }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

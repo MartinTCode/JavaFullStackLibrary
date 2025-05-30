@@ -123,7 +123,6 @@
                      <VBox
                          spacing="10.0"
                          styleClass="results-box"
-                         HBox.hgrow="ALWAYS"
                      >
                         <children>
                            <Button

@@ -219,10 +219,7 @@
                                styleClass="label-title"
                                text="Modify item (incl. copies)"
                            />
-                           <VBox
-                               prefHeight="200.0"
-                               prefWidth="100.0"
-                           >
+                           <VBox>
                               <children>
                                  <Label
                                      text="Enter search term"

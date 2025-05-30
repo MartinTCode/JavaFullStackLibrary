@@ -119,8 +119,7 @@
                   <children>
                      <VBox 
                         spacing="10.0"
-                        styleClass="results-box"
-                        HBox.hgrow="ALWAYS">
+                        styleClass="results-box">
                         <children>
                            <Button 
                               fx:id="userInfoButtonBorrower"
