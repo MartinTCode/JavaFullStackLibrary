@@ -348,7 +348,7 @@ public static void buttonClickLibrarian(Pane mainPane, String buttonAction, Stri
                 navigateToView(mainPane, "librarianViews", "Modify_Dvd_Librarian.fxml", 
                     new ModifyDvdLibrarianController(item));
                 break;
-            case "ModifyCopy":
+            case "ManageCopies":
                 navigateToView(mainPane, "librarianViews", "Manage_Copies_Librarian.fxml", 
                     new ManageCopiesLibrarianController(item));
                 break;
