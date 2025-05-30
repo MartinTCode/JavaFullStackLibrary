@@ -2,6 +2,7 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.model.Creator;
 import com.javafullstacklibrary.model.Item;
+import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.services.ItemCopyService;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
@@ -13,7 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.List;
 
 // MenuNavigationHelper keyword: ManageCopies via buttonClickLibrarian(Pane mainPane, String buttonAction, Item item)
 
@@ -78,6 +82,9 @@ public class ManageCopiesLibrarianController  {
 
         // Initialize the controller with the item to modify if provided
         setLabelsForItem(itemToModify);
+        
+        // Load existing copies for the item
+        loadItemCopies();
     }
 
     public ManageCopiesLibrarianController() {
@@ -128,22 +135,100 @@ public class ManageCopiesLibrarianController  {
     private void clickedAddCopyButton() {
         String barcode = barcodeField.getText().trim();
         if (barcode.isEmpty()) {
-            setStatusLable("Please enter a barcode.");
+            setStatusLabel("Please enter a barcode.");
             return;
         }
-        // 
+        
         if (itemCopyService.validateNewBarcode(barcode)) {
             try {
-               itemCopyService.createItemCopy(itemToModify, barcode);
-                setStatusLable("Item copy added successfully.");
+                itemCopyService.createItemCopy(itemToModify, barcode);
+                setStatusLabel("Item copy added successfully.");
                 barcodeField.clear();
+                
+                // Refresh the item copies display
+                loadItemCopies();
 
             } catch (Exception e) {
-                setStatusLable("Error adding item copy: " + e.getMessage());
+                setStatusLabel("Error adding item copy: " + e.getMessage());
             }
         } else {
-            setStatusLable("Invalid barcode. Please try again.");
+            setStatusLabel("Invalid barcode. Please try again.");
         }
+    }
+
+    /**
+     * Load existing item copies for the current item into the UI
+     */
+    private void loadItemCopies() {
+        ItemCopyContainer.getChildren().clear();
+        
+        if (itemToModify == null) {
+            return;
+        }
+        
+        try {
+            List<ItemCopy> itemCopies = itemCopyService.findByItem(itemToModify);
+            
+            if (itemCopies.isEmpty()) {
+                Label noItemsLabel = new Label("No copies found for this item.");
+                noItemsLabel.getStyleClass().add("no-items-label");
+                ItemCopyContainer.getChildren().add(noItemsLabel);
+            } else {
+                for (ItemCopy itemCopy : itemCopies) {
+                    addItemCopyToContainer(itemCopy);
+                }
+            }
+        } catch (Exception e) {
+            setStatusLabel("Error loading item copies: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Adds an item copy to the container for display
+     */
+    private void addItemCopyToContainer(ItemCopy itemCopy) {
+        HBox itemContainer = new HBox();
+        itemContainer.getStyleClass().add("item-copy-container");
+        itemContainer.setSpacing(10.0);
+        
+        // Create barcode label
+        Label barcodeLabel = new Label("Barcode: " + itemCopy.getBarcode());
+        barcodeLabel.getStyleClass().add("item-copy-barcode");
+        
+        // Create status label
+        String status = itemCopyService.isAvailable(itemCopy.getId()) ? "Available" : "On Loan";
+        Label statusItemLabel = new Label("Status: " + status);
+        statusItemLabel.getStyleClass().add("item-copy-status");
+        if (status.equals("Available")) {
+            statusItemLabel.getStyleClass().add("status-available");
+        } else {
+            statusItemLabel.getStyleClass().add("status-on-loan");
+        }
+        
+        // Spacer to push delete button to the right
+        Label spacer = new Label();
+        spacer.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        
+        // Create delete button
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("delete-button");
+        deleteButton.setOnAction(e -> {
+            try {
+                if (itemCopyService.isAvailable(itemCopy.getId())) {
+                    itemCopyService.deleteItemCopy(itemCopy.getId());
+                    ItemCopyContainer.getChildren().remove(itemContainer);
+                    setStatusLabel("Item copy deleted successfully.");
+                } else {
+                    setStatusLabel("Cannot delete item copy that is currently on loan.");
+                }
+            } catch (Exception ex) {
+                setStatusLabel("Error deleting item copy: " + ex.getMessage());
+            }
+        });
+        
+        itemContainer.getChildren().addAll(barcodeLabel, statusItemLabel, spacer, deleteButton);
+        ItemCopyContainer.getChildren().add(itemContainer);
     }
 
     private void setLabelsForItem(Item item) {
@@ -169,7 +254,7 @@ public class ManageCopiesLibrarianController  {
         }
     }
 
-    private void setStatusLable(String message) {
+    private void setStatusLabel(String message) {
         // Display a status message in the status label
         statusLabel.setText(message);
         statusLabel.setVisible(true);
