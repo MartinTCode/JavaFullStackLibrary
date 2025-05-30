@@ -46,14 +46,6 @@ public class CreateCourseLitLibrarianController {
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian2;
     @FXML private ComboBox<String> CourseLitKeywordComboBoxLibrarian3;
 
-    // Add these service declarations after the ComboBox declarations
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final GenreManagementService genreManagementService = new GenreManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
-
     /**
      * This method is called when the controller is initialized.
      * It calls the applicable methods to initialize the view by populating all combo boxes.
@@ -141,7 +133,13 @@ public class CreateCourseLitLibrarianController {
      */
     @FXML
     private void clickedSaveNewCourseLitButtonLibrarian(MouseEvent event) {
-        try {
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
+
             // Get text field values
             String title = CourseLitTitleTextFieldLibrarian.getText();
             String isbn13 = CourseLitIsbn13TextFieldLibrarian.getText();
@@ -149,11 +147,11 @@ public class CreateCourseLitLibrarianController {
             String publisher = CourseLitPublisherTextFieldLibrarian.getText();
             
             // Convert Lists to Sets
-            Set<Creator> authors = new HashSet<>(collectAuthors());
-            Set<Genre> genres = new HashSet<>(collectGenres());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-            Language language = collectLanguage();
-            Location location = collectLocation();       
+            Set<Creator> authors = new HashSet<>(collectAuthors(creatorManagementService));
+            Set<Genre> genres = new HashSet<>(collectGenres(genreManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));     
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);       
 
             // Create a new course literature item
             Item newCourseLit = itemManagementService.createItem(
@@ -200,43 +198,53 @@ public class CreateCourseLitLibrarianController {
      * Called during controller initialization.
      */
     private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
 
-        // Fetching data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> authors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
-        ObservableList<String> genres = genreManagementService.getAllStrings();
+            // Get location details from the service
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
 
-        CourseLitLanguageComboBoxLibrarian.setItems(languages);
-        CourseLitFloorComboBoxLibrarian.setItems(floors);
-        CourseLitSectionComboBoxLibrarian.setItems(sections);
-        CourseLitShelfComboBoxLibrarian.setItems(shelves);
-        CourseLitPositionComboBoxLibrarian.setItems(positions);
+            // Fetching data from services
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> authors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
+            ObservableList<String> genres = genreManagementService.getAllStrings();
 
-        CourseLitAuthorComboBoxLibrarian1.setItems(authors);
-        CourseLitAuthorComboBoxLibrarian2.setItems(authors);
-        CourseLitAuthorComboBoxLibrarian3.setItems(authors);
+            CourseLitLanguageComboBoxLibrarian.setItems(languages);
+            CourseLitFloorComboBoxLibrarian.setItems(floors);
+            CourseLitSectionComboBoxLibrarian.setItems(sections);
+            CourseLitShelfComboBoxLibrarian.setItems(shelves);
+            CourseLitPositionComboBoxLibrarian.setItems(positions);
 
-        CourseLitGenreComboBoxLibrarian1.setItems(genres);
-        CourseLitGenreComboBoxLibrarian2.setItems(genres);
-        CourseLitGenreComboBoxLibrarian3.setItems(genres);
+            CourseLitAuthorComboBoxLibrarian1.setItems(authors);
+            CourseLitAuthorComboBoxLibrarian2.setItems(authors);
+            CourseLitAuthorComboBoxLibrarian3.setItems(authors);
 
-        CourseLitKeywordComboBoxLibrarian1.setItems(keywords);
-        CourseLitKeywordComboBoxLibrarian2.setItems(keywords);
-        CourseLitKeywordComboBoxLibrarian3.setItems(keywords);
+            CourseLitGenreComboBoxLibrarian1.setItems(genres);
+            CourseLitGenreComboBoxLibrarian2.setItems(genres);
+            CourseLitGenreComboBoxLibrarian3.setItems(genres);
+
+            CourseLitKeywordComboBoxLibrarian1.setItems(keywords);
+            CourseLitKeywordComboBoxLibrarian2.setItems(keywords);
+            CourseLitKeywordComboBoxLibrarian3.setItems(keywords);
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
     }
 
     /**
      * Collects all selected genres from the genre combo boxes.
      * @return List of Genre objects corresponding to the selected values
      */
-    private List<Genre> collectGenres() {
+    private List<Genre> collectGenres(GenreManagementService genreManagementService) {
         List<Genre> genres = new java.util.ArrayList<>();
         addIfNotEmpty(CourseLitGenreComboBoxLibrarian1.getValue(), genres, genreManagementService::findByName);
         addIfNotEmpty(CourseLitGenreComboBoxLibrarian2.getValue(), genres, genreManagementService::findByName);
@@ -248,7 +256,7 @@ public class CreateCourseLitLibrarianController {
      * Collects all selected keywords from the keyword combo boxes.
      * @return List of Keyword objects corresponding to the selected values
      */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new java.util.ArrayList<>();
         addIfNotEmpty(CourseLitKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(CourseLitKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
@@ -261,7 +269,7 @@ public class CreateCourseLitLibrarianController {
      * @return Language object corresponding to the selected value
      * @throws IllegalArgumentException if no language is selected
      */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = CourseLitLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
@@ -275,7 +283,7 @@ public class CreateCourseLitLibrarianController {
      * Collects all selected authors from the author combo boxes.
      * @return List of Creator objects corresponding to the selected values
      */
-    private List<Creator> collectAuthors() {
+    private List<Creator> collectAuthors(CreatorManagementService creatorManagementService) {
         List<Creator> authors = new java.util.ArrayList<>();
         addIfNotEmpty(CourseLitAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
         addIfNotEmpty(CourseLitAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
@@ -288,7 +296,7 @@ public class CreateCourseLitLibrarianController {
      * Creates a new location if the combination doesn't exist.
      * @return Location object representing the selected floor, section, shelf, and position
      */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = CourseLitFloorComboBoxLibrarian.getValue();
         String section = CourseLitSectionComboBoxLibrarian.getValue();
         String shelf = CourseLitShelfComboBoxLibrarian.getValue();

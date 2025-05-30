@@ -30,7 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class ModifyJournalLibrarianController {
-    private final Item itemToModify; // The item to modify, passed from the previous view
+    private final Item itemToModify;
 
     @FXML
     private Pane mainPane;
@@ -86,20 +86,6 @@ public class ModifyJournalLibrarianController {
     @FXML
     private Button saveChangesJournalButtonLibrarian;
 
-    // --- Services for data management ---
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
-
-    
-
-    /**
-     * Constructor to initialize the controller with an item to modify.
-     * This constructor is used when navigating from the Manage Library view to modify a specific journal item.
-     * @param item
-     */
     public ModifyJournalLibrarianController(Item item) {
         this.itemToModify = item;
     }
@@ -182,21 +168,22 @@ public class ModifyJournalLibrarianController {
      */
     @FXML
     private void clickedSaveChangesJournalButtonLibrarian(MouseEvent event) {
-        try {
-            // Get text field values
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
+
             String title = journalTitleTextFieldLibrarian.getText();
             String issn = journalIssnTextFieldLibrarian.getText();
             String publisher = journalPublisherTextFieldLibrarian.getText();
             
-            // Convert Lists to Sets
-            Set<Creator> authors = new HashSet<>(collectAuthors());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-            Language language = collectLanguage();
-            Location location = collectLocation();       
+            Set<Creator> authors = new HashSet<>(collectAuthors(creatorManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));     
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);       
 
-            // Update existing journal instead of creating new one
             if (itemToModify != null) {
-                // Update the existing item's fields
                 itemToModify.setTitle(title);
                 itemToModify.setPublisher(publisher);
                 itemToModify.setLocation(location);
@@ -204,35 +191,19 @@ public class ModifyJournalLibrarianController {
                 itemToModify.setKeywords(keywords);
                 itemToModify.setCreators(authors);
 
-                // If it's a Journal, update ISSN
                 if (itemToModify instanceof Journal journal) {
                     journal.setISSN(issn);
                 }
 
-                // Update item in database
                 itemManagementService.updateItem(itemToModify);
             } else {
-                // Create new journal if itemToModify is null
                 Item newJournal = itemManagementService.createItem(
-                    "journal",
-                    location,
-                    language,
-                    keywords,
-                    authors,
-                    null, // actors not applicable
-                    null, // genres not applicable
-                    issn,
-                    null, // identifier2 not applicable
-                    title,
-                    publisher,
-                    null, // ageLimit not applicable
-                    null  // countryOfProduction not applicable
+                    "journal", location, language, keywords, authors, null, null,
+                    issn, null, title, publisher, null, null
                 );
-                // Save new item in database
                 itemManagementService.addItem(newJournal);
             }
 
-            // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(itemToModify != null ? "Journal Updated" : "Journal Created");
@@ -240,11 +211,9 @@ public class ModifyJournalLibrarianController {
                                (itemToModify != null ? "updated" : "created") + ".");
             alert.showAndWait();
 
-            // Navigate back to manage library view
             MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
         } catch (Exception e) {
-            // Show error message if something goes wrong
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(itemToModify != null ? "Failed to Update Journal" : "Failed to Create Journal");
@@ -256,7 +225,6 @@ public class ModifyJournalLibrarianController {
     @FXML
     private void clickedDeleteJournalButtonLibrarian(MouseEvent event) {
         if (itemToModify == null) {
-            // Can't delete an item that doesn't exist yet
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cannot Delete");
             alert.setHeaderText("No Journal Selected");
@@ -265,20 +233,16 @@ public class ModifyJournalLibrarianController {
             return;
         }
 
-        // Show confirmation dialog
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Deletion");
         confirmDialog.setHeaderText("Delete Journal");
         confirmDialog.setContentText("Are you sure you want to delete the journal \"" + 
                            itemToModify.getTitle() + "\"? This action cannot be undone.");
 
-        // Get user's response, proceed if OK is clicked
         if (confirmDialog.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
-            try {
-                // User clicked OK, proceed with deletion
+            try (ItemManagementService itemManagementService = new ItemManagementService()) {
                 itemManagementService.deleteItem(itemToModify);
 
-                // Show success message
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Success");
                 successAlert.setHeaderText("Journal Deleted");
@@ -286,11 +250,9 @@ public class ModifyJournalLibrarianController {
                                      "\" has been successfully deleted.");
                 successAlert.showAndWait();
 
-                // Navigate back to manage library view
                 MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
             } catch (Exception e) {
-                // Show error message if deletion fails
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Error");
                 errorAlert.setHeaderText("Failed to Delete Journal");
@@ -396,38 +358,47 @@ public class ModifyJournalLibrarianController {
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
+        try (CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
 
-        // Fetch data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> authors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
+            // Get location details from the service
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
 
-        // Set items for each ComboBox
-        journalLanguageComboBoxLibrarian.setItems(languages);
-        journalFloorComboBoxLibrarian.setItems(floors);
-        journalSectionComboBoxLibrarian.setItems(sections);
-        journalShelfComboBoxLibrarian.setItems(shelves);
-        journalPositionComboBoxLibrarian.setItems(positions);
+            // Fetch data from services
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> authors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
 
-        journalKeywordComboBoxLibrarian1.setItems(keywords);
-        journalKeywordComboBoxLibrarian2.setItems(keywords);
-        journalKeywordComboBoxLibrarian3.setItems(keywords);
+            // Set items for each ComboBox
+            journalLanguageComboBoxLibrarian.setItems(languages);
+            journalFloorComboBoxLibrarian.setItems(floors);
+            journalSectionComboBoxLibrarian.setItems(sections);
+            journalShelfComboBoxLibrarian.setItems(shelves);
+            journalPositionComboBoxLibrarian.setItems(positions);
 
-        journalAuthorComboBoxLibrarian1.setItems(authors);
-        journalAuthorComboBoxLibrarian2.setItems(authors);
-        journalAuthorComboBoxLibrarian3.setItems(authors);
+            journalKeywordComboBoxLibrarian1.setItems(keywords);
+            journalKeywordComboBoxLibrarian2.setItems(keywords);
+            journalKeywordComboBoxLibrarian3.setItems(keywords);
+
+            journalAuthorComboBoxLibrarian1.setItems(authors);
+            journalAuthorComboBoxLibrarian2.setItems(authors);
+            journalAuthorComboBoxLibrarian3.setItems(authors);
+
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
     }
 
     /**
      * Collects all keywords selected in the keyword combo boxes.
      */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new ArrayList<>();
         addIfNotEmpty(journalKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(journalKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
@@ -438,7 +409,7 @@ public class ModifyJournalLibrarianController {
     /**
      * Collects the language selected in the language combo box.
      */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = journalLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
@@ -449,7 +420,7 @@ public class ModifyJournalLibrarianController {
     /**
      * Collects all authors selected in the author combo boxes.
      */
-    private List<Creator> collectAuthors() {
+    private List<Creator> collectAuthors(CreatorManagementService creatorManagementService) {
         List<Creator> authors = new ArrayList<>();
         addIfNotEmpty(journalAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
         addIfNotEmpty(journalAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
@@ -460,7 +431,7 @@ public class ModifyJournalLibrarianController {
     /**
      * Collects the location from the location combo boxes.
      */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = journalFloorComboBoxLibrarian.getValue();
         String section = journalSectionComboBoxLibrarian.getValue();
         String shelf = journalShelfComboBoxLibrarian.getValue();

@@ -25,12 +25,7 @@ public class SignInStaffController {
     @FXML
     private TextField passwordField;
 
-    private AuthenticationService authService;
-
     public void initialize() {
-        // Initialize the authentication service
-        this.authService = new AuthenticationService();
-        
         // Hardwire test data for development
         prefillTestData();
     }
@@ -71,8 +66,8 @@ public class SignInStaffController {
             return;
         }
         
-        try {
-            // Use the authentication service
+        // Use try-with-resources for AuthenticationService
+        try (AuthenticationService authService = new AuthenticationService()) {
             AuthenticationResult result = authService.authenticate(username, password);
             
             if (result.isSuccess()) {
@@ -127,8 +122,8 @@ public class SignInStaffController {
             return;
         }
         
-        try {
-            // Use the authentication service
+        // Use try-with-resources for AuthenticationService
+        try (AuthenticationService authService = new AuthenticationService()) {
             AuthenticationResult result = authService.authenticate(username, password);
             
             if (result.isSuccess()) {

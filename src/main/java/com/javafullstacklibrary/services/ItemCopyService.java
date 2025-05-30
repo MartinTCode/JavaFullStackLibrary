@@ -11,16 +11,17 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public class ItemCopyService {
+public class ItemCopyService implements AutoCloseable {
     private final ItemCopyDAO itemCopyDAO;
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     
     /**
-     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     * Constructor that initializes the EntityManagerFactory and ItemCopyDAO.
      */
     public ItemCopyService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.itemCopyDAO = new ItemCopyDAO(em);
     }
     
@@ -131,5 +132,15 @@ public class ItemCopyService {
             return false; // Barcode already exists
         }
         return true; // Valid new barcode
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

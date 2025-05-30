@@ -13,14 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class AuthenticationService {
+public class AuthenticationService implements AutoCloseable {
     
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final LibraryUserDAO userDAO;
     
     public AuthenticationService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.userDAO = new LibraryUserDAO(em);
     }
     
@@ -319,6 +320,16 @@ public class AuthenticationService {
         
         public String getUserRole() {
             return user != null ? user.getUserRole() : null;
+        }
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
         }
     }
 }

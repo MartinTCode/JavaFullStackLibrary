@@ -42,9 +42,6 @@ public class SearchViewGuestController implements Initializable {
     @FXML
     private Button loadMoreButton;
     
-    // Service for querying items
-    private final ItemQueryService queryService = new ItemQueryService();
-    
     // Pagination parameters
     private static final int RESULTS_PER_PAGE = 5;
     private int currentPage = 0;
@@ -54,9 +51,6 @@ public class SearchViewGuestController implements Initializable {
     /**
      * Initializes the controller after the root element has been completely processed.
      * Retrieves the search query from the DataSingleton and sets it in the search field.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or null if not known.
-     * @param resources The resources used to localize the root object, or null if not specified.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,28 +104,29 @@ public class SearchViewGuestController implements Initializable {
         currentQuery = query;
         currentPage = 0;
         
-        // Query total result count
-        totalResults = queryService.countSearchResults(query);
-        setResultsCountLabel((int) totalResults);
-        
-        // Clear previous results
-        resultsContainer.getChildren().clear();
-        
-        // Perform search with pagination
-        loadSearchResults(query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
-        
-        // Determine if we need a "load more" button
-        loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
+        try (ItemQueryService queryService = new ItemQueryService()) {
+            // Query total result count
+            totalResults = queryService.countSearchResults(query);
+            setResultsCountLabel((int) totalResults);
+            
+            // Clear previous results
+            resultsContainer.getChildren().clear();
+            
+            // Perform search with pagination
+            loadSearchResults(queryService, query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
+            
+            // Determine if we need a "load more" button
+            loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
+        } catch (Exception e) {
+            System.err.println("Error during search: " + e.getMessage());
+            resultsCountLabel.setText("Search error occurred");
+        }
     }
 
     /**
      * Loads search results from the database and displays them.
-     * 
-     * @param query The search query
-     * @param offset The starting position for results
-     * @param limit Maximum number of results to show
      */
-    private void loadSearchResults(String query, int offset, int limit) {
+    private void loadSearchResults(ItemQueryService queryService, String query, int offset, int limit) {
         // Get search results from the service
         List<Item> items = queryService.searchItems(query, offset, limit);
         
@@ -150,8 +145,6 @@ public class SearchViewGuestController implements Initializable {
 
     /**
      * Updates the results count label with the number of found items
-     * 
-     * @param count The number of items found
      */
     private void setResultsCountLabel(int count) {
         String resultText;
@@ -174,12 +167,16 @@ public class SearchViewGuestController implements Initializable {
         System.out.println("Loading more results...");
         currentPage++;
         
-        int offset = currentPage * RESULTS_PER_PAGE;
-        loadSearchResults(currentQuery, offset, RESULTS_PER_PAGE);
-        
-        // Hide the button if we've loaded all results
-        if (offset + RESULTS_PER_PAGE >= totalResults) {
-            loadMoreButton.setVisible(false);
+        try (ItemQueryService queryService = new ItemQueryService()) {
+            int offset = currentPage * RESULTS_PER_PAGE;
+            loadSearchResults(queryService, currentQuery, offset, RESULTS_PER_PAGE);
+            
+            // Hide the button if we've loaded all results
+            if (offset + RESULTS_PER_PAGE >= totalResults) {
+                loadMoreButton.setVisible(false);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading more results: " + e.getMessage());
         }
     }
 
@@ -191,12 +188,5 @@ public class SearchViewGuestController implements Initializable {
     public void setSearchQuery(String query) {
         searchField.setText(query);
         clickedSearchButton();
-    }
-    
-    /**
-     * Cleanup method to release resources when the controller is no longer needed.
-     */
-    public void cleanup() {
-        queryService.close();
     }
 }

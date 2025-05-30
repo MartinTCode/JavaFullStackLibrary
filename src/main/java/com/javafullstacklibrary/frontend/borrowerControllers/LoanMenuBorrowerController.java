@@ -16,12 +16,16 @@ import com.javafullstacklibrary.utils.PendingTransactionManager; // Manage pendi
 
 public class LoanMenuBorrowerController {
 
-    private LoanValidationService loanValidationService;
+    @FXML
+    private Pane mainPane;
+
+    @FXML
+    private TextField barcodeFieldBorrower;
+
+    @FXML
+    private Label errorLabelBarcodeSearch;
 
     public void initialize() {        
-        // Initialize the loan validation service
-        this.loanValidationService = new LoanValidationService();
-        
         // Hardwire test data for development
         prefillTestData();
     }
@@ -40,16 +44,6 @@ public class LoanMenuBorrowerController {
         // X82DMJQ1
         barcodeFieldBorrower.setText("X82DMJQ1");
     }
-
-    @FXML
-    private Pane mainPane;
-
-    @FXML
-    private TextField barcodeFieldBorrower;
-
-    @FXML
-    private Label errorLabelBarcodeSearch;
-
 
     @FXML
     private void clickedHomeMenuBorrower() {
@@ -101,32 +95,37 @@ public class LoanMenuBorrowerController {
         // Clear previous error message
         clearErrorMessage();
         
-        // Validate barcode for loan eligibility
-        ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
-        
-        if (!result.isSuccess()) {
-            showErrorMessage(result.getMessage());
-            return;
+        try (LoanValidationService loanValidationService = new LoanValidationService()) {
+            // Validate barcode for loan eligibility
+            ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
+            
+            if (!result.isSuccess()) {
+                showErrorMessage(result.getMessage());
+                return;
+            }
+            
+            ItemCopy itemCopy = result.getData();
+            
+            // Validate user session
+            if (UserSession.getCurrentUser() == null) {
+                showErrorMessage("User session error. Please log in again.");
+                return;
+            }
+            
+            // Check if user can loan more items
+            if (!loanValidationService.canLoanMore(UserSession.getCurrentUser())) {
+                showErrorMessage("You have reached the maximum number of loans allowed for your user type.");
+                return;
+            }
+            
+            // Add item to loan list and navigate to loan view
+            PendingTransactionManager.getInstance().addItemToPending(itemCopy);
+            
+            MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
+        } catch (Exception e) {
+            System.err.println("Error processing loan: " + e.getMessage());
+            showErrorMessage("Error processing loan request");
         }
-        
-        ItemCopy itemCopy = result.getData();
-        
-        // Validate user session
-        if (UserSession.getCurrentUser() == null) {
-            showErrorMessage("User session error. Please log in again.");
-            return;
-        }
-        
-        // Check if user can loan more items
-        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser())) {
-            showErrorMessage("You have reached the maximum number of loans allowed for your user type.");
-            return;
-        }
-        
-        // Add item to loan list and navigate to loan view
-        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
-        
-        MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
     }
     
     private void clearErrorMessage() {

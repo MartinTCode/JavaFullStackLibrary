@@ -25,12 +25,8 @@ import java.util.Optional;
 
 // MenuNavigationHelper keyword: ManageCopies via buttonClickLibrarian(Pane mainPane, String buttonAction, Item item)
 
-public class ManageCopiesLibrarianController  {
+public class ManageCopiesLibrarianController {
     private final Item itemToModify;
-
-
-    // Service for managing item copies
-    ItemCopyService itemCopyService = new ItemCopyService();
 
     // Main container
     @FXML
@@ -151,8 +147,8 @@ public class ManageCopiesLibrarianController  {
         // Get the reference status from the checkbox
         boolean isReference = checkBoxIsReference.isSelected();
         
-        if (itemCopyService.validateNewBarcode(barcode)) {
-            try {
+        try (ItemCopyService itemCopyService = new ItemCopyService()) {
+            if (itemCopyService.validateNewBarcode(barcode)) {
                 itemCopyService.createItemCopy(itemToModify, barcode, isReference);
                 setStatusLabel("Item copy added successfully.");
                 barcodeField.clear();
@@ -162,12 +158,11 @@ public class ManageCopiesLibrarianController  {
                 
                 // Refresh the item copies display
                 loadItemCopies();
-
-            } catch (Exception e) {
-                setStatusLabel("Error adding item copy: " + e.getMessage());
+            } else {
+                setStatusLabel("Invalid barcode. Please try again.");
             }
-        } else {
-            setStatusLabel("Invalid barcode. Please try again.");
+        } catch (Exception e) {
+            setStatusLabel("Error adding item copy: " + e.getMessage());
         }
     }
 
@@ -181,7 +176,7 @@ public class ManageCopiesLibrarianController  {
             return;
         }
         
-        try {
+        try (ItemCopyService itemCopyService = new ItemCopyService()) {
             List<ItemCopy> itemCopies = itemCopyService.findByItem(itemToModify);
             
             if (itemCopies.isEmpty()) {
@@ -190,7 +185,7 @@ public class ManageCopiesLibrarianController  {
                 ItemCopyContainer.getChildren().add(noItemsLabel);
             } else {
                 for (ItemCopy itemCopy : itemCopies) {
-                    addItemCopyToContainer(itemCopy);
+                    addItemCopyToContainer(itemCopy, itemCopyService);
                 }
             }
         } catch (Exception e) {
@@ -201,7 +196,7 @@ public class ManageCopiesLibrarianController  {
     /**
      * Adds an item copy to the container for display
      */
-    private void addItemCopyToContainer(ItemCopy itemCopy) {
+    private void addItemCopyToContainer(ItemCopy itemCopy, ItemCopyService itemCopyService) {
         HBox itemContainer = new HBox();
         itemContainer.getStyleClass().add("item-copy-container");
         itemContainer.setSpacing(10.0);
@@ -241,9 +236,9 @@ public class ManageCopiesLibrarianController  {
         deleteButton.setOnAction(e -> {
             // Show confirmation dialog before deleting
             if (showDeleteConfirmationDialog(itemCopy.getBarcode())) {
-                try {
-                    if (itemCopyService.isAvailable(itemCopy.getId())) {
-                        itemCopyService.deleteItemCopy(itemCopy.getId());
+                try (ItemCopyService deleteService = new ItemCopyService()) {
+                    if (deleteService.isAvailable(itemCopy.getId())) {
+                        deleteService.deleteItemCopy(itemCopy.getId());
                         ItemCopyContainer.getChildren().remove(itemContainer);
                         setStatusLabel("Item copy deleted successfully.");
                     } else {

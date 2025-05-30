@@ -20,18 +20,19 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class ItemManagementService {
+public class ItemManagementService implements AutoCloseable {
 
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final ItemDAO itemDAO;
     
 
     /**
-     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     * Constructor that initializes the EntityManagerFactory and ItemDAO.
      */
     public ItemManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.itemDAO = new ItemDAO(em);
     }
 
@@ -191,9 +192,13 @@ public class ItemManagementService {
     }
 
     /**
-     * Closes the EntityManagerFactory.
+     * Closes the EntityManagerFactory and EntityManager.
      */
+    @Override
     public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
         if (emf != null && emf.isOpen()) {
             emf.close();
         }

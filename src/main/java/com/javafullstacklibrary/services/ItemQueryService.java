@@ -11,8 +11,9 @@ import java.util.List;
 /**
  * Service class for querying items from the database.
  */
-public class ItemQueryService {
+public class ItemQueryService implements AutoCloseable {
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final ItemDAO itemDAO;
     
     /**
@@ -20,7 +21,7 @@ public class ItemQueryService {
      */
     public ItemQueryService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.itemDAO = new ItemDAO(em);
     }
     
@@ -58,7 +59,11 @@ public class ItemQueryService {
     /**
      * Closes resources held by this service.
      */
+    @Override
     public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
         if (emf != null && emf.isOpen()) {
             emf.close();
         }

@@ -25,12 +25,7 @@ public class SignInUserController {
     @FXML
     private TextField passwordField; // PasswordField for security
 
-    private AuthenticationService authService;
-
     public void initialize() {
-        // Initialize the authentication service
-        this.authService = new AuthenticationService();
-        
         // Hardwire test data for development
         prefillTestData();
     }
@@ -66,8 +61,8 @@ public class SignInUserController {
             return;
         }
         
-        try {
-            // Use the authentication service
+        // Use try-with-resources for AuthenticationService
+        try (AuthenticationService authService = new AuthenticationService()) {
             AuthenticationResult result = authService.authenticate(loginInput, password);
             
             if (result.isSuccess()) {

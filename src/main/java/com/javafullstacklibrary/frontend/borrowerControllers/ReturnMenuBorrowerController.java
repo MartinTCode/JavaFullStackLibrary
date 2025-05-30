@@ -14,8 +14,6 @@ import com.javafullstacklibrary.utils.UserSession;
 
 public class ReturnMenuBorrowerController {
 
-    private ReturnValidationService returnValidationService;
-
     @FXML
     private Pane mainPane;
 
@@ -26,8 +24,6 @@ public class ReturnMenuBorrowerController {
     private Label errorLabelBarcodeSearch;
 
     public void initialize() {
-        this.returnValidationService = new ReturnValidationService();
-        
         // Prefill test data for development
         prefillTestData();
     }
@@ -83,27 +79,32 @@ public class ReturnMenuBorrowerController {
         // Clear previous error message
         clearErrorMessage();
         
-        // Use the validation service
-        ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
-            barcode, UserSession.getCurrentUser()
-        );
-        
-        if (!result.isSuccess()) {
-            showErrorMessage(result.getMessage());
-            return;
-        }
-        
-        ItemCopy itemCopy = result.getData();
-        
-        // Check if the item is already in the pending returns
-        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
-            showErrorMessage("Item is already in your return list");
-            return;
-        }
+        // Use the validation service with try-with-resources
+        try (ReturnValidationService returnValidationService = new ReturnValidationService()) {
+            ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
+                barcode, UserSession.getCurrentUser()
+            );
+            
+            if (!result.isSuccess()) {
+                showErrorMessage(result.getMessage());
+                return;
+            }
+            
+            ItemCopy itemCopy = result.getData();
+            
+            // Check if the item is already in the pending returns
+            if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
+                showErrorMessage("Item is already in your return list");
+                return;
+            }
 
-        // Add item to return list and navigate to return view
-        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
-        MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnView");
+            // Add item to return list and navigate to return view
+            PendingTransactionManager.getInstance().addItemToPending(itemCopy);
+            MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnView");
+        } catch (Exception e) {
+            System.err.println("Error validating return: " + e.getMessage());
+            showErrorMessage("Error processing return request");
+        }
     }
     
     private void clearErrorMessage() {

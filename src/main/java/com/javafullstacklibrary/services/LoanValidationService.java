@@ -14,15 +14,16 @@ import jakarta.persistence.Persistence;
 
 import java.util.Optional;
 
-public class LoanValidationService {
+public class LoanValidationService implements AutoCloseable {
     
     private final ItemCopyDAO itemCopyDAO;
     private final LoanDAO loanDAO;
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     
     public LoanValidationService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.itemCopyDAO = new ItemCopyDAO(em);
         this.loanDAO = new LoanDAO(em);
     }
@@ -93,5 +94,15 @@ public class LoanValidationService {
         
         // If all validations pass, return the item copy
         return ValidationResult.success(itemCopy);
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

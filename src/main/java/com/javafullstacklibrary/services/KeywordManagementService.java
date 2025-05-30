@@ -11,17 +11,18 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class KeywordManagementService {
+public class KeywordManagementService implements AutoCloseable {
 
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final KeywordDAO keywordDAO;
 
     /**
-     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     * Constructor that initializes the EntityManagerFactory and KeywordDAO.
      */
     public KeywordManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.keywordDAO = new KeywordDAO(em);
     }
 
@@ -96,5 +97,15 @@ public class KeywordManagementService {
             return null; // Return null if not found, could add creation logic here if needed
         }
         return keyword;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

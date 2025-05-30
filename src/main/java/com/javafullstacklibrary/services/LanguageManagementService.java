@@ -11,17 +11,18 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class LanguageManagementService {
+public class LanguageManagementService implements AutoCloseable {
 
     private final LanguageDAO languageDAO;
     private final EntityManagerFactory emf;
+    private final EntityManager em;
 
     /**
      * Constructor that initializes the EntityManagerFactory and LanguageDAO.
      */
     public LanguageManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.languageDAO = new LanguageDAO(em);
     }
 
@@ -96,5 +97,15 @@ public class LanguageManagementService {
             return null; // Return null if not found, could add creation logic here if needed
         }
         return language;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

@@ -11,8 +11,9 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class GenreManagementService {
+public class GenreManagementService implements AutoCloseable {
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final GenreDAO genreDAO;
     
 
@@ -21,7 +22,7 @@ public class GenreManagementService {
      */
     public GenreManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.genreDAO = new GenreDAO(em);
     }
 
@@ -98,5 +99,15 @@ public class GenreManagementService {
             return null; // Return null if the genre is not found, could add creation logic here if needed
         }
         return genre;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

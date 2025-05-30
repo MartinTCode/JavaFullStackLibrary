@@ -11,18 +11,19 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class ActorManagementService {
+public class ActorManagementService implements AutoCloseable {
 
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final ActorDAO actorDAO;
     
 
     /**
-     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     * Constructor that initializes the EntityManagerFactory and ActorDAO.
      */
     public ActorManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.actorDAO = new ActorDAO(em);
     }
 
@@ -109,5 +110,15 @@ public class ActorManagementService {
             return null; // If the actor is not found, return null. Could add creation logic here if needed.
         }
         return actor;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

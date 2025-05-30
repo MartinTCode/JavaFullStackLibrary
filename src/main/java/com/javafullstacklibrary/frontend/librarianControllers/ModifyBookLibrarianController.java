@@ -15,7 +15,12 @@ import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.Keyword;
 import com.javafullstacklibrary.model.Language;
 import com.javafullstacklibrary.model.Location;
-import com.javafullstacklibrary.services.*; // Importing all services at once
+import com.javafullstacklibrary.services.CreatorManagementService;
+import com.javafullstacklibrary.services.GenreManagementService;
+import com.javafullstacklibrary.services.ItemManagementService;
+import com.javafullstacklibrary.services.KeywordManagementService;
+import com.javafullstacklibrary.services.LanguageManagementService;
+import com.javafullstacklibrary.services.LocationManagementService;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -31,7 +36,6 @@ import javafx.scene.control.Alert;
  */
 public class ModifyBookLibrarianController {
     private final Item itemToModify;
-
 
     @FXML
     private Pane mainPane;
@@ -98,14 +102,6 @@ public class ModifyBookLibrarianController {
 
     @FXML
     private Button saveChangesBookButtonLibrarian;
-
-    // --- Service declarations ---
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final GenreManagementService genreManagementService = new GenreManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
 
     //Constructor
     public ModifyBookLibrarianController(Item item) {
@@ -190,7 +186,13 @@ public class ModifyBookLibrarianController {
      */
     @FXML
     private void clickedSaveChangesBookButtonLibrarian(MouseEvent event) {
-        try {
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
+
             // Get text field values
             String title = bookTitleTextFieldLibrarian.getText();
             String isbn13 = bookIsbn13TextFieldLibrarian.getText();
@@ -198,11 +200,11 @@ public class ModifyBookLibrarianController {
             String publisher = bookPublisherTextFieldLibrarian.getText();
             
             // Convert Lists to Sets
-            Set<Creator> authors = new HashSet<>(collectAuthors());
-            Set<Genre> genres = new HashSet<>(collectGenres());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-            Language language = collectLanguage();
-            Location location = collectLocation();       
+            Set<Creator> authors = new HashSet<>(collectAuthors(creatorManagementService));
+            Set<Genre> genres = new HashSet<>(collectGenres(genreManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));     
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);       
 
             // Update existing book instead of creating new one
             if (itemToModify != null) {
@@ -290,7 +292,7 @@ public class ModifyBookLibrarianController {
 
         // Get user's response, proceed if OK is clicked
         if (confirmDialog.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
-            try {
+            try (ItemManagementService itemManagementService = new ItemManagementService()) {
                 // User clicked OK, proceed with deletion
                 itemManagementService.deleteItem(itemToModify);
 
@@ -432,46 +434,56 @@ public class ModifyBookLibrarianController {
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
+        try (GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
 
-        // Fetching data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> authors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
-        ObservableList<String> genres = genreManagementService.getAllStrings();
+            // Get location details from the service
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
 
-        // Populate location comboboxes
-        bookLanguageComboBoxLibrarian.setItems(languages);
-        bookFloorComboBoxLibrarian.setItems(floors);
-        bookSectionComboBoxLibrarian.setItems(sections);
-        bookShelfComboBoxLibrarian.setItems(shelves);
-        bookPositionComboBoxLibrarian.setItems(positions);
+            // Fetching data from services
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> authors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
+            ObservableList<String> genres = genreManagementService.getAllStrings();
 
-        // Populate author comboboxes
-        bookAuthorComboBoxLibrarian1.setItems(authors);
-        bookAuthorComboBoxLibrarian2.setItems(authors);
-        bookAuthorComboBoxLibrarian3.setItems(authors);
+            // Populate location comboboxes
+            bookLanguageComboBoxLibrarian.setItems(languages);
+            bookFloorComboBoxLibrarian.setItems(floors);
+            bookSectionComboBoxLibrarian.setItems(sections);
+            bookShelfComboBoxLibrarian.setItems(shelves);
+            bookPositionComboBoxLibrarian.setItems(positions);
 
-        // Populate genre comboboxes
-        bookGenreComboBoxLibrarian1.setItems(genres);
-        bookGenreComboBoxLibrarian2.setItems(genres);
-        bookGenreComboBoxLibrarian3.setItems(genres);
+            // Populate author comboboxes
+            bookAuthorComboBoxLibrarian1.setItems(authors);
+            bookAuthorComboBoxLibrarian2.setItems(authors);
+            bookAuthorComboBoxLibrarian3.setItems(authors);
 
-        // Populate keyword comboboxes
-        bookKeywordComboBoxLibrarian1.setItems(keywords);
-        bookKeywordComboBoxLibrarian2.setItems(keywords);
-        bookKeywordComboBoxLibrarian3.setItems(keywords);
+            // Populate genre comboboxes
+            bookGenreComboBoxLibrarian1.setItems(genres);
+            bookGenreComboBoxLibrarian2.setItems(genres);
+            bookGenreComboBoxLibrarian3.setItems(genres);
+
+            // Populate keyword comboboxes
+            bookKeywordComboBoxLibrarian1.setItems(keywords);
+            bookKeywordComboBoxLibrarian2.setItems(keywords);
+            bookKeywordComboBoxLibrarian3.setItems(keywords);
+
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
     }
 
     /**
      * Collects all genres selected in the genre combo boxes.
      */
-    private List<Genre> collectGenres() {
+    private List<Genre> collectGenres(GenreManagementService genreManagementService) {
         List<Genre> genres = new ArrayList<>();
         addIfNotEmpty(bookGenreComboBoxLibrarian1.getValue(), genres, genreManagementService::findByName);
         addIfNotEmpty(bookGenreComboBoxLibrarian2.getValue(), genres, genreManagementService::findByName);
@@ -482,7 +494,7 @@ public class ModifyBookLibrarianController {
     /**
      * Collects all keywords selected in the keyword combo boxes.
      */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new ArrayList<>();
         addIfNotEmpty(bookKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(bookKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
@@ -493,7 +505,7 @@ public class ModifyBookLibrarianController {
     /**
      * Collects the language selected in the language combo box.
      */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = bookLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
@@ -504,7 +516,7 @@ public class ModifyBookLibrarianController {
     /**
      * Collects all authors selected in the author combo boxes.
      */
-    private List<Creator> collectAuthors() {
+    private List<Creator> collectAuthors(CreatorManagementService creatorManagementService) {
         List<Creator> authors = new ArrayList<>();
         addIfNotEmpty(bookAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
         addIfNotEmpty(bookAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
@@ -515,7 +527,7 @@ public class ModifyBookLibrarianController {
     /**
      * Collects the location from the location combo boxes.
      */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = bookFloorComboBoxLibrarian.getValue();
         String section = bookSectionComboBoxLibrarian.getValue();
         String shelf = bookShelfComboBoxLibrarian.getValue();

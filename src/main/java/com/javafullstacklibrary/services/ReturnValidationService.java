@@ -16,15 +16,16 @@ import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ReturnValidationService {
+public class ReturnValidationService implements AutoCloseable {
     
     private final ItemCopyDAO itemCopyDAO;
     private final LoanDAO loanDAO;
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     
     public ReturnValidationService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.itemCopyDAO = new ItemCopyDAO(em);
         this.loanDAO = new LoanDAO(em);
     }
@@ -160,5 +161,15 @@ public class ReturnValidationService {
      */
     public void processReturn(ItemCopy itemCopy) {
         loanDAO.processReturn(itemCopy);
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

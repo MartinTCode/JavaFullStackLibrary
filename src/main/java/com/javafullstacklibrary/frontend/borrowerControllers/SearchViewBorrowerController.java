@@ -43,7 +43,6 @@ public class SearchViewBorrowerController implements Initializable {
     private Button loadMoreButton;
 
     // --- Real search state ---
-    private final ItemQueryService queryService = new ItemQueryService();
     private static final int RESULTS_PER_PAGE = 5;
     private int currentPage = 0;
     private String currentQuery = "";
@@ -110,28 +109,30 @@ public class SearchViewBorrowerController implements Initializable {
         currentQuery = query;
         currentPage = 0;
 
-        // Query total result count
-        totalResults = queryService.countSearchResults(query);
-        setResultsCountLabel((int) totalResults);
+        try (ItemQueryService queryService = new ItemQueryService()) {
+            // Query total result count
+            totalResults = queryService.countSearchResults(query);
+            setResultsCountLabel((int) totalResults);
 
-        // Clear previous results
-        resultsContainer.getChildren().clear();
+            // Clear previous results
+            resultsContainer.getChildren().clear();
 
-        // Perform search with pagination
-        loadSearchResults(query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
+            // Perform search with pagination
+            loadSearchResults(queryService, query, currentPage * RESULTS_PER_PAGE, RESULTS_PER_PAGE);
 
-        // Show/hide load more button
-        loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
+            // Show/hide load more button
+            loadMoreButton.setVisible(totalResults > RESULTS_PER_PAGE);
+        } catch (Exception e) {
+            System.err.println("Error during search: " + e.getMessage());
+            resultsCountLabel.setText("Search error occurred");
+        }
     }
 
     /**
      * Loads search results from the database and displays them in the results container.
      * This method handles pagination by accepting an offset and limit for the results.
-     * @param query
-     * @param offset
-     * @param limit
      */
-    private void loadSearchResults(String query, int offset, int limit) {
+    private void loadSearchResults(ItemQueryService queryService, String query, int offset, int limit) {
         List<Item> items = queryService.searchItems(query, offset, limit);
 
         for (Item item : items) {
@@ -147,7 +148,6 @@ public class SearchViewBorrowerController implements Initializable {
 
     /**
      * Sets the results count label based on the number of search results found.
-     * @param count
      */
     private void setResultsCountLabel(int count) {
         String resultText;
@@ -170,21 +170,20 @@ public class SearchViewBorrowerController implements Initializable {
         System.out.println("Loading more results...");
         currentPage++;
 
-        int offset = currentPage * RESULTS_PER_PAGE;
-        loadSearchResults(currentQuery, offset, RESULTS_PER_PAGE);
+        try (ItemQueryService queryService = new ItemQueryService()) {
+            int offset = currentPage * RESULTS_PER_PAGE;
+            loadSearchResults(queryService, currentQuery, offset, RESULTS_PER_PAGE);
 
-        if (offset + RESULTS_PER_PAGE >= totalResults) {
-            loadMoreButton.setVisible(false);
+            if (offset + RESULTS_PER_PAGE >= totalResults) {
+                loadMoreButton.setVisible(false);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading more results: " + e.getMessage());
         }
     }
 
     public void setSearchQuery(String query) {
         searchField.setText(query);
         clickedSearchButtonBorrower();
-    }
-
-    // Optionally, add a cleanup method to close the service
-    public void cleanup() {
-        queryService.close();
     }
 }

@@ -59,15 +59,6 @@ public class CreateDvdLibrarianController {
     @FXML private ComboBox<String> dvdShelfComboBoxLibrarian;
     @FXML private ComboBox<String> dvdPositionComboBoxLibrarian;
 
-    // Services for managing data
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final GenreManagementService genreManagementService = new GenreManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
-    private final ActorManagementService actorManagementService = new ActorManagementService();
-
     /**
      * This method is called when the controller is initialized.
      * It calls the applicable methods to initialize the view.
@@ -81,41 +72,52 @@ public class CreateDvdLibrarianController {
      * This method is called during initialization of the controller.
      */
     private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService();
+             ActorManagementService actorManagementService = new ActorManagementService()) {
 
-        // Fetching data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> actors = actorManagementService.getAllActorsFullNames();
-        ObservableList<String> directors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
-        ObservableList<String> genres = genreManagementService.getAllStrings();
+            // Get location details from the service
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
 
-        dvdLanguageComboBoxLibrarian.setItems(languages);
-        dvdFloorComboBoxLibrarian.setItems(floors);
-        dvdSectionComboBoxLibrarian.setItems(sections);
-        dvdShelfComboBoxLibrarian.setItems(shelves);
-        dvdPositionComboBoxLibrarian.setItems(positions);
+            // Fetching data from services
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> actors = actorManagementService.getAllActorsFullNames();
+            ObservableList<String> directors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
+            ObservableList<String> genres = genreManagementService.getAllStrings();
 
-        dvdActorComboBox1.setItems(actors);
-        dvdActorComboBox2.setItems(actors);
-        dvdActorComboBox3.setItems(actors);
+            dvdLanguageComboBoxLibrarian.setItems(languages);
+            dvdFloorComboBoxLibrarian.setItems(floors);
+            dvdSectionComboBoxLibrarian.setItems(sections);
+            dvdShelfComboBoxLibrarian.setItems(shelves);
+            dvdPositionComboBoxLibrarian.setItems(positions);
 
-        dvdDirectorComboBox1.setItems(directors);
-        dvdDirectorComboBox2.setItems(directors);
-        dvdDirectorComboBox3.setItems(directors);
+            dvdActorComboBox1.setItems(actors);
+            dvdActorComboBox2.setItems(actors);
+            dvdActorComboBox3.setItems(actors);
 
-        dvdGenreComboBox1.setItems(genres);
-        dvdGenreComboBox2.setItems(genres);
-        dvdGenreComboBox3.setItems(genres);
+            dvdDirectorComboBox1.setItems(directors);
+            dvdDirectorComboBox2.setItems(directors);
+            dvdDirectorComboBox3.setItems(directors);
 
-        dvdKeywordComboBox1.setItems(keywords);
-        dvdKeywordComboBox2.setItems(keywords);
-        dvdKeywordComboBox3.setItems(keywords);
+            dvdGenreComboBox1.setItems(genres);
+            dvdGenreComboBox2.setItems(genres);
+            dvdGenreComboBox3.setItems(genres);
+
+            dvdKeywordComboBox1.setItems(keywords);
+            dvdKeywordComboBox2.setItems(keywords);
+            dvdKeywordComboBox3.setItems(keywords);
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
     }
 
     // --- Top Menu Navigation Handlers ---
@@ -165,7 +167,14 @@ public class CreateDvdLibrarianController {
      */
     @FXML
     private void clickedSaveNewDvdButtonLibrarian(MouseEvent event) {
-        try {
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService();
+             ActorManagementService actorManagementService = new ActorManagementService()) {
+
             // Get text field values
             String title = dvdTitleTextFieldLibrarian.getText();
             String imdbc = dvdImdbcTextFieldLibrarian.getText();
@@ -181,12 +190,12 @@ public class CreateDvdLibrarianController {
 
             
             // Convert Lists to Sets
-            Set<Creator> directors = new HashSet<>(collectDirectors());
-            Set<Actor> actors = new HashSet<>(collectActors());
-            Set<Genre> genres = new HashSet<>(collectGenres());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords());     
-            Language language = collectLanguage();
-            Location location = collectLocation();       
+            Set<Creator> directors = new HashSet<>(collectDirectors(creatorManagementService));
+            Set<Actor> actors = new HashSet<>(collectActors(actorManagementService));
+            Set<Genre> genres = new HashSet<>(collectGenres(genreManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));     
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);       
 
             // Create a new DVD
             Item newDvd = itemManagementService.createItem(
@@ -231,7 +240,7 @@ public class CreateDvdLibrarianController {
      * Collects all selected genres from the genre combo boxes.
      * @return List of Genre objects corresponding to the selected values
      */
-    private List<Genre> collectGenres() {
+    private List<Genre> collectGenres(GenreManagementService genreManagementService) {
         List<Genre> genres = new java.util.ArrayList<>();
         addIfNotEmpty(dvdGenreComboBox1.getValue(), genres, genreManagementService::findByName);
         addIfNotEmpty(dvdGenreComboBox2.getValue(), genres, genreManagementService::findByName);
@@ -243,7 +252,7 @@ public class CreateDvdLibrarianController {
      * Collects all selected keywords from the keyword combo boxes.
      * @return List of Keyword objects corresponding to the selected values
      */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new java.util.ArrayList<>();
         addIfNotEmpty(dvdKeywordComboBox1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(dvdKeywordComboBox2.getValue(), keywords, keywordManagementService::findByName);
@@ -256,7 +265,7 @@ public class CreateDvdLibrarianController {
      * @return Language object corresponding to the selected value
      * @throws IllegalArgumentException if no language is selected
      */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = dvdLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
@@ -270,7 +279,7 @@ public class CreateDvdLibrarianController {
      * Collects all selected directors from the director combo boxes.
      * @return List of Creator objects corresponding to the selected values
      */
-    private List<Creator> collectDirectors() {
+    private List<Creator> collectDirectors(CreatorManagementService creatorManagementService) {
         List<Creator> directors = new java.util.ArrayList<>();
         addIfNotEmpty(dvdDirectorComboBox1.getValue(), directors, creatorManagementService::findByFullName);
         addIfNotEmpty(dvdDirectorComboBox2.getValue(), directors, creatorManagementService::findByFullName);
@@ -282,7 +291,7 @@ public class CreateDvdLibrarianController {
      * Collects all selected actors from the actor combo boxes.
      * @return List of Actor objects corresponding to the selected values
      */
-    private List<Actor> collectActors() {
+    private List<Actor> collectActors(ActorManagementService actorManagementService) {
         List<Actor> actors = new java.util.ArrayList<>();
         addIfNotEmpty(dvdActorComboBox1.getValue(), actors, actorManagementService::findByFullName);
         addIfNotEmpty(dvdActorComboBox2.getValue(), actors, actorManagementService::findByFullName);
@@ -295,7 +304,7 @@ public class CreateDvdLibrarianController {
      * Creates a new location if the combination doesn't exist.
      * @return Location object representing the selected floor, section, shelf, and position
      */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = dvdFloorComboBoxLibrarian.getValue();
         String section = dvdSectionComboBoxLibrarian.getValue();
         String shelf = dvdShelfComboBoxLibrarian.getValue();

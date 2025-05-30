@@ -112,15 +112,6 @@ public class ModifyDvdLibrarianController {
     @FXML
     private Button saveChangesDvdButtonLibrarian;
 
-    // --- Service declarations ---
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final GenreManagementService genreManagementService = new GenreManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
-    private final ActorManagementService actorManagementService = new ActorManagementService();
-
     // Constructor to initialize the controller with the item to modify
     public ModifyDvdLibrarianController(Item item) {
         this.itemToModify = item;
@@ -205,31 +196,33 @@ public class ModifyDvdLibrarianController {
      */
     @FXML
     private void clickedSaveChangesDvdButtonLibrarian(MouseEvent event) {
-        try {
-            // Get text field values
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService();
+             ActorManagementService actorManagementService = new ActorManagementService()) {
+
             String title = dvdTitleTextFieldLibrarian.getText();
             String imdbc = dvdImdbcTextFieldLibrarian.getText();
             String publisher = dvdPublisherTextFieldLibrarian.getText();
-            String countryOfProduction = dvdCountryTextFieldLibrarian.getText();
+            String country = dvdCountryTextFieldLibrarian.getText();
 
-            // Age limit handling
             String ageLimitText = dvdAgeLimitTextFieldLibrarian.getText();
-            Short ageLimit = null; // Default to null if not provided
+            Short ageLimit = null;
             if (ageLimitText != null && !ageLimitText.isEmpty()) {
                 ageLimit = Short.parseShort(ageLimitText);
             }
-            
-            // Convert Lists to Sets
-            Set<Creator> directors = new HashSet<>(collectDirectors());
-            Set<Genre> genres = new HashSet<>(collectGenres());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords()); 
-            Set<Actor> actors = new HashSet<>(collectActors());    
-            Language language = collectLanguage();
-            Location location = collectLocation();       
 
-            // Update existing DVD instead of creating new one
+            Set<Creator> directors = new HashSet<>(collectDirectors(creatorManagementService));
+            Set<Actor> actors = new HashSet<>(collectActors(actorManagementService));
+            Set<Genre> genres = new HashSet<>(collectGenres(genreManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);
+
             if (itemToModify != null) {
-                // Update the existing item's fields
                 itemToModify.setTitle(title);
                 itemToModify.setPublisher(publisher);
                 itemToModify.setLocation(location);
@@ -239,37 +232,21 @@ public class ModifyDvdLibrarianController {
                 itemToModify.setGenres(genres);
                 itemToModify.setActors(actors);
 
-                // If it's a DVD, update specific fields
                 if (itemToModify instanceof DVD dvd) {
                     dvd.setIMDBC(imdbc);
                     dvd.setAgeLimit(ageLimit);
-                    dvd.setCountryOfProduction(countryOfProduction);
+                    dvd.setCountryOfProduction(country);
                 }
 
-                // Update item in database
                 itemManagementService.updateItem(itemToModify);
             } else {
-                // Create new DVD if itemToModify is null
                 Item newDvd = itemManagementService.createItem(
-                    "dvd",
-                    location,
-                    language,
-                    keywords,
-                    directors,
-                    actors,
-                    genres,
-                    imdbc,
-                    null, // identifier2 not applicable for DVDs
-                    title,
-                    publisher,
-                    ageLimit,
-                    countryOfProduction
+                    "dvd", location, language, keywords, directors, actors, genres,
+                    imdbc, null, title, publisher, ageLimit, country
                 );
-                // Save new item in database
                 itemManagementService.addItem(newDvd);
             }
 
-            // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(itemToModify != null ? "DVD Updated" : "DVD Created");
@@ -277,11 +254,9 @@ public class ModifyDvdLibrarianController {
                                (itemToModify != null ? "updated" : "created") + ".");
             alert.showAndWait();
 
-            // Navigate back to manage library view
             MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
         } catch (Exception e) {
-            // Show error message if something goes wrong
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(itemToModify != null ? "Failed to Update DVD" : "Failed to Create DVD");
@@ -293,7 +268,6 @@ public class ModifyDvdLibrarianController {
     @FXML 
     private void clickedDeleteDvdButtonLibrarian(MouseEvent event) {
         if (itemToModify == null) {
-            // Can't delete an item that doesn't exist yet
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cannot Delete");
             alert.setHeaderText("No DVD Selected");
@@ -302,20 +276,16 @@ public class ModifyDvdLibrarianController {
             return;
         }
 
-        // Show confirmation dialog
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Deletion");
         confirmDialog.setHeaderText("Delete DVD");
         confirmDialog.setContentText("Are you sure you want to delete the DVD \"" + 
                            itemToModify.getTitle() + "\"? This action cannot be undone.");
 
-        // Get user's response, proceed if OK is clicked
         if (confirmDialog.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
-            try {
-                // User clicked OK, proceed with deletion
+            try (ItemManagementService itemManagementService = new ItemManagementService()) {
                 itemManagementService.deleteItem(itemToModify);
 
-                // Show success message
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Success");
                 successAlert.setHeaderText("DVD Deleted");
@@ -323,11 +293,9 @@ public class ModifyDvdLibrarianController {
                                      "\" has been successfully deleted.");
                 successAlert.showAndWait();
 
-                // Navigate back to manage library view
                 MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
             } catch (Exception e) {
-                // Show error message if deletion fails
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Error");
                 errorAlert.setHeaderText("Failed to Delete DVD");
@@ -452,52 +420,56 @@ public class ModifyDvdLibrarianController {
      * This method is called from initialize().
      */
     private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             GenreManagementService genreManagementService = new GenreManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService();
+             ActorManagementService actorManagementService = new ActorManagementService()) {
 
-        // Fetching data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> actors = actorManagementService.getAllActorsFullNames();
-        ObservableList<String> directors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
-        ObservableList<String> genres = genreManagementService.getAllStrings();
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
 
-        // Populate location comboboxes
-        dvdLanguageComboBoxLibrarian.setItems(languages);
-        dvdFloorComboBoxLibrarian.setItems(floors);
-        dvdSectionComboBoxLibrarian.setItems(sections);
-        dvdShelfComboBoxLibrarian.setItems(shelves);
-        dvdPositionComboBoxLibrarian.setItems(positions);
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> actors = actorManagementService.getAllActorsFullNames();
+            ObservableList<String> directors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
+            ObservableList<String> genres = genreManagementService.getAllStrings();
 
-        // Populate actor comboboxes
-        dvdActorComboBox1.setItems(actors);
-        dvdActorComboBox2.setItems(actors);
-        dvdActorComboBox3.setItems(actors);
+            // Set items for combo boxes
+            dvdLanguageComboBoxLibrarian.setItems(languages);
+            dvdFloorComboBoxLibrarian.setItems(floors);
+            dvdSectionComboBoxLibrarian.setItems(sections);
+            dvdShelfComboBoxLibrarian.setItems(shelves);
+            dvdPositionComboBoxLibrarian.setItems(positions);
 
-        // Populate director comboboxes
-        dvdDirectorComboBox1.setItems(directors);
-        dvdDirectorComboBox2.setItems(directors);
-        dvdDirectorComboBox3.setItems(directors);
+            dvdActorComboBox1.setItems(actors);
+            dvdActorComboBox2.setItems(actors);
+            dvdActorComboBox3.setItems(actors);
 
-        // Populate genre comboboxes
-        dvdGenreComboBox1.setItems(genres);
-        dvdGenreComboBox2.setItems(genres);
-        dvdGenreComboBox3.setItems(genres);
+            dvdDirectorComboBox1.setItems(directors);
+            dvdDirectorComboBox2.setItems(directors);
+            dvdDirectorComboBox3.setItems(directors);
 
-        // Populate keyword comboboxes
-        dvdKeywordComboBox1.setItems(keywords);
-        dvdKeywordComboBox2.setItems(keywords);
-        dvdKeywordComboBox3.setItems(keywords);
+            dvdGenreComboBox1.setItems(genres);
+            dvdGenreComboBox2.setItems(genres);
+            dvdGenreComboBox3.setItems(genres);
+
+            dvdKeywordComboBox1.setItems(keywords);
+            dvdKeywordComboBox2.setItems(keywords);
+            dvdKeywordComboBox3.setItems(keywords);
+
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
     }
 
-    /**
-     * Collects all genres selected in the genre combo boxes.
-     */
-    private List<Genre> collectGenres() {
+    // Helper methods now accept service parameters
+    private List<Genre> collectGenres(GenreManagementService genreManagementService) {
         List<Genre> genres = new ArrayList<>();
         addIfNotEmpty(dvdGenreComboBox1.getValue(), genres, genreManagementService::findByName);
         addIfNotEmpty(dvdGenreComboBox2.getValue(), genres, genreManagementService::findByName);
@@ -505,10 +477,7 @@ public class ModifyDvdLibrarianController {
         return genres;
     }
 
-    /**
-     * Collects all keywords selected in the keyword combo boxes.
-     */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new ArrayList<>();
         addIfNotEmpty(dvdKeywordComboBox1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(dvdKeywordComboBox2.getValue(), keywords, keywordManagementService::findByName);
@@ -516,10 +485,7 @@ public class ModifyDvdLibrarianController {
         return keywords;
     }
 
-    /**
-     * Collects the language selected in the language combo box.
-     */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = dvdLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
@@ -527,10 +493,7 @@ public class ModifyDvdLibrarianController {
         throw new IllegalArgumentException("Language cannot be null or empty");
     }
 
-    /**
-     * Collects all directors selected in the director combo boxes.
-     */
-    private List<Creator> collectDirectors() {
+    private List<Creator> collectDirectors(CreatorManagementService creatorManagementService) {
         List<Creator> directors = new ArrayList<>();
         addIfNotEmpty(dvdDirectorComboBox1.getValue(), directors, creatorManagementService::findByFullName);
         addIfNotEmpty(dvdDirectorComboBox2.getValue(), directors, creatorManagementService::findByFullName);
@@ -538,10 +501,7 @@ public class ModifyDvdLibrarianController {
         return directors;
     }
 
-    /**
-     * Collects all actors selected in the actor combo boxes.
-     */
-    private List<Actor> collectActors() {
+    private List<Actor> collectActors(ActorManagementService actorManagementService) {
         List<Actor> actors = new ArrayList<>();
         addIfNotEmpty(dvdActorComboBox1.getValue(), actors, actorManagementService::findByFullName);
         addIfNotEmpty(dvdActorComboBox2.getValue(), actors, actorManagementService::findByFullName);
@@ -549,10 +509,7 @@ public class ModifyDvdLibrarianController {
         return actors;
     }
 
-    /**
-     * Collects the location from the location combo boxes.
-     */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = dvdFloorComboBoxLibrarian.getValue();
         String section = dvdSectionComboBoxLibrarian.getValue();
         String shelf = dvdShelfComboBoxLibrarian.getValue();

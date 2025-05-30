@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -20,8 +19,6 @@ import com.javafullstacklibrary.utils.UserSession;
 import java.util.List;
 
 public class LoanViewBorrowerController {
-
-    private LoanValidationService loanValidationService;
 
     @FXML
     private Pane mainPane;
@@ -45,7 +42,6 @@ public class LoanViewBorrowerController {
     private Label statusLabel;
 
     public void initialize() {
-        this.loanValidationService = new LoanValidationService();
         loadPendingLoans();
     }
 
@@ -122,31 +118,36 @@ public class LoanViewBorrowerController {
             return;
         }
 
-        ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
-        
-        // Show error if validation for given barcode fails
-        if (!result.isSuccess()) {
-            showErrorMessage(result.getMessage());
-            return;
+        try (LoanValidationService loanValidationService = new LoanValidationService()) {
+            ValidationResult<ItemCopy> result = loanValidationService.validateBarcodeForLoan(barcode);
+            
+            // Show error if validation for given barcode fails
+            if (!result.isSuccess()) {
+                showErrorMessage(result.getMessage());
+                return;
+            }
+            
+            ItemCopy itemCopy = result.getData();
+            
+            // Check if the item is already in the pending loans
+            if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
+                showErrorMessage("Item is already in your loan list");
+                return;
+            }
+            
+            if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), PendingTransactionManager.getInstance())) {
+                showErrorMessage("You have reached the maximum number of pending loans allowed for your user type.");
+                return;
+            }
+            
+            PendingTransactionManager.getInstance().addItemToPending(itemCopy);
+            addItemToLoanContainer(itemCopy);
+            barcodeField.clear();
+            showSuccessMessage("Item added to loan list");
+        } catch (Exception e) {
+            System.err.println("Error processing loan: " + e.getMessage());
+            showErrorMessage("Error processing loan request");
         }
-        
-        ItemCopy itemCopy = result.getData();
-        
-        // Check if the item is already in the pending loans
-        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
-            showErrorMessage("Item is already in your loan list");
-            return;
-        }
-        
-        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), PendingTransactionManager.getInstance())) {
-            showErrorMessage("You have reached the maximum number of pending loans allowed for your user type.");
-            return;
-        }
-        
-        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
-        addItemToLoanContainer(itemCopy);
-        barcodeField.clear();
-        showSuccessMessage("Item added to loan list");
     }
 
     @FXML
@@ -209,11 +210,4 @@ public class LoanViewBorrowerController {
         statusLabel.setManaged(true);
     }
     
-    private void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }

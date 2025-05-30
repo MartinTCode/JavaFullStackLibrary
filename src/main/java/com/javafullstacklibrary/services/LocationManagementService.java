@@ -16,14 +16,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
-public class LocationManagementService {
+public class LocationManagementService implements AutoCloseable {
 
     private final LocationDAO locationDAO;
     private final EntityManagerFactory emf;
+    private final EntityManager em;
 
     public LocationManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.locationDAO = new LocationDAO(em);
     }
 
@@ -200,5 +201,15 @@ public class LocationManagementService {
             location = locationDAO.save(location);
         }
         return location;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }

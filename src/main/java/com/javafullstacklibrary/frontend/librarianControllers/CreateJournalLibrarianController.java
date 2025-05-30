@@ -49,13 +49,6 @@ public class CreateJournalLibrarianController {
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian2;
     @FXML private ComboBox<String> journalAuthorComboBoxLibrarian3;
 
-    // Services
-    private final ItemManagementService itemManagementService = new ItemManagementService();
-    private final CreatorManagementService creatorManagementService = new CreatorManagementService();
-    private final KeywordManagementService keywordManagementService = new KeywordManagementService();
-    private final LanguageManagementService languageManagementService = new LanguageManagementService();
-    private final LocationManagementService locationManagementService = new LocationManagementService();
-
     // --- Top Menu Navigation Handlers ---
 
     @FXML
@@ -105,49 +98,37 @@ public class CreateJournalLibrarianController {
      */
     @FXML
     private void clickedSaveNewJournalButtonLibrarian(MouseEvent event) {
-        try {
-            // Get text field values
+        try (ItemManagementService itemManagementService = new ItemManagementService();
+             CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
+
             String title = journalTitleTextFieldLibrarian.getText();
             String issn = journalIssnTextFieldLibrarian.getText();
             String publisher = journalPublisherTextFieldLibrarian.getText();
 
-            // Convert Lists to Sets
-            Set<Creator> authors = new HashSet<>(collectAuthors());
-            Set<Keyword> keywords = new HashSet<>(collectKeywords());
-            Language language = collectLanguage();
-            Location location = collectLocation();
+            Set<Creator> authors = new HashSet<>(collectAuthors(creatorManagementService));
+            Set<Keyword> keywords = new HashSet<>(collectKeywords(keywordManagementService));
+            Language language = collectLanguage(languageManagementService);
+            Location location = collectLocation(locationManagementService);
 
-            // Create a new journal
             Item newJournal = itemManagementService.createItem(
-                "journal",
-                location,
-                language,
-                keywords,
-                authors,
-                null, // actors not applicable for journals
-                null, // genres not applicable for journals
-                issn,
-                null, // secondary identifier not applicable for journals
-                title,
-                publisher,
-                null, // age limit not applicable for journals
-                null  // country of production not applicable for journals
+                "journal", location, language, keywords, authors, null, null,
+                issn, null, title, publisher, null, null
             );
-            // Save the new journal item to the database
+            
             itemManagementService.addItem(newJournal);
 
-            // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText("Journal Created");
             alert.setContentText("The journal \"" + title + "\" has been successfully created and saved.");
             alert.showAndWait();
 
-            // Navigate back to manage library view
             MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageLibrary");
 
         } catch (Exception e) {
-            // Show error message if something goes wrong
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to Create Journal");
@@ -166,10 +147,50 @@ public class CreateJournalLibrarianController {
     }
 
     /**
+     * Populates all combo boxes with data from the database.
+     * Called during controller initialization.
+     */
+    private void populateComboBoxes() {
+        try (CreatorManagementService creatorManagementService = new CreatorManagementService();
+             KeywordManagementService keywordManagementService = new KeywordManagementService();
+             LanguageManagementService languageManagementService = new LanguageManagementService();
+             LocationManagementService locationManagementService = new LocationManagementService()) {
+
+            Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
+            ObservableList<String> floors = locationDetails.get("floors");
+            ObservableList<String> sections = locationDetails.get("sections");
+            ObservableList<String> shelves = locationDetails.get("shelves");
+            ObservableList<String> positions = locationDetails.get("positions");
+
+            ObservableList<String> languages = languageManagementService.getAllStrings();
+            ObservableList<String> authors = creatorManagementService.getAllFullNames();
+            ObservableList<String> keywords = keywordManagementService.getAllStrings();
+
+            // Set items for each ComboBox
+            journalLanguageComboBoxLibrarian.setItems(languages);
+            journalFloorComboBoxLibrarian.setItems(floors);
+            journalSectionComboBoxLibrarian.setItems(sections);
+            journalShelfComboBoxLibrarian.setItems(shelves);
+            journalPositionComboBoxLibrarian.setItems(positions);
+
+            journalKeywordComboBoxLibrarian1.setItems(keywords);
+            journalKeywordComboBoxLibrarian2.setItems(keywords);
+            journalKeywordComboBoxLibrarian3.setItems(keywords);
+
+            journalAuthorComboBoxLibrarian1.setItems(authors);
+            journalAuthorComboBoxLibrarian2.setItems(authors);
+            journalAuthorComboBoxLibrarian3.setItems(authors);
+
+        } catch (Exception e) {
+            System.err.println("Error populating combo boxes: " + e.getMessage());
+        }
+    }
+
+    /**
      * Collects all keywords selected in the keyword combo boxes.
      * @return List of Keyword objects from the selected values
      */
-    private List<Keyword> collectKeywords() {
+    private List<Keyword> collectKeywords(KeywordManagementService keywordManagementService) {
         List<Keyword> keywords = new java.util.ArrayList<>();
         addIfNotEmpty(journalKeywordComboBoxLibrarian1.getValue(), keywords, keywordManagementService::findByName);
         addIfNotEmpty(journalKeywordComboBoxLibrarian2.getValue(), keywords, keywordManagementService::findByName);
@@ -182,12 +203,11 @@ public class CreateJournalLibrarianController {
      * @return Language object from the selected value
      * @throws IllegalArgumentException if no language is selected
      */
-    private Language collectLanguage() {
+    private Language collectLanguage(LanguageManagementService languageManagementService) {
         String languageName = journalLanguageComboBoxLibrarian.getValue();
         if (languageName != null && !languageName.isEmpty()) {
             return languageManagementService.findByName(languageName);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Language cannot be null or empty");
         }
     }
@@ -196,7 +216,7 @@ public class CreateJournalLibrarianController {
      * Collects all authors selected in the author combo boxes.
      * @return List of Creator objects from the selected values
      */
-    private List<Creator> collectAuthors() {
+    private List<Creator> collectAuthors(CreatorManagementService creatorManagementService) {
         List<Creator> authors = new java.util.ArrayList<>();
         addIfNotEmpty(journalAuthorComboBoxLibrarian1.getValue(), authors, creatorManagementService::findByFullName);
         addIfNotEmpty(journalAuthorComboBoxLibrarian2.getValue(), authors, creatorManagementService::findByFullName);
@@ -208,7 +228,7 @@ public class CreateJournalLibrarianController {
      * Collects location information from the location combo boxes.
      * @return Location object created from the selected values
      */
-    private Location collectLocation() {
+    private Location collectLocation(LocationManagementService locationManagementService) {
         String floor = journalFloorComboBoxLibrarian.getValue();
         String section = journalSectionComboBoxLibrarian.getValue();
         String shelf = journalShelfComboBoxLibrarian.getValue();
@@ -228,39 +248,5 @@ public class CreateJournalLibrarianController {
         if (value != null && !value.isEmpty()) {
             list.add(finder.apply(value));
         }
-    }
-
-    /**
-     * Populates all combo boxes with data from the database.
-     * Called during controller initialization.
-     */
-    private void populateComboBoxes() {
-        // Get location details from the service
-        Map<String, ObservableList<String>> locationDetails = locationManagementService.getLocationDetails();
-        ObservableList<String> floors = locationDetails.get("floors");
-        ObservableList<String> sections = locationDetails.get("sections");
-        ObservableList<String> shelves = locationDetails.get("shelves");
-        ObservableList<String> positions = locationDetails.get("positions");
-
-        // Fetch data from services
-        ObservableList<String> languages = languageManagementService.getAllStrings();
-        ObservableList<String> authors = creatorManagementService.getAllFullNames();
-        ObservableList<String> keywords = keywordManagementService.getAllStrings();
-
-        // Set items for each ComboBox
-        journalLanguageComboBoxLibrarian.setItems(languages);
-        journalFloorComboBoxLibrarian.setItems(floors);
-        journalSectionComboBoxLibrarian.setItems(sections);
-        journalShelfComboBoxLibrarian.setItems(shelves);
-        journalPositionComboBoxLibrarian.setItems(positions);
-
-        journalKeywordComboBoxLibrarian1.setItems(keywords);
-        journalKeywordComboBoxLibrarian2.setItems(keywords);
-        journalKeywordComboBoxLibrarian3.setItems(keywords);
-
-        journalAuthorComboBoxLibrarian1.setItems(authors);
-        journalAuthorComboBoxLibrarian2.setItems(authors);
-        journalAuthorComboBoxLibrarian3.setItems(authors);
-
     }
 }

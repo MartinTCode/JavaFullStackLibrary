@@ -1,7 +1,6 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -20,8 +19,6 @@ import com.javafullstacklibrary.utils.UserSession;
 import java.util.List;
 
 public class ReturnViewBorrowerController {
-
-    private ReturnValidationService returnValidationService;
 
     @FXML
     private Pane mainPane;
@@ -46,7 +43,6 @@ public class ReturnViewBorrowerController {
 
     public void initialize() {
         clearStatusMessage(); // Clear any previous status messages
-        this.returnValidationService = new ReturnValidationService();
         loadPendingReturns();
     }
 
@@ -68,30 +64,33 @@ public class ReturnViewBorrowerController {
         }
         String barcode = barcodeFieldBorrower.getText();
         
-        
-        
-        // Use the validation service
-        ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
-            barcode, UserSession.getCurrentUser()
-        );
-        
-        if (!result.isSuccess()) {
-            showErrorMessage(result.getMessage());
-            return;
-        }
-        
-        ItemCopy itemCopy = result.getData();
+        // Use the validation service with try-with-resources
+        try (ReturnValidationService returnValidationService = new ReturnValidationService()) {
+            ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
+                barcode, UserSession.getCurrentUser()
+            );
+            
+            if (!result.isSuccess()) {
+                showErrorMessage(result.getMessage());
+                return;
+            }
+            
+            ItemCopy itemCopy = result.getData();
 
-        // Check if the item is already in the pending returns
-        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
-            showErrorMessage("Item is already in your return list");
-            return;
-        }
+            // Check if the item is already in the pending returns
+            if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
+                showErrorMessage("Item is already in your return list");
+                return;
+            }
 
-        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
-        addItemToReturnContainer(itemCopy);
-        barcodeFieldBorrower.clear();
-        showSuccessMessage("Item added to return list");
+            PendingTransactionManager.getInstance().addItemToPending(itemCopy);
+            addItemToReturnContainer(itemCopy);
+            barcodeFieldBorrower.clear();
+            showSuccessMessage("Item added to return list");
+        } catch (Exception e) {
+            System.err.println("Error validating return: " + e.getMessage());
+            showErrorMessage("Error processing return request");
+        }
     }
 
     @FXML
@@ -187,13 +186,5 @@ public class ReturnViewBorrowerController {
         statusLabel.getStyleClass().add("success-label");
         statusLabel.setVisible(true);
         statusLabel.setManaged(true);
-    }
-    
-    private void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

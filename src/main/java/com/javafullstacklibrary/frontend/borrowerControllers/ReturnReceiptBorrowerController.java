@@ -30,10 +30,7 @@ public class ReturnReceiptBorrowerController {
     @FXML
     private Button printReturnRecieptBorrower;
 
-    private ReturnValidationService returnValidationService;
-
     public void initialize() {
-        this.returnValidationService = new ReturnValidationService();
         displayReturnReceipt();
     }
 
@@ -59,35 +56,40 @@ public class ReturnReceiptBorrowerController {
         itemsHeader.getStyleClass().add("label-title");
         returnContainer.getChildren().add(itemsHeader);
 
-        // Add each returned item to the receipt
-        for (ItemCopy itemCopy : returnedItems) {
-            // Check if item is overdue using the service
-            boolean isOverdue = returnValidationService.isItemOverdue(itemCopy, UserSession.getCurrentUser());
-            String overdueIndicator = isOverdue ? " (OVERDUE)" : "";
-            
-            Label itemLabel = new Label(
-                String.format("- %s%s\n  Barcode: %s\n  Return Date: %s", 
-                    itemCopy.getItem().getTitle(),
-                    overdueIndicator,
-                    itemCopy.getBarcode(),
-                    LocalDate.now().toString()
-                )
-            );
-            itemLabel.getStyleClass().add("return-item-label");
-            
-            // Add additional styling for overdue items
-            if (isOverdue) {
-                itemLabel.getStyleClass().add("overdue-item");
+        // Use try-with-resources for the service
+        try (ReturnValidationService returnValidationService = new ReturnValidationService()) {
+            // Add each returned item to the receipt
+            for (ItemCopy itemCopy : returnedItems) {
+                // Check if item is overdue using the service
+                boolean isOverdue = returnValidationService.isItemOverdue(itemCopy, UserSession.getCurrentUser());
+                String overdueIndicator = isOverdue ? " (OVERDUE)" : "";
+                
+                Label itemLabel = new Label(
+                    String.format("- %s%s\n  Barcode: %s\n  Return Date: %s", 
+                        itemCopy.getItem().getTitle(),
+                        overdueIndicator,
+                        itemCopy.getBarcode(),
+                        LocalDate.now().toString()
+                    )
+                );
+                itemLabel.getStyleClass().add("return-item-label");
+                
+                // Add additional styling for overdue items
+                if (isOverdue) {
+                    itemLabel.getStyleClass().add("overdue-item");
+                }
+                
+                returnContainer.getChildren().add(itemLabel);
             }
-            
-            returnContainer.getChildren().add(itemLabel);
-        }
 
-        // Process the returns using the service
-        processReturns(returnedItems);
+            // Process the returns using the service
+            processReturns(returnValidationService, returnedItems);
+        } catch (Exception e) {
+            System.err.println("Error processing return receipt: " + e.getMessage());
+        }
     }
 
-    private void processReturns(List<ItemCopy> itemCopies) {
+    private void processReturns(ReturnValidationService returnValidationService, List<ItemCopy> itemCopies) {
         try {
             // Process returns using the service
             List<ItemCopy> successfullyProcessed = returnValidationService.processReturns(itemCopies);

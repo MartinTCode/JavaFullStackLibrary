@@ -11,18 +11,19 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class CreatorManagementService {
+public class CreatorManagementService implements AutoCloseable {
 
     private final EntityManagerFactory emf;
+    private final EntityManager em;
     private final CreatorDAO creatorDAO;
     
 
     /**
-     * Constructor that initializes the EntityManagerFactory and GenreDAO.
+     * Constructor that initializes the EntityManagerFactory and CreatorDAO.
      */
     public CreatorManagementService() {
         this.emf = Persistence.createEntityManagerFactory("libraryPU");
-        EntityManager em = emf.createEntityManager();
+        this.em = emf.createEntityManager();
         this.creatorDAO = new CreatorDAO(em);
     }
 
@@ -114,5 +115,15 @@ public class CreatorManagementService {
             return null; // Creator not found, could add creation logic here if needed
         }
         return creator;
+    }
+
+    @Override
+    public void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
     }
 }
