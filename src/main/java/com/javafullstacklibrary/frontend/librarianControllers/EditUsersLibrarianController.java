@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -83,14 +85,12 @@ public class EditUsersLibrarianController {
 
     @FXML
     private void clickedSaveEditUsersButtonLibrarian(MouseEvent event) {
-        //Implement saving logic here
-        System.out.println("Save Edit User button clicked.");
+        notImplementedAlert();
     }
 
     @FXML
     private void clickedDeleteUserButtonLibrarian(MouseEvent event) {
-        //Implement delete logic here
-        System.out.println("Delete User button clicked.");
+        notImplementedAlert();
     }
 
     /**
@@ -102,14 +102,14 @@ public class EditUsersLibrarianController {
             editUserSSNFieldLibrarian.setText(initialSSN);
         // Mock data for demonstration purposes
         } else {
-            editUserSSNFieldLibrarian.setText("123-45-6789");
+            editUserSSNFieldLibrarian.setText("");
         }
         // Mock data for demonstration purposes
-        editUserFirstNameFieldLibrarian.setText("Anna");
-        editUserLastNameFieldLibrarian.setText("Smith");
-        editUserAddressFieldLibrarian.setText("123 Main St, Springfield");
-        editUserEmailFieldLibrarian.setText("anna.smith@example.com");
-        editUserPhoneFieldLibrarian.setText("(555) 123-4567");
+        editUserFirstNameFieldLibrarian.setText("");
+        editUserLastNameFieldLibrarian.setText("");
+        editUserAddressFieldLibrarian.setText("");
+        editUserEmailFieldLibrarian.setText("");
+        editUserPhoneFieldLibrarian.setText("");
     }
 
     public void initializeBorrowerTypeComboBox() {
@@ -117,5 +117,17 @@ public class EditUsersLibrarianController {
         editBorrowerTypeComboBoxLibrarian.getItems().addAll("Public", "Student", "Researcher", "University Employee");
         // Sets to a mock default value for demonstration purposes, change to real data later
         editBorrowerTypeComboBoxLibrarian.setValue("Student");
+    }
+
+    private void notImplementedAlert(){
+        showInfoAlert("Not Implemented", "This feature is not available in this version.");
+    }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

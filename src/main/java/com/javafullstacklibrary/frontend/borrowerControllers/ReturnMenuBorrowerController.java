@@ -1,12 +1,20 @@
 package com.javafullstacklibrary.frontend.borrowerControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
+import com.javafullstacklibrary.model.ItemCopy;
+import com.javafullstacklibrary.services.ReturnValidationService;
+import com.javafullstacklibrary.services.ValidationResult;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
+import com.javafullstacklibrary.utils.PendingTransactionManager;
+import com.javafullstacklibrary.utils.UserSession;
 
 public class ReturnMenuBorrowerController {
+
+    private ReturnValidationService returnValidationService;
 
     @FXML
     private Pane mainPane;
@@ -15,57 +23,100 @@ public class ReturnMenuBorrowerController {
     private TextField barcodeFieldBorrower;
 
     @FXML
+    private Label errorLabelBarcodeSearch;
+
+    public void initialize() {
+        this.returnValidationService = new ReturnValidationService();
+        
+        // Prefill test data for development
+        prefillTestData();
+    }
+
+    /**
+     * Prefills the form with test data for development purposes
+     */
+    private void prefillTestData() {
+        // Add a barcode for an item that is currently on loan to the current user
+        barcodeFieldBorrower.setText("X82DMJQ1");
+    }
+
+    @FXML
     private void clickedHomeMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
     @FXML
     private void clickedReturnButtonBorrower() {
         String barcode = barcodeFieldBorrower.getText();
-        System.out.println("Return button clicked with barcode: " + barcode);
-        // Add implementation for getting info about the item an displaying it in next view
+        
+        // Clear previous error message
+        clearErrorMessage();
+        
+        // Use the validation service
+        ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
+            barcode, UserSession.getCurrentUser()
+        );
+        
+        if (!result.isSuccess()) {
+            showErrorMessage(result.getMessage());
+            return;
+        }
+        
+        ItemCopy itemCopy = result.getData();
+        
+        // Check if the item is already in the pending returns
+        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
+            showErrorMessage("Item is already in your return list");
+            return;
+        }
 
-        // Switch to the Return_View_Borrower view
+        // Add item to return list and navigate to return view
+        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
         MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnView");
     }
-
-    @FXML
-    private void clickedAddReturnButton() {
-        // Implement the logic for adding a return
-        System.out.println("Add Return button clicked");
+    
+    private void clearErrorMessage() {
+        if (errorLabelBarcodeSearch != null) {
+            errorLabelBarcodeSearch.setVisible(false);
+            errorLabelBarcodeSearch.setText("");
+        }
     }
-
-    @FXML
-    private void clickedConfirmReturnsButtonBorrower() {
-        System.out.println("Confirm Returns button clicked");
-        // Implement the logic for confirming returns and getting the info for the receipt
-
-        // Switch to the Return_Receipt_Borrower view
-        MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnReceipt");
+    
+    private void showErrorMessage(String message) {
+        if (errorLabelBarcodeSearch != null) {
+            errorLabelBarcodeSearch.setText(message);
+            errorLabelBarcodeSearch.setVisible(true);
+        }
     }
 }

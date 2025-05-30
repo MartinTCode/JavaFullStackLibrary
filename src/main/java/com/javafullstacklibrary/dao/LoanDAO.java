@@ -322,4 +322,46 @@ public class LoanDAO {
         query.setParameter("currentDate", LocalDate.now());
         return query.getSingleResult();
     }
+    
+    /**
+     * Processes the return of a borrowed item by updating its loan record.
+     * This method finds the active loan for the given item copy and marks it as returned
+     * with the current date.
+     *
+     * @param itemCopy the ItemCopy being returned
+     * @throws IllegalArgumentException if itemCopy is null
+     * @throws IllegalStateException if no active loan is found for the given ItemCopy
+     * @throws RuntimeException if there's an error during the database transaction
+     */
+    public void processReturn(ItemCopy itemCopy) {
+        if (itemCopy == null) {
+            throw new IllegalArgumentException("ItemCopy is required for processing return");
+        }
+
+        // Find the active loan for this item copy
+        Optional<Loan> activeLoan = findActiveLoanByItemCopy(itemCopy);
+        
+        if (activeLoan.isEmpty()) {
+            throw new IllegalStateException("No active loan found for ItemCopy with barcode: " + itemCopy.getBarcode());
+        }
+
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            
+            // Update the loan with return date
+            Loan loan = activeLoan.get();
+            loan.setReturnedDate(LocalDate.now());
+            
+            // Merge the updated loan
+            entityManager.merge(loan);
+            
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
 }

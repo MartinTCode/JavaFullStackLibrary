@@ -150,7 +150,9 @@
                            />
                         </children>
                      </VBox>
-                     <VBox styleClass="results-box">
+                     <VBox 
+                        styleClass="results-box"
+                        HBox.hgrow="ALWAYS">
                         <padding>
                            <Insets 
                                left="10.0"
@@ -280,7 +282,7 @@
                                     </children>
                                  </HBox>
                                  <HBox 
-                                     alignment="CENTER"
+                                     alignment="CENTER_LEFT"
                                      spacing="70.0"
                                  >
                                     <children>
@@ -289,7 +291,11 @@
                                            mnemonicParsing="false"
                                            styleClass="button-selected"
                                            text="Change Info"
-                                       />
+                                       >
+                                          <HBox.margin>
+                                             <Insets left="70.0"/>
+                                          </HBox.margin>
+                                       </Button>   
                                        <Button 
                                            fx:id="saveUserInfoButtonBorrower"
                                            mnemonicParsing="false"

@@ -124,6 +124,11 @@
                               text="Add" />
                         </children>
                      </HBox>
+                     <!-- Status Label -->
+                     <Label
+                        fx:id="statusLabel"
+                        styleClass="status-label"
+                        visible="false" />
                   </children>
                   <opaqueInsets>
                      <Insets />

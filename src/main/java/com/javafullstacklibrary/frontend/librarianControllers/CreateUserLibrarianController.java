@@ -1,6 +1,7 @@
 package com.javafullstacklibrary.frontend.librarianControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -83,29 +84,12 @@ public class CreateUserLibrarianController {
     /**
      * This method is called when the "Save New User" button is clicked.
      * It reads the input from all fields and prints them to the console.
-     * #TODO: Implement actual user creation logic.
      * @param event
      */
     @FXML
     private void clickedSaveNewUsersButtonLibrarian(MouseEvent event) {
-        // Read input from all fields
-        String borrowerType = createBorrowerTypeComboBoxLibrarian.getValue();
-        String ssn = createUserSSNFieldLibrarian.getText();
-        String firstName = createUserFirstNameFieldLibrarian.getText();
-        String lastName = createUserLastNameFieldLibrarian.getText();
-        String address = createUserAddressFieldLibrarian.getText();
-        String email = createUserEmailFieldLibrarian.getText();
-        String phone = editUserPhoneFieldLibrarian.getText();
-
-        // Print all values to the console, implement actual save logic later
-        System.out.println("Save New User button clicked. Input values:");
-        System.out.println("Borrower Type: " + borrowerType);
-        System.out.println("SSN: " + ssn);
-        System.out.println("First Name: " + firstName);
-        System.out.println("Last Name: " + lastName);
-        System.out.println("Address: " + address);
-        System.out.println("Email: " + email);
-        System.out.println("Phone: " + phone);
+        // Not implemented yet, give alert to user
+        notImplementedAlert();
     }
 
     @FXML
@@ -121,5 +105,17 @@ public class CreateUserLibrarianController {
             createBorrowerTypeComboBoxLibrarian.setValue(initialUserType);
             initialUserType = null; // Reset after use
         }
+    }
+
+    private void notImplementedAlert(){
+        showInfoAlert("Not Implemented", "This feature is not available in this version.");
+    }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -2,6 +2,7 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -65,11 +66,8 @@ public class ChangePasswordLibrarianController {
     // --- Password Change Method ---
     @FXML
     private void clickedConfirmNewPasswordButtonLibrarian(MouseEvent event) {
-        // Implement logic for confirming new password
-        String currentPassword = currentPasswordFieldLibrarian.getText();
-        String newPassword = newPasswordFieldLibrarian.getText();
-        String confirmNewPassword = confirmNewPasswordFieldLibrarian.getText();
-        System.out.println("Current: " + currentPassword + ", New: " + newPassword + ", Confirm: " + confirmNewPassword);
+        // Not implemented yet, give alert to user
+        notImplementedAlert();
     }
 
     @FXML
@@ -77,5 +75,17 @@ public class ChangePasswordLibrarianController {
         // Implement logic for canceling password change
         System.out.println("Cancel Change Password button clicked");
         MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
+    }
+
+    private void notImplementedAlert(){
+        showInfoAlert("Not Implemented", "This feature is not available in this version.");
+    }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

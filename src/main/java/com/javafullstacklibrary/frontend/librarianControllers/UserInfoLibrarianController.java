@@ -2,6 +2,7 @@ package com.javafullstacklibrary.frontend.librarianControllers;
 
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -49,12 +50,12 @@ public class UserInfoLibrarianController {
      * Currently mock data, switch to real data retrieval later.
      */
     private void setUserData() {
-        usernameFieldLibrarian.setText("librarian123");
-        firstNameFieldLibrarian.setText("Anna");
-        lastNameFieldLibrarian.setText("Smith");
-        addressFieldLibrarian.setText("123 Library St");
-        emailFieldLibrarian.setText("anna.smith@library.com");
-        phoneNumberFieldLibrarian.setText("+1234567890");
+        usernameFieldLibrarian.setText("");
+        firstNameFieldLibrarian.setText("");
+        lastNameFieldLibrarian.setText("");
+        addressFieldLibrarian.setText("");
+        emailFieldLibrarian.setText("");
+        phoneNumberFieldLibrarian.setText("");
     }
 
     /**
@@ -81,24 +82,21 @@ public class UserInfoLibrarianController {
     }
 
     public void clickedChangeUserInfoButtonLibrarian() {
+        // Allow user to edit their information
         setFieldsEditable(true);
         setButtonStates(true);
+
+        // Not implemented yet, give alert to user
+        notImplementedAlert();
     }
 
     public void clickedSaveUserInfoButtonLibrarian() {
-        // Here you would typically save the data to a database or backend service
-        // For now, we will just print the values to the console
-        System.out.println("Saving user info:");
-        System.out.println("Username: " + usernameFieldLibrarian.getText());
-        System.out.println("First Name: " + firstNameFieldLibrarian.getText());
-        System.out.println("Last Name: " + lastNameFieldLibrarian.getText());
-        System.out.println("Address: " + addressFieldLibrarian.getText());
-        System.out.println("Email: " + emailFieldLibrarian.getText());
-        System.out.println("Phone Number: " + phoneNumberFieldLibrarian.getText());
-
-        // Reset fields to read-only state
+         // Reset fields to read-only state
         setFieldsEditable(false);
         setButtonStates(false);
+
+        // Not implemented yet, give alert to user
+        notImplementedAlert();
     }
     
     // --- Top Menu Methods ---
@@ -140,6 +138,18 @@ public class UserInfoLibrarianController {
     @FXML
     private void clickedSignOutButtonLibrarian(MouseEvent event) {
         MenuNavigationHelper.buttonClickLibrarian(mainPane, "SignOut");
+    }
+
+    private void notImplementedAlert(){
+        showInfoAlert("Not Implemented", "This feature is not available in this version.");
+    }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
