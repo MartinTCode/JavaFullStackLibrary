@@ -232,9 +232,9 @@
                               styleClass="text-field" 
                            />
                            <Button 
-                              fx:id="addLoanButton" 
+                              fx:id="addCopyButton" 
                               mnemonicParsing="false" 
-                              onMouseClicked="#clickedAddLoanButton" 
+                              onMouseClicked="#clickedAddCopyButton" 
                               styleClass="button" 
                               text="Add" 
                            />
@@ -243,7 +243,6 @@
                      <!-- Error/Status Message Label -->
                      <Label 
                         fx:id="statusLabel" 
-                        managed="false" 
                         styleClass="error-label" 
                         visible="false" 
                      />
