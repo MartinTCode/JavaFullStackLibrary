@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,8 @@ public class ItemCopyService {
         ItemCopy itemCopy = new ItemCopy();
         itemCopy.setBarcode(barcode);
         itemCopy.setItem(item);
+        itemCopy.setDateAdded(LocalDate.now());
+        itemCopy.setIsReference(false);
         return itemCopyDAO.save(itemCopy);
     }
     
