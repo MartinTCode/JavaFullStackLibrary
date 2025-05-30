@@ -339,6 +339,17 @@ public class ModifyDvdLibrarianController {
     }
 
     /**
+     * Handles click on the Manage Copies button.
+     * Navigates to the Manage Copies view for the selected book.
+     * @param event
+     */
+    @FXML
+    private void clickedManageCopiesButtonLibrarian(MouseEvent event) {
+        // Navigate to the Manage Copies view for the selected book
+        MenuNavigationHelper.buttonClickLibrarian(mainPane, "ManageCopies", itemToModify);
+    }
+
+    /**
      * Initializes the controller after the root element has been completely processed.
      * Calls the method to populate combo boxes.
      */
