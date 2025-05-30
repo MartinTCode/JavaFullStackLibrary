@@ -53,19 +53,4 @@ public class ReturnMenuBorrowerController {
         // Switch to the Return_View_Borrower view
         MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnView");
     }
-
-    @FXML
-    private void clickedAddReturnButton() {
-        // Implement the logic for adding a return
-        System.out.println("Add Return button clicked");
-    }
-
-    @FXML
-    private void clickedConfirmReturnsButtonBorrower() {
-        System.out.println("Confirm Returns button clicked");
-        // Implement the logic for confirming returns and getting the info for the receipt
-
-        // Switch to the Return_Receipt_Borrower view
-        MenuNavigationHelper.buttonClickBorrower(mainPane, "ReturnReceipt");
-    }
 }

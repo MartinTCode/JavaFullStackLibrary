@@ -34,6 +34,8 @@ import com.javafullstacklibrary.frontend.borrowerControllers.SearchViewBorrowerC
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanMenuBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanReceiptBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.ReturnMenuBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.ReturnReceiptBorrowerController;
+import com.javafullstacklibrary.frontend.borrowerControllers.ReturnViewBorrowerController;
 import com.javafullstacklibrary.frontend.borrowerControllers.AccountMenuBorrowerController;
 
 import com.javafullstacklibrary.frontend.borrowerControllers.LoanViewBorrowerController;
@@ -160,10 +162,10 @@ public class MenuNavigationHelper {
                 navigateToView(mainPane, "borrowerViews", "Loan_Receipt_Borrower.fxml", new LoanReceiptBorrowerController());
                 break;
             case "ReturnView":
-                navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Return_View_Borrower.fxml", new ReturnViewBorrowerController());
                 break;
             case "ReturnReceipt":
-                navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnMenuBorrowerController());
+                navigateToView(mainPane, "borrowerViews", "Return_Receipt_Borrower.fxml", new ReturnReceiptBorrowerController());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid button action: " + buttonAction);  
