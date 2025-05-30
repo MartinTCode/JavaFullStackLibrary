@@ -117,7 +117,7 @@ public class ReturnMenuBorrowerController {
         }
 
         // Validate that the loan belongs to the current user
-        if (!activeLoan.get().getLibraryUser().equals(UserSession.getCurrentUser())) {
+        if (!(activeLoan.get().getLibraryUser().getId() == UserSession.getCurrentUser().getId())) {
             showErrorMessage("This item was not borrowed by you");
             return;
         }
