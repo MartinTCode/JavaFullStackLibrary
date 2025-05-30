@@ -7,7 +7,9 @@ import com.javafullstacklibrary.services.ItemCopyService;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -18,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import java.util.Optional;
 
 // MenuNavigationHelper keyword: ManageCopies via buttonClickLibrarian(Pane mainPane, String buttonAction, Item item)
 
@@ -214,21 +217,45 @@ public class ManageCopiesLibrarianController  {
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("delete-button");
         deleteButton.setOnAction(e -> {
-            try {
-                if (itemCopyService.isAvailable(itemCopy.getId())) {
-                    itemCopyService.deleteItemCopy(itemCopy.getId());
-                    ItemCopyContainer.getChildren().remove(itemContainer);
-                    setStatusLabel("Item copy deleted successfully.");
-                } else {
-                    setStatusLabel("Cannot delete item copy that is currently on loan.");
+            // Show confirmation dialog before deleting
+            if (showDeleteConfirmationDialog(itemCopy.getBarcode())) {
+                try {
+                    if (itemCopyService.isAvailable(itemCopy.getId())) {
+                        itemCopyService.deleteItemCopy(itemCopy.getId());
+                        ItemCopyContainer.getChildren().remove(itemContainer);
+                        setStatusLabel("Item copy deleted successfully.");
+                    } else {
+                        setStatusLabel("Cannot delete item copy that is currently on loan.");
+                    }
+                } catch (Exception ex) {
+                    setStatusLabel("Error deleting item copy: " + ex.getMessage());
                 }
-            } catch (Exception ex) {
-                setStatusLabel("Error deleting item copy: " + ex.getMessage());
             }
         });
         
         itemContainer.getChildren().addAll(barcodeLabel, statusItemLabel, spacer, deleteButton);
         ItemCopyContainer.getChildren().add(itemContainer);
+    }
+
+    /**
+     * Shows a confirmation dialog for deleting an item copy
+     * @param barcode The barcode of the item copy to be deleted
+     * @return true if user confirms deletion, false otherwise
+     */
+    private boolean showDeleteConfirmationDialog(String barcode) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Delete Item Copy");
+        alert.setContentText("Are you sure you want to delete the item copy with barcode: " + barcode + "?\n\n" +
+                            "This action is irreversible and cannot be undone.");
+        
+        // Customize button text
+        ButtonType confirmButton = new ButtonType("Delete");
+        ButtonType cancelButton = new ButtonType("Cancel");
+        alert.getButtonTypes().setAll(confirmButton, cancelButton);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == confirmButton;
     }
 
     private void setLabelsForItem(Item item) {
