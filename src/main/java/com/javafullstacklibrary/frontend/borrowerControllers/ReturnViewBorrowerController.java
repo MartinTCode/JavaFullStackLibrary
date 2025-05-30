@@ -14,7 +14,7 @@ import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.model.Loan;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import com.javafullstacklibrary.utils.ReturnList;
+import com.javafullstacklibrary.utils.PendingTransactionManager; // Manage pending transactions like loans and returns
 import com.javafullstacklibrary.utils.UserSession;
 
 import jakarta.persistence.EntityManager;
@@ -58,7 +58,7 @@ public class ReturnViewBorrowerController {
     }
 
     private void loadPendingReturns() {
-        List<ItemCopy> pendingReturns = ReturnList.getInstance().getPendingReturns();
+        List<ItemCopy> pendingReturns = PendingTransactionManager.getInstance().getPending();
         returnContainer.getChildren().clear();
         
         for (ItemCopy itemCopy : pendingReturns) {
@@ -98,12 +98,12 @@ public class ReturnViewBorrowerController {
         }
 
         // Check if the item is already in the pending returns
-        if (ReturnList.getInstance().getPendingReturns().contains(itemCopy)) {
+        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
             showErrorMessage("Item is already in your return list");
             return;
         }
 
-        ReturnList.getInstance().addItemToReturn(itemCopy);
+        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
         addItemToReturnContainer(itemCopy);
         barcodeFieldBorrower.clear();
         showSuccessMessage("Item added to return list");
@@ -111,7 +111,7 @@ public class ReturnViewBorrowerController {
 
     @FXML
     private void clickedConfirmReturnsButtonBorrower() {
-        List<ItemCopy> pendingReturns = ReturnList.getInstance().getPendingReturns();
+        List<ItemCopy> pendingReturns = PendingTransactionManager.getInstance().getPending();
         
         if (pendingReturns.isEmpty()) {
             showErrorMessage("No items selected for return");
@@ -135,7 +135,7 @@ public class ReturnViewBorrowerController {
         Button removeButton = new Button("Remove");
         removeButton.getStyleClass().add("remove-button");
         removeButton.setOnAction(e -> {
-            ReturnList.getInstance().removeItemFromReturn(itemCopy);
+            PendingTransactionManager.getInstance().removeItemFromPending(itemCopy);
             returnContainer.getChildren().remove(itemContainer);
             showSuccessMessage("Item removed from return list");
         });
@@ -147,37 +147,37 @@ public class ReturnViewBorrowerController {
     // Menu navigation methods
     @FXML
     private void clickedHomeMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 

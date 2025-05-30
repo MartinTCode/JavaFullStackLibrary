@@ -6,7 +6,7 @@ import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.model.Journal;
 import com.javafullstacklibrary.model.LibraryUser;
-import com.javafullstacklibrary.utils.LoanList;
+import com.javafullstacklibrary.utils.PendingTransactionManager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -49,10 +49,10 @@ public class LoanValidationService {
      * @param loanList The LoanList containing pending loans
      * @return true if the user can loan more items, false otherwise
      */
-    public boolean canLoanMore(LibraryUser libraryUser, LoanList loanList) {
+    public boolean canLoanMore(LibraryUser libraryUser, PendingTransactionManager loanList) {
         int maxLoans = loanDAO.getMaxLoansByUser(libraryUser);
         int currentLoans = Math.toIntExact(loanDAO.countActiveLoansByUser(libraryUser));
-        return (currentLoans + loanList.getPendingLoans().size()) <= maxLoans;
+        return (currentLoans + loanList.getPending().size()) <= maxLoans;
     }
     
     /**

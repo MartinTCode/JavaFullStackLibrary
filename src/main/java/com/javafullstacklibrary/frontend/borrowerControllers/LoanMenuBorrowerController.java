@@ -12,7 +12,7 @@ import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 
 import com.javafullstacklibrary.utils.UserSession;
-import com.javafullstacklibrary.utils.LoanList;
+import com.javafullstacklibrary.utils.PendingTransactionManager; // Manage pending transactions like loans and returns
 
 public class LoanMenuBorrowerController {
 
@@ -54,42 +54,42 @@ public class LoanMenuBorrowerController {
     @FXML
     private void clickedHomeMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
@@ -124,7 +124,7 @@ public class LoanMenuBorrowerController {
         }
         
         // Add item to loan list and navigate to loan view
-        LoanList.getInstance().addItemToLoan(itemCopy);
+        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
         
         MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanView");
     }

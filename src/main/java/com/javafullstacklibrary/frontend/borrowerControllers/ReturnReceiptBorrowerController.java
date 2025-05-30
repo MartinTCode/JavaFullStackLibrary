@@ -8,9 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 
 import com.javafullstacklibrary.model.ItemCopy;
-import com.javafullstacklibrary.model.LibraryUser;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import com.javafullstacklibrary.utils.ReturnList;
+import com.javafullstacklibrary.utils.PendingTransactionManager;
 import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.utils.UserSession;
 
@@ -46,7 +45,7 @@ public class ReturnReceiptBorrowerController {
     }
 
     private void displayReturnReceipt() {
-        List<ItemCopy> returnedItems = ReturnList.getInstance().getPendingReturns();
+        List<ItemCopy> returnedItems = PendingTransactionManager.getInstance().getPending();
         returnContainer.getChildren().clear();
 
         // Add receipt header
@@ -89,42 +88,42 @@ public class ReturnReceiptBorrowerController {
             loanDAO.processReturn(itemCopy);
         }
         // Clear the pending returns list after successful processing
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
     }
 
     @FXML
     private void clickedHomeMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
-        ReturnList.getInstance().clearPendingReturns();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 

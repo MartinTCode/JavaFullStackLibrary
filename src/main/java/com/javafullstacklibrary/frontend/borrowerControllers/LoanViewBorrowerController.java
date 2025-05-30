@@ -14,7 +14,7 @@ import com.javafullstacklibrary.services.LoanValidationService;
 import com.javafullstacklibrary.services.ValidationResult;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import com.javafullstacklibrary.utils.LoanList;
+import com.javafullstacklibrary.utils.PendingTransactionManager;
 import com.javafullstacklibrary.utils.UserSession;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class LoanViewBorrowerController {
      * Load existing pending loans from the LoanList into the UI
      */
     private void loadPendingLoans() {
-        List<ItemCopy> pendingLoans = LoanList.getInstance().getPendingLoans();
+        List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
         loanContainer.getChildren().clear();
         
         for (ItemCopy itemCopy : pendingLoans) {
@@ -65,42 +65,42 @@ public class LoanViewBorrowerController {
     @FXML
     private void clickedHomeMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Home");
     }
 
     @FXML
     private void clickedSearchMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Search");
     }
 
     @FXML
     private void clickedLoanMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Loan");
     }
 
     @FXML
     private void clickedReturnMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Return");
     }
 
     @FXML
     private void clickedAccountMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "Account");
     }
 
     @FXML
     private void clickedSignOutMenuBorrower() {
         // Flush the LoanList to clear any pending loans
-        LoanList.getInstance().clearPendingLoans();
+        PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
 
@@ -129,17 +129,17 @@ public class LoanViewBorrowerController {
         ItemCopy itemCopy = result.getData();
         
         // Check if the item is already in the pending loans
-        if (LoanList.getInstance().getPendingLoans().contains(itemCopy)) {
+        if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
             showErrorMessage("Item is already in your loan list");
             return;
         }
         
-        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), LoanList.getInstance())) {
+        if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), PendingTransactionManager.getInstance())) {
             showErrorMessage("You have reached the maximum number of pending loans allowed for your user type.");
             return;
         }
         
-        LoanList.getInstance().addItemToLoan(itemCopy);
+        PendingTransactionManager.getInstance().addItemToPending(itemCopy);
         addItemToLoanContainer(itemCopy);
         barcodeField.clear();
         showSuccessMessage("Item added to loan list");
@@ -147,7 +147,7 @@ public class LoanViewBorrowerController {
 
     @FXML
     private void clickedConfirmLoansButtonBorrower() {
-        List<ItemCopy> pendingLoans = LoanList.getInstance().getPendingLoans();
+        List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
         
         if (pendingLoans.isEmpty()) {
             showErrorMessage("No items selected for loan");
@@ -174,7 +174,7 @@ public class LoanViewBorrowerController {
         Button removeButton = new Button("Remove");
         removeButton.getStyleClass().add("remove-button");
         removeButton.setOnAction(e -> {
-            LoanList.getInstance().removeItemFromLoan(itemCopy);
+            PendingTransactionManager.getInstance().removeItemFromPending(itemCopy);
             loanContainer.getChildren().remove(itemContainer);
             showSuccessMessage("Item removed from loan list");
         });
