@@ -10,12 +10,8 @@ import javafx.scene.control.Label;
 import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.utils.PendingTransactionManager;
-import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.utils.UserSession;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import com.javafullstacklibrary.services.ReturnValidationService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,13 +30,10 @@ public class ReturnReceiptBorrowerController {
     @FXML
     private Button printReturnRecieptBorrower;
 
-    private LoanDAO loanDAO;
-    private EntityManager entityManager;
+    private ReturnValidationService returnValidationService;
 
     public void initialize() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
-        this.entityManager = emf.createEntityManager();
-        this.loanDAO = new LoanDAO(entityManager);
+        this.returnValidationService = new ReturnValidationService();
         displayReturnReceipt();
     }
 
@@ -68,27 +61,50 @@ public class ReturnReceiptBorrowerController {
 
         // Add each returned item to the receipt
         for (ItemCopy itemCopy : returnedItems) {
+            // Check if item is overdue using the service
+            boolean isOverdue = returnValidationService.isItemOverdue(itemCopy, UserSession.getCurrentUser());
+            String overdueIndicator = isOverdue ? " (OVERDUE)" : "";
+            
             Label itemLabel = new Label(
-                String.format("- %s\n  Barcode: %s\n  Return Date: %s", 
-                    itemCopy.getItem().getTitle(), 
+                String.format("- %s%s\n  Barcode: %s\n  Return Date: %s", 
+                    itemCopy.getItem().getTitle(),
+                    overdueIndicator,
                     itemCopy.getBarcode(),
                     LocalDate.now().toString()
                 )
             );
             itemLabel.getStyleClass().add("return-item-label");
+            
+            // Add additional styling for overdue items
+            if (isOverdue) {
+                itemLabel.getStyleClass().add("overdue-item");
+            }
+            
             returnContainer.getChildren().add(itemLabel);
         }
 
-        // Process the returns in the database
+        // Process the returns using the service
         processReturns(returnedItems);
     }
 
     private void processReturns(List<ItemCopy> itemCopies) {
-        for (ItemCopy itemCopy : itemCopies) {
-            loanDAO.processReturn(itemCopy);
+        try {
+            // Process returns using the service
+            List<ItemCopy> successfullyProcessed = returnValidationService.processReturns(itemCopies);
+            
+            if (successfullyProcessed.size() == itemCopies.size()) {
+                System.out.println("All returns processed successfully");
+            } else {
+                System.out.println("Some returns failed. Successfully processed: " + 
+                    successfullyProcessed.size() + " out of " + itemCopies.size());
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Error processing returns: " + e.getMessage());
+        } finally {
+            // Clear the pending returns list after processing attempt
+            PendingTransactionManager.getInstance().clearPending();
         }
-        // Clear the pending returns list after successful processing
-        PendingTransactionManager.getInstance().clearPending();
     }
 
     @FXML

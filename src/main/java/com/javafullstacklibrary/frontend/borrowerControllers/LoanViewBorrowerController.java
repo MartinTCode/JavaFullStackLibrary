@@ -49,19 +49,7 @@ public class LoanViewBorrowerController {
         loadPendingLoans();
     }
 
-    /**
-     * Load existing pending loans from the LoanList into the UI
-     */
-    private void loadPendingLoans() {
-        List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
-        loanContainer.getChildren().clear();
-        
-        for (ItemCopy itemCopy : pendingLoans) {
-            addItemToLoanContainer(itemCopy);
-        }
-    }
-
-    // Top menu navigation methods
+    // #region Top menu navigation methods
     @FXML
     private void clickedHomeMenuBorrower() {
         // Flush the LoanList to clear any pending loans
@@ -103,6 +91,22 @@ public class LoanViewBorrowerController {
         PendingTransactionManager.getInstance().clearPending();
         MenuNavigationHelper.menuClickBorrower(mainPane, "SignOut");
     }
+
+    // #endregion
+
+    /**
+     * Load existing pending loans from the LoanList into the UI
+     */
+    private void loadPendingLoans() {
+        List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
+        loanContainer.getChildren().clear();
+        
+        for (ItemCopy itemCopy : pendingLoans) {
+            addItemToLoanContainer(itemCopy);
+        }
+    }
+
+   
 
     @FXML
     // THESE BARCODES CAN BE USED TO LOAN ITEMS:

@@ -10,24 +10,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.model.ItemCopy;
-import com.javafullstacklibrary.model.Loan;
+import com.javafullstacklibrary.services.ReturnValidationService;
+import com.javafullstacklibrary.services.ValidationResult;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import com.javafullstacklibrary.utils.PendingTransactionManager; // Manage pending transactions like loans and returns
+import com.javafullstacklibrary.utils.PendingTransactionManager;
 import com.javafullstacklibrary.utils.UserSession;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-
 import java.util.List;
-import java.util.Optional;
 
 public class ReturnViewBorrowerController {
 
-    private LoanDAO loanDAO;
-    private EntityManager entityManager;
+    private ReturnValidationService returnValidationService;
 
     @FXML
     private Pane mainPane;
@@ -51,9 +45,8 @@ public class ReturnViewBorrowerController {
     private Label statusLabel;
 
     public void initialize() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
-        this.entityManager = emf.createEntityManager();
-        this.loanDAO = new LoanDAO(entityManager);
+        clearStatusMessage(); // Clear any previous status messages
+        this.returnValidationService = new ReturnValidationService();
         loadPendingReturns();
     }
 
@@ -68,34 +61,26 @@ public class ReturnViewBorrowerController {
 
     @FXML
     private void clickedAddReturnButton() {
-        String barcode = barcodeFieldBorrower.getText();
-        
-        clearStatusMessage();
-        
-        if (barcode == null || barcode.trim().isEmpty()) {
+        // Get the barcode from the input field
+        if (barcodeFieldBorrower.getText().isEmpty()) {
             showErrorMessage("Please enter a barcode");
             return;
         }
-
-        // Find the item copy for this barcode
-        ItemCopy itemCopy = findItemCopyByBarcode(barcode);
-        if (itemCopy == null) {
-            showErrorMessage("Invalid barcode");
+        String barcode = barcodeFieldBorrower.getText();
+        
+        
+        
+        // Use the validation service
+        ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
+            barcode, UserSession.getCurrentUser()
+        );
+        
+        if (!result.isSuccess()) {
+            showErrorMessage(result.getMessage());
             return;
         }
-
-        // Validate that this item has an active loan
-        Optional<Loan> activeLoan = loanDAO.findActiveLoanByItemCopy(itemCopy);
-        if (activeLoan.isEmpty()) {
-            showErrorMessage("No active loan found for this item");
-            return;
-        }
-
-        // Validate that the loan belongs to the current user
-        if (!(activeLoan.get().getLibraryUser().getId() == UserSession.getCurrentUser().getId())) {
-            showErrorMessage("This item was not borrowed by you");
-            return;
-        }
+        
+        ItemCopy itemCopy = result.getData();
 
         // Check if the item is already in the pending returns
         if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
@@ -210,12 +195,5 @@ public class ReturnViewBorrowerController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    // Helper method to find ItemCopy by barcode
-    private ItemCopy findItemCopyByBarcode(String barcode) {
-        // TODO: Implement ItemCopy lookup by barcode
-        // This should use an ItemCopyDAO to look up the ItemCopy
-        return null;
     }
 }

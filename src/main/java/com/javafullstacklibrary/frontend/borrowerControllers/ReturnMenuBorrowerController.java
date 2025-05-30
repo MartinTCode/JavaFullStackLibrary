@@ -5,25 +5,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-import com.javafullstacklibrary.dao.LoanDAO;
-import com.javafullstacklibrary.dao.ItemCopyDAO;
 import com.javafullstacklibrary.model.ItemCopy;
-import com.javafullstacklibrary.model.Loan;
+import com.javafullstacklibrary.services.ReturnValidationService;
+import com.javafullstacklibrary.services.ValidationResult;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
-import com.javafullstacklibrary.utils.PendingTransactionManager; // Manage pending transactions like loans and returns
+import com.javafullstacklibrary.utils.PendingTransactionManager;
 import com.javafullstacklibrary.utils.UserSession;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-
-import java.util.Optional;
 
 public class ReturnMenuBorrowerController {
 
-    private LoanDAO loanDAO;
-    private ItemCopyDAO itemCopyDAO;
-    private EntityManager entityManager;
+    private ReturnValidationService returnValidationService;
 
     @FXML
     private Pane mainPane;
@@ -35,11 +26,7 @@ public class ReturnMenuBorrowerController {
     private Label errorLabelBarcodeSearch;
 
     public void initialize() {
-        // Initialize the EntityManager and DAOs
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
-        this.entityManager = emf.createEntityManager();
-        this.loanDAO = new LoanDAO(entityManager);
-        this.itemCopyDAO = new ItemCopyDAO(entityManager);
+        this.returnValidationService = new ReturnValidationService();
         
         // Prefill test data for development
         prefillTestData();
@@ -96,32 +83,18 @@ public class ReturnMenuBorrowerController {
         // Clear previous error message
         clearErrorMessage();
         
-        // Validate the barcode isn't empty
-        if (barcode == null || barcode.trim().isEmpty()) {
-            showErrorMessage("Please enter a barcode");
+        // Use the validation service
+        ValidationResult<ItemCopy> result = returnValidationService.validateBarcodeForReturn(
+            barcode, UserSession.getCurrentUser()
+        );
+        
+        if (!result.isSuccess()) {
+            showErrorMessage(result.getMessage());
             return;
         }
-
-        // Find the ItemCopy by barcode
-        ItemCopy itemCopy = findItemCopyByBarcode(barcode);
-        if (itemCopy == null) {
-            showErrorMessage("Invalid barcode");
-            return;
-        }
-
-        // Validate that this item has an active loan
-        Optional<Loan> activeLoan = loanDAO.findActiveLoanByItemCopy(itemCopy);
-        if (activeLoan.isEmpty()) {
-            showErrorMessage("No active loan found for this item");
-            return;
-        }
-
-        // Validate that the loan belongs to the current user
-        if (!(activeLoan.get().getLibraryUser().getId() == UserSession.getCurrentUser().getId())) {
-            showErrorMessage("This item was not borrowed by you");
-            return;
-        }
-
+        
+        ItemCopy itemCopy = result.getData();
+        
         // Check if the item is already in the pending returns
         if (PendingTransactionManager.getInstance().getPending().contains(itemCopy)) {
             showErrorMessage("Item is already in your return list");
@@ -145,11 +118,5 @@ public class ReturnMenuBorrowerController {
             errorLabelBarcodeSearch.setText(message);
             errorLabelBarcodeSearch.setVisible(true);
         }
-    }
-
-    // Helper method to find ItemCopy by barcode
-    private ItemCopy findItemCopyByBarcode(String barcode) {
-        Optional<ItemCopy> itemCopy = itemCopyDAO.findByBarcode(barcode);
-        return itemCopy.orElse(null);
     }
 }
