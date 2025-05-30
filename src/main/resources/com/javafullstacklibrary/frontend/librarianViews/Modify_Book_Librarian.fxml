@@ -462,7 +462,7 @@
                                     </GridPane>
                                     <HBox
                                         alignment="CENTER"
-                                        spacing="80.0"
+                                        spacing="50.0"
                                     >
                                         <children>
                                             <VBox>
@@ -486,6 +486,12 @@
                                                 mnemonicParsing="false"
                                                 onMouseClicked="#clickedDeleteBookButtonLibrarian"
                                                 text="Delete Book"
+                                            />
+                                            <Button
+                                                fx:id="manageCopiesButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedManageCopiesButtonLibrarian"
+                                                text="Manage Copies"
                                             />
                                             <Button
                                                 fx:id="saveChangesBookButtonLibrarian"

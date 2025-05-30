@@ -412,6 +412,12 @@
                                                 text="Delete Course Litterature"
                                             />
                                             <Button
+                                                fx:id="manageCopiesButtonLibrarian"
+                                                mnemonicParsing="false"
+                                                onMouseClicked="#clickedManageCopiesButtonLibrarian"
+                                                text="Manage Copies"
+                                            />
+                                            <Button
                                                 fx:id="saveChangesCourseLitButtonLibrarian"
                                                 mnemonicParsing="false"
                                                 onMouseClicked="#clickedSaveChangesCourseLitButtonLibrarian"
