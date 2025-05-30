@@ -1,0 +1,157 @@
+@startuml Library Domain Model
+
+!define ENTITY class
+!define ABSTRACT abstract class
+
+package "Domain Model" {
+
+    ABSTRACT Item {
+        - id: Integer
+        - identifier: String
+        - identifier2: String
+        - title: String
+        - publisher: String
+        - ageLimit: Short
+        - countryOfProduction: String
+        + getMaxLoanTimeDays(): int {abstract}
+        + getParameterMap(): Map<String, String> {abstract}
+    }
+
+    ENTITY Book {
+        - maxLoanTimeDays: int = 30
+        + getISBN13(): String
+        + setISBN13(String): void
+        + getISBN10(): String
+        + setISBN10(String): void
+        + getMaxLoanTimeDays(): int
+    }
+
+    ENTITY DVD {
+        - maxLoanTimeDays: int = 7
+        + getIMDBC(): String
+        + setIMDBC(String): void
+        + getMaxLoanTimeDays(): int
+    }
+
+    ENTITY Journal {
+        - maxLoanTimeDays: int = 0
+        + getISSN(): String
+        + setISSN(String): void
+        + getMaxLoanTimeDays(): int
+    }
+
+    ENTITY CourseLitterature {
+        - maxLoanTimeDays: int = 14
+        + getISBN13(): String
+        + setISBN13(String): void
+        + getISBN10(): String
+        + setISBN10(String): void
+        + getMaxLoanTimeDays(): int
+    }
+
+    ENTITY ItemCopy {
+        - id: Integer
+        - barcode: String
+        - isReference: boolean
+        - dateAdded: LocalDate
+    }
+
+    ENTITY LibraryUser {
+        - id: Integer
+        - ssn: String
+        - username: String
+        - passwordHash: String
+        - email: String
+        - userRole: String
+        + hashPassword(String): String
+        + verifyPassword(String): boolean
+    }
+
+    ENTITY BorrowerProfile {
+        - id: Integer
+        - firstName: String
+        - lastName: String
+        - phone: String
+        - address: String
+        - profileType: String
+        + getMaxLoansForRole(): int
+    }
+
+    ENTITY Loan {
+        - id: Integer
+        - startDate: LocalDate
+        - returnDate: LocalDate
+        - returnedDate: LocalDate
+    }
+
+    ENTITY Location {
+        - id: Integer
+        - floor: String
+        - section: String
+        - shelf: String
+        - position: String
+    }
+
+    ENTITY Language {
+        - id: Integer
+        - language: String
+    }
+
+    ENTITY Keyword {
+        - id: Integer
+        - keyword: String
+    }
+
+    ENTITY Creator {
+        - id: Integer
+        - firstName: String
+        - lastName: String
+        - dob: LocalDate
+        + getFullName(): String
+    }
+
+    ENTITY Actor {
+        - id: Integer
+        - firstName: String
+        - lastName: String
+        - dob: LocalDate
+        + getFullName(): String
+    }
+
+    ENTITY Genre {
+        - id: Integer
+        - genre: String
+    }
+}
+
+' Inheritance relationships
+Item <|-- Book
+Item <|-- DVD
+Item <|-- Journal
+Item <|-- CourseLitterature
+
+' One-to-Many relationships
+Item ||--o{ ItemCopy : "has copies"
+LibraryUser ||--o{ Loan : "borrows"
+ItemCopy ||--o{ Loan : "loaned as"
+
+' One-to-One relationships
+LibraryUser ||--|| BorrowerProfile : "has profile"
+
+' Many-to-One relationships
+Item }o--|| Location : "located at"
+Item }o--|| Language : "written in"
+
+' Many-to-Many relationships
+Item }o--o{ Keyword : "tagged with"
+Item }o--o{ Creator : "created by"
+Item }o--o{ Actor : "features"
+Item }o--o{ Genre : "categorized as"
+
+note top of Item : Abstract class using\nSingle Table Inheritance\nwith discriminator column
+
+note right of LibraryUser : Roles: admin, librarian, borrower\nPasswords hashed with BCrypt
+
+note right of BorrowerProfile : Profile types: public, student,\nresearcher, university employee
+
+@enduml
