@@ -1,0 +1,239 @@
+@startuml UserLoginClassDiagram
+
+!define CONTROLLER_COLOR #E8F4FD
+!define SERVICE_COLOR #E8F8E8
+!define DAO_COLOR #FFF2E8
+!define MODEL_COLOR #F8E8F8
+!define UTIL_COLOR #F0F0F0
+!define EXCEPTION_COLOR #FFE8E8
+
+package "Frontend Layer (JavaFX Controllers)" CONTROLLER_COLOR {
+    class SignInUserController {
+        -mainPane: Pane
+        -ssnField: TextField
+        -passwordField: TextField
+        +initialize(): void
+        +clickedSignInButton(): void
+        -prefillTestData(): void
+        -handleValidationException(ValidationException): void
+        -highlightField(TextField): void
+        -navigateToUserHome(String): void
+        -isValidSSNFormat(String): boolean
+        -showErrorAlert(String, String): void
+        -clearFields(): void
+    }
+    
+    class StartViewGuestController {
+        -mainPane: Pane
+        +clickedSearchMenuGuest(): void
+        +clickedSignInMenuGuest(): void
+    }
+    
+    class StartViewBorrowerController {
+        +initialize(): void
+    }
+    
+    class StartViewLibrarianController {
+        +initialize(): void
+    }
+}
+
+package "Service Layer" SERVICE_COLOR {
+    class AuthenticationService {
+        -emf: EntityManagerFactory
+        -em: EntityManager
+        -userDAO: LibraryUserDAO
+        +authenticate(String, String): AuthenticationResult
+        +initializeTestDataHash(): int
+        +countUsersWithPlaceholderPasswords(): long
+        +validateLoginInput(String): void
+        +validatePassword(String): void
+        +logout(): void
+        +isUserLoggedIn(): boolean
+        +getCurrentUser(): LibraryUser
+        -normalizeLoginInput(String): String
+        +close(): void
+    }
+    
+    class AuthenticationResult {
+        -success: boolean
+        -message: String
+        -user: LibraryUser
+        +success(LibraryUser, String): AuthenticationResult
+        +failure(String): AuthenticationResult
+        +isSuccess(): boolean
+        +getMessage(): String
+        +getUser(): LibraryUser
+        +getUserRole(): String
+    }
+    
+    class ValidationResult<T> {
+        -success: boolean
+        -data: T
+        -message: String
+        -fieldErrors: Map<String, String>
+        +success(T): ValidationResult<T>
+        +failure(String): ValidationResult<T>
+        +failure(Map<String, String>, String): ValidationResult<T>
+        +isSuccess(): boolean
+        +getData(): T
+        +getMessage(): String
+        +getFieldErrors(): Map<String, String>
+        +hasFieldErrors(): boolean
+    }
+}
+
+package "Data Access Layer" DAO_COLOR {
+    class LibraryUserDAO {
+        -entityManager: EntityManager
+        +save(LibraryUser): LibraryUser
+        +findById(Integer): Optional<LibraryUser>
+        +findByUsername(String): Optional<LibraryUser>
+        +findByEmail(String): Optional<LibraryUser>
+        +findBySsn(String): Optional<LibraryUser>
+        +findByUserRole(String): List<LibraryUser>
+        +authenticate(String, String): Optional<LibraryUser>
+        +authenticateAlternative(String, String): Optional<LibraryUser>
+        +initializeAllPasswords(): int
+        +countUsersWithPlaceholderPasswords(): long
+        +existsByUsername(String): boolean
+        +existsByEmail(String): boolean
+        +existsBySsn(String): boolean
+    }
+}
+
+package "Model Layer" MODEL_COLOR {
+    class LibraryUser {
+        -id: Integer
+        -ssn: String
+        -username: String
+        -passwordHash: String
+        -email: String
+        -userRole: String
+        -borrowerProfile: BorrowerProfile
+        -loans: List<Loan>
+        +hashPassword(String): String
+        +verifyPassword(String): boolean
+        +setRawPassword(String): void
+        +getId(): Integer
+        +getSsn(): String
+        +getUsername(): String
+        +getUserRole(): String
+        +getPasswordHash(): String
+        +getEmail(): String
+    }
+    
+    class BorrowerProfile {
+        -id: Integer
+        -firstName: String
+        -lastName: String
+        -phoneNumber: String
+        -address: String
+    }
+    
+    class Loan {
+        -id: Integer
+        -loanDate: LocalDate
+        -returnDate: LocalDate
+        -returnedDate: LocalDate
+    }
+}
+
+package "Utility Layer" UTIL_COLOR {
+    class MenuNavigationHelper {
+        -currentControllerName: String
+        +menuClickGuest(Pane, String): void
+        +menuClickBorrower(Pane, String): void
+        +menuClickLibrarian(Pane, String): void
+        +buttonClickBorrower(Pane, String): void
+        +buttonClickLibrarian(Pane, String): void
+        +getCurrentControllerName(): String
+        -navigateToView(Pane, String, String, Object): void
+    }
+    
+    class UserSession {
+        -currentUser: LibraryUser {static}
+        +setCurrentUser(LibraryUser): void {static}
+        +getCurrentUser(): LibraryUser {static}
+        +isLoggedIn(): boolean {static}
+        +logout(): void {static}
+        +getCurrentUserRole(): String {static}
+        +getCurrentUserId(): Integer {static}
+        +getCurrentUsername(): String {static}
+    }
+    
+    class ViewLoader {
+        +loadToStage(Pane, String, String, Object): void {static}
+    }
+}
+
+package "Exception Layer" EXCEPTION_COLOR {
+    class ValidationException {
+        -fieldErrors: Map<String, String>
+        +ValidationException(String)
+        +ValidationException(String, String)
+        +ValidationException(String, Map<String, String>)
+        +hasFieldErrors(): boolean
+        +getFieldErrors(): Map<String, String>
+        +addFieldError(String, String): void
+    }
+}
+
+package "JPA/Persistence" {
+    interface EntityManager {
+        +find(Class<T>, Object): T
+        +createQuery(String, Class<T>): TypedQuery<T>
+        +getTransaction(): EntityTransaction
+        +persist(Object): void
+        +merge(T): T
+        +close(): void
+    }
+    
+    interface EntityManagerFactory {
+        +createEntityManager(): EntityManager
+        +close(): void
+    }
+    
+    class Persistence {
+        +createEntityManagerFactory(String): EntityManagerFactory {static}
+    }
+}
+
+' Relationships
+SignInUserController --> AuthenticationService : uses
+SignInUserController --> MenuNavigationHelper : uses
+SignInUserController --> ValidationException : catches
+
+AuthenticationService --> LibraryUserDAO : uses
+AuthenticationService --> LibraryUser : returns
+AuthenticationService --> AuthenticationResult : creates
+AuthenticationService --> ValidationException : throws
+AuthenticationService --> UserSession : sets
+AuthenticationService --> EntityManager : uses
+AuthenticationService --> EntityManagerFactory : uses
+AuthenticationService --> Persistence : uses
+
+LibraryUserDAO --> EntityManager : uses
+LibraryUserDAO --> LibraryUser : queries/returns
+
+AuthenticationResult --> LibraryUser : contains
+
+LibraryUser --> BorrowerProfile : has
+LibraryUser --> Loan : has many
+
+UserSession --> LibraryUser : stores
+
+MenuNavigationHelper --> ViewLoader : uses
+MenuNavigationHelper --> StartViewBorrowerController : navigates to
+MenuNavigationHelper --> StartViewLibrarianController : navigates to
+MenuNavigationHelper --> StartViewGuestController : navigates to
+
+ValidationException --> ValidationResult : related to
+
+note top of SignInUserController : "Entry point for user login\nHandles UI interactions"
+note top of AuthenticationService : "Core business logic\nPassword validation\nSession management"
+note top of LibraryUserDAO : "Data access abstraction\nDatabase queries\nUser authentication"
+note top of LibraryUser : "Domain model\nPassword hashing\nUser data"
+note top of UserSession : "Session management\nStatic singleton pattern"
+
+@enduml
