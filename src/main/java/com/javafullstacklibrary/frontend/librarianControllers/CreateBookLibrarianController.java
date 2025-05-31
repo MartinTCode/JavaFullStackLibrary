@@ -331,4 +331,35 @@ public class CreateBookLibrarianController {
             list.add(finder.apply(value));
         }
     }
+
+    // Add these menu navigation methods
+    @FXML
+    private void clickedHomeMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Home");
+    }
+
+    @FXML
+    private void clickedSearchMenyLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Search");
+    }
+
+    @FXML
+    private void clickedOverdueMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Overdue");
+    }
+
+    @FXML
+    private void clickedManageUsersMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "ManageUsers");
+    }
+
+    @FXML
+    private void clickedAccountMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "Account");
+    }
+
+    @FXML
+    private void clickedSignOutMenuLibrarian(MouseEvent event) {
+        MenuNavigationHelper.menuClickLibrarian(mainPane, "SignOut");
+    }
 }
