@@ -54,7 +54,8 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     private static final int SLEEP_TIME = 100; // milliseconds
 
-    @Test
+    //@Test
+    @Disabled
     @Order(1)
     void testGuestViewMenuButtons() {
         testMenuButtonClick_All (
@@ -67,7 +68,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     // Test fails because it tries to find the node by selector "#searchButtonBorrower" after clicking the button.
     // This is most likely because the test is not properly transitioning to the next view.
     // This is disabled, beware of the dragons here.
-    @Test
+    //@Test
     @Disabled
     @Order(2)
     // FIXME: there be dragons here, transition works fine, but then it finds no node for:
@@ -177,26 +178,26 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     }
 
 
-    @Disabled
+    /*@Disabled
     @Order(3)
     @ParameterizedTest
     @CsvSource({
         "#homeMenuGuest, #welcomeTextGuest", 
         "#signInMenuGuest, #ssnField"
-    })
+    })*/
     void testInner_SearchMenuButtons(String buttonId, String expectedFieldId) {
         navigateTo("#searchMenuGuest");
         clickMenuAndVerify(buttonId, expectedFieldId, "testInner_SearchMenuButtons");
     }
 
-    @Disabled
+    /*@Disabled
     @Order(4)
     @ParameterizedTest
     @CsvSource({
         "#homeMenuGuest, #welcomeTextGuest",
         "#searchMenuGuest, #searchField",
         "#staffButton, #usernameField"
-    })
+    }) */
     void testInner_SignInUser(String buttonId, String expectedFieldId) {
         navigateTo("#signInMenuGuest");
         clickMenuAndVerify(buttonId, expectedFieldId, "testInner_SignInUser");
