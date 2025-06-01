@@ -9,15 +9,9 @@ import javafx.scene.control.Label;
 
 import com.javafullstacklibrary.model.Item;
 import com.javafullstacklibrary.model.ItemCopy;
-import com.javafullstacklibrary.model.LibraryUser;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.utils.PendingTransactionManager;
-import com.javafullstacklibrary.dao.LoanDAO;
 import com.javafullstacklibrary.utils.UserSession;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,13 +30,9 @@ public class LoanReceiptBorrowerController {
     @FXML
     private Button printLoanRecieptBorrower;
 
-    private LoanDAO loanDAO;
-    private EntityManager entityManager;
+    
 
     public void initialize() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("libraryPU");
-        this.entityManager = emf.createEntityManager();
-        this.loanDAO = new LoanDAO(entityManager);
         displayLoanReceipt();
     }
 
@@ -82,18 +72,9 @@ public class LoanReceiptBorrowerController {
         }
 
         // Process the loans in the database
-        processLoans(loanedItems);
-    }
-
-    private void processLoans(List<ItemCopy> itemCopies) {
-        // do this with the DOA:
-        LibraryUser loaner = UserSession.getCurrentUser();
-        for (ItemCopy itemCopy : itemCopies) {
-            loanDAO.save(itemCopy, loaner, getReturnDateByItemCopy(itemCopy));
-        }
-        // Clear the pending loans list after successful processing
         PendingTransactionManager.getInstance().clearPending();
     }
+
 
     private LocalDate getReturnDateByItemCopy(ItemCopy itemCopy) {
         // First extract the item from the ItemCopy

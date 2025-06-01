@@ -15,7 +15,6 @@ import com.javafullstacklibrary.model.ItemCopy;
 import com.javafullstacklibrary.utils.MenuNavigationHelper;
 import com.javafullstacklibrary.utils.PendingTransactionManager;
 import com.javafullstacklibrary.utils.UserSession;
-
 import java.util.List;
 
 public class LoanViewBorrowerController {
@@ -40,6 +39,7 @@ public class LoanViewBorrowerController {
 
     @FXML
     private Label statusLabel;
+
 
     public void initialize() {
         loadPendingLoans();
@@ -135,8 +135,12 @@ public class LoanViewBorrowerController {
                 return;
             }
             
-            if (!loanValidationService.canLoanMore(UserSession.getCurrentUser(), PendingTransactionManager.getInstance())) {
-                showErrorMessage("You have reached the maximum number of pending loans allowed for your user type.");
+            // Use service to validate if user can add more items to pending
+            ValidationResult<Void> addValidation = loanValidationService.validateAddToPending(
+                UserSession.getCurrentUser(), PendingTransactionManager.getInstance());
+            
+            if (!addValidation.isSuccess()) {
+                showErrorMessage(addValidation.getMessage());
                 return;
             }
             
@@ -152,14 +156,36 @@ public class LoanViewBorrowerController {
 
     @FXML
     private void clickedConfirmLoansButtonBorrower() {
-        List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
-        
-        if (pendingLoans.isEmpty()) {
-            showErrorMessage("No items selected for loan");
-            return;
+        try (LoanValidationService loanValidationService = new LoanValidationService()) {
+            // Use service to validate loan confirmation
+            ValidationResult<Void> confirmationResult = loanValidationService.validateLoanConfirmation(
+                UserSession.getCurrentUser(), PendingTransactionManager.getInstance());
+            
+            if (!confirmationResult.isSuccess()) {
+                showErrorMessage(confirmationResult.getMessage());
+                return;
+            }
+            
+            List<ItemCopy> pendingLoans = PendingTransactionManager.getInstance().getPending();
+            
+            // Use service to process the loans
+            ValidationResult<Void> processResult = loanValidationService.processLoans(
+                pendingLoans, UserSession.getCurrentUser());
+            
+            if (!processResult.isSuccess()) {
+                showErrorMessage(processResult.getMessage());
+                return;
+            }
+            
+            // Clear pending loans after successful processing
+            PendingTransactionManager.getInstance().clearPending();
+            
+            showSuccessMessage("Loans confirmed successfully");
+            MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanReceipt");
+        } catch (Exception e) {
+            System.err.println("Error processing loans: " + e.getMessage());
+            showErrorMessage("Error processing loan request");
         }
-        
-        MenuNavigationHelper.buttonClickBorrower(mainPane, "LoanReceipt");
     }
 
     /**
@@ -187,7 +213,7 @@ public class LoanViewBorrowerController {
         itemContainer.getChildren().addAll(itemLabel, removeButton);
         loanContainer.getChildren().add(itemContainer);
     }
-    
+
     private void clearStatusMessage() {
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);
