@@ -39,7 +39,7 @@
                      <!-- Home Button -->
                      <StackPane>
                         <ImageView 
-                            fx:id="homeMenuBorrower" 
+                            fx:id="startMenuBorrower" 
                             styleClass="home-icon-inactive" />
                         <!-- No Region for current/active page -->
                      </StackPane>

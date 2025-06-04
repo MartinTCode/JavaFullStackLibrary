@@ -54,8 +54,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     private static final int SLEEP_TIME = 100; // milliseconds
 
-    //@Test
-    @Disabled
+    @Test
     @Order(1)
     void testGuestViewMenuButtons() {
         testMenuButtonClick_All (
@@ -65,14 +64,9 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     }
 
 
-    // Test fails because it tries to find the node by selector "#searchButtonBorrower" after clicking the button.
-    // This is most likely because the test is not properly transitioning to the next view.
-    // This is disabled, beware of the dragons here.
-    //@Test
-    @Disabled
+
+    @Test
     @Order(2)
-    // FIXME: there be dragons here, transition works fine, but then it finds no node for:
-    // lookup by selector: "#searchButtonBorrower"
     void testBorrowerViewMenuButtons() {
         testMenuButtonClick_All(MENU_ENTRIES_BORROWERVIEWS, 
         null

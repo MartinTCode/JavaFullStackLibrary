@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MenuEntryTestData {
 
-    private static final MenuEntry BORROWER_TRANSITION_GW = new MenuEntry(
+    public static final MenuEntry BORROWER_TRANSITION_GW = new MenuEntry(
         //1. transition to sign in view:
         "#signInMenuGuest", "#ssnField", true,
         // List<MenuEntry>. 
@@ -22,15 +22,16 @@ public class MenuEntryTestData {
     public static final List<MenuEntry> MENU_ENTRIES_GUESTVIEWS = List.of(
         new MenuEntry("#homeMenuGuest", "#welcomeTextGuest"),
         new MenuEntry("#searchMenuGuest", "#searchField"),
-        new MenuEntry("#signInMenuGuest", "#ssnField"),
-        BORROWER_TRANSITION_GW
+        new MenuEntry("#signInMenuGuest", "#ssnField")
+        //BORROWER_TRANSITION_GW
     );
 
     
 
     // represents menus: start > search > loan > return > account > sign_out
     public static final List<MenuEntry> MENU_ENTRIES_BORROWERVIEWS = List.of(
-        new MenuEntry("#homeMenuBorrower", "#welcomeMsgUser"),
+        BORROWER_TRANSITION_GW,
+        new MenuEntry("#startMenuBorrower", "#welcomeMsgUser"),
         new MenuEntry("#searchMenuBorrower", "#searchField"),
         new MenuEntry("#loanMenuBorrower", "#loanButtonBorrower"),
         new MenuEntry("#returnMenuBorrower", "#returnButtonBorrower"),
@@ -38,7 +39,7 @@ public class MenuEntryTestData {
         new MenuEntry("#signOutMenuBorrower", "#confirmSignOutButtonBorrower")
     );
 
-    private static final MenuEntry LIBRARIAN_TRANSITION_GW = new MenuEntry(
+    public static final MenuEntry LIBRARIAN_TRANSITION_GW = new MenuEntry(
         //1. transition to sign in view:
         "#signInMenuGuest", "#ssnField", true,
         // List<MenuEntry>. 
