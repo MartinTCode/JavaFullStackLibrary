@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_GUESTVIEWS;
 import static com.javafullstacklibrary.frontend.MenuEntryTestData.MENU_ENTRIES_BORROWERVIEWS;
 
-import com.javafullstacklibrary.TestMainApp;
+import com.javafullstacklibrary.MainApp;
 // import start controller class
 //import com.javafullstacklibrary.frontend.guestControllers.StartViewGuestController;
 
@@ -52,7 +52,7 @@ public class StartViewGuestControllerTest extends ApplicationTest {
 
     private static final Logger logger = LoggerUtil.getFileLogger(StartViewGuestControllerTest.class, "StartViewGuestControllerTest.log");
 
-    private static final int SLEEP_TIME = 100; // milliseconds
+    private static final int SLEEP_TIME = 10; // milliseconds
 
     @Test
     @Order(1)
@@ -82,9 +82,8 @@ public class StartViewGuestControllerTest extends ApplicationTest {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-        //Use TestMainApp instead of manual FXML loading
-        TestMainApp testApp = new TestMainApp();
-        testApp.start(primaryStage);
+        MainApp mainApp = new MainApp();
+        mainApp.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
