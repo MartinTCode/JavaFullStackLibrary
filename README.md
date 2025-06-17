@@ -24,6 +24,23 @@ This version serves as a stable base for upcoming feature freeze, polish, and re
 
 ---
 
+## 📐 Design Rationale
+
+We implemented a **layered architecture** to increase modularity, clarity, and future maintainability. The final structure combines:
+
+- **MVC** (Model–View–Controller) as the foundation  
+- A **Service Layer** for separating logic from controllers  
+- A **DAO Layer** for handling all database interaction  
+- **Utility classes** like `MenuNavigationHelper` for reusable UI logic  
+- **Singletons** to manage shared state (e.g., login sessions, transaction queues)  
+- A custom **ValidationException** for centralized, layered error handling
+
+This approach made it easier to collaborate in parallel, isolate and test logic, and future-proof the system for new features or database changes.
+
+📷 [Login-related architecture diagram](https://github.com/MartinTCode/JavaFullStackLibrary/blob/dev/docs/plantuml/output_pngs/UserLoginClassDiagram.png)
+
+---
+
 🎥 **Demo Video**
 
 A 10-minute walkthrough of the pre-alpha system, showcasing implemented features, user flows, and the graphical interface.
