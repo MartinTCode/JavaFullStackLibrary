@@ -25,7 +25,8 @@ We follow a simplified Git Flow model:
 
 ## 📁 Directory Structure
 
-See [`Project Overview`](../../blob/milestone/poc/README.md#-project-overview) in the main README for full breakdown.
+See [`Project Overview`](../../blob/main/README.md#-project-overview) in the main README for full breakdown.
+
 
 ---
 
