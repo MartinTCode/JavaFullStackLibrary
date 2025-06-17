@@ -60,7 +60,7 @@ Suggested new feature branches:
 - `feature/borrower-account-management`
 - `feature/librarian-add-borrower`
 - `feature/librarian-modify-borrower`
-- `feature/librarian-account-info`
+- `feature/librarian-account-management`
 - `feature/password-update`
 - `feature/ui-error-handling-refactor`
 - `feature/factory-item-creation`
