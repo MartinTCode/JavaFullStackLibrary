@@ -93,7 +93,7 @@
                <children>
                   <!-- Sign-in Title -->
                   <Text 
-                        text="Sign in" 
+                        text="Sign in as Library User" 
                         styleClass="text-title" />
                   
                   <!-- Social Security Number Field -->
