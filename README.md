@@ -25,6 +25,9 @@ A proof-of-concept version is available on the [`milestone/poc`](../../tree/mile
 🎥 [Watch the demo video](https://github.com/MartinTCode/JavaFullStackLibrary/releases/download/v0.1.0-prealpha/javafullstacklibrary_demo_compressed.mp4)  
 📄 [Read the release notes](../../releases/tag/v0.1.0-prealpha)
 
+🧭 For details on upcoming goals and planned features, see the [Release Planning Meeting – 2025-06-17](https://github.com/MartinTCode/JavaFullStackLibrary/blob/dev/docs/release-planning/RELEASE_MEETING_2025-06-17.md).
+
+
 ---
 
 
