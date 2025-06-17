@@ -27,15 +27,35 @@ A proof-of-concept version is available on the [`milestone/poc`](../../tree/mile
 
 ---
 
-## 🚧 Active Development
 
-The latest development work is taking place in the [`dev`](../../tree/dev) branch.
 
-To explore specific changes, open features, or ongoing work:
-- See [Branches](../../branches)
-- Browse [Open Pull Requests](../../pulls)
+## 🌱 Branching Structure
 
-Feature branches are regularly merged into `dev` after validation and testing.
+Development is organized around a disciplined feature-branch workflow. Features were implemented incrementally and consolidated into `dev`, with completed branches archived under the `retired/feature/...` namespace to keep the repo clean.
+
+Commits and branch names document progress transparently.
+
+### 🏁 Development Timeline Summary (Chronological)
+
+> 📁 **Note:** Completed feature branches are moved under `retired/feature/` to reflect archival status.
+
+- 🛠️ `feature/maven_integration` → Initial setup and build configuration
+- 📐 `docs/requirements-and-design` → Planning, mockups, and system design
+- 🧩 `feature/javafx-view-switching` & `feature/css-implementation` → GUI interaction base
+- 🎯 `feature/guestViews/contextSharing` & `feature/frontend-guestViews` → Core guest UI development
+- 🧪 `feature/frontend-guestViews-testfx-integration` → GUI testing with TestFX
+- 🔁 `feature/frontend-borrowerviews` → Borrower flows (now retired)
+- 👩‍🏫 `feature/frontend-librarianviews` → Librarian interface
+- 🔎 `feature/search-query-integration` → Dynamic keyword-based search
+- 🔐 `feature/login-implementation` → Role-based authentication
+- 📚 `feature/item-management`, `feature/itemcopy-functionality` → Item and copy handling
+- 💳 `feature/loan-functionality`, `feature/returnLoan-functionality` → Lending workflows
+- ⏰ `feature/overdue-functionality` → Overdue loan tracking
+- 🛢️ `feature/database-setup`, `feature/database-implementation` → DAO and PostgreSQL connectivity
+- ✅ Consolidated into [`milestone/poc`](../../tree/milestone/poc)
+- 🚧 Ongoing development centralized in [`dev`](../../tree/dev)
+
+📂 View [all branches](../../branches) for archived features and historical context.
 
 ---
 
