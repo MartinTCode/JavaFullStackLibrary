@@ -30,7 +30,19 @@ A proof-of-concept version is available on the [`milestone/poc`](../../tree/mile
 
 ---
 
+## 🏗️ Architectural Overview
 
+The system follows a multi-layered architecture built on the **MVC** design pattern, extended with:
+
+- A dedicated **Service Layer** to separate business logic from UI
+- A **DAO Layer** (Data Access Object) for clean database interaction
+- Utility classes and **Singletons** for shared session and navigation handling
+
+This structure improves modularity and testability, allowing for isolated maintenance and future expansion (e.g., switching out database technology with minimal changes to core logic).
+
+📷 [View Login Architecture Diagram](https://github.com/MartinTCode/JavaFullStackLibrary/blob/dev/docs/plantuml/output_pngs/UserLoginClassDiagram.png)
+
+---
 
 ## 🌱 Branching Structure
 
