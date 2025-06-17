@@ -1,22 +1,69 @@
 # JavaFullStackLibrary
 
-A Java-based full-stack library management system with GUI and PostgreSQL database.
+A full-stack library management system with a graphical desktop UI (JavaFX), PostgreSQL database, and layered Java backend using JPA + Hibernate.
 
-## Project Status
+---
+
+![Status](https://img.shields.io/badge/status-pre--alpha-yellow)
+![Java](https://img.shields.io/badge/java-21-blue)
+![License](https://img.shields.io/github/license/MartinTCode/JavaFullStackLibrary)
+
+---
+
+## 📌 Project Status
 
 This `main` branch is currently **inactive** and reserved for future production-ready releases.
 
-## Active Development
+The codebase and all active development are maintained in other branches.
 
-Development is ongoing in the following branches:
+---
 
-- [`dev`](../../tree/dev): Main development branch where all active work happens.
-- Feature branches such as:
-  - `feature/database-implementation`
-  - `feature/frontend_guestViews`
-  - `feature/search-query-integration`
+## 📦 Pre-alpha Release
 
-## Note to Viewers
+A proof-of-concept version is available on the [`milestone/poc`](../../tree/milestone/poc) branch.
 
-If you're looking to explore the latest code or follow development progress, please switch to the `dev` branch or any of the active feature branches.  
-This `main` branch will be updated once the project reaches a stable release point.
+🎥 [Watch the demo video](https://github.com/MartinTCode/JavaFullStackLibrary/releases/download/v0.1.0-prealpha/javafullstacklibrary_demo_compressed.mp4)  
+📄 [Read the release notes](../../releases/tag/v0.1.0-prealpha)
+
+---
+
+## 🚧 Active Development
+
+The latest development work is taking place in the [`dev`](../../tree/dev) branch.
+
+To explore specific changes, open features, or ongoing work:
+- See [Branches](../../branches)
+- Browse [Open Pull Requests](../../pulls)
+
+Feature branches are regularly merged into `dev` after validation and testing.
+
+---
+
+## 🧭 Project Overview
+
+```
+JavaFullStackLibrary/
+ ├── docs/                 📁 Design docs, mockups, diagrams, specifications
+ ├── src/
+ │   ├── main/
+ │   │   ├── java/         📦 Java code: model, DAO, services, controllers
+ │   │   ├── resources/    🎨 FXML views, CSS, icons, config
+ │   │   └── database/     🛢️ SQL setup scripts
+ │   └── test/             🧪 Unit tests and test utilities
+ ├── archive/              📦 Legacy mockups and sample data
+ ├── pom.xml               ⚙️  Maven project config
+ └── README.md             📘 Branch-specific project info
+```
+
+---
+
+## 📂 Repo Navigation
+
+- 📁 [`/docs`](../../tree/milestone/poc/docs): UI mockups, models, diagrams, specs
+- 🧪 [`/src/test`](../../tree/milestone/poc/src/test): Unit tests and test utilities
+- 🛠️ [`/src/main`](../../tree/milestone/poc/src/main): Full application codebase
+- 🗂️ [`/release-planning`](../../tree/milestone/poc/release-planning): Planning notes and roadmaps
+
+---
+
+Stay tuned for future production releases on this branch.
