@@ -96,7 +96,7 @@
                <children>
                   <!-- Sign-in Title -->
                   <Text 
-                        text="Sign in" 
+                        text="Sign in as Staff" 
                         styleClass="text-title" />
                   
                   <!-- Username Field -->
@@ -131,18 +131,12 @@
                         prefWidth="285.0" 
                         spacing="20.0">
                      <children>
-                        <!-- Sign-in Button for Admin -->
-                        <Button 
-                              fx:id="signInButtonAdmin" 
-                              styleClass="button-selected"  
-                              text="Sign in - Admin" />
-                        
                         <!-- Sign-in Button for Librarian -->
                         <Button 
                               fx:id="signInButtonLibrarian" 
                               styleClass="button" 
                               onMouseClicked="#clickedSignInButtonLibrarian" 
-                              text="Sign in - Librarian" />
+                              text="Sign in" />
                      </children>
                   </HBox>
                </children>
