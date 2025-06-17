@@ -59,14 +59,14 @@ Commits and branch names document progress transparently.
 - 🧩 `feature/javafx-view-switching` & `feature/css-implementation` → GUI interaction base
 - 🎯 `feature/guestViews/contextSharing` & `feature/frontend-guestViews` → Core guest UI development
 - 🧪 `feature/frontend-guestViews-testfx-integration` → GUI testing with TestFX
-- 🔁 `feature/frontend-borrowerviews` → Borrower flows (now retired)
+- 🛢️ `feature/database-setup`, `feature/database-implementation` → DAO and PostgreSQL connectivity
+- 🔁 `feature/frontend-borrowerviews` → Borrower flows 
 - 👩‍🏫 `feature/frontend-librarianviews` → Librarian interface
 - 🔎 `feature/search-query-integration` → Dynamic keyword-based search
 - 🔐 `feature/login-implementation` → Role-based authentication
 - 📚 `feature/item-management`, `feature/itemcopy-functionality` → Item and copy handling
 - 💳 `feature/loan-functionality`, `feature/returnLoan-functionality` → Lending workflows
 - ⏰ `feature/overdue-functionality` → Overdue loan tracking
-- 🛢️ `feature/database-setup`, `feature/database-implementation` → DAO and PostgreSQL connectivity
 - ✅ Consolidated into [`milestone/poc`](../../tree/milestone/poc)
 - 🚧 Ongoing development centralized in [`dev`](../../tree/dev)
 
